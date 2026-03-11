@@ -1,0 +1,11 @@
+export { OpenDataCategorySetupPage } from './OpenDataCategorySetupPage';
+export { OpenDataCategoryAPage } from './OpenDataCategoryAPage';
+export { OpenDataCategoryBPage } from './OpenDataCategoryBPage';
+export { OpenDataCategoryCPage } from './OpenDataCategoryCPage';
+export { OpenDataCategoryDPage } from './OpenDataCategoryDPage';
+export { OpenDataCategoryEPage } from './OpenDataCategoryEPage';
+export { OpenDataCategoryFPage } from './OpenDataCategoryFPage';
+export { OpenDataCategoryGPage } from './OpenDataCategoryGPage';
+export { OpenDataCategoryHPage } from './OpenDataCategoryHPage';
+export { OpenDataCategoryIPage } from './OpenDataCategoryIPage';
+export { OpenDataCategoryJPage } from './OpenDataCategoryJPage';

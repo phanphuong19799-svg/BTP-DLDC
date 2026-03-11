@@ -1,0 +1,1028 @@
+import { useState } from "react";
+import {
+  LayoutDashboard,
+  Database,
+  Settings,
+  Share2,
+  GitCompare,
+  Shield,
+  FileText,
+  FolderTree,
+  HardDrive,
+  Network,
+  Globe,
+  ChevronDown,
+  ChevronRight,
+  Users,
+  UsersRound,
+  List,
+  Key,
+  Sliders,
+  ScrollText,
+  Database as DatabaseBackup,
+  BarChart3,
+  Building2,
+  Building,
+  UserCircle2,
+  MapPin,
+  Flag,
+  Church,
+  Landmark,
+  Map,
+  Heart,
+  FileUser,
+  HandHeart,
+  UserMinus,
+  Baby,
+  Activity,
+  UserCog,
+  Accessibility,
+  Medal,
+  Shield as ShieldIcon,
+  Users2,
+  Stamp,
+  Scale,
+  FileCheck,
+  Briefcase,
+  Factory,
+  Coins,
+  ScrollText as DocumentText,
+  BookOpen,
+  FileBadge,
+  Gavel,
+  Lock,
+  BookMarked,
+  ClipboardList,
+  GraduationCap,
+  FileSearch,
+  Handshake,
+  Bell,
+  MessageSquare,
+  CheckSquare,
+  AlertTriangle,
+  Plug,
+  UploadIcon,
+  RefreshCw,
+  Server,
+  Eye,
+  FolderOpen,
+  HelpCircle,
+  Package,
+  FolderCog,
+  Circle,
+  History as HistoryIcon,
+} from "lucide-react";
+import imgLogo from "figma:asset/0b9fbf72a74cf9ec02b7371d312e91e368f930d8.png";
+import imgImageLogo from "figma:asset/009541fc5d689d29107b655d2b8ecd57f6d4b3ff.png";
+
+interface SidebarProps {
+  currentPage: string;
+  onNavigate: (page: string) => void;
+}
+
+interface NestedSubMenuItem {
+  id: string;
+  label: string;
+  icon: any;
+  subItems?: {
+    id: string;
+    label: string;
+    icon: any;
+  }[];
+  isGroup?: boolean; // New property to mark as a group
+}
+
+interface SubMenuItem {
+  id: string;
+  label: "CSDL Ngoài ngành";
+  icon: any;
+  subItems?: NestedSubMenuItem[];
+}
+
+interface MenuItem {
+  id: string;
+  icon: any;
+  label: string;
+  color: string;
+  subItems?: SubMenuItem[];
+}
+
+const menuItems: MenuItem[] = [
+  {
+    id: "dashboard",
+    icon: LayoutDashboard,
+    label: "Tổng quan",
+    color: "text-blue-600",
+  },
+  {
+    id: "collection",
+    icon: Database,
+    label: "Quản lý thu thập",
+    color: "text-green-600",
+    subItems: [
+      {
+        id: "collection-dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard,
+      },
+      {
+        id: "collection-setup",
+        label: "Thiết lập thu thập",
+        icon: Settings,
+      },
+      {
+        id: "collection-external",
+        label: "CSDL Trong ngành",
+        icon: Building2,
+        subItems: [
+          {
+            id: "data-info-civil-registry",
+            label: "CSDL Hộ tịch điện tử",
+            icon: Database,
+          },
+          {
+            id: "data-info-case-management",
+            label: "HT quản lý hồ sơ QT (3)",
+            icon: Database,
+          },
+          {
+            id: "data-info-civil-judgment",
+            label: "CSDL thi hành án dân sự (16)",
+            icon: Database,
+          },
+          {
+            id: "data-info-security-measures",
+            label: "CSDL về biện pháp BD (4)",
+            icon: Database,
+          },
+          {
+            id: "data-info-legal-national",
+            label: "CSDL quốc gia về PL (5)",
+            icon: Database,
+          },
+          {
+            id: "data-info-civil-legal-center",
+            label: "CSDL TT Tư Pháp dân sự (2)",
+            icon: Database,
+          },
+          {
+            id: "data-info-civil-legal-info",
+            label: "HTTT TTTG pháp lý dân sự (6)",
+            icon: Database,
+          },
+          {
+            id: "data-info-legal-center",
+            label: "HTTT TG Pháp lý",
+            icon: Database,
+          },
+          {
+            id: "data-info-family-base",
+            label: "CSDL PB, GĐ và HG cơ sở (16)",
+            icon: Database,
+          },
+          {
+            id: "data-info-auction",
+            label: "CSDL quản lý đấu giá TS (24)",
+            icon: Database,
+          },
+          {
+            id: "data-info-international",
+            label: "CSDL Hợp tác quốc tế (6)",
+            icon: Database,
+          },
+          {
+            id: "collection-statistics",
+            label: "Thu thập số liệu thống kê",
+            icon: BarChart3,
+          },
+        ],
+      },
+
+      {
+        id: "collection-internal",
+        label: "CSDL Ngoài ngành",
+        icon: Building,
+        subItems: [
+          {
+            id: "external-court-judgment",
+            label: "CSDL Thông tin Bản án (1)",
+            icon: Database,
+          },
+          {
+            id: "external-category-group",
+            label: "Danh mục (8)",
+            icon: Database,
+          },
+          {
+            id: "external-social-security",
+            label: "BHXH và Giảm nghèo (7)",
+            icon: Database,
+          },
+          {
+            id: "external-meritorious-group",
+            label: "Người có công (3)",
+            icon: Database,
+          },
+          {
+            id: "external-children-group",
+            label: "Trẻ em (1)",
+            icon: Database,
+          },
+        ],
+      },
+      {
+        id: "collection-reconciliation",
+        label: "Đối soát dữ liệu",
+        icon: GitCompare,
+        subItems: [
+          {
+            id: "reconciliation-external-ministry",
+            label: "Đối soát dữ liệu từ Bộ ngoài ngành",
+            icon: Building,
+            subItems: [
+              {
+                id: "reconciliation-external-categories",
+                label: "Đối soát tổng hợp các danh mục từ Bộ ngành ngoài (qua Trung tâm dữ liệu Quốc gia)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-external-court-judgment",
+                label: "Đối soát tổng hợp dữ liệu về Thông tin Bản án, quyết định",
+                icon: Database,
+              },
+            ],
+          },
+          {
+            id: "reconciliation-internal-ministry",
+            label: "Đối soát dữ liệu từ Bộ trong ngành",
+            icon: Building2,
+            subItems: [
+              {
+                id: "reconciliation-internal-civil-registry",
+                label: "CSDL Hộ tích điện tử",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-registry",
+                label: "HT quản lý hồ sơ QT (3)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-civil-judgment",
+                label: "CSDL thi hành án dân sự (16)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-security-measures",
+                label: "CSDL về biện pháp BD (4)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-legal-national",
+                label: "CSDL quốc gia về PL (5)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-civil-legal-center",
+                label: "CSDL TT Tư Pháp dân sự (2)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-civil-legal-info",
+                label: "HTTT TTTG pháp lý dân sự (6)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-legal-center",
+                label: "HTTT TG Pháp lý",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-family-base",
+                label: "CSDL PB, GĐ và HG cơ sở (16)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-auction",
+                label: "CSDL quản lý đấu giá TS (24)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-international",
+                label: "CSDL Hợp tác quốc tế (6)",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-statistics",
+                label: "Thu thập số liệu thống kê",
+                icon: BarChart3,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "processing",
+    icon: Settings,
+    label: "Xử lý dữ liệu",
+    color: "text-purple-600",
+    subItems: [
+      {
+        id: "processing-rule-setup",
+        label: "Thiết lập quy tắc xử lý dữ liệu",
+        icon: Settings,
+      },
+      {
+        id: "processing-internal-data",
+        label: "CSDL Trong ngành",
+        icon: Building2,
+        subItems: [
+          {
+            id: "processing-data-info-civil-registry",
+            label: "CSDL Hộ tịch điện tử",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-case-management",
+            label: "HT quản lý hồ sơ QT (3)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-civil-judgment",
+            label: "CSDL thi hành án dân sự (16)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-security-measures",
+            label: "CSDL về biện pháp BD (4)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-legal-national",
+            label: "CSDL quốc gia về PL (5)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-civil-legal-center",
+            label: "CSDL TT Tư Pháp dân sự (2)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-civil-legal-info",
+            label: "HTTT TTTG pháp lý dân sự (6)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-legal-center",
+            label: "HTTT TG Pháp lý",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-family-base",
+            label: "CSDL PB, GĐ và HG cơ sở (16)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-auction",
+            label: "CSDL quản lý đấu giá TS (24)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-international",
+            label: "CSDL Hợp tác quốc tế (6)",
+            icon: Database,
+          },
+          {
+            id: "processing-collection-statistics",
+            label: "Thu thập số liệu thống kê",
+            icon: BarChart3,
+          },
+        ],
+      },
+      {
+        id: "processing-external-data",
+        label: "CSDL Ngoài ngành",
+        icon: Building,
+        subItems: [
+          {
+            id: "processing-external-court-judgment",
+            label: "CSDL Thông tin Bản án (1)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-category-group",
+            label: "Danh mục (8)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-social-security",
+            label: "BHXH và Giảm nghèo (7)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-meritorious-group",
+            label: "Người có công (3)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-children-group",
+            label: "Trẻ em (1)",
+            icon: Database,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "category",
+    icon: FolderTree,
+    label: "Quản lý danh mục",
+    color: "text-indigo-600",
+    subItems: [
+      {
+        id: "category-setup",
+        label: "Thiết lập danh mục",
+        icon: Settings,
+      },
+      {
+        id: "category-list",
+        label: "Danh sách danh mục",
+        icon: List,
+        subItems: [
+          {
+            id: "category-a",
+            label: "Danh mục A",
+            icon: FolderOpen,
+          },
+        ],
+      },
+      {
+        id: "category-published-list",
+        label: "Công khai danh mục",
+        icon: FileText,
+      },
+      {
+        id: "category-report",
+        label: "Thống kê danh mục",
+        icon: BarChart3,
+      },
+    ],
+  },
+  {
+    id: "open-data",
+    icon: Globe,
+    label: "Dữ liệu mở",
+    color: "text-emerald-600",
+    subItems: [
+      {
+        id: "open-data-setup",
+        label: "Quản lý danh mục",
+        icon: Settings,
+      },
+      {
+        id: "open-data-category-list",
+        label: "Danh sách danh mục",
+        icon: List,
+        subItems: [
+          {
+            id: "open-data-category-a",
+            label: "Danh mục A",
+            icon: FolderOpen,
+          },
+        ],
+      },
+      {
+        id: "open-data-published-list",
+        label: "Dữ liệu mở công bố",
+        icon: FileText,
+      },
+      {
+        id: "open-data-report",
+        label: "Thống kê dữ liệu mở",
+        icon: BarChart3,
+      },
+    ],
+  },
+  {
+    id: "master-data",
+    icon: HardDrive,
+    label: "Quản lý dữ liệu chủ",
+    color: "text-teal-600",
+    subItems: [
+      {
+        id: "master-data-scale-management",
+        label: "Quản lý quy mô dữ liệu chủ",
+        icon: BarChart3,
+      },
+      {
+        id: "master-data-update",
+        label: "Cập nhật dữ liệu chủ",
+        icon: RefreshCw,
+        subItems: [
+          {
+            id: "master-data-update-a",
+            label: "Dữ liệu chủ A",
+          },
+        ],
+      },
+      {
+        id: "master-data-reports",
+        label: "Báo cáo tìm kiếm dữ liệu chủ",
+        icon: FileSearch,
+      },
+    ],
+  },
+  {
+    id: "orchestration",
+    icon: Network,
+    label: "Điều phối dữ liệu",
+    color: "text-amber-600",
+    subItems: [
+      {
+        id: "orchestration-service-setup",
+        label: "Thiết lập dịch vụ",
+        icon: Settings,
+      },
+      {
+        id: "orchestration-api-management",
+        label: "API cung cấp dữ liệu",
+        icon: Server,
+      },
+      {
+        id: "orchestration-reconciliation-api",
+        label: "API đối soát dữ liệu",
+        icon: GitCompare,
+      },
+      {
+        id: "data-provision",
+        label: "Dịch vụ cung cấp dữ liệu",
+        icon: Package,
+        subItems: [
+          {
+            id: "provision-internal",
+            label: "CSDL Trong ngành",
+            icon: Building2,
+            subItems: [
+              {
+                id: "provision-data-info-civil-registry",
+                label: "CSDL Hộ tịch điện tử",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-case-management",
+                label: "HT quản lý hồ sơ QT (3)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-civil-judgment",
+                label: "CSDL thi hành án dân sự (16)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-security-measures",
+                label: "CSDL về biện pháp BD (4)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-legal-national",
+                label: "CSDL quốc gia về PL (5)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-civil-legal-center",
+                label: "CSDL TT Tư Pháp dân sự (2)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-civil-legal-info",
+                label: "HTTT TTTG pháp lý dân sự (6)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-legal-center",
+                label: "HTTT TG Pháp lý",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-family-base",
+                label: "CSDL PB, GĐ và HG cơ sở (16)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-auction",
+                label: "CSDL quản lý đấu giá TS (24)",
+                icon: Database,
+              },
+              {
+                id: "provision-data-info-international",
+                label: "CSDL Hợp tác quốc tế (6)",
+                icon: Database,
+              },
+              {
+                id: "provision-collection-statistics",
+                label: "Thu thập số liệu thống kê",
+                icon: BarChart3,
+              },
+            ],
+          },
+          {
+            id: "provision-external",
+            label: "CSDL Ngoài ngành",
+            icon: Building,
+            subItems: [
+              {
+                id: "provision-external-court-judgment",
+                label: "CSDL Thông tin Bản án (1)",
+                icon: Database,
+              },
+              {
+                id: "provision-external-category-group",
+                label: "Danh mục (8)",
+                icon: Database,
+              },
+              {
+                id: "provision-external-social-security",
+                label: "BHXH và Giảm nghèo (7)",
+                icon: Database,
+              },
+              {
+                id: "provision-external-meritorious-group",
+                label: "Người có công (3)",
+                icon: Database,
+              },
+              {
+                id: "provision-external-children-group",
+                label: "Trẻ em (1)",
+                icon: Database,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "admin",
+    icon: Shield,
+    label: "Quản trị & vận hành",
+    color: "text-red-600",
+    subItems: [
+      {
+        id: "admin-user-management-group",
+        label: "Quản trị người dùng",
+        icon: Users,
+        isGroup: true,
+        subItems: [
+          {
+            id: "admin-users",
+            label: "Quản lý người dùng",
+            icon: Users,
+          },
+          {
+            id: "admin-groups",
+            label: "Quản lý nhóm người dùng",
+            icon: UsersRound,
+          },
+          {
+            id: "admin-functions",
+            label: "Danh sách chức năng",
+            icon: List,
+          },
+        ],
+      },
+      {
+        id: "admin-config-group",
+        label: "Cấu hình hệ thống",
+        icon: Sliders,
+        isGroup: true,
+        subItems: [
+          {
+            id: "admin-config",
+            label: "Thiết lập cấu hình hệ thống",
+            icon: Sliders,
+          },
+          {
+            id: "admin-password-rules",
+            label: "Thiết lập quy tắc đặt mật khẩu",
+            icon: Key,
+          },
+          {
+            id: "admin-backup",
+            label: "Sao lưu dự phòng",
+            icon: DatabaseBackup,
+          },
+        ],
+      },
+      {
+        id: "admin-logs-group",
+        label: "Quản lý nhật ký",
+        icon: ScrollText,
+        isGroup: true,
+        subItems: [
+          {
+            id: "admin-access-log",
+            label: "Nhật ký truy cập",
+            icon: ScrollText,
+          },
+          {
+            id: "admin-error-log",
+            label: "Nhật ký các lỗi phát sinh",
+            icon: AlertTriangle,
+          },
+          {
+            id: "admin-account-log",
+            label: "Nhật ký quản lý tài khoản",
+            icon: UserCog,
+          },
+          {
+            id: "admin-config-log",
+            label: "Nhật ký thay đổi cấu hình",
+            icon: Settings,
+          },
+        ],
+      },
+      {
+        id: "admin-statistics-group",
+        label: "Thống kê & báo cáo",
+        icon: BarChart3,
+        isGroup: true,
+        subItems: [
+          {
+            id: "admin-statistics",
+            label: "Xem biểu đồ thống kê",
+            icon: BarChart3,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "notifications",
+    icon: Bell,
+    label: "Quản lý thông báo",
+    color: "text-orange-600",
+  },
+  {
+    id: "user-guide",
+    icon: HelpCircle,
+    label: "Hướng dẫn sử dụng",
+    color: "text-violet-600",
+  },
+];
+
+export function Sidebar({
+  currentPage,
+  onNavigate,
+}: SidebarProps) {
+  const [expandedMenus, setExpandedMenus] = useState<
+    Set<string>
+  >(new Set());
+
+  const toggleMenu = (menuId: string) => {
+    const newExpanded = new Set(expandedMenus);
+    if (newExpanded.has(menuId)) {
+      newExpanded.delete(menuId);
+    } else {
+      newExpanded.add(menuId);
+    }
+    setExpandedMenus(newExpanded);
+  };
+
+  return (
+    <aside className="w-72 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-20 relative">
+      {/* Logo */}
+      <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-200">
+        <div className="w-10 h-10 flex items-center justify-center relative rounded overflow-hidden flex-shrink-0">
+          <img
+            src={imgImageLogo}
+            alt="Logo"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          <div className="text-slate-900 text-base leading-5">
+            Kho Dữ liệu dùng chung
+          </div>
+          <div className="text-xs text-slate-500 leading-4">
+            Hệ thống quản lý
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto py-4 px-3">
+        <div className="space-y-1">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentPage === item.id;
+            const isExpanded = expandedMenus.has(item.id);
+            const hasSubItems =
+              item.subItems && item.subItems.length > 0;
+
+            return (
+              <div key={item.id}>
+                <button
+                  onClick={() => {
+                    if (hasSubItems) {
+                      toggleMenu(item.id);
+                    } else {
+                      onNavigate(item.id);
+                    }
+                  }}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+                    isActive
+                      ? "bg-blue-50 text-blue-700 shadow-sm"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  <Icon
+                    className={`w-5 h-5 flex-shrink-0 ${isActive ? item.color : ""}`}
+                  />
+                  <span className="text-sm flex-1 text-left">
+                    {item.label}
+                  </span>
+                  {hasSubItems &&
+                    (isExpanded ? (
+                      <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                    ) : (
+                      <ChevronRight className="w-4 h-4 flex-shrink-0" />
+                    ))}
+                </button>
+
+                {/* Level 2 Sub Items */}
+                {hasSubItems && isExpanded && (
+                  <div className="ml-4 mt-1 space-y-0.5">
+                    {item.subItems.map((subItem) => {
+                      const SubIcon = subItem.icon;
+                      const isSubActive =
+                        currentPage === subItem.id;
+                      const isSubExpanded = expandedMenus.has(
+                        subItem.id,
+                      );
+                      const hasNestedItems =
+                        subItem.subItems &&
+                        subItem.subItems.length > 0;
+
+                      // Check if this is a group header
+                      const isGroupHeader =
+                        subItem.isGroup === true;
+
+                      return (
+                        <div key={subItem.id}>
+                          <button
+                            onClick={() => {
+                              if (hasNestedItems) {
+                                toggleMenu(subItem.id);
+                              } else {
+                                onNavigate(subItem.id);
+                              }
+                            }}
+                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm ${
+                              isGroupHeader
+                                ? "bg-slate-100 text-slate-700 font-medium hover:bg-slate-200"
+                                : isSubActive
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                            }`}
+                          >
+                            <SubIcon className="w-4 h-4 flex-shrink-0" />
+                            <span
+                              className={`text-xs truncate flex-1 text-left ${isGroupHeader ? "font-medium" : ""}`}
+                            >
+                              {subItem.label}
+                            </span>
+                            {hasNestedItems &&
+                              (isSubExpanded ? (
+                                <ChevronDown className="w-3 h-3 flex-shrink-0" />
+                              ) : (
+                                <ChevronRight className="w-3 h-3 flex-shrink-0" />
+                              ))}
+                          </button>
+
+                          {/* Level 3 Nested Sub Items */}
+                          {hasNestedItems && isSubExpanded && (
+                            <div className="ml-4 mt-0.5 space-y-0.5">
+                              {subItem.subItems.map(
+                                (nestedItem) => {
+                                  const NestedIcon =
+                                    nestedItem.icon || Circle;
+                                  const isNestedActive =
+                                    currentPage ===
+                                    nestedItem.id;
+                                  const isNestedExpanded =
+                                    expandedMenus.has(
+                                      nestedItem.id,
+                                    );
+                                  const hasLevel4Items =
+                                    nestedItem.subItems &&
+                                    nestedItem.subItems.length >
+                                      0;
+
+                                  return (
+                                    <div key={nestedItem.id}>
+                                      <button
+                                        onClick={() => {
+                                          if (hasLevel4Items) {
+                                            toggleMenu(
+                                              nestedItem.id,
+                                            );
+                                          } else {
+                                            onNavigate(
+                                              nestedItem.id,
+                                            );
+                                          }
+                                        }}
+                                        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all ${
+                                          isNestedActive
+                                            ? "bg-blue-50 text-blue-700"
+                                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                        }`}
+                                      >
+                                        {NestedIcon && (
+                                          <NestedIcon className="w-3 h-3 flex-shrink-0" />
+                                        )}
+                                        <span className="text-xs truncate flex-1 text-left">
+                                          {nestedItem.label}
+                                        </span>
+                                        {hasLevel4Items &&
+                                          (isNestedExpanded ? (
+                                            <ChevronDown className="w-3 h-3 flex-shrink-0" />
+                                          ) : (
+                                            <ChevronRight className="w-3 h-3 flex-shrink-0" />
+                                          ))}
+                                      </button>
+
+                                      {/* Level 4 Items */}
+                                      {hasLevel4Items &&
+                                        isNestedExpanded && (
+                                          <div className="ml-4 mt-0.5 space-y-0.5">
+                                            {nestedItem.subItems.map(
+                                              (level4Item) => {
+                                                const Level4Icon =
+                                                  level4Item.icon;
+                                                const isLevel4Active =
+                                                  currentPage ===
+                                                  level4Item.id;
+
+                                                return (
+                                                  <button
+                                                    key={
+                                                      level4Item.id
+                                                    }
+                                                    onClick={() =>
+                                                      onNavigate(
+                                                        level4Item.id,
+                                                      )
+                                                    }
+                                                    className={`w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all ${
+                                                      isLevel4Active
+                                                        ? "bg-blue-50 text-blue-700"
+                                                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                                    }`}
+                                                  >
+                                                    <Level4Icon className="w-3 h-3 flex-shrink-0" />
+                                                    <span className="text-xs truncate">
+                                                      {
+                                                        level4Item.label
+                                                      }
+                                                    </span>
+                                                  </button>
+                                                );
+                                              },
+                                            )}
+                                          </div>
+                                        )}
+                                    </div>
+                                  );
+                                },
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-slate-200">
+        <div className="bg-slate-50 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <FileText className="w-4 h-4 text-slate-600" />
+            <span className="text-xs text-slate-600">
+              Phiên bản
+            </span>
+          </div>
+          <div className="text-sm text-slate-900">v2.1.0</div>
+        </div>
+      </div>
+    </aside>
+  );
+}

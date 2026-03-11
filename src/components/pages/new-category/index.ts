@@ -1,0 +1,1 @@
+export { NewCategorySetupPage } from './NewCategorySetupPage';

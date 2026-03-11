@@ -1,0 +1,51 @@
+Hiển thị màn danh sách		
+	Họ tên Chồng	Chuỗi ký tự
+	Ngày, tháng, năm sinh Chồng	Chuỗi ký tự
+	Họ tên Vợ	Chuỗi ký tự
+	Ngày, tháng, năm sinh Vợ	Chuỗi ký tự
+	Họ, chữ đệm, tên vợ	Chuỗi ký tự
+	Ngày, tháng, năm sinh	Chuỗi ký tự
+	Ngày xác lập quan hệ hôn	Chuỗi ký tự
+"Màn chi tiết		"		
+Bộ dữ liệu hồ sơ đăng ký kết hôn		
+	Tệp đính kèm	File
+	Mã hồ sơ	Chuỗi ký tự
+	Số đăng ký	Chuỗi ký tự
+	Số quyển	Chuỗi ký tự
+	Trang số	Chuỗi ký tự
+Thông tin bên chồng		
+	Họ, chữ đệm, tên chồng	Chuỗi ký tự
+	Ngày, tháng, năm sinh	Chuỗi ký tự
+	Dân tộc	Danh mục dùng chung
+	Quốc tịch	Danh mục dùng chung
+	Nơi cư trú	Chuỗi ký tự
+	Ngày cấp giấy tờ tùy thân	Ngày, tháng, năm
+	Nơi cấp giấy tờ tùy thân	Chuỗi ký tự
+	Số giấy tờ tùy thân	Chuỗi ký tự
+	Số định danh cá nhân	Số
+	Số lần kết hôn	Số
+Thông tin bên vợ		
+	Họ, chữ đệm, tên vợ	Chuỗi ký tự
+	Ngày, tháng, năm sinh	Chuỗi ký tự
+	Dân tộc	Danh mục dùng chung
+	Quốc tịch	Danh mục dùng chung
+	Nơi cư trú	Chuỗi ký tự
+	Ngày cấp giấy tờ tùy thân	Ngày, tháng, năm
+	Nơi cấp giấy tờ tùy thân	Chuỗi ký tự
+	Số giấy tờ tùy thân	Chuỗi ký tự
+	Số định danh cá nhân	Số
+	Số lần kết hôn	Số
+Thông tin khác		
+	Nơi đăng ký	Danh mục dùng chung
+	Ngày đăng ký	Ngày, tháng, năm
+	Loại đăng ký	Chuỗi ký tự
+	Số giấy chứng nhận kết hôn do cơ quan nước ngoài cấp	Chuỗi ký tự
+	Ngày cấp giấy chứng nhận kết hôn do cơ quan nước ngoài cấp	Ngày, tháng, năm
+	Tên cơ quan nước ngoài cấp giấy chứng nhận kết hôn	Chuỗi ký tự
+	Quốc gia đã cấp giấy chứng nhận kết hôn	Chuỗi ký tự
+	Ngày xác lập quan hệ hôn	Chuỗi ký tự
+	Tình trạng hôn nhân	Chuỗi ký tự
+	Người ký	Chuỗi ký tự
+	Chức vụ người ký	Chuỗi ký tự
+	Người thực hiện	Chuỗi ký tự
+	Ghi chú/ghi những nội dung thay đổi sau này	Chuỗi ký tự

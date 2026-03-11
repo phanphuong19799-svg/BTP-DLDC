@@ -1,0 +1,11 @@
+export { MasterDataListPage } from './MasterDataListPage';
+export { MasterDataAPage } from './MasterDataAPage';
+export { MasterDataBPage } from './MasterDataBPage';
+export { MasterDataCPage } from './MasterDataCPage';
+export { MasterDataDPage } from './MasterDataDPage';
+export { MasterDataEPage } from './MasterDataEPage';
+export { MasterDataFPage } from './MasterDataFPage';
+export { MasterDataGPage } from './MasterDataGPage';
+export { MasterDataHPage } from './MasterDataHPage';
+export { MasterDataIPage } from './MasterDataIPage';
+export { MasterDataJPage } from './MasterDataJPage';

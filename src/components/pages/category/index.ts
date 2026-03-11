@@ -1,0 +1,15 @@
+export { CategorySetupPage } from './CategorySetupPage';
+export { CategoryApprovalPage } from './CategoryApprovalPage';
+export { CategoryPublishPage } from './CategoryPublishPage';
+export { CategoryReportPage } from './CategoryReportPage';
+export { CategoryStatisticsPage } from './CategoryStatisticsPage';
+export { CategoryAPage } from './CategoryAPage';
+export { CategoryBPage } from './CategoryBPage';
+export { CategoryCPage } from './CategoryCPage';
+export { CategoryDPage } from './CategoryDPage';
+export { CategoryEPage } from './CategoryEPage';
+export { CategoryFPage } from './CategoryFPage';
+export { CategoryGPage } from './CategoryGPage';
+export { CategoryHPage } from './CategoryHPage';
+export { CategoryIPage } from './CategoryIPage';
+export { CategoryJPage } from './CategoryJPage';

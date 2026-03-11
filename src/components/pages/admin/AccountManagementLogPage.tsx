@@ -1,0 +1,664 @@
+import { useState } from 'react';
+import { 
+  UserCog, 
+  Search, 
+  Download, 
+  Calendar, 
+  Filter, 
+  Eye, 
+  X,
+  Clock,
+  User,
+  UserPlus,
+  UserX,
+  UserCheck,
+  Lock,
+  Unlock,
+  Key,
+  Shield,
+  Edit,
+  Trash2,
+  CheckCircle2,
+  XCircle
+} from 'lucide-react';
+import { StatsCard } from '../../common/StatsCard';
+
+interface AccountLog {
+  id: number;
+  timestamp: string;
+  action: 'create' | 'update' | 'delete' | 'lock' | 'unlock' | 'password_change' | 'password_reset' | 'role_change';
+  targetUser: string;
+  targetUserId: string;
+  performedBy: string;
+  performedById: string;
+  ip: string;
+  status: 'success' | 'failed';
+  details: string;
+  oldValue?: string;
+  newValue?: string;
+  reason?: string;
+}
+
+const accountLogs: AccountLog[] = [
+  {
+    id: 1,
+    timestamp: '22/12/2024 15:30:25',
+    action: 'create',
+    targetUser: 'Nguyễn Thị Mai',
+    targetUserId: 'nguyenthimai',
+    performedBy: 'Admin Hệ thống',
+    performedById: 'admin',
+    ip: '192.168.1.100',
+    status: 'success',
+    details: 'Tạo tài khoản mới với vai trò "Cán bộ xử lý dữ liệu"',
+    newValue: 'Role: Cán bộ xử lý dữ liệu, Email: ntmai@moj.gov.vn'
+  },
+  {
+    id: 2,
+    timestamp: '22/12/2024 15:15:42',
+    action: 'lock',
+    targetUser: 'Trần Văn Hùng',
+    targetUserId: 'tranvanhung',
+    performedBy: 'Nguyễn Văn An',
+    performedById: 'nguyenvanan',
+    ip: '192.168.1.105',
+    status: 'success',
+    details: 'Khóa tài khoản do vi phạm chính sách bảo mật',
+    reason: 'Đăng nhập sai mật khẩu quá 5 lần liên tiếp',
+    oldValue: 'Status: Active',
+    newValue: 'Status: Locked'
+  },
+  {
+    id: 3,
+    timestamp: '22/12/2024 15:00:18',
+    action: 'password_reset',
+    targetUser: 'Lê Thị Bình',
+    targetUserId: 'lethibinh',
+    performedBy: 'Admin Hệ thống',
+    performedById: 'admin',
+    ip: '192.168.1.100',
+    status: 'success',
+    details: 'Đặt lại mật khẩu theo yêu cầu của người dùng',
+    reason: 'Người dùng quên mật khẩu'
+  },
+  {
+    id: 4,
+    timestamp: '22/12/2024 14:45:55',
+    action: 'role_change',
+    targetUser: 'Phạm Văn Cường',
+    targetUserId: 'phamvancuong',
+    performedBy: 'Nguyễn Văn An',
+    performedById: 'nguyenvanan',
+    ip: '192.168.1.105',
+    status: 'success',
+    details: 'Thay đổi vai trò từ "Cán bộ" sang "Quản trị viên"',
+    oldValue: 'Role: Cán bộ',
+    newValue: 'Role: Quản trị viên'
+  },
+  {
+    id: 5,
+    timestamp: '22/12/2024 14:30:33',
+    action: 'update',
+    targetUser: 'Hoàng Thị Lan',
+    targetUserId: 'hoangthilan',
+    performedBy: 'Hoàng Thị Lan',
+    performedById: 'hoangthilan',
+    ip: '192.168.1.120',
+    status: 'success',
+    details: 'Cập nhật thông tin cá nhân (email, số điện thoại)',
+    oldValue: 'Email: htlan@old.gov.vn, Phone: 0123456789',
+    newValue: 'Email: htlan@moj.gov.vn, Phone: 0987654321'
+  },
+  {
+    id: 6,
+    timestamp: '22/12/2024 14:15:20',
+    action: 'unlock',
+    targetUser: 'Đặng Văn Nam',
+    targetUserId: 'dangvannam',
+    performedBy: 'Admin Hệ thống',
+    performedById: 'admin',
+    ip: '192.168.1.100',
+    status: 'success',
+    details: 'Mở khóa tài khoản sau khi xác minh danh tính',
+    reason: 'Đã xác minh danh tính qua điện thoại',
+    oldValue: 'Status: Locked',
+    newValue: 'Status: Active'
+  },
+  {
+    id: 7,
+    timestamp: '22/12/2024 14:00:45',
+    action: 'password_change',
+    targetUser: 'Vũ Thị Hoa',
+    targetUserId: 'vuthihoa',
+    performedBy: 'Vũ Thị Hoa',
+    performedById: 'vuthihoa',
+    ip: '192.168.1.115',
+    status: 'success',
+    details: 'Người dùng đổi mật khẩu thành công',
+    reason: 'Đổi mật khẩu định kỳ'
+  },
+  {
+    id: 8,
+    timestamp: '22/12/2024 13:45:12',
+    action: 'delete',
+    targetUser: 'Nguyễn Văn Tuấn',
+    targetUserId: 'nguyenvantuan',
+    performedBy: 'Admin Hệ thống',
+    performedById: 'admin',
+    ip: '192.168.1.100',
+    status: 'success',
+    details: 'Xóa tài khoản người dùng đã nghỉ việc',
+    reason: 'Nhân viên đã nghỉ việc từ ngày 01/12/2024',
+    oldValue: 'User: nguyenvantuan, Role: Cán bộ'
+  },
+  {
+    id: 9,
+    timestamp: '22/12/2024 13:30:28',
+    action: 'create',
+    targetUser: 'Trần Thị Thu',
+    targetUserId: 'tranthithu',
+    performedBy: 'Nguyễn Văn An',
+    performedById: 'nguyenvanan',
+    ip: '192.168.1.105',
+    status: 'failed',
+    details: 'Tạo tài khoản thất bại: Username đã tồn tại',
+    newValue: 'Username: tranthithu'
+  },
+  {
+    id: 10,
+    timestamp: '22/12/2024 13:15:55',
+    action: 'role_change',
+    targetUser: 'Lê Văn Đức',
+    targetUserId: 'levanduc',
+    performedBy: 'Admin Hệ thống',
+    performedById: 'admin',
+    ip: '192.168.1.100',
+    status: 'success',
+    details: 'Phân quyền bổ sung chức năng "Quản lý danh mục"',
+    oldValue: 'Permissions: [Xem dữ liệu, Xử lý dữ liệu]',
+    newValue: 'Permissions: [Xem dữ liệu, Xử lý dữ liệu, Quản lý danh mục]'
+  },
+  {
+    id: 11,
+    timestamp: '22/12/2024 13:00:40',
+    action: 'update',
+    targetUser: 'Phạm Thị Hương',
+    targetUserId: 'phamthihuong',
+    performedBy: 'Admin Hệ thống',
+    performedById: 'admin',
+    ip: '192.168.1.100',
+    status: 'success',
+    details: 'Cập nhật thông tin đơn vị công tác',
+    oldValue: 'Department: Phòng Kế hoạch',
+    newValue: 'Department: Phòng Công nghệ thông tin'
+  },
+  {
+    id: 12,
+    timestamp: '22/12/2024 12:45:15',
+    action: 'lock',
+    targetUser: 'Nguyễn Văn Minh',
+    targetUserId: 'nguyenvanminh',
+    performedBy: 'Nguyễn Văn An',
+    performedById: 'nguyenvanan',
+    ip: '192.168.1.105',
+    status: 'failed',
+    details: 'Khóa tài khoản thất bại: Không đủ quyền hạn',
+    reason: 'Người thực hiện không có quyền khóa tài khoản quản trị viên'
+  }
+];
+
+export function AccountManagementLogPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterAction, setFilterAction] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [selectedLog, setSelectedLog] = useState<AccountLog | null>(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+
+  const filteredLogs = accountLogs.filter(log => {
+    const matchesSearch = log.targetUser.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         log.targetUserId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         log.performedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         log.details.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesAction = filterAction === 'all' || log.action === filterAction;
+    const matchesStatus = filterStatus === 'all' || log.status === filterStatus;
+    return matchesSearch && matchesAction && matchesStatus;
+  });
+
+  const handleViewDetail = (log: AccountLog) => {
+    setSelectedLog(log);
+    setShowDetailModal(true);
+  };
+
+  const closeDetailModal = () => {
+    setShowDetailModal(false);
+    setSelectedLog(null);
+  };
+
+  const handleExportExcel = () => {
+    alert('Đang xuất file Excel...');
+    // Logic export Excel
+  };
+
+  const getActionIcon = (action: AccountLog['action']) => {
+    switch (action) {
+      case 'create':
+        return <UserPlus className="w-4 h-4" />;
+      case 'update':
+        return <Edit className="w-4 h-4" />;
+      case 'delete':
+        return <Trash2 className="w-4 h-4" />;
+      case 'lock':
+        return <Lock className="w-4 h-4" />;
+      case 'unlock':
+        return <Unlock className="w-4 h-4" />;
+      case 'password_change':
+        return <Key className="w-4 h-4" />;
+      case 'password_reset':
+        return <Key className="w-4 h-4" />;
+      case 'role_change':
+        return <Shield className="w-4 h-4" />;
+    }
+  };
+
+  const getActionColor = (action: AccountLog['action']) => {
+    switch (action) {
+      case 'create':
+        return 'bg-green-100 text-green-700 border-green-200';
+      case 'update':
+        return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'delete':
+        return 'bg-red-100 text-red-700 border-red-200';
+      case 'lock':
+        return 'bg-orange-100 text-orange-700 border-orange-200';
+      case 'unlock':
+        return 'bg-teal-100 text-teal-700 border-teal-200';
+      case 'password_change':
+        return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'password_reset':
+        return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'role_change':
+        return 'bg-cyan-100 text-cyan-700 border-cyan-200';
+    }
+  };
+
+  const getActionLabel = (action: AccountLog['action']) => {
+    switch (action) {
+      case 'create':
+        return 'Tạo tài khoản';
+      case 'update':
+        return 'Cập nhật';
+      case 'delete':
+        return 'Xóa tài khoản';
+      case 'lock':
+        return 'Khóa tài khoản';
+      case 'unlock':
+        return 'Mở khóa';
+      case 'password_change':
+        return 'Đổi mật khẩu';
+      case 'password_reset':
+        return 'Đặt lại mật khẩu';
+      case 'role_change':
+        return 'Thay đổi quyền';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <StatsCard 
+          icon={UserPlus} 
+          iconColor="green" 
+          title="Tài khoản mới (30 ngày)" 
+          value={accountLogs.filter(l => l.action === 'create' && l.status === 'success').length.toString()} 
+        />
+        <StatsCard 
+          icon={Lock} 
+          iconColor="orange" 
+          title="Tài khoản bị khóa" 
+          value={accountLogs.filter(l => l.action === 'lock' && l.status === 'success').length.toString()} 
+        />
+        <StatsCard 
+          icon={Shield} 
+          iconColor="blue" 
+          title="Thay đổi quyền" 
+          value={accountLogs.filter(l => l.action === 'role_change').length.toString()} 
+        />
+        <StatsCard 
+          icon={XCircle} 
+          iconColor="red" 
+          title="Thao tác thất bại" 
+          value={accountLogs.filter(l => l.status === 'failed').length.toString()} 
+        />
+      </div>
+
+      {/* Filters */}
+      <div className="bg-white rounded-lg border border-slate-200 p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="lg:col-span-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Tìm kiếm tài khoản, người thực hiện..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+          <div>
+            <select
+              value={filterAction}
+              onChange={(e) => setFilterAction(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">Tất cả thao tác</option>
+              <option value="create">Tạo tài khoản</option>
+              <option value="update">Cập nhật</option>
+              <option value="delete">Xóa tài khoản</option>
+              <option value="lock">Khóa tài khoản</option>
+              <option value="unlock">Mở khóa</option>
+              <option value="password_change">Đổi mật khẩu</option>
+              <option value="password_reset">Đặt lại mật khẩu</option>
+              <option value="role_change">Thay đổi quyền</option>
+            </select>
+          </div>
+          <div>
+            <div className="flex items-center gap-2 border border-slate-300 rounded-lg px-3 py-2">
+              <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0" />
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="flex-1 outline-none text-sm"
+                placeholder="Từ ngày"
+              />
+              <span className="text-slate-400">-</span>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="flex-1 outline-none text-sm"
+                placeholder="Đến ngày"
+              />
+            </div>
+          </div>
+          <div>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">Tất cả trạng thái</option>
+              <option value="success">Thành công</option>
+              <option value="failed">Thất bại</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex gap-3 mt-4">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm flex items-center gap-2">
+            <Filter className="w-4 h-4" />
+            Lọc
+          </button>
+          <button 
+            onClick={handleExportExcel}
+            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 text-sm flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            Xuất Excel
+          </button>
+        </div>
+      </div>
+
+      {/* Account Logs Table */}
+      <div className="bg-white rounded-lg border border-slate-200">
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <h3 className="text-slate-900">Nhật ký quản lý tài khoản ({filteredLogs.length} bản ghi)</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Người thực hiện</th>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Thời gian</th>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Tác vụ</th>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Tài khoản</th>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Chi tiết</th>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">IP người thực hiện</th>
+                <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Trạng thái</th>
+                <th className="px-6 py-3 text-right text-xs text-slate-600 uppercase tracking-wider">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredLogs.map((log) => (
+                <tr key={log.id} className="hover:bg-slate-50">
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-slate-900">{log.performedBy}</div>
+                    <div className="text-xs text-slate-500">@{log.performedById}</div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">{log.timestamp}</td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border ${getActionColor(log.action)}`}>
+                      {getActionIcon(log.action)}
+                      {getActionLabel(log.action)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-slate-900">{log.targetUser}</div>
+                    <div className="text-xs text-slate-500">@{log.targetUserId}</div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-slate-700 max-w-md truncate">
+                    {log.details}
+                  </td>
+                  <td className="px-6 py-4">
+                    <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
+                      {log.ip}
+                    </code>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs ${
+                      log.status === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    }`}>
+                      {log.status === 'success' ? (
+                        <CheckCircle2 className="w-3 h-3" />
+                      ) : (
+                        <XCircle className="w-3 h-3" />
+                      )}
+                      {log.status === 'success' ? 'Thành công' : 'Thất bại'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-end">
+                      <button
+                        onClick={() => handleViewDetail(log)}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Xem chi tiết"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        
+        {/* Pagination */}
+        <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+          <div className="text-sm text-slate-600">
+            Hiển thị 1-{filteredLogs.length} trong tổng số 2,548 bản ghi
+          </div>
+          <div className="flex gap-2">
+            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">Trước</button>
+            <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">2</button>
+            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">3</button>
+            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">Sau</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Detail Modal */}
+      {showDetailModal && selectedLog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center border ${getActionColor(selectedLog.action)}`}>
+                  {getActionIcon(selectedLog.action)}
+                </div>
+                <div>
+                  <h3 className="text-slate-900">Chi tiết nhật ký</h3>
+                  <p className="text-sm text-slate-600 mt-0.5">{getActionLabel(selectedLog.action)}</p>
+                </div>
+              </div>
+              <button
+                onClick={closeDetailModal}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Log Info */}
+            <div className="p-6 space-y-6">
+              {/* Basic Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-slate-50 rounded-lg p-4">
+                  <div className="flex items-center gap-2 text-slate-600 mb-2">
+                    <Clock className="w-4 h-4" />
+                    <span className="text-xs">Thời gian</span>
+                  </div>
+                  <div className="text-sm text-slate-900">{selectedLog.timestamp}</div>
+                </div>
+
+                <div className="bg-slate-50 rounded-lg p-4">
+                  <div className="flex items-center gap-2 text-slate-600 mb-2">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span className="text-xs">Trạng thái</span>
+                  </div>
+                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs ${
+                    selectedLog.status === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                  }`}>
+                    {selectedLog.status === 'success' ? (
+                      <CheckCircle2 className="w-3 h-3" />
+                    ) : (
+                      <XCircle className="w-3 h-3" />
+                    )}
+                    {selectedLog.status === 'success' ? 'Thành công' : 'Thất bại'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Target User */}
+              <div className="border border-slate-200 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <User className="w-4 h-4 text-blue-600" />
+                  <h4 className="text-sm text-slate-900">Tài khoản đích</h4>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <div className="text-xs text-slate-500 mb-1">Họ tên</div>
+                    <div className="text-sm text-slate-900">{selectedLog.targetUser}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-500 mb-1">Username</div>
+                    <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
+                      {selectedLog.targetUserId}
+                    </code>
+                  </div>
+                </div>
+              </div>
+
+              {/* Performed By */}
+              <div className="border border-slate-200 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <UserCheck className="w-4 h-4 text-green-600" />
+                  <h4 className="text-sm text-slate-900">Người thực hiện</h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <div className="text-xs text-slate-500 mb-1">Họ tên</div>
+                    <div className="text-sm text-slate-900">{selectedLog.performedBy}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-500 mb-1">Username</div>
+                    <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
+                      {selectedLog.performedById}
+                    </code>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-500 mb-1">IP Address</div>
+                    <code className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
+                      {selectedLog.ip}
+                    </code>
+                  </div>
+                </div>
+              </div>
+
+              {/* Details */}
+              <div className="border border-slate-200 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <UserCog className="w-4 h-4 text-purple-600" />
+                  <h4 className="text-sm text-slate-900">Chi tiết thay đổi</h4>
+                </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-3">
+                  <p className="text-sm text-slate-900">{selectedLog.details}</p>
+                </div>
+                
+                {selectedLog.reason && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-3">
+                    <div className="text-xs text-amber-700 mb-1">Lý do</div>
+                    <p className="text-sm text-amber-900">{selectedLog.reason}</p>
+                  </div>
+                )}
+
+                {(selectedLog.oldValue || selectedLog.newValue) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {selectedLog.oldValue && (
+                      <div>
+                        <div className="text-xs text-slate-500 mb-2">Giá trị cũ</div>
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                          <code className="text-xs text-red-800 whitespace-pre-wrap break-all">
+                            {selectedLog.oldValue}
+                          </code>
+                        </div>
+                      </div>
+                    )}
+                    {selectedLog.newValue && (
+                      <div>
+                        <div className="text-xs text-slate-500 mb-2">Giá trị mới</div>
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                          <code className="text-xs text-green-800 whitespace-pre-wrap break-all">
+                            {selectedLog.newValue}
+                          </code>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-slate-200">
+              <div className="flex justify-end">
+                <button
+                  onClick={closeDetailModal}
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

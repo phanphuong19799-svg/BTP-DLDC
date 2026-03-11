@@ -1,0 +1,300 @@
+{/* Add API Modal - New Design */}
+{showAddModal && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+      <div className="flex items-center justify-between p-6 border-b border-slate-200">
+        <h2 className="text-slate-900">Thêm mới API</h2>
+        <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600">
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+      
+      <div className="p-6 space-y-6">
+        {/* Thông tin chung */}
+        <div>
+          <label className="block text-sm text-slate-700 mb-2">Tên API <span className="text-red-500">*</span></label>
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Vd: API Danh mục quốc tịch"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm text-slate-700 mb-2">Mô tả</label>
+          <textarea
+            value={formData.description}
+            onChange={(e) => setFormData({...formData, description: e.target.value})}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={3}
+            placeholder="Mô tả và mô tả về API này..."
+          />
+        </div>
+
+        {/* Cấu hình Endpoint */}
+        <div className="space-y-4">
+          <h3 className="text-sm text-slate-900">Cấu hình Endpoint</h3>
+          
+          <div>
+            <label className="block text-sm text-slate-700 mb-2">Base URL <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              value={formData.baseUrl}
+              onChange={(e) => setFormData({...formData, baseUrl: e.target.value})}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="https://api.example.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-slate-700 mb-2">Endpoint <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              value={formData.endpoint}
+              onChange={(e) => setFormData({...formData, endpoint: e.target.value})}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="/v1/endpoint"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-slate-700 mb-2">HTTP Method <span className="text-red-500">*</span></label>
+              <select
+                value={formData.httpMethod}
+                onChange={(e) => setFormData({...formData, httpMethod: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+                <option value="PATCH">PATCH</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm text-slate-700 mb-2">Content Type <span className="text-red-500">*</span></label>
+              <select
+                value={formData.contentType}
+                onChange={(e) => setFormData({...formData, contentType: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="JSON">JSON</option>
+                <option value="XML">XML</option>
+                <option value="FORM_DATA">Form Data</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Xác thực */}
+        <div className="space-y-4">
+          <h3 className="text-sm text-slate-900">Xác thực</h3>
+          
+          <div>
+            <label className="block text-sm text-slate-700 mb-2">Loại xác thực</label>
+            <select
+              value={formData.authType}
+              onChange={(e) => setFormData({...formData, authType: e.target.value})}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="API Key">API Key</option>
+              <option value="Bearer Token">Bearer Token</option>
+              <option value="Basic Auth">Basic Auth</option>
+              <option value="OAuth 2.0">OAuth 2.0</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm text-slate-700 mb-2">API Key</label>
+            <input
+              type="password"
+              value={formData.apiKey}
+              onChange={(e) => setFormData({...formData, apiKey: e.target.value})}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="••••••••••••"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-slate-700 mb-2">Header Name</label>
+            <input
+              type="text"
+              value={formData.headerName}
+              onChange={(e) => setFormData({...formData, headerName: e.target.value})}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="x-api-key"
+            />
+          </div>
+        </div>
+
+        {/* Headers bổ sung */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm text-slate-900">Headers bổ sung</h3>
+            <button
+              onClick={() => setHeaders([...headers, { key: '', value: '' }])}
+              className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1"
+            >
+              <Plus className="w-3 h-3" />
+              Add Header
+            </button>
+          </div>
+          {headers.length > 0 && (
+            <div className="space-y-2">
+              {headers.map((header, index) => (
+                <div key={index} className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    value={header.key}
+                    onChange={(e) => {
+                      const newHeaders = [...headers];
+                      newHeaders[index].key = e.target.value;
+                      setHeaders(newHeaders);
+                    }}
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Key"
+                  />
+                  <input
+                    type="text"
+                    value={header.value}
+                    onChange={(e) => {
+                      const newHeaders = [...headers];
+                      newHeaders[index].value = e.target.value;
+                      setHeaders(newHeaders);
+                    }}
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Value"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {headers.length === 0 && (
+            <p className="text-xs text-slate-500 text-center py-2">Chưa có header bổ sung nào</p>
+          )}
+        </div>
+
+        {/* Query Params */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm text-slate-900">Query Params</h3>
+            <button
+              onClick={() => setQueryParams([...queryParams, { key: '', value: '' }])}
+              className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1"
+            >
+              <Plus className="w-3 h-3" />
+              Add Query Param
+            </button>
+          </div>
+          {queryParams.length > 0 && (
+            <div className="space-y-2">
+              {queryParams.map((param, index) => (
+                <div key={index} className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    value={param.key}
+                    onChange={(e) => {
+                      const newParams = [...queryParams];
+                      newParams[index].key = e.target.value;
+                      setQueryParams(newParams);
+                    }}
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Key"
+                  />
+                  <input
+                    type="text"
+                    value={param.value}
+                    onChange={(e) => {
+                      const newParams = [...queryParams];
+                      newParams[index].value = e.target.value;
+                      setQueryParams(newParams);
+                    }}
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Value"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {queryParams.length === 0 && (
+            <p className="text-xs text-slate-500 text-center py-2">Chưa có query param nào</p>
+          )}
+        </div>
+
+        {/* Cấu hình đơn vị LSGP */}
+        <div className="space-y-4">
+          <h3 className="text-sm text-slate-900">Cấu hình đơn vị LSGP (Liên sở giữa phòng)</h3>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-slate-700 mb-2">Mã đơn vị</label>
+              <input
+                type="text"
+                value={formData.unitCode}
+                onChange={(e) => setFormData({...formData, unitCode: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="VD: BTP"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-slate-700 mb-2">Mã hệ thống</label>
+              <input
+                type="text"
+                value={formData.systemCode}
+                onChange={(e) => setFormData({...formData, systemCode: e.target.value})}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="VD: DLDC"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="is-active"
+              checked={formData.isActive}
+              onChange={(e) => setFormData({...formData, isActive: e.target.checked})}
+              className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
+            />
+            <label htmlFor="is-active" className="text-sm text-slate-700">Kích hoạt kết nối</label>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between p-6 border-t border-slate-200">
+        <button
+          onClick={() => {
+            // Test API function
+            console.log('Test API');
+          }}
+          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2"
+        >
+          <Server className="w-4 h-4" />
+          Test mới API
+        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowAddModal(false)}
+            className="px-4 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
+          >
+            Hủy
+          </button>
+          <button
+            onClick={() => {
+              // Handle save logic here
+              setShowAddModal(false);
+            }}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
+            <Save className="w-4 h-4" />
+            Lưu
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}

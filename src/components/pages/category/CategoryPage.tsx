@@ -1,0 +1,2419 @@
+import { useState } from 'react';
+import { 
+  Settings, 
+  CheckCircle2, 
+  Globe, 
+  FileText, 
+  TrendingUp,
+  Plus,
+  Search,
+  Filter,
+  Eye,
+  Edit2,
+  Trash2,
+  X,
+  Save,
+  Database,
+  List,
+  Tag,
+  Columns,
+  Clock,
+  XCircle,
+  Check,
+  AlertCircle,
+  Share2,
+  Download,
+  FileDown,
+  BarChart3,
+  Activity,
+  TrendingDown,
+  ArrowUpRight,
+  ArrowDownRight,
+  Send,
+  Upload
+} from 'lucide-react';
+
+interface CategoryPageProps {
+  categoryName: string;
+  categoryId: string;
+}
+
+interface Category {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  type: 'standard' | 'reference' | 'system';
+  status: 'active' | 'inactive';
+  createdDate: string;
+  fields: CategoryField[];
+}
+
+interface CategoryField {
+  id: string;
+  name: string;
+  dataType: string;
+  required: boolean;
+  defaultValue?: string;
+  maxLength?: number;
+  description?: string;
+  isPrimaryKey?: boolean;
+  isForeignKey?: boolean;
+  referenceTable?: string;
+  referenceField?: string;
+}
+
+export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
+  const [activeTab, setActiveTab] = useState<'setup' | 'approval' | 'stats' | 'version-history'>('setup');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddFieldModal, setShowAddFieldModal] = useState(false);
+  const [showFieldFormModal, setShowFieldFormModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [showApprovalDetailModal, setShowApprovalDetailModal] = useState(false);
+  const [selectedApprovalRequest, setSelectedApprovalRequest] = useState<any>(null);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importPreviewData, setImportPreviewData] = useState<any[]>([]);
+  const [importErrors, setImportErrors] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [newCategoryFields, setNewCategoryFields] = useState<CategoryField[]>([]);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [successNotificationMessage, setSuccessNotificationMessage] = useState('');
+  const [editedCategoryData, setEditedCategoryData] = useState({
+    code: '',
+    name: '',
+    type: 'standard' as 'standard' | 'reference' | 'system',
+    status: 'active' as 'active' | 'inactive',
+    description: '',
+    approver: ''
+  });
+  const [editingFieldIndex, setEditingFieldIndex] = useState<number | null>(null);
+  const [newFieldData, setNewFieldData] = useState({
+    name: '',
+    dataType: 'TEXT',
+    required: false,
+    defaultValue: '',
+    maxLength: 255,
+    description: '',
+    isPrimaryKey: false,
+    isForeignKey: false,
+    referenceTable: '',
+    referenceField: ''
+  });
+  
+  // Validation errors
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+  
+  // Approval filters
+  const [approvalStatusFilter, setApprovalStatusFilter] = useState('all');
+  const [approvalRequestFilter, setApprovalRequestFilter] = useState('all');
+  
+  // Bulk approval states
+  const [selectedApprovalIds, setSelectedApprovalIds] = useState<number[]>([]);
+  const [showApprovalModal, setShowApprovalModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [approvalComment, setApprovalComment] = useState('');
+  const [pendingApprovalIds, setPendingApprovalIds] = useState<number[]>([]);
+
+  // Mock approvers list
+  const approvers = [
+    { id: 'approver1', name: 'Hoàng Văn E', role: 'Trưởng phòng Công nghệ thông tin' },
+    { id: 'approver2', name: 'Nguyễn Thị F', role: 'Phó phòng CNTT' },
+    { id: 'approver3', name: 'Trần Văn G', role: 'Trưởng phòng Pháp chế' },
+    { id: 'approver4', name: 'Lê Thị H', role: 'Giám đốc Sở Tư pháp' },
+    { id: 'approver5', name: 'Phạm Văn I', role: 'Chuyên viên cao cấp' }
+  ];
+
+  // Mock approval data - Value change requests
+  const approvalRequests = [
+    {
+      id: 1,
+      recordCode: 'REC001',
+      recordName: 'Hà Nội',
+      changedFields: ['Tên đầy đủ', 'Mã bưu chính'],
+      changes: {
+        'Tên đầy đủ': { old: 'Thành phố Hà Nội', new: 'Thủ đô Hà Nội' },
+        'Mã bưu chính': { old: '100000', new: '100001' }
+      },
+      changedBy: 'Nguyễn Văn A',
+      changedDate: '15/01/2026 14:30',
+      approvedDate: null,
+      approvedBy: null,
+      status: 'pending'
+    },
+    {
+      id: 2,
+      recordCode: 'REC002',
+      recordName: 'TP. Hồ Chí Minh',
+      changedFields: ['Dân số', 'Diện tích'],
+      changes: {
+        'Dân số': { old: '8.993.082', new: '9.123.456' },
+        'Diện tích': { old: '2.061,4 km²', new: '2.095,5 km²' }
+      },
+      changedBy: 'Trần Thị B',
+      changedDate: '15/01/2026 10:15',
+      approvedDate: null,
+      approvedBy: null,
+      status: 'pending'
+    },
+    {
+      id: 3,
+      recordCode: 'REC003',
+      recordName: 'Đà Nẵng',
+      changedFields: ['Số điện thoại', 'Email liên hệ'],
+      changes: {
+        'Số điện thoại': { old: '0236.3821.234', new: '0236.3821.999' },
+        'Email liên hệ': { old: 'contact@danang.gov.vn', new: 'info@danang.gov.vn' }
+      },
+      changedBy: 'Phạm Văn C',
+      changedDate: '14/01/2026 16:45',
+      approvedDate: null,
+      approvedBy: null,
+      status: 'pending'
+    },
+    {
+      id: 4,
+      recordCode: 'REC004',
+      recordName: 'Cần Thơ',
+      changedFields: ['Website'],
+      changes: {
+        'Website': { old: 'http://cantho.gov.vn', new: 'https://cantho.gov.vn' }
+      },
+      changedBy: 'Lê Thị D',
+      changedDate: '14/01/2026 09:20',
+      approvedDate: '15/01/2026 11:30',
+      approvedBy: 'Hoàng Văn E',
+      status: 'approved'
+    },
+    {
+      id: 5,
+      recordCode: 'REC005',
+      recordName: 'Hải Phòng',
+      changedFields: ['Tên đầy đủ'],
+      changes: {
+        'Tên đầy đủ': { old: 'Thành phố Hải Phòng', new: 'TP Hải Phòng' }
+      },
+      changedBy: 'Đỗ Văn F',
+      changedDate: '13/01/2026 15:00',
+      approvedDate: '14/01/2026 10:15',
+      approvedBy: 'Hoàng Văn E',
+      status: 'rejected',
+      rejectionReason: 'Tên không phù hợp với quy chuẩn đặt tên hành chính'
+    }
+  ];
+
+  const approvalStats = {
+    pending: approvalRequests.filter(r => r.status === 'pending').length,
+    approved: approvalRequests.filter(r => r.status === 'approved').length,
+    rejected: approvalRequests.filter(r => r.status === 'rejected').length,
+    total: approvalRequests.length
+  };
+
+  const filteredApprovalRequests = approvalRequests.filter(req => {
+    const matchesStatus = approvalStatusFilter === 'all' || req.status === approvalStatusFilter;
+    const matchesSearch = searchTerm === '' || 
+      req.recordCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      req.recordName.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesStatus && matchesSearch;
+  });
+
+  const handleViewApprovalDetail = (request: any) => {
+    setSelectedApprovalRequest(request);
+    setShowApprovalDetailModal(true);
+  };
+
+  const handleApprove = (requestId: number) => {
+    // Open approval modal for single request
+    setPendingApprovalIds([requestId]);
+    setApprovalComment('');
+    setShowApprovalModal(true);
+  };
+
+  const handleReject = (requestId: number) => {
+    // Open reject modal for single request
+    setPendingApprovalIds([requestId]);
+    setApprovalComment('');
+    setShowRejectModal(true);
+  };
+
+  const handleBulkApprove = () => {
+    if (selectedApprovalIds.length === 0) {
+      alert('Vui lòng chọn ít nhất một yêu cầu để phê duyệt');
+      return;
+    }
+    setPendingApprovalIds(selectedApprovalIds);
+    setApprovalComment('');
+    setShowApprovalModal(true);
+  };
+
+  const handleBulkReject = () => {
+    if (selectedApprovalIds.length === 0) {
+      alert('Vui lòng chọn ít nhất một yêu cầu để từ chối');
+      return;
+    }
+    setPendingApprovalIds(selectedApprovalIds);
+    setApprovalComment('');
+    setShowRejectModal(true);
+  };
+
+  const confirmApproval = () => {
+    // In production, this would call an API
+    console.log('Phê duyệt:', pendingApprovalIds, 'Nội dung:', approvalComment);
+    setShowApprovalModal(false);
+    setSelectedApprovalIds([]);
+    setApprovalComment('');
+    setPendingApprovalIds([]);
+    setSuccessNotificationMessage(
+      `Đã phê duyệt thành công ${pendingApprovalIds.length} yêu cầu`
+    );
+    setShowSuccessNotification(true);
+    setTimeout(() => setShowSuccessNotification(false), 3000);
+  };
+
+  const confirmReject = () => {
+    if (!approvalComment.trim()) {
+      alert('Vui lòng nhập lý do từ chối');
+      return;
+    }
+    // In production, this would call an API
+    console.log('Từ chối:', pendingApprovalIds, 'Lý do:', approvalComment);
+    setShowRejectModal(false);
+    setSelectedApprovalIds([]);
+    setApprovalComment('');
+    setPendingApprovalIds([]);
+    setSuccessNotificationMessage(
+      `Đã từ chối ${pendingApprovalIds.length} yêu cầu`
+    );
+    setShowSuccessNotification(true);
+    setTimeout(() => setShowSuccessNotification(false), 3000);
+  };
+
+  const toggleSelectApproval = (id: number) => {
+    setSelectedApprovalIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSelectAllApprovals = () => {
+    const pendingRequests = filteredApprovalRequests.filter(r => r.status === 'pending');
+    if (selectedApprovalIds.length === pendingRequests.length) {
+      setSelectedApprovalIds([]);
+    } else {
+      setSelectedApprovalIds(pendingRequests.map(r => r.id));
+    }
+  };
+
+  const getRequestTypeBadge = (type: string) => {
+    switch (type) {
+      case 'create':
+        return <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">Tạo mới</span>;
+      case 'edit-version':
+        return <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">Phê duyệt phiên bản</span>;
+      case 'edit-structure':
+        return <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">Phê duyệt cấu trúc</span>;
+      case 'edit-effective':
+        return <span className="px-3 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">Phê duyệt hiệu hiệu lực</span>;
+      default:
+        return null;
+    }
+  };
+
+  const getApprovalStatusBadge = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">Chờ duyệt</span>;
+      case 'approved':
+        return <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">Đã duyệt</span>;
+      case 'rejected':
+        return <span className="px-3 py-1 bg-red-100 text-red-700 text-xs rounded-full">Từ chối</span>;
+      default:
+        return null;
+    }
+  };
+  
+  // Mock data - Danh sách tỉnh thành Việt Nam
+  const [categories, setCategories] = useState<Category[]>([
+    { id: '1', code: 'VN01', name: 'Hà Nội', description: 'Thành phố trực thuộc Trung ương', type: 'standard', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '2', code: 'VN02', name: 'Hồ Chí Minh', description: 'Thành phố trực thuộc Trung ương', type: 'standard', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '3', code: 'VN03', name: 'Đà Nẵng', description: 'Thành phố trực thuộc Trung ương', type: 'standard', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '4', code: 'VN04', name: 'Hải Phòng', description: 'Thành phố trực thuộc Trung ương', type: 'standard', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '5', code: 'VN05', name: 'Cần Thơ', description: 'Thành phố trực thuộc Trung ương', type: 'standard', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '6', code: 'VN06', name: 'An Giang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '7', code: 'VN07', name: 'Bà Rịa - Vũng Tàu', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '8', code: 'VN08', name: 'Bắc Giang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '9', code: 'VN09', name: 'Bắc Kạn', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '10', code: 'VN10', name: 'Bạc Liêu', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '11', code: 'VN11', name: 'Bắc Ninh', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '12', code: 'VN12', name: 'Bến Tre', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '13', code: 'VN13', name: 'Bình Định', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '14', code: 'VN14', name: 'Bình Dương', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '15', code: 'VN15', name: 'Bình Phước', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '16', code: 'VN16', name: 'Bình Thuận', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '17', code: 'VN17', name: 'Cà Mau', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '18', code: 'VN18', name: 'Cao Bằng', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '19', code: 'VN19', name: 'Đắk Lắk', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '20', code: 'VN20', name: 'Đắk Nông', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '21', code: 'VN21', name: 'Điện Biên', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '22', code: 'VN22', name: 'Đồng Nai', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '23', code: 'VN23', name: 'Đồng Tháp', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '24', code: 'VN24', name: 'Gia Lai', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '25', code: 'VN25', name: 'Hà Giang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '26', code: 'VN26', name: 'Hà Nam', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '27', code: 'VN27', name: 'Hà Tĩnh', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '28', code: 'VN28', name: 'Hải Dương', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '29', code: 'VN29', name: 'Hậu Giang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '30', code: 'VN30', name: 'Hòa Bình', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '31', code: 'VN31', name: 'Hưng Yên', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '32', code: 'VN32', name: 'Khánh Hòa', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '33', code: 'VN33', name: 'Kiên Giang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '34', code: 'VN34', name: 'Kon Tum', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '35', code: 'VN35', name: 'Lai Châu', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '36', code: 'VN36', name: 'Lâm Đ��ng', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '37', code: 'VN37', name: 'Lạng Sơn', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '38', code: 'VN38', name: 'Lào Cai', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '39', code: 'VN39', name: 'Long An', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '40', code: 'VN40', name: 'Nam Định', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '41', code: 'VN41', name: 'Nghệ An', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '42', code: 'VN42', name: 'Ninh Bình', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '43', code: 'VN43', name: 'Ninh Thuận', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '44', code: 'VN44', name: 'Phú Thọ', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '45', code: 'VN45', name: 'Phú Yên', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '46', code: 'VN46', name: 'Quảng Bình', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '47', code: 'VN47', name: 'Quảng Nam', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '48', code: 'VN48', name: 'Quảng Ngãi', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '49', code: 'VN49', name: 'Quảng Ninh', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '50', code: 'VN50', name: 'Quảng Trị', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '51', code: 'VN51', name: 'Sóc Trăng', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '52', code: 'VN52', name: 'Sơn La', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '53', code: 'VN53', name: 'Tây Ninh', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '54', code: 'VN54', name: 'Thái Bình', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '55', code: 'VN55', name: 'Thái Nguyên', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '56', code: 'VN56', name: 'Thanh Hóa', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '57', code: 'VN57', name: 'Thừa Thiên Huế', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '58', code: 'VN58', name: 'Tiền Giang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '59', code: 'VN59', name: 'Trà Vinh', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '60', code: 'VN60', name: 'Tuyên Quang', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '61', code: 'VN61', name: 'Vĩnh Long', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '62', code: 'VN62', name: 'Vĩnh Phúc', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
+    { id: '63', code: 'VN63', name: 'Yên Bái', description: 'Tỉnh', type: 'reference', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] }
+  ]);
+
+  const stats = {
+    total: categories.length,
+    active: categories.filter(c => c.status === 'active').length,
+    standard: categories.filter(c => c.type === 'standard').length,
+    reference: categories.filter(c => c.type === 'reference').length
+  };
+
+  const filteredCategories = categories.filter(cat => {
+    const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         cat.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = filterType === 'all' || cat.type === filterType;
+    const matchesStatus = filterStatus === 'all' || cat.status === filterStatus;
+    return matchesSearch && matchesType && matchesStatus;
+  });
+
+  const getTypeBadge = (type: string) => {
+    switch (type) {
+      case 'standard':
+        return <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">Tiêu chuẩn</span>;
+      case 'reference':
+        return <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">Tham chiếu</span>;
+      case 'system':
+        return <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">Hệ thống</span>;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'active':
+        return <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">Hoạt động</span>;
+      case 'inactive':
+        return <span className="px-3 py-1 bg-slate-200 text-slate-700 text-xs rounded-full">Ngừng hoạt động</span>;
+      default:
+        return null;
+    }
+  };
+
+  // Handle Excel file import
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImportFile(file);
+    setImportErrors([]);
+
+    // Read and parse Excel file
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const data = event.target?.result;
+        if (!data) return;
+
+        // Simple CSV parsing (for demo - in production use a library like xlsx)
+        const text = new TextDecoder().decode(data as ArrayBuffer);
+        const rows = text.split('\n').map(row => row.split(','));
+        
+        // Skip header row and parse data
+        const parsedData = rows.slice(1).filter(row => row.length >= 4).map((row, index) => ({
+          id: `import-${index}`,
+          code: row[0]?.trim() || '',
+          name: row[1]?.trim() || '',
+          description: row[2]?.trim() || '',
+          type: (row[3]?.trim().toLowerCase() === 'tiêu chuẩn' ? 'standard' : 
+                 row[3]?.trim().toLowerCase() === 'tham chiếu' ? 'reference' : 'system') as 'standard' | 'reference' | 'system',
+          status: 'active' as 'active' | 'inactive',
+          createdDate: new Date().toLocaleDateString('vi-VN'),
+          fields: []
+        }));
+
+        // Validate data
+        const errors: string[] = [];
+        parsedData.forEach((item, index) => {
+          if (!item.code) errors.push(`Dòng ${index + 2}: Thiếu mã danh mục`);
+          if (!item.name) errors.push(`Dòng ${index + 2}: Thiếu tên danh mục`);
+        });
+
+        setImportErrors(errors);
+        setImportPreviewData(parsedData);
+      } catch (error) {
+        setImportErrors(['Lỗi khi đọc file. Vui lòng kiểm tra định dạng file.']);
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  const handleImportConfirm = () => {
+    if (importErrors.length > 0) {
+      alert('Vui lòng sửa các lỗi trước khi nhập dữ liệu');
+      return;
+    }
+
+    // Add imported data to categories
+    setCategories([...categories, ...importPreviewData]);
+    
+    // Reset and close modal
+    setShowImportModal(false);
+    setImportFile(null);
+    setImportPreviewData([]);
+    setImportErrors([]);
+    
+    // Show success notification
+    setShowSuccessNotification(true);
+    setTimeout(() => setShowSuccessNotification(false), 3000);
+  };
+
+  const handleCancelImport = () => {
+    setShowImportModal(false);
+    setImportFile(null);
+    setImportPreviewData([]);
+    setImportErrors([]);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Tabs */}
+      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+        <div className="flex border-b border-slate-200">
+          <button
+            onClick={() => setActiveTab('setup')}
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
+              activeTab === 'setup'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <List className="w-4 h-4" />
+            Danh sách
+          </button>
+          <button
+            onClick={() => setActiveTab('approval')}
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
+              activeTab === 'approval'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <CheckCircle2 className="w-4 h-4" />
+            Phê duyệt
+          </button>
+          <button
+            onClick={() => setActiveTab('stats')}
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
+              activeTab === 'stats'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <TrendingUp className="w-4 h-4" />
+            Thu thập số liệu thống kê
+          </button>
+          <button
+            onClick={() => setActiveTab('version-history')}
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
+              activeTab === 'version-history'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <Clock className="w-4 h-4" />
+            Lịch sử cập nhật
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="p-6">
+          {activeTab === 'setup' && (
+            <div className="space-y-6">
+              {/* Filters */}
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm theo tên, mã danh mục..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <select
+                      value={filterType}
+                      onChange={(e) => setFilterType(e.target.value)}
+                      className="pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                    >
+                      <option value="all">Tất cả loại</option>
+                      <option value="standard">Tiêu chuẩn</option>
+                      <option value="reference">Tham chiếu</option>
+                      <option value="system">Hệ thống</option>
+                    </select>
+                  </div>
+                  <div className="relative">
+                    <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <select
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                      className="pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                    >
+                      <option value="all">Tất cả trạng thái</option>
+                      <option value="active">Hoạt động</option>
+                      <option value="inactive">Ngừng hoạt động</option>
+                    </select>
+                  </div>
+                  <button
+                    onClick={() => setShowImportModal(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
+                  >
+                    <Upload className="w-4 h-4" />
+                    Nhập từ Excel
+                  </button>
+                  <button
+                    onClick={() => setShowAddModal(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Thêm danh mục mới
+                  </button>
+                </div>
+              </div>
+
+              {/* Table */}
+              <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-slate-200 bg-slate-50">
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">STT</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Mã danh mục</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Tên danh mục</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Loại</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Ngày tạo</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Trạng thái</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredCategories.map((category, index) => (
+                        <tr key={category.id} className="border-b border-slate-100 hover:bg-slate-50">
+                          <td className="px-6 py-4 text-sm text-slate-900">{index + 1}</td>
+                          <td className="px-6 py-4 text-sm">
+                            <code className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
+                              {category.code}
+                            </code>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-slate-900">{category.name}</div>
+                            <div className="text-xs text-slate-500">{category.description}</div>
+                          </td>
+                          <td className="px-6 py-4">{getTypeBadge(category.type)}</td>
+                          <td className="px-6 py-4 text-sm text-slate-600">{category.createdDate}</td>
+                          <td className="px-6 py-4">{getStatusBadge(category.status)}</td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => {
+                                  setSelectedCategory(category);
+                                  setShowDetailModal(true);
+                                }}
+                                className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                                title="Xem chi tiết"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedCategory(category);
+                                  setShowAddFieldModal(true);
+                                }}
+                                className="p-1 text-purple-600 hover:bg-purple-50 rounded"
+                                title="Thêm cột mới"
+                              >
+                                <Columns className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedCategory(category);
+                                  setEditedCategoryData({
+                                    code: category.code,
+                                    name: category.name,
+                                    type: category.type,
+                                    status: category.status,
+                                    description: category.description
+                                  });
+                                  setShowEditModal(true);
+                                }}
+                                className="p-1 text-orange-600 hover:bg-orange-50 rounded"
+                                title="Chỉnh sửa"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                className="p-1 text-red-600 hover:bg-red-50 rounded"
+                                title="Xóa"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'approval' && (
+            <div className="space-y-6">
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-orange-700">Chờ phê duyệt</p>
+                      <p className="text-2xl text-orange-900">{approvalStats.pending}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                      <CheckCircle2 className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-green-700">Đã phê duyệt</p>
+                      <p className="text-2xl text-green-900">{approvalStats.approved}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                      <XCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-red-700">Đã từ chối</p>
+                      <p className="text-2xl text-red-900">{approvalStats.rejected}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                      <Edit2 className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-blue-700">Tổng yêu cầu</p>
+                      <p className="text-2xl text-blue-900">{approvalStats.total}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Header */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg text-slate-900">Phê duyệt thay đổi dữ liệu</h3>
+                  <p className="text-sm text-slate-500 mt-1">Quản lý các yêu cầu thay đổi giá trị bản ghi</p>
+                </div>
+                {selectedApprovalIds.length > 0 && (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-slate-600">
+                      Đã chọn: <span className="font-medium text-blue-600">{selectedApprovalIds.length}</span> yêu cầu
+                    </span>
+                    <button
+                      onClick={handleBulkApprove}
+                      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <CheckCircle2 className="w-4 h-4" />
+                      Phê duyệt hàng loạt
+                    </button>
+                    <button
+                      onClick={handleBulkReject}
+                      className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                      <XCircle className="w-4 h-4" />
+                      Từ chối hàng loạt
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Filters */}
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm theo mã, tên bản ghi..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <select
+                      value={approvalStatusFilter}
+                      onChange={(e) => setApprovalStatusFilter(e.target.value)}
+                      className="pl-10 pr-8 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                    >
+                      <option value="all">Tất cả trạng thái</option>
+                      <option value="pending">Chờ phê duyệt</option>
+                      <option value="approved">Đã phê duyệt</option>
+                      <option value="rejected">Đã từ chối</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Table */}
+              <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-slate-200 bg-slate-50">
+                        <th className="px-4 py-3 text-left">
+                          <input
+                            type="checkbox"
+                            checked={selectedApprovalIds.length === filteredApprovalRequests.filter(r => r.status === 'pending').length && filteredApprovalRequests.filter(r => r.status === 'pending').length > 0}
+                            onChange={toggleSelectAllApprovals}
+                            className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
+                          />
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">STT</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Mã bản ghi</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Tên bản ghi</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Các trường thay đổi</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Người thay đổi</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Thời gian thay đổi</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Thời gian duyệt</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Trạng thái</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600 uppercase tracking-wider">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredApprovalRequests.map((request, index) => (
+                        <tr key={request.id} className="border-b border-slate-100 hover:bg-slate-50">
+                          <td className="px-4 py-4">
+                            {request.status === 'pending' && (
+                              <input
+                                type="checkbox"
+                                checked={selectedApprovalIds.includes(request.id)}
+                                onChange={() => toggleSelectApproval(request.id)}
+                                className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
+                              />
+                            )}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-900">{index + 1}</td>
+                          <td className="px-6 py-4 text-sm">
+                            <code className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
+                              {request.recordCode}
+                            </code>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-slate-900">{request.recordName}</div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex flex-wrap gap-1">
+                              {request.changedFields.map((field: string, idx: number) => (
+                                <span key={idx} className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded">
+                                  {field}
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-600">{request.changedBy}</td>
+                          <td className="px-6 py-4 text-sm text-slate-600">{request.changedDate}</td>
+                          <td className="px-6 py-4 text-sm text-slate-600">
+                            {request.approvedDate ? (
+                              <div>
+                                <div>{request.approvedDate}</div>
+                                <div className="text-xs text-slate-500">bởi {request.approvedBy}</div>
+                              </div>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4">{getApprovalStatusBadge(request.status)}</td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleViewApprovalDetail(request)}
+                                className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                                title="Xem chi tiết"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              {request.status === 'pending' && (
+                                <>
+                                  <button
+                                    onClick={() => handleApprove(request.id)}
+                                    className="p-1 text-green-600 hover:bg-green-50 rounded"
+                                    title="Phê duyệt"
+                                  >
+                                    <CheckCircle2 className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleReject(request.id)}
+                                    className="p-1 text-red-600 hover:bg-red-50 rounded"
+                                    title="Từ chối"
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'stats' && (
+            <div className="space-y-6">
+              {/* Date Filter */}
+              <div className="bg-white border border-slate-200 rounded-lg p-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-sm text-slate-700 mb-2">Từ ngày</label>
+                    <input
+                      type="date"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-700 mb-2">Đến ngày</label>
+                    <input
+                      type="date"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-700 mb-2">Loại thống kê</label>
+                    <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <option>Số lượt sử dụng</option>
+                      <option>Số lượt xem</option>
+                      <option>Số lượt tải</option>
+                    </select>
+                  </div>
+                  <div className="flex items-end">
+                    <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                      Xem thống kê
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Cards with Growth */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <BarChart3 className="w-5 h-5 text-blue-600" />
+                    </div>
+                  </div>
+                  <p className="text-2xl text-slate-900 mb-1">2,547</p>
+                  <p className="text-sm text-slate-600 mb-2">Tổng lượt truy cập</p>
+                  <div className="flex items-center gap-1 text-green-600">
+                    <ArrowUpRight className="w-4 h-4" />
+                    <span className="text-xs">+12.5% so với tháng trước</span>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Activity className="w-5 h-5 text-purple-600" />
+                    </div>
+                  </div>
+                  <p className="text-2xl text-slate-900 mb-1">156</p>
+                  <p className="text-sm text-slate-600 mb-2">Số lần cập nhật</p>
+                  <div className="flex items-center gap-1 text-green-600">
+                    <ArrowUpRight className="w-4 h-4" />
+                    <span className="text-xs">+8.2% so với tháng trước</span>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <Eye className="w-5 h-5 text-orange-600" />
+                    </div>
+                  </div>
+                  <p className="text-2xl text-slate-900 mb-1">1,234</p>
+                  <p className="text-sm text-slate-600 mb-2">Lượt xem chi tiết</p>
+                  <div className="flex items-center gap-1 text-red-600">
+                    <ArrowDownRight className="w-4 h-4" />
+                    <span className="text-xs">-3.1% so với tháng trước</span>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Download className="w-5 h-5 text-green-600" />
+                    </div>
+                  </div>
+                  <p className="text-2xl text-slate-900 mb-1">489</p>
+                  <p className="text-sm text-slate-600 mb-2">Lượt tải xuống</p>
+                  <div className="flex items-center gap-1 text-green-600">
+                    <ArrowUpRight className="w-4 h-4" />
+                    <span className="text-xs">+15.7% so với tháng trước</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Top 5 Chart */}
+              <div className="bg-white border border-slate-200 rounded-lg p-6">
+                <h3 className="text-sm text-slate-900 mb-6">Danh sách các hệ thống sử dụng nhiều nhất</h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-700">Hệ thống Văn bản pháp luật</span>
+                      <span className="text-sm text-slate-900">524 lượt</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-700">Hệ thống Đăng ký kinh doanh</span>
+                      <span className="text-sm text-slate-900">412 lượt</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '78%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-700">Hệ thống Công chứng</span>
+                      <span className="text-sm text-slate-900">356 lượt</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '68%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-700">Hệ thống Trợ giúp pháp lý</span>
+                      <span className="text-sm text-slate-900">298 lượt</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '57%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-slate-700">Hệ thống Hộ tịch</span>
+                      <span className="text-sm text-slate-900">187 lượt</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '36%' }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Add/Edit Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="text-lg text-slate-900">Thêm danh mục mới</h3>
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Mã danh mục *</label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập mã danh mục"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Tên danh mục *</label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập tên danh mục"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
+                <textarea
+                  rows={3}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập mô tả về danh mục..."
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
+                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Chọn loại</option>
+                    <option value="standard">Tiêu chuẩn</option>
+                    <option value="reference">Tham chiếu</option>
+                    <option value="system">Hệ thống</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
+                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="active">Hoạt động</option>
+                    <option value="inactive">Ngừng hoạt động</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Fields Section */}
+              <div className="border-t border-slate-200 pt-4 mt-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm text-slate-900">Cấu trúc trường dữ liệu</h4>
+                  <button
+                    onClick={() => {
+                      setNewFieldData({ name: '', dataType: 'TEXT', required: false, defaultValue: '', maxLength: 255, description: '', isPrimaryKey: false, isForeignKey: false, referenceTable: '', referenceField: '' });
+                      setEditingFieldIndex(null);
+                      setFieldErrors({});
+                      setShowFieldFormModal(true);
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm"
+                  >
+                    <Plus className="w-3 h-3" />
+                    Thêm trường
+                  </button>
+                </div>
+
+                {newCategoryFields.length > 0 && (
+                  <div className="space-y-2">
+                    {newCategoryFields.map((field, index) => (
+                      <div key={field.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-blue-300 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-sm text-slate-900">{field.name || '(Chưa đặt tên)'}</span>
+                              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">{field.dataType}</span>
+                              {field.isPrimaryKey && (
+                                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded">🔑 Khóa chính</span>
+                              )}
+                              {field.isForeignKey && (
+                                <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded">🔗 Khóa ngoại</span>
+                              )}
+                              {field.required && (
+                                <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded">Bắt buộc</span>
+                              )}
+                            </div>
+                            {field.description && (
+                              <p className="text-xs text-slate-500">{field.description}</p>
+                            )}
+                            <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+                              {field.maxLength && <span>Độ dài tối đa: {field.maxLength}</span>}
+                              {field.defaultValue && <span>Giá trị mặc định: {field.defaultValue}</span>}
+                              {field.isForeignKey && field.referenceTable && (
+                                <span>Tham chiếu: {field.referenceTable}.{field.referenceField}</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => {
+                                setNewFieldData({
+                                  name: field.name,
+                                  dataType: field.dataType,
+                                  required: field.required,
+                                  defaultValue: field.defaultValue || '',
+                                  maxLength: field.maxLength || 255,
+                                  description: field.description || '',
+                                  isPrimaryKey: field.isPrimaryKey || false,
+                                  isForeignKey: field.isForeignKey || false,
+                                  referenceTable: field.referenceTable || '',
+                                  referenceField: field.referenceField || ''
+                                });
+                                setEditingFieldIndex(index);
+                                setFieldErrors({});
+                                setShowFieldFormModal(true);
+                              }}
+                              className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                              title="Chỉnh sửa"
+                            >
+                              <Edit2 className="w-3 h-3" />
+                            </button>
+                            <button
+                              onClick={() => {
+                                setNewCategoryFields(newCategoryFields.filter((_, i) => i !== index));
+                              }}
+                              className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                              title="Xóa trường"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {newCategoryFields.length === 0 && (
+                  <div className="text-center py-6 text-slate-500 text-sm bg-slate-50 rounded-lg border-2 border-dashed border-slate-200">
+                    <Database className="w-8 h-8 mx-auto mb-2 text-slate-400" />
+                    <p>Chưa có trường nào. Nhấn "Thêm trường" để bắt đầu.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <Save className="w-4 h-4" />
+                Lưu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'version-history' && (
+        <div className="space-y-4">
+          {/* Version History Table */}
+          <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs text-slate-600">Phiên bản</th>
+                    <th className="px-4 py-3 text-left text-xs text-slate-600">Ngày thay đổi</th>
+                    <th className="px-4 py-3 text-left text-xs text-slate-600">Người thay đổi</th>
+                    <th className="px-4 py-3 text-left text-xs text-slate-600">Loại thay đổi</th>
+                    <th className="px-4 py-3 text-left text-xs text-slate-600">Nội dung thay đổi</th>
+                    <th className="px-4 py-3 text-left text-xs text-slate-600">Trạng thái</th>
+                    <th className="px-4 py-3 text-center text-xs text-slate-600">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {[
+                    {
+                      version: 'v3.2',
+                      date: '05/01/2026',
+                      user: 'Nguyễn Văn A',
+                      changeType: 'Cấu trúc',
+                      changes: 'Thêm trường "Số điện thoại liên hệ"',
+                      status: 'active'
+                    },
+                    {
+                      version: 'v3.1',
+                      date: '28/12/2025',
+                      user: 'Trần Thị B',
+                      changeType: 'Dữ liệu',
+                      changes: 'Cập nhật 15 bản ghi tỉnh thành',
+                      status: 'archived'
+                    },
+                    {
+                      version: 'v3.0',
+                      date: '15/12/2025',
+                      user: 'Lê Văn C',
+                      changeType: 'Cấu trúc',
+                      changes: 'Thay đổi kiểu dữ liệu trường "Mã tỉnh"',
+                      status: 'archived'
+                    },
+                    {
+                      version: 'v2.5',
+                      date: '01/12/2025',
+                      user: 'Phạm Thị D',
+                      changeType: 'Quy tắc',
+                      changes: 'Thêm ràng buộc unique cho mã tỉnh',
+                      status: 'archived'
+                    },
+                    {
+                      version: 'v2.0',
+                      date: '20/11/2025',
+                      user: 'Hoàng Văn E',
+                      changeType: 'Cấu trúc',
+                      changes: 'Khởi tạo danh mục 63 tỉnh thành',
+                      status: 'archived'
+                    }
+                  ].map((history, index) => (
+                    <tr key={index} className="hover:bg-slate-50">
+                      <td className="px-4 py-3 text-sm text-slate-900">{history.version}</td>
+                      <td className="px-4 py-3 text-sm text-slate-900">{history.date}</td>
+                      <td className="px-4 py-3 text-sm text-slate-900">{history.user}</td>
+                      <td className="px-4 py-3">
+                        {history.changeType === 'Cấu trúc' && (
+                          <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
+                            Cấu trúc
+                          </span>
+                        )}
+                        {history.changeType === 'Dữ liệu' && (
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                            Dữ liệu
+                          </span>
+                        )}
+                        {history.changeType === 'Quy tắc' && (
+                          <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">
+                            Quy tắc
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-slate-700">{history.changes}</td>
+                      <td className="px-4 py-3">
+                        {history.status === 'active' ? (
+                          <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                            Đang dùng
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">
+                            Lưu trữ
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                            title="Xem chi tiết"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          {history.status === 'archived' && (
+                            <button
+                              className="p-1 text-green-600 hover:bg-green-50 rounded"
+                              title="Khôi phục phiên bản"
+                            >
+                              <Clock className="w-4 h-4" />
+                            </button>
+                          )}
+                          <button
+                            className="p-1 text-slate-600 hover:bg-slate-50 rounded"
+                            title="Tải xuống"
+                          >
+                            <Download className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Version Comparison Section */}
+          <div className="bg-white border border-slate-200 rounded-lg p-6">
+            <h3 className="text-sm text-slate-900 mb-4">So sánh phiên bản</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-slate-700 mb-2">Phiên bản cũ</label>
+                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="v2.0">v2.0 - 20/11/2025</option>
+                  <option value="v2.5">v2.5 - 01/12/2025</option>
+                  <option value="v3.0">v3.0 - 15/12/2025</option>
+                  <option value="v3.1">v3.1 - 28/12/2025</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm text-slate-700 mb-2">Phiên bản mới</label>
+                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="v3.2">v3.2 - 05/01/2026 (Hiện tại)</option>
+                  <option value="v3.1">v3.1 - 28/12/2025</option>
+                  <option value="v3.0">v3.0 - 15/12/2025</option>
+                  <option value="v2.5">v2.5 - 01/12/2025</option>
+                </select>
+              </div>
+            </div>
+            <div className="mt-4 flex gap-3">
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                <BarChart3 className="w-4 h-4" />
+                So sánh
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm">
+                <Download className="w-4 h-4" />
+                Xuất báo cáo so sánh
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detail Modal */}
+      {showDetailModal && selectedCategory && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="text-lg text-slate-900">Chi tiết danh mục: {selectedCategory.name}</h3>
+              <button
+                onClick={() => {
+                  setShowDetailModal(false);
+                  setSelectedCategory(null);
+                }}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Basic Info */}
+              <div>
+                <h4 className="text-sm text-slate-900 mb-3">Thông tin cơ bản</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Mã danh mục</label>
+                    <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm text-slate-900">
+                      {selectedCategory.code}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Tên danh mục</label>
+                    <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm text-slate-900">
+                      {selectedCategory.name}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Loại</label>
+                    <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm">
+                      {getTypeBadge(selectedCategory.type)}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Trạng thái</label>
+                    <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm">
+                      {getStatusBadge(selectedCategory.status)}
+                    </div>
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-xs text-slate-600 mb-1">Mô tả</label>
+                    <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm text-slate-900">
+                      {selectedCategory.description}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fields Structure */}
+              <div>
+                <h4 className="text-sm text-slate-900 mb-3">Ngày tạo</h4>
+                <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded text-sm text-slate-900">
+                  {selectedCategory.createdDate}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowDetailModal(false);
+                  setSelectedCategory(null);
+                }}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEditModal && selectedCategory && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="text-lg text-slate-900">Chỉnh sửa danh mục</h3>
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setSelectedCategory(null);
+                }}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Mã danh mục *</label>
+                  <input
+                    type="text"
+                    value={editedCategoryData.code}
+                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, code: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập mã danh mục"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Tên danh mục *</label>
+                  <input
+                    type="text"
+                    value={editedCategoryData.name}
+                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập tên danh mục"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
+                  <select
+                    value={editedCategoryData.type}
+                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, type: e.target.value as 'standard' | 'reference' | 'system' })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="standard">Tiêu chuẩn</option>
+                    <option value="reference">Tham chiếu</option>
+                    <option value="system">Hệ thống</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
+                  <select
+                    value={editedCategoryData.status}
+                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, status: e.target.value as 'active' | 'inactive' })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="active">Hoạt động</option>
+                    <option value="inactive">Ngừng hoạt động</option>
+                  </select>
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
+                  <textarea
+                    value={editedCategoryData.description}
+                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, description: e.target.value })}
+                    rows={3}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập mô tả"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm text-slate-700 mb-1">
+                    Người phê duyệt *
+                    <span className="text-slate-500 text-xs ml-1">(Bắt buộc khi gửi phê duyệt)</span>
+                  </label>
+                  <select
+                    value={editedCategoryData.approver}
+                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, approver: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Chọn người phê duyệt</option>
+                    {approvers.map((approver) => (
+                      <option key={approver.id} value={approver.id}>
+                        {approver.name} - {approver.role}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-between">
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setSelectedCategory(null);
+                }}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => {
+                    // Direct save for users with permission
+                    setShowEditModal(false);
+                    setSelectedCategory(null);
+                    // Show success message for direct save
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                >
+                  <Save className="w-4 h-4" />
+                  Lưu thay đổi
+                </button>
+                <button 
+                  onClick={() => {
+                    // Validate approver selection
+                    if (!editedCategoryData.approver) {
+                      alert('Vui lòng chọn người phê duyệt trước khi gửi yêu cầu');
+                      return;
+                    }
+                    // Create approval request
+                    const selectedApprover = approvers.find(a => a.id === editedCategoryData.approver);
+                    setSuccessNotificationMessage(
+                      `Yêu cầu chỉnh sửa danh mục đã được gửi đến ${selectedApprover?.name} (${selectedApprover?.role})`
+                    );
+                    setShowEditModal(false);
+                    setSelectedCategory(null);
+                    setShowSuccessNotification(true);
+                    setTimeout(() => setShowSuccessNotification(false), 3000);
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Send className="w-4 h-4" />
+                  Gửi phê duyệt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Field Modal */}
+      {showAddFieldModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="text-lg text-slate-900">Thêm trường dữ liệu mới</h3>
+              <button
+                onClick={() => setShowAddFieldModal(false)}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Tên trường *</label>
+                  <input
+                    type="text"
+                    value={newFieldData.name}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập tên trường"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
+                  <select
+                    value={newFieldData.dataType}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="TEXT">Text</option>
+                    <option value="NUMBER">Number</option>
+                    <option value="DATE">Date</option>
+                    <option value="BOOLEAN">Boolean</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
+                  <select
+                    value={newFieldData.required ? 'true' : 'false'}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="true">Có</option>
+                    <option value="false">Không</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Giá trị mặc định</label>
+                  <input
+                    type="text"
+                    value={newFieldData.defaultValue || ''}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập giá trị mặc định"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
+              <button
+                onClick={() => setShowAddFieldModal(false)}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={() => {
+                  setNewCategoryFields([...newCategoryFields, { ...newFieldData, id: Date.now().toString() }]);
+                  setNewFieldData({ name: '', dataType: 'TEXT', required: false, defaultValue: '', maxLength: 255, description: '', isPrimaryKey: false, isForeignKey: false, referenceTable: '', referenceField: '' });
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Thêm trường
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Field Form Modal */}
+      {showFieldFormModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="text-lg text-slate-900">Thêm trường dữ liệu mới</h3>
+              <button
+                onClick={() => setShowFieldFormModal(false)}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Tên trường *</label>
+                  <input
+                    type="text"
+                    value={newFieldData.name}
+                    onChange={(e) => {
+                      setNewFieldData({ ...newFieldData, name: e.target.value });
+                      if (fieldErrors.name) {
+                        setFieldErrors({ ...fieldErrors, name: '' });
+                      }
+                    }}
+                    className={`w-full px-3 py-2 border ${fieldErrors.name ? 'border-red-500' : 'border-slate-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    placeholder="Nhập tên trường"
+                  />
+                  {fieldErrors.name && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.name}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
+                  <select
+                    value={newFieldData.dataType}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="TEXT">Text</option>
+                    <option value="NUMBER">Number</option>
+                    <option value="DATE">Date</option>
+                    <option value="BOOLEAN">Boolean</option>
+                    <option value="EMAIL">Email</option>
+                    <option value="URL">URL</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Khóa chính</label>
+                  <select
+                    value={newFieldData.isPrimaryKey ? 'true' : 'false'}
+                    onChange={(e) => {
+                      const isPrimary = e.target.value === 'true';
+                      setNewFieldData({ ...newFieldData, isPrimaryKey: isPrimary });
+                    }}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="false">Không</option>
+                    <option value="true">Có</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
+                  <select
+                    value={newFieldData.required ? 'true' : 'false'}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="true">Có</option>
+                    <option value="false">Không</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-700 mb-1">Độ dài tối đa</label>
+                  <input
+                    type="number"
+                    value={newFieldData.maxLength || ''}
+                    onChange={(e) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập độ dài tối đa"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-slate-700 mb-1">Giá trị mặc định</label>
+                <input
+                  type="text"
+                  value={newFieldData.defaultValue || ''}
+                  onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập giá trị mặc định"
+                />
+              </div>
+
+              {/* Foreign Key Section */}
+              <div className="border-t border-slate-200 pt-4">
+                <div className="mb-3">
+                  <label className="block text-sm text-slate-700 mb-1">Khóa ngoại</label>
+                  <select
+                    value={newFieldData.isForeignKey ? 'true' : 'false'}
+                    onChange={(e) => {
+                      const isForeign = e.target.value === 'true';
+                      setNewFieldData({ ...newFieldData, isForeignKey: isForeign });
+                    }}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="false">Không</option>
+                    <option value="true">Có</option>
+                  </select>
+                </div>
+
+                {newFieldData.isForeignKey && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm text-slate-700 mb-1">Bảng tham chiếu *</label>
+                      <select
+                        value={newFieldData.referenceTable || ''}
+                        onChange={(e) => {
+                          setNewFieldData({ ...newFieldData, referenceTable: e.target.value });
+                          if (fieldErrors.referenceTable) {
+                            setFieldErrors({ ...fieldErrors, referenceTable: '' });
+                          }
+                        }}
+                        className={`w-full px-3 py-2 border ${fieldErrors.referenceTable ? 'border-red-500' : 'border-slate-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      >
+                        <option value="">Chọn bảng</option>
+                        <option value="danh_muc_a">Danh mục A</option>
+                        <option value="danh_muc_b">Danh mục B</option>
+                        <option value="danh_muc_c">Danh mục C</option>
+                      </select>
+                      {fieldErrors.referenceTable && (
+                        <p className="text-xs text-red-600 mt-1">{fieldErrors.referenceTable}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-700 mb-1">Trường tham chiếu *</label>
+                      <select
+                        value={newFieldData.referenceField || ''}
+                        onChange={(e) => {
+                          setNewFieldData({ ...newFieldData, referenceField: e.target.value });
+                          if (fieldErrors.referenceField) {
+                            setFieldErrors({ ...fieldErrors, referenceField: '' });
+                          }
+                        }}
+                        className={`w-full px-3 py-2 border ${fieldErrors.referenceField ? 'border-red-500' : 'border-slate-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      >
+                        <option value="">Chọn trường</option>
+                        <option value="id">ID</option>
+                        <option value="ma_code">Mã Code</option>
+                        <option value="ten">Tên</option>
+                      </select>
+                      {fieldErrors.referenceField && (
+                        <p className="text-xs text-red-600 mt-1">{fieldErrors.referenceField}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
+                <textarea
+                  rows={3}
+                  value={newFieldData.description || ''}
+                  onChange={(e) => setNewFieldData({ ...newFieldData, description: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập mô tả về trường..."
+                />
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
+              <button
+                onClick={() => setShowFieldFormModal(false)}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={() => {
+                  // Validation
+                  const errors: {[key: string]: string} = {};
+                  
+                  // Kiểm tra tên trường bắt buộc
+                  if (!newFieldData.name.trim()) {
+                    errors.name = 'Tên trường không được để trống';
+                  }
+                  
+                  // Kiểm tra trùng tên trường (ngoại trừ trường đang sửa)
+                  const isDuplicate = newCategoryFields.some((field, index) => 
+                    field.name.toLowerCase() === newFieldData.name.toLowerCase() && 
+                    index !== editingFieldIndex
+                  );
+                  if (isDuplicate) {
+                    errors.name = 'Tên trường đã tồn tại';
+                  }
+                  
+                  // Kiểm tra khóa ngoại
+                  if (newFieldData.isForeignKey) {
+                    if (!newFieldData.referenceTable) {
+                      errors.referenceTable = 'Vui lòng chọn bảng tham chiếu';
+                    }
+                    if (!newFieldData.referenceField) {
+                      errors.referenceField = 'Vui lòng chọn trường tham chiếu';
+                    }
+                  }
+                  
+                  if (Object.keys(errors).length > 0) {
+                    setFieldErrors(errors);
+                    return;
+                  }
+                  
+                  // Nếu đang đặt khóa chính, bỏ khóa chính của các trường khác
+                  let fieldsToUpdate = [...newCategoryFields];
+                  if (newFieldData.isPrimaryKey) {
+                    fieldsToUpdate = fieldsToUpdate.map(f => ({ ...f, isPrimaryKey: false }));
+                  }
+                  
+                  if (editingFieldIndex !== null) {
+                    fieldsToUpdate[editingFieldIndex] = { ...newFieldData, id: newCategoryFields[editingFieldIndex].id };
+                    setNewCategoryFields(fieldsToUpdate);
+                  } else {
+                    setNewCategoryFields([...fieldsToUpdate, { ...newFieldData, id: Date.now().toString() }]);
+                  }
+                  setNewFieldData({ name: '', dataType: 'TEXT', required: false, defaultValue: '', maxLength: 255, description: '', isPrimaryKey: false, isForeignKey: false, referenceTable: '', referenceField: '' });
+                  setEditingFieldIndex(null);
+                  setFieldErrors({});
+                  setShowFieldFormModal(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Thêm trường
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Excel Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Upload className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg text-slate-900">Nhập dữ liệu từ Excel</h3>
+                  <p className="text-sm text-slate-500">Tải lên file Excel để nhập hàng loạt danh mục</p>
+                </div>
+              </div>
+              <button onClick={handleCancelImport} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1">
+              {/* File Upload Section */}
+              <div className="mb-6">
+                <label className="block text-sm text-slate-700 mb-2">
+                  Chọn file Excel <span className="text-red-500">*</span>
+                </label>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center">
+                  <input
+                    type="file"
+                    accept=".xlsx,.xls,.csv"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="excel-upload"
+                  />
+                  <label htmlFor="excel-upload" className="cursor-pointer">
+                    <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Upload className="w-8 h-8 text-green-600" />
+                    </div>
+                    <p className="text-sm text-slate-600 mb-1">
+                      {importFile ? importFile.name : 'Nhấn để chọn file hoặc kéo thả file vào đây'}
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      Hỗ trợ: .xlsx, .xls, .csv (Tối đa 10MB)
+                    </p>
+                  </label>
+                </div>
+                
+                {/* Template Download */}
+                <div className="mt-4 flex items-center gap-2 text-sm">
+                  <FileDown className="w-4 h-4 text-blue-600" />
+                  <a href="#" className="text-blue-600 hover:underline">
+                    Tải file mẫu Excel
+                  </a>
+                  <span className="text-slate-500">để xem cấu trúc dữ liệu yêu cầu</span>
+                </div>
+              </div>
+
+              {/* Format Guide */}
+              <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 className="text-sm text-blue-900 mb-2 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  Định dạng file Excel yêu cầu
+                </h4>
+                <div className="text-xs text-blue-800 space-y-1">
+                  <p>• Cột 1: Mã danh mục (bắt buộc)</p>
+                  <p>• Cột 2: Tên danh mục (bắt buộc)</p>
+                  <p>• Cột 3: Mô tả</p>
+                  <p>• Cột 4: Loại danh mục (Tiêu chuẩn / Tham chiếu / Hệ thống)</p>
+                  <p>• Dòng đầu tiên là tiêu đề cột, dữ liệu bắt đầu từ dòng thứ 2</p>
+                </div>
+              </div>
+
+              {/* Errors */}
+              {importErrors.length > 0 && (
+                <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                  <h4 className="text-sm text-red-900 mb-2 flex items-center gap-2">
+                    <XCircle className="w-4 h-4" />
+                    Phát hiện {importErrors.length} lỗi
+                  </h4>
+                  <ul className="text-xs text-red-800 space-y-1 max-h-32 overflow-y-auto">
+                    {importErrors.map((error, index) => (
+                      <li key={index}>• {error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Preview Data */}
+              {importPreviewData.length > 0 && (
+                <div>
+                  <h4 className="text-sm text-slate-900 mb-3">
+                    Xem trước dữ liệu ({importPreviewData.length} bản ghi)
+                  </h4>
+                  <div className="border border-slate-200 rounded-lg overflow-hidden">
+                    <div className="overflow-x-auto max-h-96">
+                      <table className="min-w-full divide-y divide-slate-200">
+                        <thead className="bg-slate-50 sticky top-0">
+                          <tr>
+                            <th className="px-4 py-3 text-left text-xs text-slate-600">STT</th>
+                            <th className="px-4 py-3 text-left text-xs text-slate-600">Mã danh mục</th>
+                            <th className="px-4 py-3 text-left text-xs text-slate-600">Tên danh mục</th>
+                            <th className="px-4 py-3 text-left text-xs text-slate-600">Mô tả</th>
+                            <th className="px-4 py-3 text-left text-xs text-slate-600">Loại</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-slate-200">
+                          {importPreviewData.map((item, index) => (
+                            <tr key={index} className="hover:bg-slate-50">
+                              <td className="px-4 py-3 text-sm text-slate-600">{index + 1}</td>
+                              <td className="px-4 py-3 text-sm text-slate-900">{item.code}</td>
+                              <td className="px-4 py-3 text-sm text-slate-900">{item.name}</td>
+                              <td className="px-4 py-3 text-sm text-slate-600">{item.description}</td>
+                              <td className="px-4 py-3">{getTypeBadge(item.type)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="px-6 py-4 border-t border-slate-200 flex justify-between items-center bg-slate-50">
+              <div className="text-sm text-slate-600">
+                {importPreviewData.length > 0 && (
+                  <span>Sẵn sàng nhập {importPreviewData.length} bản ghi</span>
+                )}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleCancelImport}
+                  className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+                >
+                  Hủy
+                </button>
+                <button
+                  onClick={handleImportConfirm}
+                  disabled={importPreviewData.length === 0 || importErrors.length > 0}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  <Check className="w-4 h-4" />
+                  Xác nhận nhập
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Approval Detail Modal */}
+      {showApprovalDetailModal && selectedApprovalRequest && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Eye className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg text-slate-900">Chi tiết thay đổi</h3>
+                  <p className="text-sm text-slate-500">Xem các thay đổi của bản ghi</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowApprovalDetailModal(false)} 
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1">
+              {/* Record Info */}
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Mã bản ghi</label>
+                    <code className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm">
+                      {selectedApprovalRequest.recordCode}
+                    </code>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Tên bản ghi</label>
+                    <div className="text-sm text-slate-900">{selectedApprovalRequest.recordName}</div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Người thay đổi</label>
+                    <div className="text-sm text-slate-900">{selectedApprovalRequest.changedBy}</div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Thời gian thay đổi</label>
+                    <div className="text-sm text-slate-900">{selectedApprovalRequest.changedDate}</div>
+                  </div>
+                  {selectedApprovalRequest.approvedDate && (
+                    <>
+                      <div>
+                        <label className="block text-xs text-slate-600 mb-1">Người phê duyệt</label>
+                        <div className="text-sm text-slate-900">{selectedApprovalRequest.approvedBy}</div>
+                      </div>
+                      <div>
+                        <label className="block text-xs text-slate-600 mb-1">Thời gian phê duyệt</label>
+                        <div className="text-sm text-slate-900">{selectedApprovalRequest.approvedDate}</div>
+                      </div>
+                    </>
+                  )}
+                  <div>
+                    <label className="block text-xs text-slate-600 mb-1">Trạng thái</label>
+                    {getApprovalStatusBadge(selectedApprovalRequest.status)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Changes */}
+              <div>
+                <h4 className="text-sm text-slate-900 mb-3">Các thay đổi ({selectedApprovalRequest.changedFields.length})</h4>
+                <div className="space-y-4">
+                  {Object.entries(selectedApprovalRequest.changes).map(([fieldName, values]: [string, any]) => (
+                    <div key={fieldName} className="border border-slate-200 rounded-lg p-4">
+                      <div className="text-sm text-slate-700 mb-3 flex items-center gap-2">
+                        <Tag className="w-4 h-4 text-slate-500" />
+                        <strong>{fieldName}</strong>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs text-slate-500 mb-2">Giá trị cũ</label>
+                          <div className="bg-red-50 border border-red-200 rounded px-3 py-2 text-sm text-red-900">
+                            {values.old}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-slate-500 mb-2">Giá trị mới</label>
+                          <div className="bg-green-50 border border-green-200 rounded px-3 py-2 text-sm text-green-900">
+                            {values.new}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Rejection Reason */}
+              {selectedApprovalRequest.status === 'rejected' && selectedApprovalRequest.rejectionReason && (
+                <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                  <h4 className="text-sm text-red-900 mb-2 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Lý do từ chối
+                  </h4>
+                  <p className="text-sm text-red-800">{selectedApprovalRequest.rejectionReason}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="px-6 py-4 border-t border-slate-200 flex justify-between items-center bg-slate-50">
+              <button
+                onClick={() => setShowApprovalDetailModal(false)}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Đóng
+              </button>
+              {selectedApprovalRequest.status === 'pending' && (
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      handleReject(selectedApprovalRequest.id);
+                      setShowApprovalDetailModal(false);
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
+                  >
+                    <XCircle className="w-4 h-4" />
+                    Từ chối
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleApprove(selectedApprovalRequest.id);
+                      setShowApprovalDetailModal(false);
+                    }}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    Phê duyệt
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Approval Modal */}
+      {showApprovalModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full">
+            <div className="p-6 border-b border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg text-slate-900">Xác nhận phê duyệt</h3>
+                  <p className="text-sm text-slate-500">Phê duyệt {pendingApprovalIds.length} yêu cầu thay đổi</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div>
+                <label className="block text-sm text-slate-700 mb-2">
+                  Nội dung phê duyệt <span className="text-slate-400">(Không bắt buộc)</span>
+                </label>
+                <textarea
+                  value={approvalComment}
+                  onChange={(e) => setApprovalComment(e.target.value)}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập nội dung phê duyệt, ghi chú hoặc ý kiến (nếu có)..."
+                />
+              </div>
+
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-xs text-blue-700">
+                    <p className="font-medium">Lưu ý:</p>
+                    <p className="mt-1">Sau khi phê duyệt, các thay đổi sẽ được áp dụng vào hệ thống và không thể hoàn tác.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowApprovalModal(false);
+                  setApprovalComment('');
+                  setPendingApprovalIds([]);
+                }}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={confirmApproval}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                Xác nhận phê duyệt
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full">
+            <div className="p-6 border-b border-slate-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                  <XCircle className="w-5 h-5 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg text-slate-900">Xác nhận từ chối</h3>
+                  <p className="text-sm text-slate-500">Từ chối {pendingApprovalIds.length} yêu cầu thay đổi</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div>
+                <label className="block text-sm text-slate-700 mb-2">
+                  Lý do từ chối <span className="text-red-600">*</span>
+                </label>
+                <textarea
+                  value={approvalComment}
+                  onChange={(e) => setApprovalComment(e.target.value)}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Nhập lý do từ chối yêu cầu thay đổi..."
+                />
+              </div>
+
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-xs text-red-700">
+                    <p className="font-medium">Lưu ý:</p>
+                    <p className="mt-1">Vui lòng nhập rõ lý do từ chối để người yêu cầu có thể hiểu và chỉnh sửa lại.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowRejectModal(false);
+                  setApprovalComment('');
+                  setPendingApprovalIds([]);
+                }}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={confirmReject}
+                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                <XCircle className="w-4 h-4" />
+                Xác nhận từ chối
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Notification */}
+      {showSuccessNotification && (
+        <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-top">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-lg flex items-center gap-3 min-w-[420px]">
+            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <Check className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-sm text-green-900">Gửi yêu cầu thành công</h4>
+              <p className="text-xs text-green-700 mt-1">
+                {successNotificationMessage || 'Yêu cầu chỉnh sửa danh mục đã được gửi đến bộ phận phê duyệt'}
+              </p>
+            </div>
+            <button
+              onClick={() => setShowSuccessNotification(false)}
+              className="text-green-600 hover:text-green-800"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
