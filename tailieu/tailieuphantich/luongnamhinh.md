@@ -22,6 +22,27 @@ graph TD
     C --> H[Quản lý dữ liệu chủ]
     C --> I[Điều phối dữ liệu]
     C --> J[Quản trị & vận hành]
+    
+    subgraph "Quản lý thu thập"
+        D --> D1[Dashboard thu thập]
+        D --> D2[Thiết lập thu thập]
+        D --> D3[CSDL Trong ngành]
+        D --> D4[CSDL Ngoài ngành]
+        D --> D5[Đối soát dữ liệu]
+    end
+    
+    subgraph "Xử lý dữ liệu"
+        E --> E1[Thiết lập quy tắc]
+        E --> E2[CSDL Trong ngành]
+        E --> E3[CSDL Ngoài ngành]
+    end
+    
+    subgraph "Quản trị hệ thống"
+        J --> J1[Quản trị người dùng]
+        J --> J2[Cấu hình hệ thống]
+        J --> J3[Quản lý nhật ký]
+        J --> J4[Thống kê & báo cáo]
+    end
 ```
 
 **Mô tả quy trình:**

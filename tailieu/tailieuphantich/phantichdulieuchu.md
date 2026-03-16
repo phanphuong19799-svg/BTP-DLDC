@@ -7,11 +7,11 @@ Quản lý các thực thể dữ liệu gốc dùng chung (ví dụ: Người d
 
 ### 4.5.1.2. PM05.QLDLC.QL.MH01 – Danh sách thực thể dữ liệu chủ
 
-#### 4.5.1.2.1. MH01 Màn hình danh sách thực thể dữ liệu chủ (Cần bổ sung)
+#### 4.5.1.2.1. MH01 Màn hình danh sách thực thể dữ liệu chủ
 ##### Màn hình
 - Màn hình:
 
-*(Chèn hình ảnh màn hình Danh sách thực thể dữ liệu chủ tại đây)*
+![Danh sách thực thể dữ liệu chủ](./images/dulieuchu/MH01_dashboard.png)
 
 ##### Mô tả thông tin trên màn hình
 | Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
@@ -24,68 +24,93 @@ Quản lý các thực thể dữ liệu gốc dùng chung (ví dụ: Người d
 ##### Chức năng trên màn hình
 | STT | Mã chức năng | Định dạng | Mô tả |
 | :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Mở popup để tạo một thực thể mới. |
-| 2 | CN02 | Button icon | Mở popup quản lý các thuộc tính của thực thể (MH01.P01). |
-| 3 | CN03 | Button icon | Mở popup quản lý quy tắc định danh duy nhất (MH01.P02). |
-| 4 | CN04 | Button icon | Mở popup quản lý quy tắc hợp nhất dữ liệu (MH01.P03). |
-| 5 | CN05 | Button icon | Mở popup thiết lập quan hệ cho thực thể (MH01.P04). |
-| 6 | CN06 | Button icon | Mở popup xác nhận xóa một thực thể. |
+| 1 | CN01 | Button text | Mở Wizard 5 bước để tạo mới thực thể (MH01.W01). |
+| 2 | CN02 | Button text | Mở popup thêm mới nhanh thực thể (MH01.P01a). |
+| 3 | CN03 | Button icon | Mở Tab quản lý thuộc tính (MH01.T02). |
+| 4 | CN04 | Button icon | Mở Tab quản lý quy tắc hợp nhất (MH01.T03). |
+| 5 | CN05 | Button icon | Mở Tab thiết lập quan hệ (MH01.T04). |
+| 6 | CN06 | Button icon | Mở Tab quy tắc định danh (MH01.T05). |
 
-#### 4.5.1.2.2. MH01.P01 – Quản lý thuộc tính
+#### 4.5.1.3. PM05.QLDLC.QL.MH01.W01 – Wizard tạo mới thực thể (5 bước)
+##### Các bước thực hiện:
+- **Bước 1: Khởi tạo dữ liệu chủ**
+![Wizard Bước 1](./images/dulieuchu/MH01_wizard_s1.png)
+- **Bước 2: Tạo thuộc tính**
+![Wizard Bước 2](./images/dulieuchu/MH01_wizard_s2.png)
+- **Bước 3: Quy tắc hợp nhất**
+![Wizard Bước 3](./images/dulieuchu/MH01_wizard_s3.png)
+- **Bước 4: Thiết lập quan hệ**
+![Wizard Bước 4](./images/dulieuchu/MH01_wizard_s4.png)
+- **Bước 5: Phê duyệt**
+![Wizard Bước 5](./images/dulieuchu/MH01_wizard_s5.png)
+
+#### 4.5.1.4. PM05.QLDLC.QL.MH01.P01a – Thêm mới nhanh thực thể
 ##### Màn hình
 - Màn hình:
-
-![Popup Quản lý thuộc tính](./images/quanlythuoc_tinh.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 1 - Màn hình quản lý thuộc tính dữ liệu chủ</p>
+![Thêm nhanh thực thể](./images/dulieuchu/MH01_P01a_them_nhanh.png)
 
 ##### Mô tả thông tin trên màn hình
 | Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
 | :--- | :--- | :--- | :--- | :--- |
-| Tên thuộc tính | VARCHAR2(255) | Có | - | Tên hiển thị của trường thông tin (VD: Căn cước công dân, Họ và tên). |
-| Mã thuộc tính | VARCHAR2(50) | Có | - | Mã định danh kỹ thuật duy nhất của trường (viết liền, không dấu). |
-| Kiểu dữ liệu | VARCHAR2(50) | Có | VARCHAR2 | Lựa chọn: VARCHAR2, NUMBER, DATE, CLOB, v.v. |
-| Độ dài | NUMBER | Không | - | Giới hạn số ký tự tối đa cho phép. |
-| Bắt buộc | NUMBER(1) | Không | 0 | Quy định trường có bắt buộc nhập hay không (1: Có / 0: Không). |
+| Tên thực thể | VARCHAR2(255) | Có | - | Nhập tên thực thể mới. |
+| Cơ quan quản lý | DROPDOWN | Có | - | Chọn đơn vị chủ quản dữ liệu. |
 
-##### Chức năng trên màn hình
-| STT | Mã chức năng | Định dạng | Mô tả |
-| :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Thêm mới hoặc cập nhật thông tin thuộc tính vào danh sách. |
-| 2 | CN02 | Button text | Đóng Popup không lưu thay đổi. |
-
-#### 4.5.1.2.3. MH01.P02 – Quy tắc định danh duy nhất
+#### 4.5.1.5. PM05.QLDLC.QL.MH01.P02 – Thêm thuộc tính mới (Popup trong Tab 2)
 ##### Màn hình
 - Màn hình:
-
-![Quy tắc định danh duy nhất](./images/quytacdinhdanh.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 2 - Màn hình thiết lập quy tắc định danh duy nhất</p>
+![Thêm thuộc tính](./images/dulieuchu/MH01_P02_them_thuoctinh.png)
 
 ##### Mô tả thông tin trên màn hình
-... (giữ nguyên)
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Tên trường | VARCHAR2(100) | Có | - | Tên vật lý của trường trong DB. |
+| Tên hiển thị | VARCHAR2(255) | Có | - | Tên nhãn hiển thị trên Form. |
+| Kiểu dữ liệu | DROPDOWN | Có | String | String, Number, Date... |
 
-#### 4.5.1.2.4. MH01.P03 – Quy tắc hợp nhất dữ liệu
+#### 4.5.1.6. PM05.QLDLC.QL.MH01.P03 – Thêm quy tắc hợp nhất mới (Popup trong Tab 3)
 ##### Màn hình
 - Màn hình:
-
-![Quy tắc hợp nhất dữ liệu](./images/quytachopnhat.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 3 - Màn hình thiết lập quy tắc hợp nhất dữ liệu</p>
+![Thêm quy tắc hợp nhất](./images/dulieuchu/MH01_P03_them_quytac_hopnhat.png)
 
 ##### Mô tả thông tin trên màn hình
-... (giữ nguyên)
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Tên quy tắc | VARCHAR2(255) | Có | - | Tên gợi nhớ cho quy tắc hợp nhất. |
+| Thuộc tính so sánh | DROPDOWN | Có | - | Chọn trường dùng để so trùng (VD: Số CCCD). |
+| Trọng số | NUMBER | Có | 100 | Độ ưu tiên của quy tắc. |
 
-#### 4.5.1.2.5. MH01.P04 – Thiết lập quan hệ thực thể
+#### 4.5.1.7. PM05.QLDLC.QL.MH01.P04 – Thêm quan hệ thực thể mới (Popup trong Tab 4)
 ##### Màn hình
 - Màn hình:
-
-![Thiết lập quan hệ thực thể](./images/thietlapquanhe.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 4 - Màn hình thiết lập quan hệ thực thể</p>
+![Thêm quan hệ](./images/dulieuchu/MH01_P04_them_quanhe.png)
 
 ##### Mô tả thông tin trên màn hình
-... (giữ nguyên)
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Thực thể liên kết | DROPDOWN | Có | - | Chọn thực thể đích (VD: Tổ chức). |
+| Loại quan hệ | DROPDOWN | Có | 1-1 | 1-1, 1-N, N-N. |
+
+#### 4.5.1.8. PM05.QLDLC.QL.MH01.P05 – Thêm quy tắc định danh duy nhất (Popup trong Tab 5)
+##### Màn hình
+- Màn hình:
+![Thêm quy tắc định danh](./images/dulieuchu/MH01_P05_them_quytac_dinhdanh.png)
+
+##### Mô tả thông tin trên màn hình
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Mã định danh | VARCHAR2(50) | Có | - | VD: GLOBAL_ID, CITIZEN_ID. |
+| Quy tắc tạo | VARCHAR2(500) | Có | - | Định dạng logic tạo mã. |
+
+#### 4.5.1.9. PM05.QLDLC.QL.MH01.P06 – Chi tiết phê duyệt (Popup trong Tab 6)
+##### Màn hình
+- Màn hình:
+![Chi tiết phê duyệt](./images/dulieuchu/MH01_P06_chitiet_pheduyet.png)
+
+##### Mô tả thông tin trên màn hình
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Nội dung yêu cầu | VARCHAR2(1000) | - | - | Tóm tắt các thay đổi cấu trúc dữ liệu chủ. |
+| Trạng thái | VARCHAR2(50) | - | - | Chờ duyệt, Đã duyệt, Từ chối. |
 
 
 ## 4.5.2. PM05.QLDLC.CD – Cập nhật & Công khai dữ liệu chủ
@@ -98,9 +123,7 @@ Quản lý vòng đời của các bản ghi dữ liệu chủ, bao gồm việc
 ##### Màn hình
 - Màn hình:
 
-![Cập nhật dữ liệu chủ](./images/capnhatdulieuchu.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 5 - Màn hình quy trình cập nhật dữ liệu chủ</p>
+![Cập nhật dữ liệu chủ](./images/dulieuchu/MH02_dashboard.png)
 
 ##### Mô tả thông tin trên màn hình
 | Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
@@ -112,39 +135,51 @@ Quản lý vòng đời của các bản ghi dữ liệu chủ, bao gồm việc
 ##### Chức năng trên màn hình
 | STT | Mã chức năng | Định dạng | Mô tả |
 | :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Mở popup so sánh và hợp nhất các bản ghi trùng lặp (MH02.P01). |
-| 2 | CN02 | Button text | Xác nhận cập nhật bản ghi vào kho Dữ liệu chủ chính thức. |
-| 3 | CN03 | Button text | Bỏ qua các thay đổi và không cập nhật bản ghi. |
+| 1 | CN01 | Button text | Mở popup xem chi tiết và hợp nhất bản ghi (MH02.P01). |
 
-#### 4.5.2.2.2. MH02.P01 – So sánh và hợp nhất
+#### 4.5.2.2.2. MH02.P01 – Chi tiết và hợp nhất bản ghi
 ##### Màn hình
 - Màn hình:
 
-![So sánh hợp nhất](./images/sosanhhopnhat_master.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 7 - Giao diện so sánh dữ liệu trùng lặp và chọn giá trị chuẩn</p>
+![Chi tiết dữ liệu chủ](./images/dulieuchu/MH02_P01_chitiet.png)
 
 ##### Mô tả thông tin trên màn hình
 | Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
 | :--- | :--- | :--- | :--- | :--- |
-| Danh sách thuộc tính | CLOB | - | - | Hiển thị side-by-side các giá trị từ 2 hoặc nhiều bản ghi trùng lặp. |
-| Giá trị lựa chọn | VARCHAR2(1000) | Có | - | Người dùng chọn giá trị chính xác (Golden record) cho từng thuộc tính. |
+| Tab Nguồn dữ liệu | - | - | - | Hiển thị các nguồn dữ liệu gốc cấu thành bản ghi. |
+| Tab Dữ liệu đã gộp | - | - | - | Hiển thị kết quả sau khi hợp nhất theo quy tắc. |
 
-##### Chức năng trên màn hình
-| STT | Mã chức năng | Định dạng | Mô tả |
-| :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Thực hiện hợp nhất các bản ghi dựa trên các giá trị đã chọn. |
-| 2 | CN02 | Button text | Hủy bỏ và đóng popup. |
-| 3 | CN03 | Button text | Đánh dấu không phải bản ghi trùng lặp. |
-
-### 4.5.2.3. PM05.QLDLC.CD.MH03 – Công khai dữ liệu chủ
-#### 4.5.2.3.1. MH03 Màn hình Công khai dữ liệu chủ
+#### 4.5.2.2.3. MH02.P02 – Chỉnh sửa bản ghi dữ liệu chủ
 ##### Màn hình
 - Màn hình:
 
-![Công khai dữ liệu chủ](./images/congkhaidulieuchu.png)
+![Chỉnh sửa dữ liệu chủ](./images/dulieuchu/MH02_P02_sua.png)
 
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 6 - Màn hình thiết lập công khai dữ liệu chủ</p>
+### 4.5.2.3. PM05.QLDLC.CD.MH03 – Công khai dữ liệu chủ
+#### 4.5.2.3.1. MH03 Màn hình Báo cáo & Tra cứu dữ liệu chủ
+##### Màn hình
+- Màn hình:
+
+![Báo cáo dữ liệu chủ](./images/dulieuchu/MH03_dashboard.png)
 
 ##### Mô tả thông tin trên màn hình
-... (giữ nguyên)
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Tab Tra cứu | - | - | - | Tìm kiếm và xem chi tiết từng bản ghi dữ liệu chủ. |
+| Tab Báo cáo sử dụng | - | - | - | Thống kê tần suất truy cập và sử dụng dữ liệu chủ theo ứng dụng/đơn vị. |
+| Tab Báo cáo vòng đời | - | - | - | Thống kê về biến động dữ liệu chủ (tạo mới, cập nhật, hợp nhất). |
+
+#### 4.5.2.3.2. MH03.P01 – Chi tiết bản ghi tra cứu
+##### Màn hình
+- Màn hình:
+![Chi tiết bản ghi](./images/dulieuchu/MH03_P01_chitiet.png)
+
+#### 4.5.2.3.3. MH03.T02 – Tab Báo cáo sử dụng dữ liệu chủ
+##### Màn hình
+- Màn hình:
+![Báo cáo sử dụng](./images/dulieuchu/MH03_tab_baocao_sudung.png)
+
+#### 4.5.2.3.4. MH03.T03 – Tab Báo cáo vòng đời dữ liệu
+##### Màn hình
+- Màn hình:
+![Báo cáo vòng đời](./images/dulieuchu/MH03_tab_baocao_vongdoi.png)

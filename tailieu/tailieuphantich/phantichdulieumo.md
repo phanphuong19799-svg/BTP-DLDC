@@ -10,43 +10,50 @@ Quản lý vòng đời của các bộ dữ liệu mở, từ khâu tạo mới
 ##### Màn hình
 - Màn hình:
 
-![Thiết lập danh mục dữ liệu mở](./images/thietlapdanhmuc_dlm.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 1 - Giao diện danh sách thiết lập dữ liệu mở</p>
-
-##### Mô tả thông tin trên màn hình
-... (giữ nguyên)
-
-##### Chức năng trên màn hình
-| STT | Mã chức năng | Định dạng | Mô tả |
-| :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Mở popup để tạo mới một hồ sơ dữ liệu mở (MH01.P01). |
-| 2 | CN02 | Button icon | Mở popup cập nhật thông tin (MH01.P01). |
-| 3 | CN03 | Button icon | Mở popup xác nhận để loại bỏ hồ sơ (MH01.P02). |
-| 4 | CN04 | Button icon | Mở popup xác nhận gửi phê duyệt (MH01.P03). |
-
-#### 4.8.1.2.2. MH01.P01 – Thêm/Sửa hồ sơ dữ liệu mở
-##### Màn hình
-- Màn hình:
-
-![Thêm sửa dữ liệu mở](./images/themsua_dlmo.png)
-
-<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 3 - Màn hình tạo mới hoặc cập nhật thông tin dữ liệu mở</p>
+![Thiết lập danh mục dữ liệu mở](./images/dulieumo/MH01_dashboard.png)
 
 ##### Mô tả thông tin trên màn hình
 | Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
 | :--- | :--- | :--- | :--- | :--- |
-| Mã danh mục | VARCHAR2(50) | Có | - | Mã định danh duy nhất của bộ dữ liệu mở. |
-| Tên danh mục | VARCHAR2(255) | Có | - | Tên hiển thị (VD: Danh mục hiệu thuốc, Danh mục trường học). |
-| Đơn vị quản lý | VARCHAR2(255) | Có | - | Đơn vị chịu trách nhiệm cung cấp dữ liệu. |
-| Lĩnh vực | VARCHAR2(100) | Có | - | Lọc theo lĩnh vực (Y tế, Giáo dục, Kinh tế...). |
-| Mô tả | VARCHAR2(1000)| Không | - | Nội dung tóm tắt của bộ dữ liệu. |
+| Tên danh mục | VARCHAR2(255) | - | - | Tên của bộ dữ liệu mở. |
+| Lĩnh vực | VARCHAR2(100) | - | - | Chuyên mục dữ liệu. |
+| Trạng thái | VARCHAR2(50) | - | - | Mới tạo, Chờ duyệt, Đã duyệt... |
 
 ##### Chức năng trên màn hình
 | STT | Mã chức năng | Định dạng | Mô tả |
 | :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Lưu thông tin hồ sơ và đóng popup. |
-| 2 | CN02 | Button text | Hủy thao tác. |
+| 1 | CN01 | Button text | Mở popup để tạo mới một hồ sơ dữ liệu mở (MH01.P01a). |
+| 2 | CN02 | Button icon | Mở popup cập nhật thông tin (MH01.P01b). |
+| 3 | CN03 | Button icon | Mở popup xác nhận để loại bỏ hồ sơ (MH01.P02). |
+| 4 | CN04 | Button icon | Mờ popup xác nhận gửi phê duyệt (MH01.P03). |
+
+#### 4.8.1.3. PM08.DLMO.TL.MH01.T02 – Tab Phê duyệt danh mục
+##### Màn hình
+- Màn hình:
+![Phê duyệt dữ liệu mở](./images/dulieumo/MH01_T02_pheduyet.png)
+
+#### 4.8.1.4. PM08.DLMO.TL.MH01.T03 – Tab Lịch sử thay đổi
+##### Màn hình
+- Màn hình:
+![Lịch sử thay đổi](./images/dulieumo/MH01_T03_history.png)
+
+#### 4.8.1.2.2. MH01.P01a – Thêm mới hồ sơ dữ liệu mở
+##### Màn hình
+- Màn hình:
+![Thêm mới dữ liệu mở](./images/dulieumo/MH01_P01a_them.png)
+
+##### Mô tả thông tin trên màn hình
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Mã danh mục | VARCHAR2(50) | Có | - | Mã định danh duy nhất. |
+| Tên danh mục | VARCHAR2(255) | Có | - | Tên hiển thị. |
+| Lĩnh vực | DROPDOWN | Có | - | Chọn từ danh mục lĩnh vực. |
+| Tần suất | DROPDOWN | Có | Hàng tháng | Hàng ngày, Tuần, Tháng, Quý, Năm. |
+
+#### 4.8.1.2.3. MH01.P01b – Cập nhật hồ sơ dữ liệu mở
+##### Màn hình
+- Màn hình:
+![Sửa dữ liệu mở](./images/dulieumo/MH01_P01b_sua.png)
 
 #### 4.8.1.2.3. MH01.P02 – Xác nhận xóa hồ sơ
 ##### Màn hình
@@ -134,5 +141,23 @@ Quản lý vòng đời của các bộ dữ liệu mở, từ khâu tạo mới
 ... (giữ nguyên)
 
 ## 4.8.3. PM08.DLMO.BC – Báo cáo và Thống kê
+### 4.8.3.1. PM08.DLMO.BC.MH03 – Giao diện Thống kê
+##### Màn hình
+- Màn hình:
+![Thống kê dữ liệu mở](./images/dulieumo/MH03_dashboard.png)
 
-... (giữ nguyên)
+##### Mô tả thông tin trên màn hình
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Tab Báo cáo thống kê | - | - | - | Biểu đồ trực quan hóa dữ liệu. |
+| Tab Báo cáo phân loại | - | - | - | Phân tích theo phòng ban, đơn vị. |
+| Tab Thống kê lượt truy cập | - | - | - | Theo dõi traffic và download. |
+
+#### 4.8.3.2. MH03.T01 – Tab Báo cáo thống kê
+![Báo cáo thống kê](./images/dulieumo/MH03_T01_stat.png)
+
+#### 4.8.3.3. MH03.T02 – Tab Báo cáo phân loại
+![Báo cáo phân loại](./images/dulieumo/MH03_T02_classify.png)
+
+#### 4.8.3.4. MH03.T03 – Tab Thống kê lượt truy cập
+![Thống kê lượt truy cập](./images/dulieumo/MH03_T03_traffic.png)

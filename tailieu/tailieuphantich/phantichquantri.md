@@ -31,7 +31,7 @@ Cán bộ quản trị kho DLDC phải:
 ##### Màn hình
 - Màn hình:
 
-![Danh sách người dùng (HA01)](./images/MH13_quanlynguoidung.png)
+![Danh sách người dùng (HA01)](./images/quantri/MH13_quanlynguoidung.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 1 - Màn hình danh sách người dùng</p>
 

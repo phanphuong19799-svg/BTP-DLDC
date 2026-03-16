@@ -11,7 +11,7 @@ Cung cấp một cái nhìn toàn cảnh, tập trung về hiệu năng và tìn
 ##### Màn hình
 - Màn hình:
 
-![Dashboard Tổng quan](./images/dashboard_tongquan.png)
+![Dashboard Tổng quan](./images/tongquan/dashboard_tongquan.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 1 - Màn hình Dashboard Tổng quan hệ thống</p>
 
@@ -43,64 +43,105 @@ Hiển thị các con số quan trọng nhất của hệ thống. Người dùn
 | 2 | CN02 | Hover | Di chuột qua các cột/phần của biểu đồ để xem số liệu chi tiết. |
 | 3 | CN03 | Dropdown | Lọc dữ liệu trên toàn bộ dashboard theo khoảng thời gian (7 ngày, 30 ngày...). |
 
-#### 4.1.1.2.2. MH01.P01 – Chi tiết chỉ số (Popup)
+#### 4.1.1.2.2. MH01.P01 – Chi tiết chỉ số Thu thập (Popup)
 ##### Màn hình
-- Màn hình: (Popup hiển thị danh sách chi tiết)
+- Màn hình chi tiết các nguồn dữ liệu đã thu thập:
+
+![Chi tiết Thu thập](./images/tongquan/popup_tongbanghi.png)
+
+<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 2 - Màn hình Popup chi tiết các chỉ số Thu thập</p>
 
 ##### Mô tả thông tin trên màn hình
-Hiển thị khi người dùng nhấn vào các thẻ KPI (Thu thập, Xử lý, Chia sẻ).
-| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
-| :--- | :--- | :--- | :--- | :--- |
-| Tên dữ liệu | VARCHAR2(255) | - | - | Tên CSDL hoặc dịch vụ cụ thể. |
-| Nguồn | VARCHAR2(255) | - | - | Hệ thống hoặc đơn vị cung cấp dữ liệu. |
-| Số lượng đồng bộ | NUMBER | - | - | Tổng số bản ghi đã ghi nhận. |
-| Lần đồng bộ cuối | DATE | - | - | Thời điểm cập nhật dữ liệu gần nhất. |
-| Trạng thái | VARCHAR2(50) | - | - | Thành công, Cảnh báo hoặc Lỗi. |
+Hiển thị khi người dùng nhấn vào thẻ **Thu thập** ở màn hình Tổng quan.
+
+**A. Các thẻ tổng hợp (Summary Cards)**
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| **Tổng nguồn** | NUMBER | V | Hiển thị số lượng các hệ thống/đơn vị đang kết nối thu thập dữ liệu (Ví dụ: 10). |
+| **Tổng đồng bộ** | NUMBER | V | Tổng số lượng bản ghi đã được tải về kho dữ liệu (Ví dụ: 4,432,981). |
+| **Thành công** | NUMBER | V | Số lượng nguồn dữ liệu đang hoạt động ổn định (Ví dụ: 8). |
+| **Cảnh báo/Lỗi** | NUMBER | V | Số lượng nguồn dữ liệu đang gặp sự cố kết nối hoặc đồng bộ (Ví dụ: 2). |
+
+**B. Bảng danh sách chi tiết**
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| **STT** | NUMBER | V | Số thứ tự dòng. |
+| **Tên dữ liệu** | VARCHAR2(255) | V | Tên CSDL hoặc Danh mục được thu thập. |
+| **Nguồn** | VARCHAR2(255) | V | Tên hệ thống hoặc đơn vị cung cấp dữ liệu. |
+| **Số lượng đồng bộ** | NUMBER | V | Số lượng bản ghi thực tế thu thập từ nguồn cụ thể. |
+| **Lần đồng bộ cuối** | DATE | V | Thời điểm gần nhất hệ thống thực hiện tác vụ thu thập. |
+| **Trạng thái** | VARCHAR2(50) | V | Trạng thái đồng bộ (`Thành công`, `Cảnh báo`, `Lỗi`). |
 
 ##### Chức năng trên màn hình
 | STT | Mã chức năng | Định dạng | Mô tả |
 | :--- | :--- | :--- | :--- |
-| 1 | CN01 | Button text | Đóng popup. |
+| 1 | CN01 | Button | Nút **Đóng** để thoát màn hình chi tiết. |
 
-## 4.1.2. Luồng ứng dụng tổng quan
+#### 4.1.1.2.3. MH01.P02 – Chi tiết chỉ số Xử lý (Popup)
+##### Màn hình
+- Màn hình chi tiết tiến độ xử lý dữ liệu:
 
-### *4.1.2.1. Sơ đồ luồng ứng dụng*
-Sơ đồ dưới đây thể hiện luồng điều hướng chính của người dùng sau khi đăng nhập vào hệ thống:
+![Chi tiết Xử lý](./images/tongquan/popup_banghixuly.png)
 
-```mermaid
-graph TD
-    A[Màn hình Đăng nhập] --> B{Đăng nhập thành công?}
-    B -- Có --> C[Tổng quan - Dashboard]
-    B -- Không --> A
-    
-    C --> D[Quản lý thu thập]
-    C --> E[Xử lý dữ liệu]
-    C --> F[Quản lý danh mục]
-    C --> G[Dữ liệu mở]
-    C --> H[Quản lý dữ liệu chủ]
-    C --> I[Điều phối dữ liệu]
-    C --> J[Quản trị & vận hành]
-    
-    subgraph "Quản lý thu thập"
-        D --> D1[Dashboard thu thập]
-        D --> D2[Thiết lập thu thập]
-        D --> D3[CSDL Trong ngành]
-        D --> D4[CSDL Ngoài ngành]
-        D --> D5[Đối soát dữ liệu]
-    end
-    
-    subgraph "Xử lý dữ liệu"
-        E --> E1[Thiết lập quy tắc]
-        E --> E2[CSDL Trong ngành]
-        E --> E3[CSDL Ngoài ngành]
-    end
-    
-    subgraph "Quản trị hệ thống"
-        J --> J1[Quản trị người dùng]
-        J --> J2[Cấu hình hệ thống]
-        J --> J3[Quản lý nhật ký]
-        J --> J4[Thống kê & báo cáo]
-    end
-```
----
-*Tài liệu này cung cấp cái nhìn tổng thể. Chi tiết về từng phân hệ vui lòng tham khảo các tệp tin phân tích tương ứng.*
+<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 3 - Màn hình Popup chi tiết các chỉ số Xử lý</p>
+
+##### Mô tả thông tin trên màn hình
+Hiển thị khi người dùng nhấn vào thẻ **Xử lý** ở màn hình Tổng quan.
+
+**A. Các thẻ tổng hợp (Summary Cards)**
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| **Tổng nguồn** | NUMBER | V | Số lượng các luồng dữ liệu đang thực hiện quy trình xử lý (Ví dụ: 8). |
+| **Tổng xử lý** | NUMBER | V | Tổng số bản ghi đã đi qua các bước làm sạch và chuẩn hóa (Ví dụ: 4,063,178). |
+| **Thành công** | NUMBER | V | Số lượng luồng xử lý hoàn tất không có lỗi quy tắc (Ví dụ: 7). |
+| **Cảnh báo/Lỗi** | NUMBER | V | Số lượng luồng đang gặp lỗi dữ liệu hoặc quy tắc (Ví dụ: 1). |
+
+**B. Bảng danh sách chi tiết**
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| **STT** | NUMBER | V | Số thứ tự dòng. |
+| **Tên dữ liệu** | VARCHAR2(255) | V | Tên tập dữ liệu đang được xử lý. |
+| **Nguồn** | VARCHAR2(255) | V | Quy trình hoặc đơn vị chịu trách nhiệm xử lý. |
+| **Số lượng xử lý** | NUMBER | V | Số lượng bản ghi đã được chuẩn hóa thành công. |
+| **Lần xử lý cuối** | DATE | V | Thời điểm cập nhật trạng thái xử lý gần nhất. |
+| **Trạng thái** | VARCHAR2(50) | V | Tiến độ (`Thành công`, `Đang xử lý`, `Lỗi quy tắc`). |
+
+##### Chức năng trên màn hình
+| STT | Mã chức năng | Định dạng | Mô tả |
+| :--- | :--- | :--- | :--- |
+| 1 | CN01 | Button | Nút **Đóng** để thoát màn hình chi tiết. |
+
+#### 4.1.1.2.4. MH01.P03 – Chi tiết chỉ số Chia sẻ (Popup)
+##### Màn hình
+- Màn hình chi tiết các lượt truy xuất và cung cấp dữ liệu:
+
+![Chi tiết Chia sẻ](./images/tongquan/popup_luotchiase.png)
+
+<p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 4 - Màn hình Popup chi tiết lượt Chia sẻ dữ liệu</p>
+
+##### Mô tả thông tin trên màn hình
+Hiển thị khi người dùng nhấn vào thẻ **Chia sẻ** ở màn hình Tổng quan.
+
+**A. Các thẻ tổng hợp (Summary Cards)**
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| **Tổng nguồn** | NUMBER | V | Số lượng các dịch vụ API hoặc tệp tin đang được chia sẻ (Ví dụ: 7). |
+| **Tổng lượt chia sẻ**| NUMBER | V | Tổng số yêu cầu truy xuất dữ liệu thành công từ các đơn vị (Ví dụ: 156,892). |
+| **Thành công** | NUMBER | V | Số lượng dịch vụ đang hoạt động sẵn sàng (Ví dụ: 7). |
+| **Cảnh báo/Lỗi** | NUMBER | V | Số lượng dịch vụ đang tạm dừng hoặc gặp lỗi kết nối (Ví dụ: 0). |
+
+**B. Bảng danh sách chi tiết**
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| **STT** | NUMBER | V | Số thứ tự dòng. |
+| **Tên dịch vụ** | VARCHAR2(255) | V | Tên API hoặc dịch vụ chia sẻ dữ liệu. |
+| **Đối tượng** | VARCHAR2(255) | V | Tên đơn vị hoặc hệ thống bên ngoài khai thác dữ liệu. |
+| **Số lượt chia sẻ** | NUMBER | V | Tổng số yêu cầu phát sinh từ dịch vụ/đối tượng đó. |
+| **Lần truy cập cuối**| DATE | V | Thời điểm phát sinh lượt truy xuất gần nhất. |
+| **Trạng thái** | VARCHAR2(50) | V | Trạng thái dịch vụ (`Hoạt động`, `Tạm dừng`). |
+
+##### Chức năng trên màn hình
+| STT | Mã chức năng | Định dạng | Mô tả |
+| :--- | :--- | :--- | :--- |
+| 1 | CN01 | Button | Nút **Đóng** để thoát màn hình chi tiết. |
+
