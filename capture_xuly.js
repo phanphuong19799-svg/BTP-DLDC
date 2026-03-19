@@ -3,170 +3,235 @@ const fs = require('fs');
 const path = require('path');
 
 (async () => {
-    console.log('Script started...');
-    const imgDir = path.join(__dirname, 'tailieu', 'tailieuphantich', 'images');
-    
+    console.log('🚀 Script started...');
+
+    const imgDir = path.join(__dirname, 'tailieu', 'tailieuphantich', 'images', 'xuly');
+
     if (!fs.existsSync(imgDir)) {
         fs.mkdirSync(imgDir, { recursive: true });
     }
 
-    const browser = await puppeteer.launch({ 
+    const browser = await puppeteer.launch({
         headless: 'new',
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
+
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
 
-    console.log('Navigating to app...');
+    // ==============================
+    // LOAD APP
+    // ==============================
+    console.log('🌐 Navigating to app...');
     try {
-        await page.goto('http://localhost:3002/', { waitUntil: 'networkidle2', timeout: 30000 });
+        await page.goto('http://localhost:3002/', {
+            waitUntil: 'networkidle2',
+            timeout: 30000
+        });
     } catch (e) {
-        console.error('FAILED to load app. Is npm run dev running on port 3002?');
+        console.error('❌ Cannot load app. Run npm dev first.');
         await browser.close();
         return;
     }
 
-    console.log('Logging in...');
-    const loginBtn = await page.$('button[type="submit"]');
-    if (loginBtn) {
-        await loginBtn.click();
-        await page.waitForNavigation({ waitUntil: 'networkidle2' }).catch(() => {});
+    // ==============================
+    // LOGIN
+    // ==============================
+    console.log('🔐 Logging in...');
+    try {
+        await page.waitForSelector('button[type="submit"]', { timeout: 5000 });
+        await page.click('button[type="submit"]');
+        await page.waitForNavigation({ waitUntil: 'networkidle2' }).catch(() => { });
+    } catch (e) {
+        console.log('⚠ Skip login (maybe already logged in)');
     }
 
-    await new Promise(r => setTimeout(r, 2000));
+    await page.waitForTimeout(2000);
 
-    const navigateByPath = async (...pathItems) => {
-        console.log(`Navigating to: ${pathItems.join(' > ')}`);
-        const targetText = pathItems[pathItems.length - 1];
-        
-        const tryClickTarget = async () => {
-            return await page.evaluate((tText) => {
-                const spans = Array.from(document.querySelectorAll('aside span, aside button'));
-                const found = spans.find(s => s.textContent.trim() === tText);
-                if (found) {
-                    const clickable = found.closest('button') || found.closest('div[role="button"]') || found;
+    // ==============================
+    // NAVIGATION (STABLE)
+    // ==============================
+    const navigateByPath = async (...items) => {
+        for (const item of items) {
+            console.log(`➡ Navigate: ${item}`);
+
+            const found = await page.waitForFunction((text) => {
+                const elements = Array.from(document.querySelectorAll('aside *'));
+                return elements.find(el => el.innerText?.trim() === text);
+            }, {}, item).catch(() => null);
+
+            if (!found) {
+                console.error(`❌ Not found: ${item}`);
+                continue;
+            }
+
+            await page.evaluate((text) => {
+                const elements = Array.from(document.querySelectorAll('aside *'));
+                const el = elements.find(e => e.innerText?.trim() === text);
+                if (el) {
+                    const clickable = el.closest('button, div[role="button"]') || el;
                     clickable.click();
-                    return true;
                 }
-                return false;
-            }, targetText);
-        };
-
-        if (await tryClickTarget()) {
-            await new Promise(r => setTimeout(r, 1500));
-            return;
-        }
-
-        for (let i = 0; i < pathItems.length; i++) {
-            const item = pathItems[i];
-            const clicked = await page.evaluate((iText) => {
-                const elements = Array.from(document.querySelectorAll('aside span, aside button'));
-                const found = elements.find(el => el.textContent.trim() === iText);
-                if (found) {
-                    const clickable = found.closest('button') || found.closest('div[role="button"]') || found;
-                    const isExpanded = clickable.getAttribute('aria-expanded') === 'true' || 
-                                       clickable.innerHTML.includes('lucide-chevron-down') ||
-                                       clickable.classList.contains('rotate-180') ||
-                                       clickable.classList.contains('rotate-90');
-                    
-                    if (iText === document.querySelector('label-of-target') || !isExpanded) {
-                        clickable.click();
-                        return true;
-                    }
-                    return 'already_expanded';
-                }
-                return false;
             }, item);
 
-            if (clicked === true) {
-                await new Promise(r => setTimeout(r, 1000));
-            } else if (clicked === false) {
-                console.error(`Could not find: ${item}`);
-            }
+            await page.waitForTimeout(1200);
         }
-        await new Promise(r => setTimeout(r, 1000));
     };
 
-    const takeScreenshot = async (filename, action = null) => {
+    // ==============================
+    // AUTO SCROLL
+    // ==============================
+    const autoScroll = async () => {
+        await page.evaluate(async () => {
+            window.scrollTo(0, 0);
+            await new Promise(r => setTimeout(r, 300));
+            window.scrollTo(0, document.body.scrollHeight);
+            await new Promise(r => setTimeout(r, 300));
+            window.scrollTo(0, 0);
+        });
+    };
+
+    // ==============================
+    // SCREENSHOT
+    // ==============================
+    const takeScreenshot = async (filename, action = null, isPopup = false) => {
         if (action) {
             await action(page);
-            await new Promise(r => setTimeout(r, 2000)); 
+            await page.waitForTimeout(1500);
         }
-        
+
         const savePath = path.join(imgDir, filename);
-        
-        if (filename.includes('popup') || filename.includes('quanly_quytac') || filename.includes('phanloai') || filename.includes('banghi_loi') || filename.includes('lichsu')) {
-            await page.waitForSelector('div.shadow-xl, div[role="dialog"]', { timeout: 3000 }).catch(() => {});
-            const modalSelectors = ['div[role="dialog"] div.bg-white', 'div.bg-white.shadow-xl', 'div[role="dialog"]', 'div.bg-white.rounded-lg.max-w-md', 'div.bg-white.rounded-lg'];
-            
-            let dialog = null;
-            for (const selector of modalSelectors) {
-                const elements = await page.$$(selector);
-                for (const el of elements) {
-                    const box = await el.boundingBox();
-                    if (box && box.width > 300 && box.height > 150) {
-                        dialog = el;
-                        break;
-                    }
-                }
-                if (dialog) break;
-            }
+
+        if (isPopup) {
+            await page.waitForSelector('div[role="dialog"]', { timeout: 3000 }).catch(() => { });
+
+            const dialog = await page.$('div[role="dialog"]');
 
             if (dialog) {
                 await dialog.screenshot({ path: savePath });
-                console.log(`[PHOTO] ${filename} (Cropped Popup)`);
-            } else {
-                await page.screenshot({ path: savePath });
-                console.log(`[PHOTO] ${filename} (FALLBACK - No Dialog Found)`);
+                console.log(`📸 ${filename} (popup)`);
+                return;
             }
-        } else {
-            await page.screenshot({ path: savePath });
-            console.log(`[PHOTO] ${filename}`);
         }
+
+        await autoScroll();
+
+        await page.screenshot({
+            path: savePath,
+            fullPage: true
+        });
+
+        console.log(`📸 ${filename}`);
     };
 
+    // ==============================
+    // CLOSE DIALOG
+    // ==============================
     const closeDialog = async () => {
         await page.keyboard.press('Escape');
-        await new Promise(r => setTimeout(r, 800));
+        await page.waitForTimeout(500);
+
         await page.evaluate(() => {
             const btns = Array.from(document.querySelectorAll('button'));
-            const closeBtn = btns.find(b => ['Đóng', 'Hủy', 'Cancel', 'Close'].includes(b.textContent.trim()));
-            if (closeBtn) closeBtn.click();
+            const btn = btns.find(b =>
+                ['Đóng', 'Hủy', 'Cancel', 'Close'].includes(b.innerText.trim())
+            );
+            if (btn) btn.click();
         });
-        await new Promise(r => setTimeout(r, 800));
+
+        await page.waitForTimeout(800);
     };
 
-    // Xử lý dữ liệu
-    await navigateByPath('Xử lý dữ liệu', 'Dashboard xử lý');
-    await takeScreenshot('dashboard_xuly.png');
+    // ==============================
+    // CONFIG SCREEN (RẤT QUAN TRỌNG)
+    // ==============================
+    const SCREENS = [
+        {
+            path: ['Xử lý dữ liệu', 'Dashboard xử lý'],
+            file: 'MH01_dashboard.png'
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_danhsach.png'
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P01_quytac.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Quy tắc"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P02_baomat.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Phân loại"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P03_loi.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Bản ghi lỗi"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P04_lichsu.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Lịch sử"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P05_themmoi.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Thêm mới"], button[title="Tạo mới"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P06_xoa.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Xóa"], button[title="Xóa bỏ"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        },
+        {
+            path: ['Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc'],
+            file: 'MH02_P07_laplich.png',
+            action: async (p) => {
+                const btn = await p.$('button[title="Lập lịch"], button[title="Scheduler"]');
+                if (btn) await btn.click();
+            },
+            isPopup: true
+        }
+    ];
 
-    await navigateByPath('Xử lý dữ liệu', 'Thiết lập & Quản lý quy tắc');
-    await takeScreenshot('danhsach_cauhin_xuly.png');
+    // ==============================
+    // RUN ALL
+    // ==============================
+    for (const screen of SCREENS) {
+        await navigateByPath(...screen.path);
+        await takeScreenshot(screen.file, screen.action, screen.isPopup);
 
-    await takeScreenshot('quanly_quytac_xuly.png', async (p) => {
-        const btn = await p.$('button[title="Quy tắc"]');
-        if (btn) await btn.click();
-    });
-    await closeDialog();
+        if (screen.isPopup) {
+            await closeDialog();
+        }
+    }
 
-    await takeScreenshot('phanloai_baomat_dulieu.png', async (p) => {
-        const btn = await p.$('button[title="Phân loại"]');
-        if (btn) await btn.click();
-    });
-    await closeDialog();
-
-    await takeScreenshot('danhsach_banghi_loi.png', async (p) => {
-        const btn = await p.$('button[title="Bản ghi lỗi"]');
-        if (btn) await btn.click();
-    });
-    await closeDialog();
-
-    await takeScreenshot('lichsu_xuly_dulieu.png', async (p) => {
-        const btn = await p.$('button[title="Lịch sử"]');
-        if (btn) await btn.click();
-    });
-    await closeDialog();
-
-    console.log('--- ALL DONE ---');
+    console.log('🎉 DONE ALL SCREENSHOTS');
     await browser.close();
+
 })();

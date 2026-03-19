@@ -16,7 +16,14 @@ Chức năng này hoạt động như một trung tâm kiểm soát, cho phép n
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 1 - Giao diện danh sách và quản lý thông báo</p>
 
 ##### Mô tả thông tin trên màn hình
-... (giữ nguyên)
+| Trường thông tin | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| Loại thông báo | VARCHAR2(50) | - | - | Phân loại nguồn phát sinh: Hệ thống, Phê duyệt, Cảnh báo lỗi, Tiến độ công việc. |
+| Tiêu đề | VARCHAR2(255) | - | - | Nội dung tóm tắt ngắn gọn của thông báo. |
+| Nội dung | CLOB | - | - | Mô tả chi tiết sự kiện hoặc hành động cần xử lý. |
+| Trạng thái | VARCHAR2(20) | - | Chưa đọc | Trạng thái của thông báo: Chưa đọc, Đã đọc. |
+| Thời gian | TIMESTAMP | - | - | Thời điểm thông báo được tạo ra bởi hệ thống. |
+| Mức độ ưu tiên | VARCHAR2(20) | - | - | Phân cấp cảnh báo: Thấp, Trung bình, Cao, Khẩn cấp. |
 
 ##### Chức năng trên màn hình
 | STT | Mã chức năng | Định dạng | Mô tả |

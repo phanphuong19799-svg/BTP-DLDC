@@ -1,4 +1,4 @@
-﻿# 4.9. PM07.QLHT_Quản trị & vận hành hệ thống
+# 4.9. PM07.QLHT_Quản trị & vận hành hệ thống
 
 ## 4.9.1. PM07.QLHT.QTND – Quản trị người dùng
 
@@ -26,7 +26,16 @@ Cán bộ quản trị kho DLDC phải:
 
 ### 4.9.1.2. PM07.QLHT.QTND.MH13 – Quản lý người dùng
 
-#### 4.9.1.2.1. MH13 Màn hình danh sách người dùng
+#### 4.9.1.2.1. Mục đích
+Cho phép người quản trị quản lý danh sách người dùng, thực hiện các thao tác như đồng bộ từ LDAP, thêm mới, xem chi tiết, khóa/mở khóa và đặt lại mật khẩu.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Người dùng được cấp quyền truy cập vào chức năng quản lý người dùng.
+
+#### 4.9.1.2.2. MH13 Màn hình danh sách người dùng
 
 ##### Màn hình
 - Màn hình:
@@ -55,12 +64,12 @@ Cán bộ quản trị kho DLDC phải:
 | 6 | CN06 | Button icon | Mở popup xác nhận khóa hoặc mở khóa tài khoản. |
 | 7 | CN07 | Button icon | Mở popup thiết lập cấp lại mật khẩu cho người dùng. |
 
-#### 4.9.1.2.2. MH13.P02 Chi tiết người dùng
+#### 4.9.1.2.3. MH13.P02 Chi tiết người dùng
 
 ##### Màn hình
 - Màn hình: (Popup chi tiết chỉ đọc)
 
-![Chi tiết người dùng (HA02)](./images/MH13_P02_chitiet_nguoidung.png)
+![Chi tiết người dùng (HA02)](./images/quantri/MH13_P02_chitiet_nguoidung.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 2 - Màn hình chi tiết người dùng</p>
 
@@ -80,12 +89,12 @@ Cán bộ quản trị kho DLDC phải:
 | :--- | :--- | :--- | :--- |
 | 1 | CN01 | Button text | Đóng cửa sổ (Không có nút lưu). |
 
-#### 4.9.1.2.3. MH13.P03 Xác nhận khóa tài khoản
+#### 4.9.1.2.4. MH13.P03 Xác nhận khóa tài khoản
 
 ##### Màn hình
 - Màn hình: (Cửa sổ cảnh báo)
 
-![Xác nhận khóa tài khoản (HA03)](./images/MH13_P03_xacnhan_khoa.png)
+![Xác nhận khóa tài khoản (HA03)](./images/quantri/MH13_P03_xacnhan_khoa.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 3 - Màn hình xác nhận khóa tài khoản</p>
 
@@ -101,12 +110,12 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Áp dụng thay đổi trạng thái tài khoản. |
 | 2 | CN02 | Button text | Quay lại danh sách. |
 
-#### 4.9.1.2.4. MH13.P04 Xác nhận đặt lại mật khẩu
+#### 4.9.1.2.5. MH13.P04 Xác nhận đặt lại mật khẩu
 
 ##### Màn hình
 - Màn hình:
 
-![Reset mật khẩu (HA08)](./images/MH13_P04_dat_lai_mat_khau.png)
+![Reset mật khẩu (HA08)](./images/quantri/MH13_P04_dat_lai_mat_khau.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 8 - Màn hình xác nhận đặt lại mật khẩu</p>
 
@@ -122,11 +131,21 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button text | Bỏ qua thao tác. |
 
 ### 4.9.1.3. PM07.QLHT.QTND.MH14 – Quản lý nhóm người dùng
-#### 4.9.1.3.1. MH14 Màn hình danh sách nhóm người dùng
+
+#### 4.9.1.3.1. Mục đích
+Quản lý các nhóm người dùng trong hệ thống, cho phép định nghĩa vai trò, gán thành viên và phân quyền chức năng cho từng nhóm.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Có danh sách các chức năng và người dùng cần gán vào nhóm.
+
+#### 4.9.1.3.2. MH14 Màn hình danh sách nhóm người dùng
 ##### Màn hình
 - Màn hình:
 
-![Danh sách nhóm người dùng (HA04)](./images/MH14_nhomnguoidung.png)
+![Danh sách nhóm người dùng (HA04)](./images/quantri/MH14_nhomnguoidung.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 4 - Màn hình danh sách nhóm người dùng</p>
 
@@ -148,11 +167,11 @@ Cán bộ quản trị kho DLDC phải:
 | 5 | CN05 | Button icon | Mở màn hình gán quyền cho nhóm. |
 | 6 | CN06 | Button icon | Mở màn hình xác nhận xóa nhóm. |
 
-#### 4.9.1.3.2. MH14.P01 Thêm nhóm người dùng mới
+#### 4.9.1.3.3. MH14.P01 Thêm nhóm người dùng mới
 ##### Màn hình
 - Màn hình:
 
-![Thêm nhóm người dùng mới (HA05)](./images/MH14_P01_them_nhom.png)
+![Thêm nhóm người dùng mới (HA05)](./images/quantri/MH14_P01_them_nhom.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 5 - Màn hình thêm nhóm người dùng mới</p>
 
@@ -169,11 +188,11 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Ghi nhận thông tin thêm nhóm mới. |
 | 2 | CN02 | Button text | Hủy thao tác thêm nhóm và quay lại danh sách. |
 
-#### 4.9.1.3.3. MH14.P02 Chỉnh sửa nhóm người dùng
+#### 4.9.1.3.4. MH14.P02 Chỉnh sửa nhóm người dùng
 ##### Màn hình
 - Màn hình:
 
-![Chỉnh sửa nhóm người dùng (HA06)](./images/MH14_P02_sua_nhom.png)
+![Chỉnh sửa nhóm người dùng (HA06)](./images/quantri/MH14_P02_sua_nhom.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 6 - Màn hình chỉnh sửa nhóm người dùng</p>
 
@@ -190,11 +209,11 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Ghi nhận thay đổi thông tin nhóm. |
 | 2 | CN02 | Button text | Hủy thao tác sửa nhóm. |
 
-#### 4.9.1.3.4. MH14.P03 Chi tiết nhóm
+#### 4.9.1.3.5. MH14.P03 Chi tiết nhóm
 ##### Màn hình
 - Màn hình:
 
-![Chi tiết nhóm (HA07)](./images/MH14_P03_chitiet_nhom.png)
+![Chi tiết nhóm (HA07)](./images/quantri/MH14_P03_chitiet_nhom.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 7 - Màn hình chi tiết nhóm</p>
 
@@ -212,11 +231,11 @@ Cán bộ quản trị kho DLDC phải:
 
 
 
-#### 4.9.1.3.5. MH14.P04 Thêm thành viên vào nhóm
+#### 4.9.1.3.6. MH14.P04 Thêm thành viên vào nhóm
 ##### Màn hình
 - Màn hình:
 
-![Thêm thành viên vào nhóm (HA09)](./images/MH14_P04_them_thanhvien.png)
+![Thêm thành viên vào nhóm (HA09)](./images/quantri/MH14_P04_them_thanhvien.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 9 - Màn hình thêm thành viên vào nhóm</p>
 
@@ -233,11 +252,11 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button text | Bỏ qua các thay đổi. |
 
 
-#### 4.9.1.3.6. MH14.P05 Gán quyền cho nhóm
+#### 4.9.1.3.7. MH14.P05 Gán quyền cho nhóm
 ##### Màn hình
 - Màn hình: (Tham chiếu luồng phân quyền)
 
-![Phân quyền nhóm (HA10)](./images/MH14_P05_phanquyen_nhom.png)
+![Phân quyền nhóm (HA10)](./images/quantri/MH14_P05_phanquyen_nhom.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 10 - Màn hình gán quyền chức năng cho nhóm</p>
 
@@ -257,11 +276,11 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Lưu lại các thay đổi quyền hạn. |
 | 2 | CN02 | Button text | Hủy các thiết lập chưa lưu, quay về mặc định. |
 
-#### 4.9.1.3.7. MH14.P06 Xác nhận xóa nhóm
+#### 4.9.1.3.8. MH14.P06 Xác nhận xóa nhóm
 ##### Màn hình
 - Màn hình: (Bảng thông báo xác nhận)
 
-![Xóa nhóm (HA11)](./images/MH14_P06_xoa_nhom.png)
+![Xóa nhóm (HA11)](./images/quantri/MH14_P06_xoa_nhom.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 11 - Màn hình xác nhận xóa nhóm</p>
 
@@ -277,11 +296,21 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button text | Không xóa. |
 
 ### 4.9.1.4. PM07.QLHT.QTND.MH15 – Danh sách chức năng
-#### 4.9.1.4.1. MH15 Màn hình danh sách chức năng
+
+#### 4.9.1.4.1. Mục đích
+Quản lý danh mục các chức năng (Menu) của hệ thống, bao gồm cấu hình tên, icon, đường dẫn và cấu hình cây menu cha-con.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Người dùng có quyền quản trị cấp cao để thay đổi cấu hình menu hệ thống.
+
+#### 4.9.1.4.2. MH15 Màn hình danh sách chức năng
 ##### Màn hình
 - Màn hình:
 
-![Danh sách chức năng (HA12)](./images/MH15_danhsachchucnang.png)
+![Danh sách chức năng (HA12)](./images/quantri/MH15_danhsachchucnang.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 12 - Màn hình quản lý danh sách chức năng (Menu)</p>
 
@@ -300,11 +329,11 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button icon | Mở popup thay đổi đường dẫn/tên nhánh. |
 | 3 | CN03 | Button icon | Xóa cấu hình chức năng. |
 
-#### 4.9.1.4.2. MH15.P01 Popup Thêm chức năng mới
+#### 4.9.1.4.3. MH15.P01 Popup Thêm chức năng mới
 ##### Màn hình
 - Màn hình:
 
-![Thêm chức năng (HA13)](./images/MH15_P01_them_sua_chucnang.png)
+![Thêm chức năng (HA13)](./images/quantri/MH15_P01_them_sua_chucnang.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 13 - Popup thêm cấu hình chức năng menu</p>
 
@@ -323,11 +352,11 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Thêm mới chức năng vào hệ thống. |
 | 2 | CN02 | Button text | Đóng cửa sổ popup. |
 
-#### 4.9.1.4.3. MH15.P02 Popup Sửa chức năng
+#### 4.9.1.4.4. MH15.P02 Popup Sửa chức năng
 ##### Màn hình
 - Màn hình:
 
-![Sửa chức năng (HA14)](./images/MH15_P01_them_sua_chucnang.png)
+![Sửa chức năng (HA14)](./images/quantri/MH15_P01_them_sua_chucnang.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 14 - Popup sửa cấu hình chức năng menu</p>
 
@@ -349,11 +378,21 @@ Cán bộ quản trị kho DLDC phải:
 ## 4.9.2. PM07.QLHT.CHHT – Cấu hình hệ thống
 
 ### 4.9.2.1. PM07.QLHT.CHHT.MH16 – Thiết lập cấu hình hệ thống
-#### 4.9.2.1.1. MH16 Màn hình thiết lập cấu hình
+
+#### 4.9.2.1.1. Mục đích
+Thiết lập các tham số vận hành chung của hệ thống như yêu cầu đổi mật khẩu, thời gian khóa tài khoản và lịch trình sao lưu tự động.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Người dùng có quyền quản trị cấp cao.
+
+#### 4.9.2.1.2. MH16 Màn hình thiết lập cấu hình
 ##### Màn hình
 - Màn hình:
 
-![Thiết lập cấu hình hệ thống (HA15)](./images/MH16_thietlapcauhinh.png)
+![Thiết lập cấu hình hệ thống (HA15)](./images/quantri/MH16_thietlapcauhinh.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 15 - Màn hình thiết lập tham số hệ thống</p>
 
@@ -376,11 +415,21 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button text | Khôi phục các thiết lập về giá trị mặc định lúc ban đầu. |
 
 ### 4.9.2.2. PM07.QLHT.CHHT.MH17 – Thiết lập quy tắc đặt mật khẩu
-#### 4.9.2.2.1. MH17 Màn hình thiết lập quy tắc đặt mật khẩu
+
+#### 4.9.2.2.1. Mục đích
+Định nghĩa các tiêu chuẩn kỹ thuật cho mật khẩu người dùng (độ dài, ký tự đặc biệt, chữ hoa/thường) nhằm đảm bảo an toàn bảo mật.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Được giao nhiệm vụ quản lý chính sách bảo mật hệ thống.
+
+#### 4.9.2.2.2. MH17 Màn hình thiết lập quy tắc đặt mật khẩu
 ##### Màn hình
 - Màn hình:
 
-![Quy tắc đặt mật khẩu (HA16)](./images/MH17_quytacmatkhau.png)
+![Quy tắc đặt mật khẩu (HA16)](./images/quantri/MH17_quytacmatkhau.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 16 - Màn hình thiết lập độ an toàn kỹ thuật của mật khẩu</p>
 
@@ -408,11 +457,21 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button text | Khôi phục thiết lập về quy tắc mặc định. |
 
 ### 4.9.2.3. PM07.QLHT.CHHT.MH18 – Sao lưu dự phòng
-#### 4.9.2.3.1. MH18 Màn hình danh sách bản sao lưu
+
+#### 4.9.2.3.1. Mục đích
+Quản lý danh sách các bản sao lưu dữ liệu, cho phép thực hiện sao lưu thủ công, tải về hoặc phục hồi hệ thống khi cần thiết.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Hệ thống đang ở trạng thái ổn định để thực hiện sao lưu/phục hồi.
+
+#### 4.9.2.3.2. MH18 Màn hình danh sách bản sao lưu
 ##### Màn hình
 - Màn hình:
 
-![Sao lưu dự phòng (HA17)](./images/MH18_saoluuduphong.png)
+![Sao lưu dự phòng (HA17)](./images/quantri/MH18_saoluuduphong.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 17 - Màn hình sao lưu (Backup / Restore) hệ thống</p>
 
@@ -436,11 +495,12 @@ Cán bộ quản trị kho DLDC phải:
 | 4 | CN04 | Button icon | Xem thông tin chi tiết của bản ghi sao lưu. |
 | 5 | CN05 | Button icon | Mở popup xác nhận xóa bản ghi sao lưu và file tương ứng trên hệ thống. |
 
-#### 4.9.2.3.2. MH18.P01 Màn hình Xác nhận phục hồi dữ liệu
+#### 4.9.2.3.3. MH18.P01 Màn hình Xác nhận phục hồi dữ liệu
 ##### Màn hình
 - Màn hình: (Cửa sổ cảnh báo)
 
-![Xác nhận phục hồi (HA18)](./images/MH18_P01_phuchoi_dulieu.png)
+<!-- ![Xác nhận phục hồi (HA18)](./images/quantri/MH18_P01_phuchoi_dulieu.png) -->
+*(Hình ảnh đang được cập nhật)*
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 18 - Màn hình xác nhận phục hồi hệ thống</p>
 
@@ -458,11 +518,21 @@ Cán bộ quản trị kho DLDC phải:
 ## 4.9.3. PM07.QLHT.NK – Quản lý nhật ký
 
 ### 4.9.3.1. PM07.QLHT.NK.MH19 – Nhật ký truy cập
-#### 4.9.3.1.1. MH19 Màn hình danh sách nhật ký truy cập
+
+#### 4.9.3.1.1. Mục đích
+Theo dõi và giám sát lịch sử đăng nhập/đăng xuất của người dùng, ghi nhận thông tin thiết bị và địa chỉ IP để truy vết bảo mật.
+
+*+ Phân quyền*
+Cán bộ quản trị và giám sát hệ thống.
+
+*+ Điều kiện thực hiện*
+Hệ thống tự động ghi nhận log mỗi phiên truy cập.
+
+#### 4.9.3.1.2. MH19 Màn hình danh sách nhật ký truy cập
 ##### Màn hình
 - Màn hình:
 
-![Nhật ký truy cập (HA19)](./images/MH19_nhatky_truycap.png)
+![Nhật ký truy cập (HA19)](./images/quantri/MH19_nhatky_truycap.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 19 - Báo cáo nhật ký truy cập hệ thống đăng nhập/đăng xuất</p>
 
@@ -483,11 +553,11 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button icon | Mở màn hình xem chi tiết thông tin của bản ghi truy cập lưu vết. |
 | 3 | CN03 | Button text | Tải danh sách nhật ký đang lọc ra file Excel. |
 
-#### 4.9.3.1.2. MH19.P01 Màn hình Chi tiết truy cập
+#### 4.9.3.1.3. MH19.P01 Màn hình Chi tiết truy cập
 ##### Màn hình
 - Màn hình:
 
-![Chi tiết truy cập (HA20)](./images/MH19_P01_chitiet_truycap.png)
+![Chi tiết truy cập (HA20)](./images/quantri/MH19_P01_chitiet_truycap.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 20 - Màn hình chi tiết truy cập hệ thống</p>
 
@@ -504,11 +574,21 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Đóng cửa sổ chi tiết. |
 
 ### 4.9.3.2. PM07.QLHT.NK.MH20 – Nhật ký các lỗi phát sinh
-#### 4.9.3.2.1. MH20 Màn hình danh sách lỗi
+
+#### 4.9.3.2.1. Mục đích
+Tổng hợp các lỗi kỹ thuật, exceptions từ hệ thống để hỗ trợ cán bộ kỹ thuật phân tích và khắc phục sự cố.
+
+*+ Phân quyền*
+Cán bộ quản trị và đội ngũ hỗ trợ kỹ thuật.
+
+*+ Điều kiện thực hiện*
+Có lỗi phát sinh trong quá trình vận hành hệ thống.
+
+#### 4.9.3.2.2. MH20 Màn hình danh sách lỗi
 ##### Màn hình
 - Màn hình:
 
-![Nhật ký lỗi (HA21)](./images/MH20_nhatky_loi.png)
+![Nhật ký lỗi (HA21)](./images/quantri/MH20_nhatky_loi.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 21 - Màn hình theo dõi các Exception lỗi hệ thống</p>
 
@@ -530,11 +610,11 @@ Cán bộ quản trị kho DLDC phải:
 | 3 | CN03 | Button icon | Đánh dấu lỗi đã được khắc phục/bỏ qua. |
 | 4 | CN04 | Button text | Xuất dữ liệu lỗi đang hiển thị ra file Excel. |
 
-#### 4.9.3.2.2. MH20.P01 Màn hình Chi tiết lỗi phát sinh
+#### 4.9.3.2.3. MH20.P01 Màn hình Chi tiết lỗi phát sinh
 ##### Màn hình
 - Màn hình: (Popup hiển thị Stacktrace)
 
-![Chi tiết lỗi (HA22)](./images/MH20_P01_chitiet_loi.png)
+![Chi tiết lỗi (HA22)](./images/quantri/MH20_P01_chitiet_loi.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 22 - Màn hình xem chi tiết log lỗi</p>
 
@@ -554,11 +634,21 @@ Cán bộ quản trị kho DLDC phải:
 | 3 | CN03 | Button text | Tắt màn hình chi tiết. |
 
 ### 4.9.3.3. PM07.QLHT.NK.MH21 – Nhật ký quản lý tài khoản
-#### 4.9.3.3.1. MH21 Màn hình danh sách nhật ký tài khoản
+
+#### 4.9.3.3.1. Mục đích
+Lưu vết các thao tác thay đổi liên quan đến tài khoản người dùng (tạo mới, khóa, đổi mật khẩu) để kiểm soát trách nhiệm của admin.
+
+*+ Phân quyền*
+Cán bộ quản trị và giám sát hệ thống.
+
+*+ Điều kiện thực hiện*
+Có hành động tương tác với dữ liệu người dùng từ admin.
+
+#### 4.9.3.3.2. MH21 Màn hình danh sách nhật ký tài khoản
 ##### Màn hình
 - Màn hình:
 
-![Nhật ký tài khoản (HA23)](./images/MH21_nhatky_taikhoan.png)
+![Nhật ký tài khoản (HA23)](./images/quantri/MH21_nhatky_taikhoan.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 23 - Nhật ký giám sát thay đổi trạng thái user</p>
 
@@ -580,11 +670,11 @@ Cán bộ quản trị kho DLDC phải:
 | 2 | CN02 | Button icon | Mở popup xem chi tiết lý do và giá trị đã thay đổi (Old/New value). |
 | 3 | CN03 | Button text | Tải danh sách nhật ký quản lý tài khoản theo cấu hình tìm kiếm. |
 
-#### 4.9.3.3.2. MH21.P01 Màn hình Chi tiết nhật ký
+#### 4.9.3.3.3. MH21.P01 Màn hình Chi tiết nhật ký
 ##### Màn hình
 - Màn hình:
 
-![Chi tiết nhật ký tài khoản (HA24)](./images/MH21_P01_chitiet_nhatky.png)
+![Chi tiết nhật ký tài khoản (HA24)](./images/quantri/MH21_P01_chitiet_nhatky.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 24 - Màn hình chi tiết thay đổi tài khoản</p>
 
@@ -602,11 +692,21 @@ Cán bộ quản trị kho DLDC phải:
 | 1 | CN01 | Button text | Đóng cửa sổ chi tiết. |
 
 ### 4.9.3.4. PM07.QLHT.NK.MH22 – Nhật ký thay đổi cấu hình
-#### 4.9.3.4.1. MH22 Màn hình danh sách thay đổi cấu hình
+
+#### 4.9.3.4.1. Mục đích
+Theo dõi lịch sử thay đổi các tham số cấu hình hệ thống, cho phép kiểm tra giá trị cũ/mới và người thực hiện thay đổi.
+
+*+ Phân quyền*
+Cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Có sự thay đổi tham số trong phần cấu hình hệ thống.
+
+#### 4.9.3.4.2. MH22 Màn hình danh sách thay đổi cấu hình
 ##### Màn hình
 - Màn hình:
 
-![Nhật ký cấu hình (HA25)](./images/MH22_nhatky_cauhinh.png)
+![Nhật ký cấu hình (HA25)](./images/quantri/MH22_nhatky_cauhinh.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 25 - Nhật ký thay đổi tham số hệ thống chung</p>
 
@@ -632,11 +732,21 @@ Cán bộ quản trị kho DLDC phải:
 ## 4.9.4. PM07.QLHT.TKBC – Thống kê & báo cáo
 
 ### 4.9.4.1. PM07.QLHT.TKBC.MH23 – Xem biểu đồ thống kê
-#### 4.9.4.1.1. MH23 Màn hình biểu đồ thống kê
+
+#### 4.9.4.1.1. Mục đích
+Cung cấp các biểu đồ trực quan về hoạt động hệ thống, tỷ lệ đồng bộ thành công/thất bại theo thời gian và theo nguồn dữ liệu.
+
+*+ Phân quyền*
+Lãnh đạo và cán bộ quản trị hệ thống.
+
+*+ Điều kiện thực hiện*
+Hệ thống đã có dữ liệu vận hành để tổng hợp báo cáo.
+
+#### 4.9.4.1.2. MH23 Màn hình biểu đồ thống kê
 ##### Màn hình
 - Màn hình:
 
-![Xem biểu đồ thống kê (HA26)](./images/MH23_bieudothongke.png)
+![Xem biểu đồ thống kê (HA26)](./images/quantri/MH23_bieudothongke.png)
 
 <p align="center" style="background-color: #E0E0E0; padding: 5px; display: inline-block; margin: 0 auto;">Hình 26 - Màn hình báo cáo hoạt động hệ thống qua thị giác</p>
 
