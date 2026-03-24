@@ -317,6 +317,16 @@ const menuItems: MenuItem[] = [
                 label: "Thu thập số liệu thống kê",
                 icon: BarChart3,
               },
+              {
+                id: "reconciliation-internal-notary",
+                label: "HTTT các tổ chức hành nghề công chứng",
+                icon: Database,
+              },
+              {
+                id: "reconciliation-internal-authentication",
+                label: "CSDL chứng thực",
+                icon: Database,
+              },
             ],
           },
         ],

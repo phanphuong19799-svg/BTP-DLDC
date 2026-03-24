@@ -1,0 +1,60 @@
+--- ĐANG KIỂM TRA MÀN HÌNH THIẾU TRONG PHỤ LỤC ---
+[+] Tìm thấy 86 màn hình được định nghĩa trong mamanhinh.md
+[+] Đã tìm thấy 15 mã màn hình duy nhất được sử dụng trong bảng Phụ Lục (phantichtong.md)
+
+--- KẾT QUẢ: CÁC MÀN HÌNH CHƯA CÓ TRONG PHỤ LỤC ---
+- Mã: :---         - Tên: :---
+- Mã: MH04.M01     - Tên: 04. Danh mục CSDL trong ngành
+- Mã: MH04.M02     - Tên: 04. Danh mục CSDL trong ngành
+- Mã: MH05.M01     - Tên: 05. Danh mục CSDL ngoài ngành
+- Mã: MH05.M02a    - Tên: 05. Danh mục CSDL ngoài ngành
+- Mã: MH05.M02b    - Tên: 05. Danh mục CSDL ngoài ngành
+- Mã: MH05.M02c    - Tên: 05. Danh mục CSDL ngoài ngành
+- Mã: MH05.M02d    - Tên: 05. Danh mục CSDL ngoài ngành
+- Mã: MH05.M02e    - Tên: 05. Danh mục CSDL ngoài ngành
+- Mã: MH06.M01     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH06.M04     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH06.M05     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH06.M06     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH06.M07     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH06.M08     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH06.M09     - Tên: 06. Đối soát dữ liệu Trong ngành
+- Mã: MH07.M01     - Tên: 07. Đối soát dữ liệu Ngoài ngành
+- Mã: MH07.M02     - Tên: 07. Đối soát dữ liệu Ngoài ngành
+- Mã: MH07.M04     - Tên: 07. Đối soát dữ liệu Ngoài ngành
+- Mã: MH07.M05     - Tên: 07. Đối soát dữ liệu Ngoài ngành
+- Mã: MH07.M06     - Tên: 07. Đối soát dữ liệu Ngoài ngành
+- Mã: MH04.P01a    - Tên: 02. Thiết lập gói dịch cung cấp dữ liệu (Catalog)
+- Mã: MH04.P01b    - Tên: 02. Thiết lập gói dịch cung cấp dữ liệu (Catalog)
+- Mã: MH04.P02     - Tên: 02. Thiết lập gói dịch cung cấp dữ liệu (Catalog)
+- Mã: MH04.P03     - Tên: 02. Thiết lập gói dịch cung cấp dữ liệu (Catalog)
+- Mã: MH06.P01     - Tên: 03. Dashboard Khai thác CSDL Hộ tịch
+- Mã: MH06.P02     - Tên: 03. Dashboard Khai thác CSDL Hộ tịch
+- Mã: MH13         - Tên: 01. Quản lý danh sách người dùng
+- Mã: MH13.P02     - Tên: 01. Quản lý danh sách người dùng
+- Mã: MH13.P03     - Tên: 01. Quản lý danh sách người dùng
+- Mã: MH13.P04     - Tên: 01. Quản lý danh sách người dùng
+- Mã: MH14         - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH14.P01     - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH14.P02     - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH14.P03     - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH14.P04     - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH14.P05     - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH14.P06     - Tên: 02. Quản lý nhóm người dùng
+- Mã: MH15         - Tên: 03. Quản lý danh mục chức năng
+- Mã: MH15.P01     - Tên: 03. Quản lý danh mục chức năng
+- Mã: MH15.P02     - Tên: 03. Quản lý danh mục chức năng
+- Mã: MH16         - Tên: 04. Thiết lập tham số hệ thống
+- Mã: MH17         - Tên: 05. Thiết lập quy tắc mật khẩu
+- Mã: MH18         - Tên: 06. Sao lưu và khôi phục dữ liệu
+- Mã: MH18.P01     - Tên: 06. Sao lưu và khôi phục dữ liệu
+- Mã: MH19         - Tên: 07. Nhật ký truy cập hệ thống
+- Mã: MH19.P01     - Tên: 07. Nhật ký truy cập hệ thống
+- Mã: MH20         - Tên: 08. Nhật ký lỗi phát sinh
+- Mã: MH20.P01     - Tên: 08. Nhật ký lỗi phát sinh
+- Mã: MH21         - Tên: 09. Nhật ký quản lý tài khoản
+- Mã: MH21.P01     - Tên: 09. Nhật ký quản lý tài khoản
+- Mã: MH22         - Tên: 10. Nhật ký thay đổi cấu hình
+- Mã: MH23         - Tên: 11. Xem biểu đồ thống kê hệ thống
+
+=> Còn thiếu 53 màn hình chưa được link vào các Function ID trong Phụ Lục.

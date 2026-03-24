@@ -1,5 +1,5 @@
 // MainLayout Component - Updated
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { DashboardHome } from '../dashboard/DashboardHome';
@@ -266,17 +266,17 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
   const [showAccessHistoryModal, setShowAccessHistoryModal] = useState(false);
   const [showActionHistoryModal, setShowActionHistoryModal] = useState(false);
   
-  // Expose for testing/automation
-  import('react').then(React => {
-    React.useEffect(() => {
-      (window as any).navigateToPage = setCurrentPage;
-    }, []);
-  });
   
   // User role - for demo purposes, set to 'leader' to show publish tab
   const userRole: 'leader' | 'staff' | 'admin' = 'leader';
   
   const currentPageConfig = pageConfig[currentPage] || pageConfig.dashboard;
+
+  useEffect(() => {
+    (window as any).navigateToPage = (pageId: string) => {
+      setCurrentPage(pageId);
+    };
+  }, []);
 
   const handleUserMenuClick = (action: 'profile' | 'change-password' | 'change-background' | 'access-history' | 'action-history' | 'logout') => {
     switch (action) {
@@ -634,6 +634,8 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'reconciliation-internal-auction' && <InternalReconciliationPage databaseName="CSDL quản lý đấu giá TS" databaseCode="DAUGTS" />}
             {currentPage === 'reconciliation-internal-international' && <InternalReconciliationPage databaseName="CSDL Hợp tác quốc tế" databaseCode="HTQT" />}
             {currentPage === 'reconciliation-internal-statistics' && <InternalReconciliationPage databaseName="Thu thập số liệu thống kê" databaseCode="SLTK" />}
+            {currentPage === 'reconciliation-internal-notary' && <InternalReconciliationPage databaseName="HTTT các tổ chức hành nghề công chứng" databaseCode="CONGCHUNG" />}
+            {currentPage === 'reconciliation-internal-authentication' && <InternalReconciliationPage databaseName="CSDL chứng thực" databaseCode="CHUNGTHUC" />}
             
             {/* Data Provision - CSDL Trong ngành */}
             {currentPage === 'provision-data-info-civil-registry' && <CivilRegistryDatabasePage context="chia sẻ" />}
@@ -740,6 +742,8 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'reconciliation-internal-auction': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'CSDL quản lý đấu giá TS (24)'],
     'reconciliation-internal-international': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liu từ Bộ trong ngành', 'CSDL Hợp tác quốc tế (6)'],
     'reconciliation-internal-statistics': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'Thu thập số liệu thống kê'],
+    'reconciliation-internal-notary': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'HTTT các tổ chức hành nghề công chứng'],
+    'reconciliation-internal-authentication': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'CSDL chứng thực'],
     
     // Processing
     'processing-rule-setup': ['Xử lý dữ liệu', 'Thiết lập quy tắc xử lý dữ liệu'],

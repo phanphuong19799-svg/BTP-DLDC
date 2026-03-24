@@ -99,8 +99,9 @@ graph TD
     E --> E_Check{Kiểm tra Biến đổi?}
     E_Check -- Không đạt --> G
     E_Check -- Đạt --> I[Lưu vào kho dữ liệu sạch]
-    G --> H[Phản hồi nguồn/Sửa thủ công]
-    H --> B
+    G --> H[Gửi cho Hệ thống nguồn]
+    H --> H2[Sửa đổi và đồng bộ lại]
+    H2 --> A
     I --> J[Phân loại & Bảo mật]
     J --> End([Kết thúc])
 ```
@@ -108,7 +109,7 @@ graph TD
 **Mô tả quy trình:**
 1. **Tiếp nhận:** Dữ liệu thô từ kho tạm được đưa vào quy trình xử lý theo các quy tắc thiết lập sẵn.
 2. **Xử lý đa tầng có kiểm soát:** Dữ liệu trải qua 3 giai đoạn (Làm sạch, Chuẩn hóa, Biến đổi). **Điểm quan trọng:** Sau mỗi giai đoạn, hệ thống thực hiện kiểm tra (Check) ngay lập tức. Chỉ khi đạt yêu cầu mới được chuyển sang giai đoạn tiếp theo.
-3. **Xử lý lỗi:** Nếu bất kỳ bước kiểm tra nào không đạt, bản ghi lỗi được ghi nhật ký và chuyển sang bộ phận sửa đổi thủ công hoặc phản hồi lại nguồn dữ liệu.
+3. **Xử lý lỗi:** Nếu bất kỳ bước kiểm tra nào không đạt, bản ghi lỗi sẽ được ghi nhật ký và gửi trở lại Hệ thống nguồn để tiến hành sửa đổi, đồng bộ lại từ bước tiếp nhận dữ liệu sơ khởi.
 4. **Lưu trữ:** Dữ liệu sau khi vượt qua tất cả các tầng kiểm tra sẽ được phân loại bảo mật và lưu vào kho dữ liệu sạch chính thức.
 
 ### 2.3. Quản lý danh mục (Category Management)
@@ -120,22 +121,19 @@ Sơ đồ vòng đời của một danh mục:
 ```mermaid
 graph TD
     Start([Bắt đầu]) --> Create[Tạo mới/Đồng bộ danh mục]
-    Create --> Draft[Trạng thái: Nháp]
-    Draft --> Edit[Chỉnh sửa thông tin/giá trị]
-    Edit --> Submit[Gửi phê duyệt]
+    Create --> Submit[Gửi phê duyệt]
     Submit --> Review{Cấp quản lý duyệt?}
-    Review -- Từ chối --> Draft
-    Review -- Đồng ý --> Approved[Trạng thái: Đã phê duyệt]
-    Approved --> Publish[Thiết lập công bố]
-    Publish --> Public[Trạng thái: Đã công bố]
-    Public --> End([Kết thúc])
+    Review -- Từ chối --> Edit[Chỉnh sửa]
+    Edit --> Submit
+    Review -- Đồng ý --> Publish[Thiết lập công bố]
+    Publish --> End([Kết thúc])
 ```
 
 **Mô tả quy trình:**
-1. **Khởi tạo:** Tạo mới hoặc đồng bộ danh mục từ các nguồn dùng chung về hệ thống dưới dạng bản nháp.
-2. **Biên tập:** Người dùng chỉnh sửa các giá trị, định nghĩa trong danh mục.
-3. **Phê duyệt:** Chuyển qua quy trình duyệt đa cấp để đảm bảo tính chính xác của dữ liệu danh mục.
-4. **Công bố:** Sau khi được duyệt, danh mục được thiết lập phạm vi và thực hiện công bố để các hệ thống khác sử dụng.
+1. **Khởi tạo:** Tạo mới hoặc đồng bộ danh mục từ các nguồn dùng chung về hệ thống.
+2. **Gửi phê duyệt:** Gửi dữ liệu danh mục lên cấp quản lý để xem xét.
+3. **Phê duyệt & Chỉnh sửa:** Quản lý duyệt định nghĩa danh mục. Nếu bị suy xét từ chối, người tạo sẽ tiến hành chỉnh sửa và gửi phê duyệt lại.
+4. **Công bố:** Sau khi được lãnh đạo đồng ý, quản trị viên thiết lập phạm vi và thực hiện công bố để các hệ thống khác sử dụng.
 
 ### 2.4. Dữ liệu mở (Open Data)
 Sơ đồ quy trình công bố tập dữ liệu mở:
@@ -171,17 +169,17 @@ Sơ đồ quy trình định danh và hợp nhất thực thể dữ liệu gố
 #### Mã Mermaid tham chiếu:
 ```mermaid
 graph TD
-    A([Bắt đầu]) --> B[Tiếp nhận dữ liệu từ Xử lý/Thu thập]
-    B --> C[Phát hiện trùng lặp]
-    C --> D{Có trùng lặp?}
-    D -- Có --> E[Hợp nhất dữ liệu (Merge)]
-    D -- Không --> F[Tạo thực thể mới]
-    E --> G[Rà soát thay đổi thuộc tính]
+    A([Start<br>Bắt đầu]) --> B[Receive data from Processing/Collection<br>Tiếp nhận dữ liệu từ Xử lý/Thu thập]
+    B --> C[Detect duplicates<br>Phát hiện trùng lặp]
+    C --> D{Duplicates found?<br>Có trùng lặp?}
+    D -- Yes / Có --> E[Merge Data<br>Hợp nhất dữ liệu]
+    D -- No / Không --> F[Create new entity<br>Tạo thực thể mới]
+    E --> G[Review attribute changes<br>Rà soát thay đổi thuộc tính]
     F --> G
-    G --> H[Phê duyệt cập nhật]
-    H --> I[Lưu vào kho Dữ liệu chủ chính thức]
-    I --> J[Công khai qua API]
-    J --> End([Kết thúc])
+    G --> H[Approve update<br>Phê duyệt cập nhật]
+    H --> I[Save to Official Master Data Store<br>Lưu vào kho Dữ liệu chủ chính thức]
+    I --> J[Publicize via API<br>Công khai qua API]
+    J --> End([End<br>Kết thúc])
 ```
 
 **Mô tả quy trình:**
