@@ -22,9 +22,6 @@ Màn hình
 | 1 | Kết xuất | Button | Xuất báo cáo tổng hợp dưới dạng file. |
 | 2 | Đồng bộ | Button | Kích hoạt tiến trình đồng bộ dữ liệu tổng thể. |
 
----
-
-
 
 ### 4.2.3.1.2 PM02.QLTT.TN.KS  Hồ sơ đăng ký khai sinh
 
