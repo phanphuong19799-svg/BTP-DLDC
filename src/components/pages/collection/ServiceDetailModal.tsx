@@ -1,6 +1,8 @@
-import { X, AlertCircle, CheckCircle, Upload } from 'lucide-react';
+import { X, AlertCircle, CheckCircle, Upload, Eye } from 'lucide-react';
+import { DataDetailModal } from '../../DataDetailModal';
+import { useState } from 'react';
 
-interface Service ModalProps {
+interface ServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
   service?: any;
@@ -8,6 +10,8 @@ interface Service ModalProps {
 
 // Modal Xem chi tiết đầy đủ
 export function DetailServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
+  const [showDocModal, setShowDocModal] = useState(false);
+  
   if (!isOpen || !service) return null;
 
   return (
@@ -19,6 +23,7 @@ export function DetailServiceModal({ isOpen, onClose, service }: ServiceModalPro
           <button
             onClick={onClose}
             className="p-1 hover:bg-slate-100 rounded transition-colors"
+            title="Đóng"
           >
             <X className="w-5 h-5 text-slate-500" />
           </button>
@@ -61,9 +66,18 @@ export function DetailServiceModal({ isOpen, onClose, service }: ServiceModalPro
               {service.attachedFile && (
                 <div>
                   <label className="block text-sm text-slate-500 mb-1">Chức năng đính kèm văn bản</label>
-                  <div className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
-                    <Upload className="w-4 h-4 text-slate-500" />
-                    <span className="text-sm text-slate-900">{service.attachedFile}</span>
+                  <div className="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-200">
+                    <div className="flex items-center gap-2">
+                      <Upload className="w-4 h-4 text-slate-500" />
+                      <span className="text-sm text-slate-900">{service.attachedFile}</span>
+                    </div>
+                    <button
+                      onClick={() => setShowDocModal(true)}
+                      className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors"
+                    >
+                      <Eye className="w-3 h-3" />
+                      Xem văn bản
+                    </button>
                   </div>
                 </div>
               )}
@@ -184,6 +198,7 @@ export function DetailServiceModal({ isOpen, onClose, service }: ServiceModalPro
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
+                  title="Kích hoạt kết nối"
                   checked={service.isActivated || false}
                   disabled
                   className="w-4 h-4 text-blue-600 border-slate-300 rounded"
@@ -256,6 +271,17 @@ export function DetailServiceModal({ isOpen, onClose, service }: ServiceModalPro
           </button>
         </div>
       </div>
+      
+      {/* Premium PDF Viewer Integration */}
+      <DataDetailModal
+        isOpen={showDocModal}
+        onClose={() => setShowDocModal(false)}
+        title={service.name || "Tài liệu dịch vụ"}
+        totalRecords={service.recordsReceived || 0}
+        newRecords={service.recordsNew || 0}
+        updatedRecords={service.recordsUpdated || 0}
+        errorRecords={service.validationDetails?.invalidRecords || 0}
+      />
     </div>
   );
 }

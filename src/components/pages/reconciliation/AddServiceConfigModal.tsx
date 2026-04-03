@@ -3,9 +3,10 @@ import { X, CheckCircle, Send, Calendar, HelpCircle } from 'lucide-react';
 interface AddServiceConfigModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isEdit?: boolean;
 }
 
-export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModalProps) {
+export function AddServiceConfigModal({ isOpen, onClose, isEdit }: AddServiceConfigModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -14,11 +15,12 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-200 flex items-start justify-between">
           <div>
-            <h2 className="text-lg text-slate-900">Tạo gói tin đối soát qua LGSP</h2>
+            <h2 className="text-lg text-slate-900">{isEdit ? 'Chỉnh sửa cấu hình đối soát' : 'Tạo gói tin đối soát qua LGSP'}</h2>
             <p className="text-sm text-slate-500 mt-1">Cấu hình gói tin gửi tin đối soát qua Cổng LGSP</p>
           </div>
           <button
             onClick={onClose}
+            title="Đóng"
             className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
           >
             <X className="w-5 h-5" />
@@ -45,7 +47,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Hệ thống gửi (A)</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Hệ thống gửi" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>-- Chọn hệ thống --</option>
                   <option>Hệ thống Hộ tịch</option>
                   <option>Hệ thống CSDL Quốc gia về dân cư</option>
@@ -54,7 +56,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
               </div>
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Hệ thống nhận (B)</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Hệ thống nhận" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>-- Chọn hệ thống --</option>
                   <option>Kho dữ liệu DLDC</option>
                   <option>Hệ thống LGSP</option>
@@ -74,7 +76,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
               </div>
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Loại đối soát</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Loại đối soát" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>Ngày</option>
                   <option>Tuần</option>
                   <option>Tháng</option>
@@ -93,6 +95,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
                 <label className="block text-sm text-slate-600 mb-2">Từ ngày</label>
                 <input
                   type="date"
+                  title="Từ ngày"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -100,12 +103,13 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
                 <label className="block text-sm text-slate-600 mb-2">Đến ngày</label>
                 <input
                   type="date"
+                  title="Đến ngày"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Loại dữ liệu</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Loại dữ liệu" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>Chi tiết</option>
                   <option>Tổng hợp</option>
                   <option>Danh mục</option>
@@ -147,7 +151,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
               </div>
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Phiên bản API</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Phiên bản API" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>V2</option>
                   <option>V1</option>
                   <option>V3</option>
@@ -155,7 +159,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
               </div>
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Phương thức</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Phương thức" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>REST</option>
                   <option>SOAP</option>
                   <option>GraphQL</option>
@@ -171,7 +175,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Cơ chế xác thực</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Cơ chế xác thực" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>Chữ ký số</option>
                   <option>OAuth 2.0</option>
                   <option>JWT Token</option>
@@ -180,7 +184,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
               </div>
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Chứng thư số</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Chứng thư số" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>-- Chọn CTS --</option>
                   <option>CTS Bộ Tư pháp</option>
                   <option>CTS LGSP</option>
@@ -196,7 +200,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-slate-600 mb-2">Tần suất gửi</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select title="Tần suất gửi" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option>Hằng ngày</option>
                   <option>Hằng tuần</option>
                   <option>Hằng tháng</option>
@@ -256,7 +260,7 @@ export function AddServiceConfigModal({ isOpen, onClose }: AddServiceConfigModal
               Hủy
             </button>
             <button className="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 text-sm">
-              Lưu cấu hình
+              {isEdit ? 'Cập nhật cấu hình' : 'Lưu cấu hình'}
             </button>
           </div>
         </div>

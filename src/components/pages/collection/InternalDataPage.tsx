@@ -1,6 +1,7 @@
 import { Building, Download, Plus, Search, Filter, Eye, PlayCircle, PauseCircle, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { StatsCard } from '../../common/StatsCard';
+import { DataDetailModal } from '../../DataDetailModal';
 
 interface InternalSource {
   id: number;
@@ -105,6 +106,8 @@ const internalSources: InternalSource[] = [
 export function InternalDataPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [isDocModalOpen, setIsDocModalOpen] = useState(false);
+  const [selectedSource, setSelectedSource] = useState<InternalSource | null>(null);
 
   const filteredSources = internalSources.filter(source => {
     const matchesSearch = source.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -150,7 +153,7 @@ export function InternalDataPage() {
       <div className="bg-white rounded-lg border border-slate-200 p-6">
         <div className="flex items-center gap-3">
           <Building className="w-6 h-6 text-green-600" />
-          <h2 className="text-slate-900">Dữ liệu từ hệ thống trong ngành</h2>
+          <h2 className="text-slate-900 font-medium">Dữ liệu từ hệ thống trong ngành</h2>
         </div>
       </div>
 
@@ -171,17 +174,19 @@ export function InternalDataPage() {
               <input
                 type="text"
                 placeholder="Tìm kiếm theo tên nguồn, đơn vị, hệ thống..."
+                title="Tìm kiếm nguồn dữ liệu"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                onChange={(e: any) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
               />
             </div>
           </div>
           <div className="w-full md:w-48">
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              title="Lọc theo trạng thái"
+              onChange={(e: any) => setFilterStatus(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-white"
             >
               <option value="all">Tất cả trạng thái</option>
               <option value="active">Hoạt động</option>
@@ -189,11 +194,14 @@ export function InternalDataPage() {
               <option value="maintenance">Bảo trì</option>
             </select>
           </div>
-          <button className="whitespace-nowrap flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+          <button className="whitespace-nowrap flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
             <Plus className="w-4 h-4" />
             Thêm nguồn mới
           </button>
-          <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center justify-center gap-2">
+          <button 
+            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center justify-center gap-2 text-sm"
+            title="Lọc nâng cao"
+          >
             <Filter className="w-4 h-4" />
             Lọc
           </button>
@@ -202,8 +210,13 @@ export function InternalDataPage() {
 
       {/* Table */}
       <div className="bg-white rounded-lg border border-slate-200">
-        <div className="px-6 py-4 border-b border-slate-200">
-          <h3 className="text-slate-900">Danh sách nguồn dữ liệu ({filteredSources.length})</h3>
+        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <h3 className="text-slate-900 font-medium text-sm text-slate-700">Danh sách nguồn dữ liệu ({filteredSources.length})</h3>
+          <div className="flex items-center gap-2">
+             <button className="p-2 text-slate-400 hover:text-green-600 transition-colors" title="Làm mới">
+               <RefreshCw className="w-4 h-4" />
+             </button>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -222,18 +235,25 @@ export function InternalDataPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredSources.map((source) => (
-                <tr key={source.id} className="hover:bg-slate-50">
-                  <td className="px-6 py-4 text-sm text-slate-900">{source.name}</td>
+                <tr key={source.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-6 py-4 text-sm font-medium text-slate-900">{source.name}</td>
                   <td className="px-6 py-4 text-sm text-slate-700">{source.department}</td>
                   <td className="px-6 py-4 text-sm text-slate-600">{source.system}</td>
                   <td className="px-6 py-4">{getTypeBadge(source.type)}</td>
                   <td className="px-6 py-4 text-sm text-slate-900">{source.totalRecords.toLocaleString()}</td>
                   <td className="px-6 py-4">{getFrequencyBadge(source.frequency)}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{source.lastSync}</td>
+                  <td className="px-6 py-4 text-sm text-slate-600 font-mono text-xs">{source.lastSync}</td>
                   <td className="px-6 py-4">{getStatusBadge(source.status)}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
-                      <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Xem chi tiết">
+                      <button 
+                        onClick={() => {
+                          setSelectedSource(source);
+                          setIsDocModalOpen(true);
+                        }}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" 
+                        title="Xem chi tiết hồ sơ nguồn"
+                      >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Đồng bộ ngay">
@@ -248,17 +268,30 @@ export function InternalDataPage() {
         </div>
 
         {/* Pagination */}
-        <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between bg-slate-50 rounded-b-lg">
           <div className="text-sm text-slate-600">
             Hiển thị {filteredSources.length} trong tổng số 15 nguồn
           </div>
           <div className="flex gap-2">
-            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">Trước</button>
-            <button className="px-3 py-1 bg-green-600 text-white rounded text-sm">1</button>
-            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">Sau</button>
+            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-100 transition-colors disabled:opacity-50">Trước</button>
+            <button className="px-3 py-1 bg-green-600 text-white rounded text-sm font-medium">1</button>
+            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-100 transition-colors">Sau</button>
           </div>
         </div>
       </div>
+
+      {/* Premium PDF Viewer Integration */}
+      {isDocModalOpen && selectedSource && (
+        <DataDetailModal
+          isOpen={isDocModalOpen}
+          onClose={() => setIsDocModalOpen(false)}
+          title={`Chi tiết nguồn dữ liệu: ${selectedSource.name}`}
+          totalRecords={selectedSource.totalRecords}
+          newRecords={0}
+          updatedRecords={0}
+          errorRecords={0}
+        />
+      )}
     </div>
   );
 }

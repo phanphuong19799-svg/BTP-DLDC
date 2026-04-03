@@ -1,4 +1,4 @@
-import { X, Search, ChevronLeft, ChevronRight, Upload, FileDown, RefreshCw, Filter, Eye, Calendar, RotateCcw, Edit2, CheckCircle, XCircle } from 'lucide-react';
+import { X, Search, ChevronLeft, ChevronRight, Upload, FileDown, RefreshCw, Filter, Eye, Calendar, CheckCircle, XCircle, FileText, Database } from 'lucide-react';
 import { useState } from 'react';
 
 interface DataDetailModalProps {
@@ -69,6 +69,9 @@ interface DetailRecord {
   signerPosition?: string;
   implementer?: string;
   notes?: string;
+  errorProcessStatus?: 'sent' | 'updated' | 'pending';
+  errorProcessText?: string;
+  pdfUrl?: string;
 }
 
 export function DataDetailModal({ 
@@ -84,6 +87,9 @@ export function DataDetailModal({
   const [selectedRecord, setSelectedRecord] = useState<DetailRecord | null>(null);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [detailTab, setDetailTab] = useState('person');
+  const [searchText, setSearchText] = useState('');
+  const [errorStatusFilter, setErrorStatusFilter] = useState('all');
+  const [viewingPdfUrl, setViewingPdfUrl] = useState<string | null>(null);
   
   if (!isOpen) return null;
 
@@ -107,8 +113,9 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:00',
       type: 'Mới', 
       status: 'Hợp lệ',
-      approvalStatus: 'Đã phê duyệt',
+      approvalStatus: 'Đã đồng bộ',
       collectedAt: '19/12/2025 15:30:00',
+      pdfUrl: '/phieu_y_kien.pdf',
       fatherName: 'Nguyễn Văn Bình',
       fatherBirthDate: '01/01/1950',
       fatherEthnicity: 'Kinh',
@@ -146,7 +153,7 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:02',
       type: 'Mới', 
       status: 'Hợp lệ',
-      approvalStatus: 'Đã phê duyệt',
+      approvalStatus: 'Đã đồng bộ',
       collectedAt: '19/12/2025 15:30:02',
       fatherName: 'Trần Văn Dũng',
       fatherBirthDate: '01/01/1950',
@@ -185,10 +192,11 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:05',
       type: 'Mới', 
       status: 'Lỗi định dạng',
-      approvalStatus: 'Chưa phê duyệt',
+      approvalStatus: 'Đã gửi lại hệ thống nguồn',
       collectedAt: '19/12/2025 15:30:05',
       hasError: true,
       errorMessage: 'Sai định dạng ngày tháng',
+      pdfUrl: '/phieu_y_kien.pdf',
       fatherName: 'Lê Văn Hùng',
       fatherBirthDate: '01/01/1950',
       fatherEthnicity: 'Kinh',
@@ -206,7 +214,9 @@ export function DataDetailModal({
       motherIdIssueDate: '01/01/2000',
       motherIdIssuePlace: 'Hà Nội',
       motherIdNumber: '001234567890',
-      motherPersonalId: '001234567890'
+      motherPersonalId: '001234567890',
+      errorProcessStatus: 'sent',
+      errorProcessText: 'Đã gửi hệ thống nguồn'
     },
     { 
       id: '4', 
@@ -226,7 +236,7 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:07',
       type: 'Mới', 
       status: 'Lỗi định dạng',
-      approvalStatus: 'Chưa phê duyệt',
+      approvalStatus: 'Đã cập nhật lại',
       collectedAt: '19/12/2025 15:30:07',
       hasError: true,
       errorMessage: 'Sai định dạng điện thoại',
@@ -247,7 +257,9 @@ export function DataDetailModal({
       motherIdIssueDate: '01/01/2000',
       motherIdIssuePlace: 'Hà Nội',
       motherIdNumber: '001234567890',
-      motherPersonalId: '001234567890'
+      motherPersonalId: '001234567890',
+      errorProcessStatus: 'updated',
+      errorProcessText: 'Đã cập nhật lại'
     },
     { 
       id: '5', 
@@ -267,8 +279,9 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:10',
       type: 'Cập nhật', 
       status: 'Hợp lệ',
-      approvalStatus: 'Đã phê duyệt',
+      approvalStatus: 'Đã đồng bộ',
       collectedAt: '19/12/2025 15:30:10',
+      pdfUrl: '/phieu_y_kien.pdf',
       fatherName: 'Hoàng Văn Nam',
       fatherBirthDate: '01/01/1950',
       fatherEthnicity: 'Kinh',
@@ -306,7 +319,7 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:12',
       type: 'Mới', 
       status: 'Hợp lệ',
-      approvalStatus: 'Đã phê duyệt',
+      approvalStatus: 'Đã đồng bộ',
       collectedAt: '19/12/2025 15:30:12',
       fatherName: 'Vũ Văn Phong',
       fatherBirthDate: '01/01/1950',
@@ -345,7 +358,7 @@ export function DataDetailModal({
       syncDate: '19/12/2025 15:30:15',
       type: 'Mới', 
       status: 'Lỗi định dạng',
-      approvalStatus: 'Chưa phê duyệt',
+      approvalStatus: 'Đã cập nhật lại',
       collectedAt: '19/12/2025 15:30:15',
       hasError: true,
       errorMessage: 'Sai định dạng',
@@ -366,7 +379,9 @@ export function DataDetailModal({
       motherIdIssueDate: '01/01/2000',
       motherIdIssuePlace: 'Hà Nội',
       motherIdNumber: '001234567890',
-      motherPersonalId: '001234567890'
+      motherPersonalId: '001234567890',
+      errorProcessStatus: 'updated',
+      errorProcessText: 'Đã cập nhật lại'
     },
   ];
 
@@ -396,6 +411,7 @@ export function DataDetailModal({
             <button
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-600"
+              title="Đóng"
             >
               <X className="w-5 h-5" />
             </button>
@@ -437,16 +453,7 @@ export function DataDetailModal({
               >
                 📋 Danh sách đối tượng
               </button>
-              <button
-                onClick={() => setActiveTab('config')}
-                className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'config'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                ⚙️ Lịch sử chỉnh sửa kết nối
-              </button>
+
               <button
                 onClick={() => setActiveTab('history')}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
@@ -472,27 +479,45 @@ export function DataDetailModal({
                       type="text"
                       placeholder="Tìm kiếm theo tên, mã dịch vụ, đơn vị..."
                       className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      title="Tìm kiếm"
+                      value={searchText}
+                      onChange={(e: any) => setSearchText(e.target.value)}
                     />
                   </div>
                   <button
                     onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
                     className={`px-4 py-2 border border-slate-300 ${showAdvancedSearch ? 'bg-slate-100' : 'bg-white'} text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm whitespace-nowrap`}
+                    title="Tìm kiếm nâng cao"
                   >
                     <Filter className="w-4 h-4" />
                     Tìm kiếm nâng cao
                   </button>
                   
-                  <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm">
+                  <select
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[180px]"
+                    title="Trạng thái xử lý lỗi"
+                    value={errorStatusFilter}
+                    onChange={(e: any) => setErrorStatusFilter(e.target.value)}
+                  >
+                    <option value="all">Tất cả xử lý lỗi</option>
+                    <option value="sent">Đã gửi hệ thống nguồn</option>
+                    <option value="updated">Đã cập nhật lại</option>
+                    <option value="pending">Chờ xử lý</option>
+                  </select>
+                  
+                  <button 
+                    className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
+                    title="Nhập dữ liệu"
+                  >
                     <Upload className="w-4 h-4" />
                     Nhập
                   </button>
-                  <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm">
+                  <button 
+                    className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
+                    title="Xuất dữ liệu"
+                  >
                     <FileDown className="w-4 h-4" />
                     Xuất
-                  </button>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
-                    <RefreshCw className="w-4 h-4" />
-                    Đồng bộ
                   </button>
                 </div>
 
@@ -500,22 +525,34 @@ export function DataDetailModal({
                 {showAdvancedSearch && (
                   <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-3">
                     <div className="grid grid-cols-4 gap-3 mb-3">
-                      <select className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                      <select 
+                        className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        title="Nguồn dữ liệu"
+                      >
                         <option>Tất cả nguồn dữ liệu</option>
                         <option>LGSP</option>
                         <option>NDXP</option>
                       </select>
-                      <select className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                      <select 
+                        className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        title="Đơn vị Cục/Vụ"
+                      >
                         <option>Tất cả Cục/Vụ</option>
                         <option>Cục CNTT</option>
                         <option>Vụ Pháp chế</option>
                       </select>
-                      <select className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                      <select 
+                        className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        title="Trạng thái"
+                      >
                         <option>Tất cả trạng thái</option>
                         <option>Hoạt động</option>
                         <option>Tạm dừng</option>
                       </select>
-                      <select className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                      <select 
+                        className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        title="Loại dịch vụ"
+                      >
                         <option>Tất cả loại dịch vụ</option>
                         <option>Dịch vụ công</option>
                         <option>Thu thập dữ liệu</option>
@@ -525,9 +562,9 @@ export function DataDetailModal({
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-slate-600" />
                         <span className="text-sm text-slate-600">Thời gian:</span>
-                        <input type="date" defaultValue="2026-01-31" className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input type="date" defaultValue="2026-01-31" className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" title="Từ ngày" />
                         <span className="text-slate-400">—</span>
-                        <input type="date" defaultValue="2026-02-27" className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input type="date" defaultValue="2026-02-27" className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" title="Đến ngày" />
                       </div>
                       <div className="ml-auto flex gap-2">
                         <button className="px-4 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
@@ -563,12 +600,24 @@ export function DataDetailModal({
                       <th className="px-4 py-3 text-left text-xs font-medium text-slate-600">SG giấy chứng nhận</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-slate-600">Ngày đăng ký</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-slate-600">Ngày đồng bộ</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-slate-600">Văn bản</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-slate-600">Trạng thái</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-slate-600">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {detailRecords.map((record, index) => (
+                    {detailRecords
+                      .filter(record => {
+                        const matchesSearch = searchText === '' || 
+                          record.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                          record.code.toLowerCase().includes(searchText.toLowerCase()) ||
+                          record.idNumber.toLowerCase().includes(searchText.toLowerCase());
+                        
+                        const matchesErrorProcess = errorStatusFilter === 'all' || record.errorProcessStatus === errorStatusFilter;
+                        
+                        return matchesSearch && matchesErrorProcess;
+                      })
+                      .map((record, index) => (
                       <tr key={record.id} className="border-b border-slate-200 hover:bg-slate-50">
                         <td className="px-4 py-3 text-sm text-slate-900">{index + 1}</td>
                         <td className="px-4 py-3 text-sm">
@@ -588,13 +637,33 @@ export function DataDetailModal({
                         <td className="px-4 py-3 text-sm text-slate-900">{record.registrationDate}</td>
                         <td className="px-4 py-3 text-sm text-slate-600">{record.syncDate}</td>
                         <td className="px-4 py-3 text-sm">
+                          {record.pdfUrl ? (
+                            <button
+                              onClick={() => setViewingPdfUrl(record.pdfUrl!)}
+                              className="flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline"
+                              title="Xem văn bản đính kèm"
+                            >
+                              <FileText className="w-4 h-4" />
+                              Xem
+                            </button>
+                          ) : (
+                            <span className="text-slate-400">—</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-sm">
                           <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${
-                            record.approvalStatus === 'Đã phê duyệt' 
+                            record.approvalStatus === 'Đã đồng bộ' 
                               ? 'bg-green-100 text-green-700' 
-                              : 'bg-yellow-100 text-yellow-700'
+                              : record.approvalStatus === 'Đã gửi lại hệ thống nguồn'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-emerald-100 text-emerald-700'
                           }`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${
-                              record.approvalStatus === 'Đã phê duyệt' ? 'bg-green-600' : 'bg-yellow-600'
+                              record.approvalStatus === 'Đã đồng bộ' 
+                                ? 'bg-green-600' 
+                                : record.approvalStatus === 'Đã gửi lại hệ thống nguồn'
+                                ? 'bg-blue-600'
+                                : 'bg-emerald-600'
                             }`}></span>
                             {record.approvalStatus}
                           </span>
@@ -603,6 +672,7 @@ export function DataDetailModal({
                           <button 
                             onClick={() => setSelectedRecord(record)}
                             className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600"
+                            title="Xem chi tiết"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
@@ -615,166 +685,7 @@ export function DataDetailModal({
             </>
           )}
 
-          {/* Tab Content - CONNECTION HISTORY */}
-          {activeTab === 'config' && (
-            <div className="flex-1 overflow-auto p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-medium text-slate-900">Danh sách kết nối API</h3>
-                  <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Đang hoạt động</span>
-                  <span className="text-sm text-slate-600">Tổng: 3</span>
-                </div>
-              </div>
 
-              {/* API Connection Cards */}
-              <div className="space-y-4">
-                {/* API 1 */}
-                <div className="border border-slate-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-medium text-slate-900">API Danh mục giới tính</h4>
-                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Đang kết nối</span>
-                        <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded">API-KEY</span>
-                      </div>
-                      <p className="text-xs text-slate-600 mb-2">Kết nối API danh sách các giới tính cho hệ thống LGSP</p>
-                      <div className="flex items-center gap-4 text-xs text-slate-500">
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-600">🔗 Endpoint</span>
-                          <code className="font-mono text-blue-600">/api/v1/categories/gender</code>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-600">📡 Method</span>
-                          <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-mono">GET</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 ml-4">
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600">
-                        <RotateCcw className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600">
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-green-50 text-green-600">
-                        <CheckCircle className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-red-50 text-red-600">
-                        <XCircle className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 pt-3 border-t border-slate-200">
-                    <div>
-                      <span className="text-xs text-slate-600">⏱️ Response Time</span>
-                      <p className="text-sm font-medium text-slate-900">120ms</p>
-                    </div>
-                    <div>
-                      <span className="text-xs text-slate-600">🔄 Đang kết nối</span>
-                      <p className="text-sm font-medium text-emerald-600">09/12/2025 14:30:25</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* API 2 */}
-                <div className="border border-slate-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-medium text-slate-900">API Danh mục quốc tịch</h4>
-                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Đang kết nối</span>
-                        <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded">CLIENT-SECRET</span>
-                      </div>
-                      <p className="text-xs text-slate-600 mb-2">Kết nối API danh sách quốc tịch</p>
-                      <div className="flex items-center gap-4 text-xs text-slate-500">
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-600">🔗 Endpoint</span>
-                          <code className="font-mono text-blue-600">/api/v1/categories/nationality</code>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-600">📡 Method</span>
-                          <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-mono">GET</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 ml-4">
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600">
-                        <RotateCcw className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600">
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-green-50 text-green-600">
-                        <CheckCircle className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-red-50 text-red-600">
-                        <XCircle className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 pt-3 border-t border-slate-200">
-                    <div>
-                      <span className="text-xs text-slate-600">⏱️ Response Time</span>
-                      <p className="text-sm font-medium text-slate-900">93ms</p>
-                    </div>
-                    <div>
-                      <span className="text-xs text-slate-600">🔄 Đang kết nối</span>
-                      <p className="text-sm font-medium text-emerald-600">09/12/2025 14:45:10</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* API 3 */}
-                <div className="border border-slate-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-medium text-slate-900">API Backup (Dự phòng)</h4>
-                        <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs rounded">Nghiệp vụ mở</span>
-                        <span className="px-2 py-0.5 bg-slate-200 text-slate-700 text-xs rounded">OAuth2</span>
-                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">Tạm dừng</span>
-                      </div>
-                      <p className="text-xs text-slate-600 mb-2">Kết nối dự phòng khi hệ thống chính gặp sự cố</p>
-                      <div className="flex items-center gap-4 text-xs text-slate-500">
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-600">🔗 Endpoint</span>
-                          <code className="font-mono text-blue-600">/api/v1/backup</code>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-slate-600">📡 Method</span>
-                          <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded font-mono">GET</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 ml-4">
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600">
-                        <RotateCcw className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-blue-50 text-blue-600">
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-green-50 text-green-600">
-                        <CheckCircle className="w-4 h-4" />
-                      </button>
-                      <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-red-50 text-red-600">
-                        <XCircle className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 pt-3 border-t border-slate-200">
-                    <div>
-                      <span className="text-xs text-slate-600">⏱️ Response Time</span>
-                      <p className="text-sm font-medium text-slate-900">-</p>
-                    </div>
-                    <div>
-                      <span className="text-xs text-slate-600">🔄 Đang kết nối</span>
-                      <p className="text-sm font-medium text-slate-600">-</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Tab Content - SYNC HISTORY */}
           {activeTab === 'history' && (
@@ -931,7 +842,10 @@ export function DataDetailModal({
           <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <span className="text-sm text-slate-600">Hiển thị</span>
-              <select className="px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                className="px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                title="Số bản ghi trên trang"
+              >
                 <option>10</option>
                 <option>20</option>
                 <option>50</option>
@@ -944,17 +858,24 @@ export function DataDetailModal({
               <span className="text-sm text-slate-600">Hiển thị 1-10 / 12 bản ghi</span>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
-                  <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
+                  <button 
+                    className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600"
+                    title="Trang trước"
+                  >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
                   <span className="text-sm text-slate-600">Trang 1 / 2</span>
-                  <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
+                  <button 
+                    className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600"
+                    title="Trang sau"
+                  >
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
                 <button
                   onClick={onClose}
                   className="ml-2 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 text-sm"
+                  title="Đóng modal"
                 >
                   Đóng
                 </button>
@@ -964,6 +885,8 @@ export function DataDetailModal({
         </div>
       </div>
       
+
+
       {/* Record Detail Popup */}
       {selectedRecord && (
         <>
@@ -982,6 +905,7 @@ export function DataDetailModal({
                 <button
                   onClick={() => setSelectedRecord(null)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-600"
+                  title="Đóng chi tiết"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -997,6 +921,7 @@ export function DataDetailModal({
                         ? 'border-blue-600 text-blue-600'
                         : 'border-transparent text-slate-600 hover:text-slate-900'
                     }`}
+                    title="Thông tin người được khai sinh"
                   >
                     👤 Người được khai sinh
                   </button>
@@ -1007,8 +932,9 @@ export function DataDetailModal({
                         ? 'border-blue-600 text-blue-600'
                         : 'border-transparent text-slate-600 hover:text-slate-900'
                     }`}
+                    title="Thông tin người cha"
                   >
-                    👨 Người cha
+                    👨 Thông tin Cha
                   </button>
                   <button
                     onClick={() => setDetailTab('mother')}
@@ -1017,6 +943,7 @@ export function DataDetailModal({
                         ? 'border-blue-600 text-blue-600'
                         : 'border-transparent text-slate-600 hover:text-slate-900'
                     }`}
+                    title="Thông tin người mẹ"
                   >
                     👩 Người mẹ
                   </button>
@@ -1027,6 +954,7 @@ export function DataDetailModal({
                         ? 'border-blue-600 text-blue-600'
                         : 'border-transparent text-slate-600 hover:text-slate-900'
                     }`}
+                    title="Thông tin khác"
                   >
                     📋 Thông tin khác
                   </button>
@@ -1243,6 +1171,24 @@ export function DataDetailModal({
                       <div className="text-xs text-slate-600 mb-1">Ghi chú ghi những nội dung thay đổi sau này</div>
                       <div className="text-sm text-slate-900">{selectedRecord.notes || '-'}</div>
                     </div>
+                    {selectedRecord.pdfUrl && (
+                      <div className="border border-blue-200 p-3 rounded col-span-2 bg-blue-50/50">
+                        <div className="text-xs text-slate-600 mb-1 font-medium text-blue-600 uppercase tracking-wider">Văn bản đính kèm</div>
+                        <button
+                          onClick={() => setViewingPdfUrl(selectedRecord.pdfUrl!)}
+                          className="flex items-center gap-3 text-blue-700 font-bold hover:text-blue-800 transition-colors py-1 group"
+                          title="Click để xem văn bản PDF"
+                        >
+                          <div className="bg-blue-100 p-2 rounded group-hover:bg-blue-200 transition-colors">
+                            <FileText className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div className="flex flex-col items-start border-b border-blue-200 group-hover:border-blue-400">
+                             <span>Chi tiết hồ sơ đính kèm.pdf</span>
+                             <span className="text-[10px] text-blue-500 font-normal mt-0.5">Nhấn để xem trực tiếp</span>
+                          </div>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 )}
@@ -1261,17 +1207,19 @@ export function DataDetailModal({
                 )}
               </div>
 
-              {/* Footer */}
+              {/* Footer của màn hình chi tiết */}
               <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-end gap-3 flex-shrink-0 bg-white">
                 <button
                   onClick={() => setSelectedRecord(null)}
                   className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
+                  title="Đóng chi tiết"
                 >
                   <X className="w-4 h-4" />
                   Đóng
                 </button>
                 <button
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm"
+                  title="Xuất file"
                 >
                   <FileDown className="w-4 h-4" />
                   Xuất file
@@ -1280,6 +1228,84 @@ export function DataDetailModal({
             </div>
           </div>
         </>
+      )}
+
+      {/* Premium PDF Document Viewer - Phong cách Google Drive cực đẹp */}
+      {viewingPdfUrl && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+          {/* Nền tối sâu sang trọng */}
+          <div 
+            className="absolute inset-0 bg-slate-950/95 backdrop-blur-sm animate-in fade-in duration-500" 
+            onClick={() => setViewingPdfUrl(null)} 
+          />
+          
+          {/* Nút thao tác ở góc trên (Floating Top Controls) */}
+          <div className="absolute top-6 right-6 z-50 flex items-center gap-4">
+            <a 
+              href={viewingPdfUrl} 
+              download 
+              title="Tải về bản gốc"
+              className="w-11 h-11 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md border border-white/10 transition-all active:scale-90"
+            >
+              <FileDown className="w-5 h-5" />
+            </a>
+            <button 
+              onClick={() => setViewingPdfUrl(null)}
+              className="w-11 h-11 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md border border-white/10 transition-all active:scale-90"
+              title="Đóng trình xem"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Vùng hiển thị tài liệu */}
+          <div className="relative w-full h-full flex flex-col items-center justify-center p-6 sm:p-14">
+            <div className="w-full max-w-5xl h-full bg-white shadow-[0_0_80px_rgba(0,0,0,0.6)] rounded-sm overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+              <iframe 
+                src={`${viewingPdfUrl}#toolbar=0&navpanes=0&scrollbar=1`} 
+                className="w-full h-full border-none"
+                title="Premium PDF Viewer"
+              />
+            </div>
+
+            {/* Google Drive-style Floating BOTTOM Toolbar */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-8 px-8 py-3.5 bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] text-white animate-in slide-in-from-bottom-6 duration-700">
+              <div className="flex items-center gap-4 pr-8 border-r border-white/10">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Trang</span>
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="text" 
+                    defaultValue="1" 
+                    className="w-9 h-9 bg-white/10 border border-white/20 rounded-lg text-center text-sm font-black focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                    title="Trang hiện tại"
+                  />
+                  <span className="text-sm font-medium text-slate-400">/ 50</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-5 px-2">
+                <button className="w-9 h-9 flex items-center justify-center hover:bg-white/10 rounded-full transition-all active:scale-75" title="Thu nhỏ">
+                  <span className="text-2xl font-light">−</span>
+                </button>
+                <div className="flex items-center gap-2 bg-white/5 px-4 py-1.5 rounded-lg border border-white/5">
+                  <Search className="w-4 h-4 text-blue-400" />
+                  <span className="text-sm font-black tracking-tighter">100%</span>
+                </div>
+                <button className="w-9 h-9 flex items-center justify-center hover:bg-white/10 rounded-full transition-all active:scale-75" title="Phóng to">
+                  <span className="text-2xl font-light">+</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-3 pl-8 border-l border-white/10">
+                <div className="flex flex-col items-end">
+                   <span className="text-[9px] font-black text-emerald-400 uppercase tracking-tighter">Verified Original</span>
+                   <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest">DLDC System</span>
+                </div>
+                <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

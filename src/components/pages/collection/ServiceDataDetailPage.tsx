@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { X, ChevronLeft, ChevronRight, Download, Filter, Search } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Download, Filter, Search, Eye } from 'lucide-react';
+import { DataDetailModal } from '../../DataDetailModal';
 
 interface ServiceDataDetailPageProps {
   isOpen: boolean;
@@ -45,13 +46,13 @@ const mockCollectedRecords = [
     birthDate: '31/13/2023',
     phoneNumber: '0901234567',
     address: 'Số 15, Giảng Võ, Ba Đình, Hà Nội',
-    status: 'error',
-    statusText: 'Lỗi định dạng',
     statusColor: 'bg-orange-100 text-orange-700',
     collectedAt: '19/12/2025 15:30:05',
     recordType: 'Mới',
     errorField: 'birthDate',
-    errorMessage: 'Sai định dạng ngày tháng'
+    errorMessage: 'Sai định dạng ngày tháng',
+    errorProcessStatus: 'sent',
+    errorProcessText: 'Đã gửi hệ thống nguồn'
   },
   {
     id: 4,
@@ -67,7 +68,9 @@ const mockCollectedRecords = [
     collectedAt: '19/12/2025 15:30:07',
     recordType: 'Mới',
     errorField: 'phoneNumber',
-    errorMessage: 'Sai định dạng số điện thoại'
+    errorMessage: 'Sai định dạng số điện thoại',
+    errorProcessStatus: 'updated',
+    errorProcessText: 'Đã cập nhật lại'
   },
   {
     id: 5,
@@ -111,7 +114,9 @@ const mockCollectedRecords = [
     collectedAt: '19/12/2025 15:30:15',
     recordType: 'Mới',
     errorField: 'idNumber',
-    errorMessage: 'Sai định dạng CMND/CCCD'
+    errorMessage: 'Sai định dạng CMND/CCCD',
+    errorProcessStatus: 'pending',
+    errorProcessText: 'Chờ xử lý'
   },
   {
     id: 8,
@@ -149,13 +154,13 @@ const mockCollectedRecords = [
     birthDate: '2023-15-45',
     phoneNumber: '0967890123',
     address: 'Số 22, Tây Sơn, Đống Đa, Hà Nội',
-    status: 'error',
-    statusText: 'Lỗi định dạng',
     statusColor: 'bg-orange-100 text-orange-700',
     collectedAt: '19/12/2025 15:30:22',
     recordType: 'Mới',
     errorField: 'birthDate',
-    errorMessage: 'Sai định dạng ngày tháng'
+    errorMessage: 'Sai định dạng ngày tháng',
+    errorProcessStatus: 'sent',
+    errorProcessText: 'Đã gửi hệ thống nguồn'
   },
   {
     id: 11,
@@ -191,8 +196,11 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [recordTypeFilter, setRecordTypeFilter] = useState('all');
+  const [errorProcessFilter, setErrorProcessFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [isDocModalOpen, setIsDocModalOpen] = useState(false);
+  const [selectedRecordCode, setSelectedRecordCode] = useState('');
 
   if (!isOpen || !service) return null;
 
@@ -206,8 +214,9 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
     
     const matchesStatus = statusFilter === 'all' || record.status === statusFilter;
     const matchesType = recordTypeFilter === 'all' || record.recordType === recordTypeFilter;
+    const matchesErrorProcess = errorProcessFilter === 'all' || record.errorProcessStatus === errorProcessFilter;
     
-    return matchesSearch && matchesStatus && matchesType;
+    return matchesSearch && matchesStatus && matchesType && matchesErrorProcess;
   });
 
   // Pagination
@@ -233,6 +242,7 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
           </div>
           <button
             onClick={onClose}
+            title="Đóng"
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-slate-500" />
@@ -274,12 +284,14 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
                   type="text"
                   placeholder="Tìm kiếm theo mã bản ghi, họ tên, CMND/CCCD, số điện thoại..."
                   className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  title="Tìm kiếm bản ghi"
                   value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
+                  onChange={(e: any) => setSearchText(e.target.value)}
                 />
               </div>
               <button
                 onClick={handleExport}
+                title="Kết xuất danh sách"
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 text-sm whitespace-nowrap"
               >
                 <Download className="w-4 h-4" />
@@ -294,22 +306,35 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
                 <span className="text-sm text-slate-600">Lọc:</span>
               </div>
               <select
+                title="Lọc trạng thái dữ liệu"
                 className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onChange={(e: any) => setStatusFilter(e.target.value)}
               >
                 <option value="all">Tất cả trạng thái</option>
                 <option value="valid">Hợp lệ</option>
                 <option value="error">Lỗi định dạng</option>
               </select>
               <select
+                title="Lọc loại bản ghi"
                 className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 value={recordTypeFilter}
-                onChange={(e) => setRecordTypeFilter(e.target.value)}
+                onChange={(e: any) => setRecordTypeFilter(e.target.value)}
               >
                 <option value="all">Tất cả loại bản ghi</option>
                 <option value="Mới">Bản ghi mới</option>
                 <option value="Cập nhật">Bản ghi cập nhật</option>
+              </select>
+              <select
+                title="Lọc xử lý lỗi"
+                className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                value={errorProcessFilter}
+                onChange={(e: any) => setErrorProcessFilter(e.target.value)}
+              >
+                <option value="all">Tất cả xử lý lỗi</option>
+                <option value="sent">Đã gửi hệ thống nguồn</option>
+                <option value="updated">Đã cập nhật lại</option>
+                <option value="pending">Chờ xử lý</option>
               </select>
               <div className="flex-1"></div>
               <span className="text-sm text-slate-600">
@@ -334,12 +359,13 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
                 <th className="px-4 py-3 text-left text-xs text-slate-600 uppercase">Loại</th>
                 <th className="px-4 py-3 text-left text-xs text-slate-600 uppercase">Trạng thái</th>
                 <th className="px-4 py-3 text-left text-xs text-slate-600 uppercase">Thời gian thu thập</th>
+                <th className="px-4 py-3 text-center text-xs text-slate-600 uppercase">Thao tác</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {currentRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-4 py-8 text-center text-sm text-slate-500">
+                  <td colSpan={11} className="px-4 py-8 text-center text-sm text-slate-500">
                     Không tìm thấy bản ghi nào
                   </td>
                 </tr>
@@ -390,9 +416,32 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
                         {record.status === 'error' && record.errorMessage && (
                           <span className="text-xs text-orange-600">{record.errorMessage}</span>
                         )}
+                        {record.status === 'error' && record.errorProcessStatus && (
+                          <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] w-fit mt-1 border ${
+                            record.errorProcessStatus === 'sent' ? 'bg-blue-50 text-blue-600 border-blue-200' :
+                            record.errorProcessStatus === 'updated' ? 'bg-green-50 text-green-600 border-green-200' :
+                            'bg-slate-50 text-slate-500 border-slate-200'
+                          }`}>
+                            {record.errorProcessText}
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-4 py-3 text-sm text-slate-600">{record.collectedAt}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-center">
+                        <button
+                          onClick={() => {
+                            setSelectedRecordCode(record.recordId);
+                            setIsDocModalOpen(true);
+                          }}
+                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                          title="Xem hồ sơ gốc (Phiếu ý kiến)"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))
               )}
@@ -405,9 +454,10 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
           <div className="flex items-center gap-2">
             <span className="text-sm text-slate-600">Hiển thị</span>
             <select
+              title="Số bản ghi trên trang"
               className="px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={itemsPerPage}
-              onChange={(e) => {
+              onChange={(e: any) => {
                 setItemsPerPage(Number(e.target.value));
                 setCurrentPage(1);
               }}
@@ -424,6 +474,7 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
             <button
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
+              title="Trang trước"
               className="p-2 rounded hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-4 h-4 text-slate-600" />
@@ -434,6 +485,7 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
             <button
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
+              title="Trang sau"
               className="p-2 rounded hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="w-4 h-4 text-slate-600" />
@@ -441,6 +493,20 @@ export function ServiceDataDetailPage({ isOpen, onClose, service }: ServiceDataD
           </div>
         </div>
       </div>
+      
+      {isDocModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <DataDetailModal
+            isOpen={isDocModalOpen}
+            onClose={() => setIsDocModalOpen(false)}
+            title={`Hồ sơ gốc: ${selectedRecordCode}`}
+            totalRecords={service.recordsReceived || 0}
+            newRecords={service.recordsNew || 0}
+            updatedRecords={service.recordsUpdated || 0}
+            errorRecords={service.validationDetails?.invalidRecords || 0}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -42,7 +42,8 @@ const mockRecords = [
     statusColor: 'bg-orange-100 text-orange-700 border-orange-200',
     errorCount: 2,
     matchRate: 98.97,
-    lastReconcileDate: '2024-12-19 16:00:00'
+    lastReconcileDate: '2024-12-19 16:00:00',
+    isReportSent: true
   },
   {
     id: 'REC-EXT-CAT-004',

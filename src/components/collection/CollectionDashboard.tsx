@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Download, Database, Building2, Building } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -63,20 +64,19 @@ function ChartCard({ title, total, data }: ChartCardProps) {
 
       {/* Controls */}
       <div className="flex items-center gap-3 mb-4">
-        <select className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+        <select 
+          className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          title="Chọn khoảng thời gian"
+        >
           <option>Tháng này</option>
           <option>Tuần này</option>
           <option>Hôm nay</option>
           <option>Tháng trước</option>
         </select>
-        <button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm flex items-center gap-2 hover:bg-green-700 transition-colors">
-          <Download className="w-4 h-4" />
-          Kết xuất
-        </button>
       </div>
 
       {/* Chart */}
-      <div style={{ width: '100%', height: '256px' }}>
+      <div className="w-full h-64">
         <ResponsiveContainer width="100%" height={256}>
           <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -140,14 +140,10 @@ function TrendChart() {
           <h3 className="text-slate-900">Xu hướng Thu thập</h3>
           <p className="text-sm text-slate-500 mt-1">12 tháng</p>
         </div>
-        <button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm flex items-center gap-2 hover:bg-green-700 transition-colors">
-          <Download className="w-4 h-4" />
-          Kết xuất
-        </button>
       </div>
 
       {/* Chart */}
-      <div style={{ width: '100%', height: '256px' }}>
+      <div className="w-full h-64">
         <ResponsiveContainer width="100%" height={256}>
           <LineChart data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />

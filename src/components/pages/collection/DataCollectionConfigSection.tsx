@@ -6,10 +6,14 @@ export function DataCollectionConfigSection() {
       <div className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm text-slate-600 mb-1">
+            <label htmlFor="sync-method" className="block text-sm text-slate-600 mb-1">
               Phương thức đồng bộ <span className="text-red-500">*</span>
             </label>
-            <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select 
+              id="sync-method"
+              title="Phương thức đồng bộ"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
               <option value="">Chọn phương thức</option>
               <option value="realtime">Real-time (Thời gian thực)</option>
               <option value="batch">Batch (Theo lô)</option>
@@ -17,10 +21,14 @@ export function DataCollectionConfigSection() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-slate-600 mb-1">
+            <label htmlFor="collection-frequency" className="block text-sm text-slate-600 mb-1">
               Tần suất thu thập
             </label>
-            <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select 
+              id="collection-frequency"
+              title="Tần suất thu thập"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
               <option value="">Chọn tần suất</option>
               <option value="manual">Theo yêu cầu (Thủ công)</option>
               <option value="hourly">Mỗi giờ</option>

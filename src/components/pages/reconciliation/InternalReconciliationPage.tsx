@@ -34,7 +34,8 @@ const generateMockRecords = (dbCode: string, dbName: string) => {
       statusColor: 'bg-orange-100 text-orange-700 border-orange-200',
       errorCount: Math.floor(Math.random() * 100) + 10,
       matchRate: 98 + Math.random() * 1.5,
-      lastReconcileDate: '2024-11-20 16:00:00'
+      lastReconcileDate: '2024-11-20 16:00:00',
+      isReportSent: true
     },
     {
       id: `REC-${dbCode}-003`,

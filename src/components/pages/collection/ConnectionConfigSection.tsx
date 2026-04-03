@@ -11,10 +11,12 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
       <div>
         <h3 className="text-sm text-slate-700 mb-3">Cấu hình Endpoint</h3>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">
+          <label htmlFor="conn-base-url" className="block text-sm text-slate-600 mb-1">
             Base URL <span className="text-red-500">*</span>
           </label>
           <input
+            id="conn-base-url"
+            title="Base URL"
             type="text"
             className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="https://api.example.com"
@@ -28,20 +30,28 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-content-type" className="block text-sm text-slate-600 mb-1">
                 Content Type
               </label>
-              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                id="conn-content-type"
+                title="Content Type"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option>Application/json</option>
                 <option>application/xml</option>
                 <option>text/plain</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-method" className="block text-sm text-slate-600 mb-1">
                 Method
               </label>
-              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                id="conn-method"
+                title="Method"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option>GET</option>
                 <option>POST</option>
                 <option>PUT</option>
@@ -52,20 +62,26 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-api-type" className="block text-sm text-slate-600 mb-1">
                 Loại API
               </label>
-              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                id="conn-api-type"
+                title="Loại API"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option>API KEY</option>
                 <option>OAuth 2.0</option>
                 <option>Basic Auth</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-auth" className="block text-sm text-slate-600 mb-1">
                 Authentication
               </label>
               <input
+                id="conn-auth"
+                title="Authentication"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Bearer token"
@@ -75,20 +91,26 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-endpoint-path" className="block text-sm text-slate-600 mb-1">
                 Endpoint Path
               </label>
               <input
+                id="conn-endpoint-path"
+                title="Endpoint Path"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="/api/v1/users"
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-query-params" className="block text-sm text-slate-600 mb-1">
                 Query Parameters
               </label>
-              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                id="conn-query-params"
+                title="Query Parameters"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option>fromDate</option>
                 <option>toDate</option>
                 <option>page</option>
@@ -98,20 +120,24 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-header-name" className="block text-sm text-slate-600 mb-1">
                 Header Name (API Key)
               </label>
               <input
+                id="conn-header-name"
+                title="Header Name (API Key)"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="X-API-Key"
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-timeout" className="block text-sm text-slate-600 mb-1">
                 Timeout (ms)
               </label>
               <input
+                id="conn-timeout"
+                title="Timeout (ms)"
                 type="number"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="1000"
@@ -122,20 +148,26 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-page-size" className="block text-sm text-slate-600 mb-1">
                 Page Size
               </label>
-              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                id="conn-page-size"
+                title="Page Size"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option>100</option>
                 <option>50</option>
                 <option>200</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-success-codes" className="block text-sm text-slate-600 mb-1">
                 HTTP Success Codes
               </label>
               <input
+                id="conn-success-codes"
+                title="HTTP Success Codes"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="200"
@@ -143,10 +175,12 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-error-codes" className="block text-sm text-slate-600 mb-1">
                 HTTP Error Codes
               </label>
               <input
+                id="conn-error-codes"
+                title="HTTP Error Codes"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="400,500"
@@ -156,10 +190,14 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-retries" className="block text-sm text-slate-600 mb-1">
                 Số lần thử
               </label>
-              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select 
+                id="conn-retries"
+                title="Số lần thử"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -167,20 +205,24 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
               </select>
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-api-key" className="block text-sm text-slate-600 mb-1">
                 API Key
               </label>
               <input
+                id="conn-api-key"
+                title="API Key"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="API key"
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-interval" className="block text-sm text-slate-600 mb-1">
                 Khoảng cách
               </label>
               <input
+                id="conn-interval"
+                title="Khoảng cách"
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="5 phút"
@@ -189,10 +231,14 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
           </div>
 
           <div>
-            <label className="block text-sm text-slate-600 mb-1">
+            <label htmlFor="conn-ssl-required" className="block text-sm text-slate-600 mb-1">
               SSL Required
             </label>
-            <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select 
+              id="conn-ssl-required"
+              title="SSL Required"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
               <option>true</option>
               <option>false</option>
             </select>
@@ -203,20 +249,24 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
       {/* Request/Response Sample */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm text-slate-600 mb-1">
+          <label htmlFor="conn-request-sample" className="block text-sm text-slate-600 mb-1">
             Request Sample
           </label>
           <textarea
+            id="conn-request-sample"
+            title="Request Sample"
             className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={4}
             placeholder='{"key1": "value1"}'
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">
+          <label htmlFor="conn-response-sample" className="block text-sm text-slate-600 mb-1">
             Response Sample
           </label>
           <textarea
+            id="conn-response-sample"
+            title="Response Sample"
             className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={4}
             placeholder="Chưa có query vào"
@@ -230,6 +280,7 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
           <h3 className="text-sm text-slate-700">Ánh xạ trường dữ liệu đầu thu thập</h3>
           <button
             type="button"
+            title="Thêm trường"
             className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs flex items-center gap-1"
           >
             <Plus className="w-3 h-3" />
@@ -249,19 +300,19 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
             <tbody className="divide-y divide-slate-200">
               <tr>
                 <td className="px-3 py-2">
-                  <select className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
+                  <select title="Trường nguồn" className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
                     <option>id</option>
                     <option>name</option>
                   </select>
                 </td>
                 <td className="px-3 py-2">
-                  <select className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
+                  <select title="Kiểu dữ liệu" className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
                     <option>string</option>
                     <option>number</option>
                   </select>
                 </td>
                 <td className="px-3 py-2">
-                  <select className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
+                  <select title="Trường đích" className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
                     <option>id</option>
                     <option>userId</option>
                   </select>
@@ -269,6 +320,7 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
                 <td className="px-3 py-2 text-center">
                   <button
                     type="button"
+                    title="Xóa dòng"
                     className="text-red-600 hover:bg-red-50 p-1 rounded transition-colors"
                   >
                     <X className="w-4 h-4" />
@@ -277,19 +329,19 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
               </tr>
               <tr>
                 <td className="px-3 py-2">
-                  <select className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
+                  <select title="Trường nguồn" className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
                     <option>full_name</option>
                     <option>name</option>
                   </select>
                 </td>
                 <td className="px-3 py-2">
-                  <select className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-2 focus:ring-0">
+                  <select title="Kiểu dữ liệu" className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-2 focus:ring-0">
                     <option>string</option>
                     <option>number</option>
                   </select>
                 </td>
                 <td className="px-3 py-2">
-                  <select className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
+                  <select title="Trường đích" className="w-full px-2 py-1 border-0 text-xs focus:outline-none focus:ring-0">
                     <option>full_name</option>
                     <option>userName</option>
                   </select>
@@ -297,6 +349,7 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
                 <td className="px-3 py-2 text-center">
                   <button
                     type="button"
+                    title="Xóa dòng"
                     className="text-red-600 hover:bg-red-50 p-1 rounded transition-colors"
                   >
                     <X className="w-4 h-4" />
@@ -318,20 +371,24 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-lgsp-code" className="block text-sm text-slate-600 mb-1">
                   Mã dịch vụ LGSP <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="conn-lgsp-code"
+                  title="Mã dịch vụ LGSP"
                   type="text"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="VD: LGSP_SERVICE_001"
                 />
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-service-name" className="block text-sm text-slate-600 mb-1">
                   Service Name
                 </label>
                 <input
+                  id="conn-service-name"
+                  title="Service Name"
                   type="text"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="DataCollectionService"
@@ -340,28 +397,38 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
             </div>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-lgsp-version" className="block text-sm text-slate-600 mb-1">
                   Phiên bản API
                 </label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select 
+                  id="conn-lgsp-version"
+                  title="Phiên bản API"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="v1">v1</option>
                   <option value="v2">v2</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-lgsp-method" className="block text-sm text-slate-600 mb-1">
                   Phương thức
                 </label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select 
+                  id="conn-lgsp-method"
+                  title="Phương thức"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="REST">REST</option>
                   <option value="SOAP">SOAP</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-lgsp-timeout" className="block text-sm text-slate-600 mb-1">
                   Timeout (giây)
                 </label>
                 <input
+                  id="conn-lgsp-timeout"
+                  title="Timeout"
                   type="number"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   defaultValue="30"
@@ -372,19 +439,27 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-lgsp-auth" className="block text-sm text-slate-600 mb-1">
                   Cơ chế xác thực
                 </label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select 
+                  id="conn-lgsp-auth"
+                  title="Cơ chế xác thực"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="digital-signature">Chữ ký số</option>
                   <option value="oauth2">OAuth2</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-lgsp-cts" className="block text-sm text-slate-600 mb-1">
                   Chứng thư số
                 </label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select 
+                   id="conn-lgsp-cts"
+                   title="Chứng thư số"
+                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="">-- Chọn CTS --</option>
                   <option value="CTS_DLDC_2024">CTS DLDC 2024</option>
                   <option value="CTS_BTP_2024">CTS Bộ Tư pháp 2024</option>
@@ -405,20 +480,24 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-ndxp-code" className="block text-sm text-slate-600 mb-1">
                   Mã đơn vị NDXP <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="conn-ndxp-code"
+                  title="Mã đơn vị NDXP"
                   type="text"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="VD: NDXP_ORG_001"
                 />
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-org-id" className="block text-sm text-slate-600 mb-1">
                   Mã định danh tổ chức
                 </label>
                 <input
+                  id="conn-org-id"
+                  title="Mã định danh tổ chức"
                   type="text"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="VD: 00.00.00.H00"
@@ -426,10 +505,12 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
               </div>
             </div>
             <div>
-              <label className="block text-sm text-slate-600 mb-1">
+              <label htmlFor="conn-ndxp-endpoint" className="block text-sm text-slate-600 mb-1">
                 Endpoint NDXP
               </label>
               <input
+                id="conn-ndxp-endpoint"
+                title="Endpoint NDXP"
                 type="url"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="https://ndxp.gov.vn/api/v1/data"
@@ -437,20 +518,24 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-ndxp-token" className="block text-sm text-slate-600 mb-1">
                   Token xác thực
                 </label>
                 <input
+                  id="conn-ndxp-token"
+                  title="Token xác thực"
                   type="password"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="••••••••••••"
                 />
               </div>
               <div>
-                <label className="block text-sm text-slate-600 mb-1">
+                <label htmlFor="conn-ndxp-secret" className="block text-sm text-slate-600 mb-1">
                   Mã bí mật
                 </label>
                 <input
+                  id="conn-ndxp-secret"
+                  title="Mã bí mật"
                   type="password"
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="••••••••••••"

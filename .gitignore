@@ -1,0 +1,7 @@
+node_modules/
+build/
+dist/
+Tools/MD_to_DOCX/build/
+Tools/MD_to_DOCX/dist/
+*.exe
+*.pkg

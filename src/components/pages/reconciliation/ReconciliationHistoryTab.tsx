@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState } from 'react';
 import { Search, Download } from 'lucide-react';
 
@@ -16,8 +17,22 @@ interface ReconciliationHistory {
   details: string;
 }
 
-export function ReconciliationHistoryTab() {
-  const [searchTerm, setSearchTerm] = useState('');
+interface ReconciliationHistoryTabProps {
+  initialSearchTerm?: string;
+}
+
+export function ReconciliationHistoryTab({ initialSearchTerm = '' }: ReconciliationHistoryTabProps) {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+
+  React.useEffect(() => {
+    if (initialSearchTerm) {
+      setSearchTerm(initialSearchTerm);
+    }
+  }, [initialSearchTerm]);
+  const [filterStatus, setFilterStatus] = useState<'all' | 'success' | 'failed'>('all');
+  const [filterSystem, setFilterSystem] = useState('all');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   const histories: ReconciliationHistory[] = [
     {
@@ -46,7 +61,7 @@ export function ReconciliationHistoryTab() {
       status: 'success',
       statusText: 'Thành công',
       statusColor: 'bg-green-100 text-green-700 border-green-200',
-      details: 'Gửi gói tin thành công - Đang chờ phản hồi từ hệ thống dịch'
+      details: 'Gửi gói tin thành công - Đang chờ phản hồi từ Hệ thống đích'
     },
     {
       id: 'HIST-003',
@@ -92,33 +107,103 @@ export function ReconciliationHistoryTab() {
     }
   ];
 
-  const filteredHistories = histories.filter(history =>
-    searchTerm === '' ||
-    history.packageName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    history.packageCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    history.systemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    history.action.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredHistories = histories.filter(history => {
+    const matchesSearch = searchTerm === '' ||
+      history.packageName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      history.packageCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      history.systemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      history.action.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus = filterStatus === 'all' || history.status === filterStatus;
+    const matchesSystem = filterSystem === 'all' || history.systemName === filterSystem;
+
+    let matchesDate = true;
+    if (dateFrom || dateTo) {
+      const historyDate = new Date(history.timestamp.split(' ')[0]);
+      if (dateFrom && historyDate < new Date(dateFrom)) matchesDate = false;
+      if (dateTo && historyDate > new Date(dateTo)) matchesDate = false;
+    }
+
+    return matchesSearch && matchesStatus && matchesSystem && matchesDate;
+  });
+
+  const uniqueSystems = Array.from(new Set(histories.map(h => h.systemName)));
 
   return (
     <div className="space-y-6">
-      {/* Search and Export */}
+      {/* Search and Advanced Filters */}
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex-1 relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm lịch sử theo gói tin, hệ thống, hành động..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+        <div className="space-y-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="flex-1 relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Tìm kiếm lịch sử theo gói tin, hệ thống, hành động..."
+                value={searchTerm}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                title="Tìm kiếm lịch sử"
+              />
+            </div>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 whitespace-nowrap" title="Xuất báo cáo lịch sử">
+              <Download className="w-4 h-4" />
+              Xuất báo cáo
+            </button>
           </div>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 whitespace-nowrap">
-            <Download className="w-4 h-4" />
-            Xuất báo cáo
-          </button>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-medium text-slate-500">Trạng thái</label>
+              <select
+                value={filterStatus}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value as any)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                title="Lọc theo trạng thái"
+              >
+                <option value="all">Tất cả trạng thái</option>
+                <option value="success">Thành công</option>
+                <option value="failed">Thất bại</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-medium text-slate-500">Hệ thống</label>
+              <select
+                value={filterSystem}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterSystem(e.target.value)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                title="Lọc theo hệ thống"
+              >
+                <option value="all">Tất cả hệ thống</option>
+                {uniqueSystems.map(system => (
+                  <option key={system} value={system}>{system}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-medium text-slate-500">Từ ngày</label>
+              <input
+                type="date"
+                value={dateFrom}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDateFrom(e.target.value)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                title="Từ ngày"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-medium text-slate-500">Đến ngày</label>
+              <input
+                type="date"
+                value={dateTo}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDateTo(e.target.value)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                title="Đến ngày"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -130,10 +215,10 @@ export function ReconciliationHistoryTab() {
               <tr>
                 <th className="px-6 py-3 text-left text-sm text-slate-600">Thời gian</th>
                 <th className="px-6 py-3 text-left text-sm text-slate-600">Gói tin</th>
-                <th className="px-6 py-3 text-left text-sm text-slate-600">Hệ thống dịch</th>
+                <th className="px-6 py-3 text-left text-sm text-slate-600">Hệ thống đích</th>
                 <th className="px-6 py-3 text-left text-sm text-slate-600">Hành động</th>
-                <th className="px-6 py-3 text-left text-sm text-slate-600">Số bản ghi đã gửi</th>
-                <th className="px-6 py-3 text-left text-sm text-slate-600">Dung lượng đã gửi</th>
+                <th className="px-6 py-3 text-left text-sm text-slate-600">Số bản ghi đã nhận</th>
+                <th className="px-6 py-3 text-left text-sm text-slate-600">Dung lượng đã nhận</th>
                 <th className="px-6 py-3 text-left text-sm text-slate-600">Trạng thái</th>
                 <th className="px-6 py-3 text-left text-sm text-slate-600">Chi tiết</th>
               </tr>

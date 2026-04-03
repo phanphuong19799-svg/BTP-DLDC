@@ -1,4 +1,4 @@
-import { X, Search, Filter, Download, FileDown, XCircle, CheckCircle, AlertCircle, Eye, Link2, RefreshCw, Edit2, Check, Trash2, Calendar, ArrowUp, Clock } from 'lucide-react';
+import { X, Search, Filter, Download, FileDown, XCircle, CheckCircle, AlertCircle, Eye, RefreshCw, Calendar, ArrowUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface MarriageDetailModalProps {
@@ -222,6 +222,7 @@ export function MarriageDetailModal({
             <button
               onClick={onClose}
               className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-600"
+              title="Đóng"
             >
               <X className="w-5 h-5" />
             </button>
@@ -240,16 +241,7 @@ export function MarriageDetailModal({
               >
                 Danh sách ({totalRecords.toLocaleString()})
               </button>
-              <button
-                onClick={() => setActiveTab('history')}
-                className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === 'history'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Lịch sử chỉnh sửa kết nối
-              </button>
+
               <button
                 onClick={() => setActiveTab('sync')}
                 className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
@@ -276,16 +268,21 @@ export function MarriageDetailModal({
                         type="text"
                         placeholder="Tìm kiếm theo tên chồng, tên vợ, số đăng ký..."
                         className="w-full pl-9 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                        title="Tìm kiếm"
                       />
                     </div>
                     <button
                       onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
                       className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
+                      title="Lọc nâng cao"
                     >
                       <Filter className="w-4 h-4" />
                       Lọc nâng cao
                     </button>
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
+                    <button 
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm"
+                      title="Xuất Excel"
+                    >
                       <Download className="w-4 h-4" />
                       Xuất Excel
                     </button>
@@ -295,19 +292,19 @@ export function MarriageDetailModal({
                     <div className="grid grid-cols-4 gap-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
                       <div>
                         <label className="block text-xs font-medium text-slate-700 mb-1">Họ tên chồng</label>
-                        <input type="text" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" />
+                        <input type="text" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" title="Họ tên chồng" />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-slate-700 mb-1">Họ tên vợ</label>
-                        <input type="text" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" />
+                        <input type="text" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" title="Họ tên vợ" />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-slate-700 mb-1">Từ ngày</label>
-                        <input type="date" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" />
+                        <input type="date" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" title="Từ ngày" />
                       </div>
                       <div>
                         <label className="block text-xs font-medium text-slate-700 mb-1">Đến ngày</label>
-                        <input type="date" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" />
+                        <input type="date" className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg" title="Đến ngày" />
                       </div>
                     </div>
                   )}
@@ -361,6 +358,7 @@ export function MarriageDetailModal({
                             <button
                               onClick={() => setSelectedRecord(record)}
                               className="text-blue-600 hover:text-blue-700"
+                              title="Xem chi tiết"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
@@ -377,13 +375,19 @@ export function MarriageDetailModal({
                     Hiển thị <span className="font-medium text-slate-900">1-{records.length}</span> trong tổng số <span className="font-medium text-slate-900">{totalRecords}</span> bản ghi
                   </div>
                   <div className="flex items-center gap-2">
-                    <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">
+                    <button 
+                      className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm"
+                      title="Trang trước"
+                    >
                       Trước
                     </button>
                     <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
                     <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">2</button>
                     <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">3</button>
-                    <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">
+                    <button 
+                      className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm"
+                      title="Trang sau"
+                    >
                       Sau
                     </button>
                   </div>
@@ -391,220 +395,7 @@ export function MarriageDetailModal({
               </>
             )}
 
-            {activeTab === 'history' && (
-              <div className="flex-1 overflow-auto p-6">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-sm font-medium text-slate-900">Danh sách kết nối API</h3>
-                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-50 text-green-700 rounded text-xs font-medium">
-                      Đang hoạt động
-                    </span>
-                    <span className="text-xs text-slate-600">Tổng: 3</span>
-                  </div>
-                </div>
 
-                {/* API Connection Cards */}
-                <div className="space-y-4">
-                  {/* API 1 */}
-                  <div className="border border-slate-200 rounded-lg p-4 hover:border-slate-300 transition-colors">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h4 className="text-sm font-medium text-slate-900">API Danh mục giới tính</h4>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">
-                            Đang kết nối
-                          </span>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs">
-                            API-KEY
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-600 mb-3">Kết nối API danh sách các giới tính cho hệ thống LGSP</p>
-                        
-                        <div className="flex items-center gap-4 mb-2">
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
-                            <Link2 className="w-3 h-3" />
-                            <span className="text-blue-600">Endpoint: /api/v1/categories/gender</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-xs">
-                            <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded">GET</span>
-                            <span className="text-slate-600">Method</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
-                            <Clock className="w-3 h-3" />
-                            <span>Response Time</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <input type="checkbox" checked readOnly className="w-3 h-3" />
-                            <span className="text-xs text-green-600 font-medium">Đang kết nối</span>
-                            <span className="text-xs text-green-600">09/12/2025 14:30:25</span>
-                          </div>
-                        </div>
-
-                        <div className="text-xs text-slate-600 mt-1">120ms</div>
-                      </div>
-
-                      <div className="flex items-center gap-2 ml-4">
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
-                          <RefreshCw className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-green-600">
-                          <Check className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-red-600">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* API 2 */}
-                  <div className="border border-slate-200 rounded-lg p-4 hover:border-slate-300 transition-colors">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h4 className="text-sm font-medium text-slate-900">API Danh mục quốc tịch</h4>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">
-                            Đang kết nối
-                          </span>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs">
-                            CLIENT-SECRET
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-600 mb-3">Kết nối API danh sách quốc tịch</p>
-                        
-                        <div className="flex items-center gap-4 mb-2">
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
-                            <Link2 className="w-3 h-3" />
-                            <span className="text-blue-600">Endpoint: /api/v1/categories/nationality</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-xs">
-                            <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded">GET</span>
-                            <span className="text-slate-600">Method</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
-                            <Clock className="w-3 h-3" />
-                            <span>Response Time</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <input type="checkbox" checked readOnly className="w-3 h-3" />
-                            <span className="text-xs text-green-600 font-medium">Đang kết nối</span>
-                            <span className="text-xs text-green-600">09/12/2025 14:45:10</span>
-                          </div>
-                        </div>
-
-                        <div className="text-xs text-slate-600 mt-1">93ms</div>
-                      </div>
-
-                      <div className="flex items-center gap-2 ml-4">
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
-                          <RefreshCw className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-green-600">
-                          <Check className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-red-600">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* API 3 */}
-                  <div className="border border-slate-200 rounded-lg p-4 hover:border-slate-300 transition-colors">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h4 className="text-sm font-medium text-slate-900">API Danh mục dân tộc</h4>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">
-                            Đang kết nối
-                          </span>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs">
-                            API-KEY
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-600 mb-3">Kết nối API danh sách các dân tộc cho hệ thống LGSP</p>
-                        
-                        <div className="flex items-center gap-4 mb-2">
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
-                            <Link2 className="w-3 h-3" />
-                            <span className="text-blue-600">Endpoint: /api/v1/categories/ethnicity</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-xs">
-                            <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded">GET</span>
-                            <span className="text-slate-600">Method</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
-                            <Clock className="w-3 h-3" />
-                            <span>Response Time</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <input type="checkbox" checked readOnly className="w-3 h-3" />
-                            <span className="text-xs text-green-600 font-medium">Đang kết nối</span>
-                            <span className="text-xs text-green-600">09/12/2025 15:20:05</span>
-                          </div>
-                        </div>
-
-                        <div className="text-xs text-slate-600 mt-1">105ms</div>
-                      </div>
-
-                      <div className="flex items-center gap-2 ml-4">
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
-                          <RefreshCw className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-slate-600">
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-green-600">
-                          <Check className="w-4 h-4" />
-                        </button>
-                        <button className="w-7 h-7 flex items-center justify-center rounded hover:bg-slate-100 text-red-600">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Pagination */}
-                <div className="mt-6 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-600">Hiển thị</span>
-                    <select className="px-2 py-1 text-sm border border-slate-300 rounded">
-                      <option>10</option>
-                      <option>20</option>
-                      <option>50</option>
-                    </select>
-                    <span className="text-sm text-slate-600">bản ghi/trang</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm text-slate-600">Hiển thị 1-10 / 12 bản ghi</span>
-                    <div className="flex items-center gap-2">
-                      <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">
-                        Trang 1 / 2
-                      </button>
-                      <button className="px-3 py-1 bg-slate-700 text-white rounded hover:bg-slate-800 text-sm">
-                        Đóng
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {activeTab === 'sync' && (
               <div className="flex-1 overflow-auto p-6">
@@ -786,7 +577,10 @@ export function MarriageDetailModal({
                 <div className="mt-6 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-slate-600">Hiển thị</span>
-                    <select className="px-2 py-1 text-sm border border-slate-300 rounded">
+                      <select 
+                        className="px-2 py-1 text-sm border border-slate-300 rounded"
+                        title="Số bản ghi trên trang"
+                      >
                       <option>10</option>
                       <option>20</option>
                       <option>50</option>
@@ -825,6 +619,7 @@ export function MarriageDetailModal({
                 <button
                   onClick={() => setSelectedRecord(null)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-600"
+                  title="Đóng chi tiết"
                 >
                   <X className="w-5 h-5" />
                 </button>

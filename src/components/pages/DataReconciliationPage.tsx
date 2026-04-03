@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Download, 
-  Eye, 
-  CheckCircle2, 
+import { useState, ChangeEvent } from 'react';
+import {
+  Search,
+  Filter,
+  Download,
+  Eye,
+  CheckCircle2,
   AlertCircle,
   Clock,
   Database,
@@ -136,7 +136,7 @@ const reconciliationData: ReconciliationProcess[] = [
     id: 'REC-001',
     database: 'CSDL A',
     description: 'Đối soát tổng hợp về dữ liệu Danh mục',
-    processDescription: 'Kho dữ liệu đưng chung định kỳ họ|c theo yêu cầu gửi gọi tin yêu cầu Đối soát tổng hợp về dữ liệu Danh mục cung cấp tới hệ thống dịch. Hệ thống dịch phản hồi kết quả nhận được.',
+    processDescription: 'Kho dữ liệu đưng chung định kỳ họ|c theo yêu cầu gửi gọi tin yêu cầu Đối soát tổng hợp về dữ liệu Danh mục cung cấp tới Hệ thống đích. Hệ thống đích phản hồi kết quả nhận được.',
     status: 'completed',
     lastReconciliation: '2024-12-09 08:30:00',
     recordsChecked: 1250000,
@@ -151,7 +151,7 @@ const reconciliationData: ReconciliationProcess[] = [
     id: 'REC-002',
     database: 'CSDL B',
     description: 'Đối soát tổng hợp về cung cấp dữ liệu Hộ tịch điện tử',
-    processDescription: 'Kho dữ liệu đưng chung định kỳ họ|c theo yêu cầu gửi gọi tin yêu cầu Đối soát tổng hợp về cung cấp dữ liệu Hộ tịch điện tử gửi tới hệ thống dịch. Hệ thống dịch phản hồi kết quả nhận được.',
+    processDescription: 'Kho dữ liệu đưng chung định kỳ họ|c theo yêu cầu gửi gọi tin yêu cầu Đối soát tổng hợp về cung cấp dữ liệu Hộ tịch điện tử gửi tới Hệ thống đích. Hệ thống đích phản hồi kết quả nhận được.',
     status: 'completed',
     lastReconciliation: '2024-12-09 09:15:00',
     recordsChecked: 850000,
@@ -166,7 +166,7 @@ const reconciliationData: ReconciliationProcess[] = [
     id: 'REC-003',
     database: 'CSDL C',
     description: 'Đối soát tổng hợp về cung cấp dữ liệu hồ sơ quốc tịch',
-    processDescription: 'Kho dữ liệu đưng chung định kỳ họ|c theo yêu cầu gửi gọi tin yêu cầu Đối soát tổng hợp về cung cấp dữ liệu hồ sơ quốc tịch gửi tới hệ thống dịch. Hệ thống dịch phản hồi kết quả nhận được.',
+    processDescription: 'Kho dữ liệu đưng chung định kỳ họ|c theo yêu cầu gửi gọi tin yêu cầu Đối soát tổng hợp về cung cấp dữ liệu hồ sơ quốc tịch gửi tới Hệ thống đích. Hệ thống đích phản hồi kết quả nhận được.',
     status: 'in-progress',
     lastReconciliation: '2024-12-09 10:00:00',
     recordsChecked: 125000,
@@ -196,7 +196,7 @@ export function DataReconciliationPage() {
     try {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Mock success
       alert(`✅ Đã gửi yêu cầu đối soát cho "${item.database}"\n\nHệ thống đang thực hiện đối soát dữ liệu. Vui lòng chờ kết quả.`);
     } catch (error) {
@@ -208,9 +208,9 @@ export function DataReconciliationPage() {
 
   const filteredData = reconciliationData.filter(item => {
     const matchesSearch = item.database.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDiscrepancy = 
-      discrepancyFilter === 'all' || 
+      item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDiscrepancy =
+      discrepancyFilter === 'all' ||
       (discrepancyFilter === 'with-discrepancy' && item.discrepanciesFound > 0) ||
       (discrepancyFilter === 'no-discrepancy' && item.discrepanciesFound === 0);
     return matchesSearch && matchesDiscrepancy;
@@ -358,7 +358,7 @@ export function DataReconciliationPage() {
 
   const handleSendNotification = () => {
     if (!selectedReconciliation) return;
-    
+
     // Mock notification send
     alert(`Đã gửi thông báo cho Quản trị viên về ${selectedReconciliation.discrepanciesFound} bản ghi bất thường trong "${selectedReconciliation.database}"`);
   };
@@ -366,7 +366,7 @@ export function DataReconciliationPage() {
   return (
     <div className="p-6 space-y-6">
       <PageHeader title="Đối soát dữ liệu" icon={FileText} />
-      
+
       {/* Filters */}
       <div className="bg-white border border-slate-200 rounded-lg p-4">
         <div className="flex flex-col md:flex-row gap-4">
@@ -374,8 +374,9 @@ export function DataReconciliationPage() {
             <Filter className="w-4 h-4 text-slate-400" />
             <select
               value={discrepancyFilter}
-              onChange={(e) => setDiscrepancyFilter(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setDiscrepancyFilter(e.target.value)}
               className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              title="Lọc theo trạng thái bất thường"
             >
               <option value="all">Tất cả</option>
               <option value="with-discrepancy">Có bất thường</option>
@@ -388,8 +389,9 @@ export function DataReconciliationPage() {
               type="text"
               placeholder="Tìm kiếm theo tên nguồn, mô tả, mã cấu hình..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              title="Tìm kiếm quy trình đối soát"
             />
           </div>
           <button className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
@@ -475,14 +477,13 @@ export function DataReconciliationPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <div className="flex-1 bg-slate-200 rounded-full h-1.5">
-                        <div 
-                          className={`h-1.5 rounded-full ${
-                            item.successRate >= 99.99 ? 'bg-green-500' :
-                            item.successRate >= 99.9 ? 'bg-blue-500' :
-                            item.successRate >= 99.5 ? 'bg-amber-500' :
-                            'bg-red-500'
-                          }`}
-                          style={{ width: `${item.successRate}%` }}
+                        <div
+                          className={`h-1.5 rounded-full ${item.successRate >= 99.99 ? 'bg-green-500' :
+                              item.successRate >= 99.9 ? 'bg-blue-500' :
+                                item.successRate >= 99.5 ? 'bg-amber-500' :
+                                  'bg-red-500'
+                            }`}
+                          style={{ width: `${item.successRate}%` } as any}
                         />
                       </div>
                       <span className="text-xs text-slate-900 whitespace-nowrap">
@@ -495,11 +496,10 @@ export function DataReconciliationPage() {
                       <button
                         onClick={() => setConfirmReconcileId(item.id)}
                         disabled={reconcilingId === item.id || item.status === 'in-progress'}
-                        className={`p-2 rounded-lg transition-colors ${
-                          reconcilingId === item.id || item.status === 'in-progress'
+                        className={`p-2 rounded-lg transition-colors ${reconcilingId === item.id || item.status === 'in-progress'
                             ? 'text-slate-300 cursor-not-allowed'
                             : 'text-blue-600 hover:bg-blue-50'
-                        }`}
+                          }`}
                         title="Đối soát ngay"
                       >
                         {reconcilingId === item.id ? (
@@ -630,6 +630,7 @@ export function DataReconciliationPage() {
               <button
                 onClick={() => setSelectedReconciliation(null)}
                 className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                title="Đóng chi tiết"
               >
                 <X className="w-5 h-5 text-slate-500" />
               </button>

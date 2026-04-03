@@ -28,7 +28,8 @@ const mockRecords = [
     statusColor: 'bg-orange-100 text-orange-700 border-orange-200',
     errorCount: 45,
     matchRate: 99.96,
-    lastReconcileDate: '2024-12-19 16:00:00'
+    lastReconcileDate: '2024-12-19 16:00:00',
+    isReportSent: true
   },
   {
     id: 'REC-COURT-003',

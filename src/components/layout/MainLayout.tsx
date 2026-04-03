@@ -173,6 +173,7 @@ import { ChangePasswordModal } from '../modals/ChangePasswordModal';
 import { ChangeBackgroundModal } from '../modals/ChangeBackgroundModal';
 import { AccessHistoryModal } from '../modals/AccessHistoryModal';
 import { ActionHistoryModal } from '../modals/ActionHistoryModal';
+import { LogoutModal } from '../modals/LogoutModal';
 
 // Page configuration for titles and descriptions
 const pageConfig: Record<string, { title: string; description: string }> = {
@@ -265,6 +266,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
   const [showChangeBackgroundModal, setShowChangeBackgroundModal] = useState(false);
   const [showAccessHistoryModal, setShowAccessHistoryModal] = useState(false);
   const [showActionHistoryModal, setShowActionHistoryModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   
   
   // User role - for demo purposes, set to 'leader' to show publish tab
@@ -296,12 +298,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
         setShowActionHistoryModal(true);
         break;
       case 'logout':
-        // Gọi hàm logout nếu được cung cấp
-        if (onLogout) {
-          onLogout();
-        } else {
-          alert('Đăng xuất thành công!');
-        }
+        setShowLogoutModal(true);
         break;
     }
   };
@@ -337,6 +334,8 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'collection-reconciliation-management' && <DataReconciliationPage />}
             {currentPage === 'processing' && <DataProcessingPage />}
             {currentPage === 'processing-rule-setup' && <ProcessingRuleSetupPage />}
+            {currentPage === 'processing-external' && <ProcessingRuleSetupPage initialCategory="Dữ liệu ngoài ngành" />}
+            {currentPage === 'processing-internal' && <ProcessingRuleSetupPage initialCategory="Dữ liệu trong ngành" />}
             {currentPage === 'processed-data' && <ProcessedDataPage />}
             {currentPage === 'category' && <CategoryManagementPage />}
             {currentPage === 'category-setup' && <CategorySetupPage userRole={userRole} />}
@@ -667,6 +666,18 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
       <ChangeBackgroundModal isOpen={showChangeBackgroundModal} onClose={() => setShowChangeBackgroundModal(false)} />
       <AccessHistoryModal isOpen={showAccessHistoryModal} onClose={() => setShowAccessHistoryModal(false)} />
       <ActionHistoryModal isOpen={showActionHistoryModal} onClose={() => setShowActionHistoryModal(false)} />
+      <LogoutModal 
+        isOpen={showLogoutModal} 
+        onClose={() => setShowLogoutModal(false)} 
+        onConfirm={() => {
+          setShowLogoutModal(false);
+          if (onLogout) {
+            onLogout();
+          } else {
+            alert('Đăng xuất thành công!');
+          }
+        }} 
+      />
     </div>
   );
 }

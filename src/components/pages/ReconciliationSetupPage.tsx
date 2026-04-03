@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState } from 'react';
 import { Settings, Plus, Search, Edit, Trash2, Save, X, Calendar, Database, FileText, Clock, Play, Loader2, CheckCircle, History as HistoryIcon, Eye, Download, Send, AlertCircle, Info, Filter, Layers, Server, Package, RefreshCw, BarChart3, FileCheck, XCircle } from 'lucide-react';
 import { CreateLGSPReconciliationModal } from '../modals/CreateLGSPReconciliationModal';
@@ -18,6 +19,11 @@ interface ReconciliationRecord {
   errorCount?: number;
   matchRate?: number;
   lastReconcileDate?: string;
+  fromDate?: string;
+  toDate?: string;
+  sentCount?: number;
+  receivedCount?: number;
+  isReportSent?: boolean;
 }
 
 // Interface cho lỗi chi tiết
@@ -121,18 +127,23 @@ interface ReconciliationHistory {
 const mockReconciliationRecords: ReconciliationRecord[] = [
   {
     id: 'REC001',
-    datasetCode: 'CSDL-HT-2024-12',
-    datasetName: 'CSDL Hộ tịch - Tháng 12/2024',
-    providerSystem: 'Hệ thống Hộ tịch điện tử',
+    datasetCode: 'DM-GIOITINH-2024-12',
+    datasetName: 'Danh mục giới tính',
+    providerSystem: 'Trung tâm dữ liệu Quốc gia',
     providerSystemCode: 'SYS_HOTICH',
-    dataType: 'Hộ tịch',
-    recordCount: 850000,
+    dataType: 'Danh mục',
+    recordCount: 3,
     receiveDate: '2024-12-20 10:15:00',
     status: 'matched',
     statusText: 'Khớp dữ liệu',
     statusColor: 'bg-green-100 text-green-700 border-green-200',
     matchRate: 100,
-    lastReconcileDate: '2024-12-20 10:30:00'
+    lastReconcileDate: '2024-12-20 10:30:00',
+    fromDate: '2024-12-01',
+    toDate: '2024-12-20',
+    sentCount: 3,
+    receivedCount: 3,
+    isReportSent: false
   },
   {
     id: 'REC002',
@@ -148,7 +159,12 @@ const mockReconciliationRecords: ReconciliationRecord[] = [
     statusColor: 'bg-orange-100 text-orange-700 border-orange-200',
     errorCount: 2450,
     matchRate: 98.04,
-    lastReconcileDate: '2024-12-19 16:00:00'
+    lastReconcileDate: '2024-12-19 16:00:00',
+    fromDate: '2024-10-01',
+    toDate: '2024-12-19',
+    sentCount: 125000,
+    receivedCount: 122550,
+    isReportSent: true
   },
   {
     id: 'REC003',
@@ -492,9 +508,7 @@ export function ReconciliationSetupPage() {
   const [reconciliationRecords, setReconciliationRecords] = useState<ReconciliationRecord[]>(mockReconciliationRecords);
   const [reconciliationErrors] = useState<ReconciliationError[]>(mockReconciliationErrors);
   const [showRecordDetailModal, setShowRecordDetailModal] = useState(false);
-  const [showErrorDetailModal, setShowErrorDetailModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<ReconciliationRecord | null>(null);
-  const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
 
   // Form states for create package - Basic
   const [formPackageName, setFormPackageName] = useState('');
@@ -641,6 +655,7 @@ export function ReconciliationSetupPage() {
           <div className="flex overflow-x-auto">
             <button
               onClick={() => setActiveTab('management')}
+              title="Chuyển sang Quản lý"
               className={`px-6 py-3 text-sm transition-colors relative whitespace-nowrap ${
                 activeTab === 'management'
                   ? 'text-pink-600'
@@ -657,6 +672,7 @@ export function ReconciliationSetupPage() {
             </button>
             <button
               onClick={() => setActiveTab('setup')}
+              title="Chuyển sang Thiết lập"
               className={`px-6 py-3 text-sm transition-colors relative whitespace-nowrap ${
                 activeTab === 'setup'
                   ? 'text-pink-600'
@@ -673,6 +689,7 @@ export function ReconciliationSetupPage() {
             </button>
             <button
               onClick={() => setActiveTab('logs')}
+              title="Xem Nhật ký (Logs)"
               className={`px-6 py-3 text-sm transition-colors relative whitespace-nowrap ${
                 activeTab === 'logs'
                   ? 'text-pink-600'
@@ -689,6 +706,7 @@ export function ReconciliationSetupPage() {
             </button>
             <button
               onClick={() => setActiveTab('history')}
+              title="Xem Lịch sử đối soát"
               className={`px-6 py-3 text-sm transition-colors relative whitespace-nowrap ${
                 activeTab === 'history'
                   ? 'text-pink-600'
@@ -766,8 +784,9 @@ export function ReconciliationSetupPage() {
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-slate-400" />
                   <select
+                    title="Lọc trạng thái"
                     value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStatusFilter(e.target.value)}
                     className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
                   >
                     <option value="all">Tất cả trạng thái</option>
@@ -784,7 +803,7 @@ export function ReconciliationSetupPage() {
                     type="text"
                     placeholder="Tìm kiếm mã bộ dữ liệu, hệ thống cung cấp, loại dữ liệu..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                   />
                 </div>
@@ -803,6 +822,7 @@ export function ReconciliationSetupPage() {
                         <th className="px-6 py-3 text-left text-xs text-slate-600">Số bản ghi</th>
                         <th className="px-6 py-3 text-left text-xs text-slate-600">Ngày nhận</th>
                         <th className="px-6 py-3 text-left text-xs text-slate-600">Trạng thái</th>
+                        <th className="px-6 py-3 text-left text-xs text-slate-600">Báo cáo sai lệch</th>
                         <th className="px-6 py-3 text-center text-xs text-slate-600">Thao tác</th>
                       </tr>
                     </thead>
@@ -835,11 +855,23 @@ export function ReconciliationSetupPage() {
                           <td className="px-6 py-4">
                             <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs border ${record.statusColor}`}>
                               {record.status === 'matched' && <CheckCircle className="w-3 h-3" />}
-                              {record.status === 'mismatched' && <AlertCircle className="w-3 h-3" />}
-                              {record.status === 'pending' && <Clock className="w-3 h-3" />}
-                              {record.status === 'error' && <XCircle className="w-3 h-3" />}
                               {record.statusText}
                             </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {record.status === 'matched' ? (
+                              <span className="text-xs text-slate-400 italic">Không có sai lệch</span>
+                            ) : record.isReportSent ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border bg-indigo-50 text-indigo-700 border-indigo-200">
+                                <Send className="w-3 h-3 text-indigo-500" />
+                                Đã gửi báo cáo
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border bg-amber-50 text-amber-700 border-amber-200">
+                                <Info className="w-3 h-3 text-amber-500" />
+                                Chưa gửi báo cáo
+                              </span>
+                            )}
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center justify-center gap-2">
@@ -853,21 +885,7 @@ export function ReconciliationSetupPage() {
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
-                              {(record.status === 'mismatched' || record.status === 'error') && record.errorCount && record.errorCount > 0 && (
-                                <button
-                                  onClick={() => {
-                                    setSelectedRecordId(record.id);
-                                    setShowErrorDetailModal(true);
-                                  }}
-                                  className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors relative"
-                                  title="Xem thông báo lỗi"
-                                >
-                                  <AlertCircle className="w-4 h-4" />
-                                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                                    {record.errorCount > 99 ? '99+' : record.errorCount}
-                                  </span>
-                                </button>
-                              )}
+
                             </div>
                           </td>
                         </tr>
@@ -936,7 +954,7 @@ export function ReconciliationSetupPage() {
                     type="text"
                     placeholder="Tìm kiếm hệ thống đích, endpoint..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                   />
                 </div>
@@ -1059,7 +1077,7 @@ export function ReconciliationSetupPage() {
                     type="text"
                     placeholder="Tìm kiếm log theo gói tin, hành động, người dùng..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                   />
                 </div>
@@ -1142,7 +1160,7 @@ export function ReconciliationSetupPage() {
                     type="text"
                     placeholder="Tìm kiếm lịch sử theo gói tin, hệ thống, hành động..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                   />
                 </div>
@@ -1231,6 +1249,7 @@ export function ReconciliationSetupPage() {
               </div>
               <button
                 onClick={() => setShowFeedbackDetailModal(false)}
+                title="Đóng"
                 className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-slate-500" />
@@ -1296,12 +1315,10 @@ export function ReconciliationSetupPage() {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
                               <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                                <div 
-                                  className={`h-full rounded-full transition-all ${
+                                <div className={`h-full rounded-full transition-all w-[${field.completeness}%] ${
                                     field.completeness === 100 ? 'bg-green-500' : 
                                     field.completeness >= 99 ? 'bg-blue-500' : 'bg-orange-500'
                                   }`}
-                                  style={{ width: `${field.completeness}%` }}
                                 />
                               </div>
                               <span className="text-sm text-slate-900 whitespace-nowrap">{field.completeness}%</span>
@@ -1329,11 +1346,13 @@ export function ReconciliationSetupPage() {
               <button
                 onClick={() => setShowFeedbackDetailModal(false)}
                 className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
+                title="Đóng chi tiết phản hồi"
               >
                 Đóng
               </button>
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                title="Xuất báo cáo phản hồi"
               >
                 <Download className="w-4 h-4" />
                 Xuất báo cáo
@@ -1359,7 +1378,7 @@ export function ReconciliationSetupPage() {
           <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
               <h3 className="text-lg text-slate-900">Chi tiết gói tin đối soát</h3>
-              <button onClick={() => setShowPackageDetailModal(false)} className="p-2 hover:bg-slate-100 rounded-lg">
+              <button onClick={() => setShowPackageDetailModal(false)} className="p-2 hover:bg-slate-100 rounded-lg" title="Đóng chi tiết gói tin">
                 <X className="w-5 h-5 text-slate-500" />
               </button>
             </div>
@@ -1375,7 +1394,7 @@ export function ReconciliationSetupPage() {
               </div>
             </div>
             <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
-              <button onClick={() => setShowPackageDetailModal(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200">Đóng</button>
+              <button onClick={() => setShowPackageDetailModal(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200" title="Đóng">Đóng</button>
             </div>
           </div>
         </div>
@@ -1397,8 +1416,8 @@ export function ReconciliationSetupPage() {
               </div>
             </div>
             <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
-              <button onClick={() => setShowDeletePackageModal(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200">Hủy</button>
-              <button onClick={() => { setPackages(packages.filter(p => p.id !== packageToDelete.id)); setShowDeletePackageModal(false); alert('Đã xóa gói tin!'); }} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"><Trash2 className="w-4 h-4" />Xóa</button>
+              <button onClick={() => setShowDeletePackageModal(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200" title="Hủy bỏ">Hủy</button>
+              <button onClick={() => { setPackages(packages.filter(p => p.id !== packageToDelete.id)); setShowDeletePackageModal(false); alert('Đã xóa gói tin!'); }} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2" title="Xác nhận xóa gói tin"><Trash2 className="w-4 h-4" />Xóa</button>
             </div>
           </div>
         </div>
@@ -1415,6 +1434,7 @@ export function ReconciliationSetupPage() {
               </div>
               <button
                 onClick={() => setShowRecordDetailModal(false)}
+                title="Đóng"
                 className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-slate-500" />
@@ -1476,13 +1496,11 @@ export function ReconciliationSetupPage() {
                       <span className="text-sm text-slate-600">Tỷ lệ khớp:</span>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-slate-200 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full rounded-full transition-all ${
+                          <div className={`h-full rounded-full transition-all w-[${selectedRecord.matchRate}%] ${
                               selectedRecord.matchRate === 100 ? 'bg-green-500' : 
                               selectedRecord.matchRate >= 95 ? 'bg-blue-500' : 
                               selectedRecord.matchRate >= 80 ? 'bg-orange-500' : 'bg-red-500'
                             }`}
-                            style={{ width: `${selectedRecord.matchRate}%` }}
                           />
                         </div>
                         <span className="text-sm text-slate-900 font-medium whitespace-nowrap">{selectedRecord.matchRate.toFixed(2)}%</span>
@@ -1517,140 +1535,7 @@ export function ReconciliationSetupPage() {
         </div>
       )}
 
-      {/* Modal: Xem thông báo lỗi */}
-      {showErrorDetailModal && selectedRecordId && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg text-slate-900">Thông báo lỗi chi tiết</h3>
-                <p className="text-sm text-slate-500 mt-1">Mã bản ghi: {selectedRecordId}</p>
-              </div>
-              <button
-                onClick={() => setShowErrorDetailModal(false)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5 text-slate-500" />
-              </button>
-            </div>
 
-            <div className="p-6 overflow-y-auto">
-              {/* Thống kê lỗi */}
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-                  <div className="text-sm text-red-700">Lỗi nghiêm trọng</div>
-                  <div className="text-2xl text-red-900 mt-1 font-medium">
-                    {reconciliationErrors.filter(e => e.severity === 'high').length}
-                  </div>
-                </div>
-                <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-                  <div className="text-sm text-orange-700">Lỗi trung bình</div>
-                  <div className="text-2xl text-orange-900 mt-1 font-medium">
-                    {reconciliationErrors.filter(e => e.severity === 'medium').length}
-                  </div>
-                </div>
-                <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
-                  <div className="text-sm text-yellow-700">Lỗi nhẹ</div>
-                  <div className="text-2xl text-yellow-900 mt-1 font-medium">
-                    {reconciliationErrors.filter(e => e.severity === 'low').length}
-                  </div>
-                </div>
-              </div>
-
-              {/* Danh sách lỗi */}
-              <div>
-                <h4 className="text-sm text-slate-900 mb-3">Danh sách lỗi chi tiết</h4>
-                <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-slate-200 bg-slate-50">
-                          <th className="px-4 py-3 text-left text-xs text-slate-600">Mã bản ghi</th>
-                          <th className="px-4 py-3 text-left text-xs text-slate-600">Trường dữ liệu</th>
-                          <th className="px-4 py-3 text-left text-xs text-slate-600">Loại lỗi</th>
-                          <th className="px-4 py-3 text-left text-xs text-slate-600">Giá trị nguồn</th>
-                          <th className="px-4 py-3 text-left text-xs text-slate-600">Giá trị đích</th>
-                          <th className="px-4 py-3 text-left text-xs text-slate-600">Mức độ</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {reconciliationErrors.map((error) => (
-                          <tr key={error.id} className="border-b border-slate-100 hover:bg-slate-50">
-                            <td className="px-4 py-3 text-sm text-slate-900 font-mono">
-                              {error.recordId}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-slate-900">
-                              {error.fieldName}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-slate-700">
-                              {error.errorType}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-slate-600 font-mono max-w-xs truncate">
-                              {error.sourceValue || <span className="text-slate-400 italic">Trống</span>}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-slate-600 font-mono max-w-xs truncate">
-                              {error.targetValue || <span className="text-slate-400 italic">Trống</span>}
-                            </td>
-                            <td className="px-4 py-3">
-                              <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border ${error.severityColor}`}>
-                                {error.severity === 'high' && <XCircle className="w-3 h-3" />}
-                                {error.severity === 'medium' && <AlertCircle className="w-3 h-3" />}
-                                {error.severity === 'low' && <Info className="w-3 h-3" />}
-                                {error.severity === 'high' ? 'Cao' : error.severity === 'medium' ? 'Trung bình' : 'Thấp'}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              {/* Mô tả chi tiết */}
-              <div className="mt-6">
-                <h4 className="text-sm text-slate-900 mb-3">Chi tiết lỗi</h4>
-                <div className="space-y-3">
-                  {reconciliationErrors.map((error) => (
-                    <div key={error.id} className={`rounded-lg p-4 border ${error.severityColor}`}>
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 mt-0.5">
-                          {error.severity === 'high' && <XCircle className="w-5 h-5" />}
-                          {error.severity === 'medium' && <AlertCircle className="w-5 h-5" />}
-                          {error.severity === 'low' && <Info className="w-5 h-5" />}
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-sm font-medium mb-1">
-                            {error.recordId} - {error.fieldName}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {error.description}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="px-6 py-4 border-t border-slate-200 flex justify-end gap-3">
-              <button
-                onClick={() => setShowErrorDetailModal(false)}
-                className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
-              >
-                Đóng
-              </button>
-              <button
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                Xuất danh sách lỗi
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

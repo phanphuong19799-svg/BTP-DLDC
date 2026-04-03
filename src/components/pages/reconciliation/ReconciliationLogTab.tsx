@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState } from 'react';
 import { Search, Download } from 'lucide-react';
 
@@ -17,6 +18,7 @@ interface LogEntry {
 
 export function ReconciliationLogTab() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'success' | 'warning' | 'error'>('all');
 
   const logs: LogEntry[] = [
     {
@@ -86,34 +88,57 @@ export function ReconciliationLogTab() {
     }
   ];
 
-  const filteredLogs = logs.filter(log =>
-    searchTerm === '' ||
-    log.packageName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    log.packageCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    log.executor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    log.details.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredLogs = logs.filter(log => {
+    const matchesSearch = searchTerm === '' ||
+      log.packageName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.packageCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.executor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.details.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus = filterStatus === 'all' || log.status === filterStatus;
+
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="space-y-6">
-      {/* Search and Export */}
+      {/* Search and Filters */}
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-center">
           <div className="flex-1 relative w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               type="text"
               placeholder="Tìm kiếm log theo gói tin, hành động, người dùng..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              title="Tìm kiếm nhật ký"
             />
           </div>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 whitespace-nowrap">
-            <Download className="w-4 h-4" />
-            Xuất log
-          </button>
+          
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <select
+              value={filterStatus}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value as any)}
+              className="px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[160px]"
+              title="Lọc hồ sơ theo trạng thái"
+            >
+              <option value="all">Tất cả trạng thái</option>
+              <option value="success">Thành công</option>
+              <option value="error">Lỗi</option>
+              <option value="warning">Cảnh báo</option>
+            </select>
+
+            <button 
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 whitespace-nowrap"
+              title="Xuất nhật ký ra file"
+            >
+              <Download className="w-4 h-4" />
+              Xuất log
+            </button>
+          </div>
         </div>
       </div>
 

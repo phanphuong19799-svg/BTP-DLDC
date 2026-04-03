@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState } from 'react';
 import { Calendar, Download, FileUser, UserCheck, Users, Baby, Heart, UserX, UsersRound, FileEdit, BarChart3, FileCheck, FileX, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
@@ -120,10 +121,14 @@ export function CivilRegistryDatabasePage({ mode = 'thu thập', context = 'thu 
           <input
             type="text"
             value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
+            title="Khoảng thời gian dữ liệu"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button 
+            className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50"
+            title="Chọn ngày"
+          >
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>
@@ -224,16 +229,15 @@ export function CivilRegistryDatabasePage({ mode = 'thu thập', context = 'thu 
           <h3 className="text-slate-900">Biểu đồ {context} dữ liệu</h3>
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <span>Tổng số: 100</span>
-            <button className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
-              <Download className="w-4 h-4" />
-              Kết xuất
-            </button>
           </div>
         </div>
 
         {/* Month Filter */}
         <div className="mb-6">
-          <select className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select 
+            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            title="Lọc theo thời gian"
+          >
             <option>Tháng này</option>
             <option>Tháng trước</option>
             <option>3 tháng gần nhất</option>
@@ -272,20 +276,19 @@ export function CivilRegistryDatabasePage({ mode = 'thu thập', context = 'thu 
               const thisMonthPercent = (data.thisMonth / maxValue) * 100;
               
               return (
-                <div key={index} className="flex-1 flex flex-col items-center relative" style={{ height: '100%' }}>
-                  <div className="w-full flex flex-col items-center justify-end" style={{ height: '100%' }}>
+                <div key={index} className="flex-1 flex flex-col items-center relative h-full">
+                  <div className="w-full flex flex-col items-center justify-end h-full">
                     {/* Stacked bar container */}
-                    <div className="w-full max-w-[50px] flex flex-col relative" style={{ height: `${totalPercent}%`, minHeight: '8px' }}>
+                    <div className={`w-full max-w-[50px] flex flex-col relative min-h-[8px] h-[${totalPercent}%]`}>
                       {/* This Month (Orange) - Top portion */}
-                      <div className="relative flex flex-col items-center" style={{ height: `${(thisMonthPercent / totalPercent) * 100}%` }}>
+                      <div className={`relative flex flex-col items-center h-[${(thisMonthPercent / totalPercent) * 100}%]`}>
                         {data.thisMonth > 0 && (
                           <>
                             <span className="absolute -top-6 text-xs font-semibold text-slate-700 whitespace-nowrap">
                               {data.thisMonth.toLocaleString()}
                             </span>
                             <div 
-                              className="w-full bg-orange-400 h-full"
-                              style={{ minHeight: '4px' }}
+                              className="w-full bg-orange-400 h-full min-h-[4px]"
                             />
                           </>
                         )}
@@ -296,8 +299,7 @@ export function CivilRegistryDatabasePage({ mode = 'thu thập', context = 'thu 
                         {data.lastMonth > 0 && (
                           <>
                             <div 
-                              className="w-full bg-blue-400 h-full"
-                              style={{ minHeight: '4px' }}
+                              className="w-full bg-blue-400 h-full min-h-[4px]"
                             />
                             <span className="absolute top-1/2 -translate-y-1/2 text-xs font-semibold text-white whitespace-nowrap">
                               {data.lastMonth.toLocaleString()}

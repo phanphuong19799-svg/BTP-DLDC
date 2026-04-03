@@ -11,10 +11,12 @@ export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInf
       </div>
       
       <div>
-        <label className="block text-sm text-slate-600 mb-1">
+        <label htmlFor="contact-unit-name" className="block text-sm text-slate-600 mb-1">
           Tên đơn vị
         </label>
         <input
+          id="contact-unit-name"
+          title="Tên đơn vị"
           type="text"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="VD: Cục Hộ tịch, quốc tịch, chứng thực"
@@ -23,10 +25,12 @@ export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInf
       </div>
 
       <div>
-        <label className="block text-sm text-slate-600 mb-1">
+        <label htmlFor="contact-address" className="block text-sm text-slate-600 mb-1">
           Địa chỉ
         </label>
         <input
+          id="contact-address"
+          title="Địa chỉ"
           type="text"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Nhập địa chỉ đơn vị"
@@ -35,10 +39,12 @@ export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInf
       </div>
 
       <div>
-        <label className="block text-sm text-slate-600 mb-1">
+        <label htmlFor="contact-phone" className="block text-sm text-slate-600 mb-1">
           Số điện thoại
         </label>
         <input
+          id="contact-phone"
+          title="Số điện thoại"
           type="tel"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="VD: 024 3733 9999"
@@ -47,10 +53,12 @@ export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInf
       </div>
 
       <div>
-        <label className="block text-sm text-slate-600 mb-1">
+        <label htmlFor="contact-email" className="block text-sm text-slate-600 mb-1">
           Địa chỉ email
         </label>
         <input
+          id="contact-email"
+          title="Địa chỉ email"
           type="email"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="example@moj.gov.vn"
@@ -59,10 +67,12 @@ export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInf
       </div>
 
       <div>
-        <label className="block text-sm text-slate-600 mb-1">
+        <label htmlFor="technical-contact" className="block text-sm text-slate-600 mb-1">
           Người đầu mối ký thuật
         </label>
         <input
+          id="technical-contact"
+          title="Người đầu mối ký thuật"
           type="text"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Nguyễn Văn A SĐT: 0987654321"
@@ -71,10 +81,12 @@ export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInf
       </div>
 
       <div>
-        <label className="block text-sm text-slate-600 mb-1">
+        <label htmlFor="contact-note" className="block text-sm text-slate-600 mb-1">
           Ghi chú
         </label>
         <textarea
+          id="contact-note"
+          title="Ghi chú"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows={3}
           placeholder="Thông tin bổ sung về đơn vị"

@@ -83,20 +83,21 @@ interface SidebarProps {
 interface NestedSubMenuItem {
   id: string;
   label: string;
-  icon: any;
+  icon?: any;
   subItems?: {
     id: string;
     label: string;
-    icon: any;
+    icon?: any;
   }[];
   isGroup?: boolean; // New property to mark as a group
 }
 
 interface SubMenuItem {
   id: string;
-  label: "CSDL Ngoài ngành";
-  icon: any;
+  label: string;
+  icon?: any;
   subItems?: NestedSubMenuItem[];
+  isGroup?: boolean;
 }
 
 interface MenuItem {
@@ -345,103 +346,14 @@ const menuItems: MenuItem[] = [
         icon: Settings,
       },
       {
-        id: "processing-internal-data",
-        label: "CSDL Trong ngành",
-        icon: Building2,
-        subItems: [
-          {
-            id: "processing-data-info-civil-registry",
-            label: "CSDL Hộ tịch điện tử",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-case-management",
-            label: "HT quản lý hồ sơ QT (3)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-civil-judgment",
-            label: "CSDL thi hành án dân sự (16)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-security-measures",
-            label: "CSDL về biện pháp BD (4)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-legal-national",
-            label: "CSDL quốc gia về PL (5)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-civil-legal-center",
-            label: "CSDL TT Tư Pháp dân sự (2)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-civil-legal-info",
-            label: "HTTT TTTG pháp lý dân sự (6)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-legal-center",
-            label: "HTTT TG Pháp lý",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-family-base",
-            label: "CSDL PB, GĐ và HG cơ sở (16)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-auction",
-            label: "CSDL quản lý đấu giá TS (24)",
-            icon: Database,
-          },
-          {
-            id: "processing-data-info-international",
-            label: "CSDL Hợp tác quốc tế (6)",
-            icon: Database,
-          },
-          {
-            id: "processing-collection-statistics",
-            label: "Thu thập số liệu thống kê",
-            icon: BarChart3,
-          },
-        ],
+        id: "processing-external",
+        label: "Xử lý dữ liệu với CSDL ngoài ngành",
+        icon: Database,
       },
       {
-        id: "processing-external-data",
-        label: "CSDL Ngoài ngành",
-        icon: Building,
-        subItems: [
-          {
-            id: "processing-external-court-judgment",
-            label: "CSDL Thông tin Bản án (1)",
-            icon: Database,
-          },
-          {
-            id: "processing-external-category-group",
-            label: "Danh mục (8)",
-            icon: Database,
-          },
-          {
-            id: "processing-external-social-security",
-            label: "BHXH và Giảm nghèo (7)",
-            icon: Database,
-          },
-          {
-            id: "processing-external-meritorious-group",
-            label: "Người có công (3)",
-            icon: Database,
-          },
-          {
-            id: "processing-external-children-group",
-            label: "Trẻ em (1)",
-            icon: Database,
-          },
-        ],
+        id: "processing-internal",
+        label: "Xử lý dữ liệu với CSDL trong ngành",
+        icon: Database,
       },
     ],
   },
@@ -864,7 +776,7 @@ export function Sidebar({
                 {/* Level 2 Sub Items */}
                 {hasSubItems && isExpanded && (
                   <div className="ml-4 mt-1 space-y-0.5">
-                    {item.subItems.map((subItem) => {
+                    {item.subItems?.map((subItem) => {
                       const SubIcon = subItem.icon;
                       const isSubActive =
                         currentPage === subItem.id;
@@ -897,7 +809,7 @@ export function Sidebar({
                                   : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                             }`}
                           >
-                            <SubIcon className="w-4 h-4 flex-shrink-0" />
+                            {SubIcon && <SubIcon className="w-4 h-4 flex-shrink-0" />}
                             <span
                               className={`text-xs truncate flex-1 text-left ${isGroupHeader ? "font-medium" : ""}`}
                             >
@@ -914,7 +826,7 @@ export function Sidebar({
                           {/* Level 3 Nested Sub Items */}
                           {hasNestedItems && isSubExpanded && (
                             <div className="ml-4 mt-0.5 space-y-0.5">
-                              {subItem.subItems.map(
+                              {subItem.subItems?.map(
                                 (nestedItem) => {
                                   const NestedIcon =
                                     nestedItem.icon || Circle;
@@ -968,7 +880,7 @@ export function Sidebar({
                                       {hasLevel4Items &&
                                         isNestedExpanded && (
                                           <div className="ml-4 mt-0.5 space-y-0.5">
-                                            {nestedItem.subItems.map(
+                                            {nestedItem.subItems?.map(
                                               (level4Item) => {
                                                 const Level4Icon =
                                                   level4Item.icon;
@@ -992,7 +904,7 @@ export function Sidebar({
                                                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                                     }`}
                                                   >
-                                                    <Level4Icon className="w-3 h-3 flex-shrink-0" />
+                                                    {Level4Icon && <Level4Icon className="w-3 h-3 flex-shrink-0" />}
                                                     <span className="text-xs truncate">
                                                       {
                                                         level4Item.label
