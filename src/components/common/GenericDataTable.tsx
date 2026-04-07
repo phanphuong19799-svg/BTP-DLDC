@@ -1,5 +1,6 @@
-import { Search, Filter, Upload, Download, Eye, Edit, Trash2, RefreshCw, Database, Server, History as HistoryIcon, CheckCircle2 } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
+import { Search, Filter, Upload, Download, RefreshCw, Database, Server, History as HistoryIcon } from 'lucide-react';
+import { ActionIconButton } from './ActionIconButton';
 import { AdvancedSearchModal } from './AdvancedSearchModal';
 import { ImportDataModal } from './ImportDataModal';
 import { DataDetailModal } from './DataDetailModal';
@@ -54,7 +55,7 @@ export function GenericDataTable({
   const [showDetail, setShowDetail] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [filters, setFilters] = useState<any>({});
-  const [detailMode, setDetailMode] = useState<'simple' | 'compare'>('simple');
+  const [detailMode, setDetailMode] = useState<'simple' | 'compare' | 'merge'>('simple');
 
   const itemsPerPage = 10;
 
@@ -119,7 +120,7 @@ export function GenericDataTable({
               type="text"
               placeholder="Tìm kiếm..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -246,30 +247,12 @@ export function GenericDataTable({
                     ))}
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleViewDetailSimple(item)}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="Xem chi tiết"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
+                        <ActionIconButton action="view" onClick={() => handleViewDetailSimple(item)} title="Xem chi tiết" />
                         {onEdit && (
-                          <button
-                            onClick={() => onEdit(item)}
-                            className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                            title="Sửa"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
+                          <ActionIconButton action="edit" onClick={() => onEdit(item)} title="Sửa" />
                         )}
                         {onDelete && (
-                          <button
-                            onClick={() => onDelete(item.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Xóa"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <ActionIconButton action="delete" onClick={() => onDelete(item.id)} title="Xóa" />
                         )}
                       </div>
                     </td>

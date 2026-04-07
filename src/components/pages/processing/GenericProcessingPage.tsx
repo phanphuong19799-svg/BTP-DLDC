@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Search, ChevronDown, ChevronUp, AlertTriangle, Send, Download, Eye, Lock, EyeOff, Edit2, X } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, AlertTriangle, Send, Download, Eye, Lock, EyeOff, SquarePen, X } from 'lucide-react';
 
 
 
@@ -577,8 +577,8 @@ export function GenericProcessingPage({ systemName, datasets }: GenericProcessin
               <div className="flex flex-col">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-sm font-semibold text-slate-700">Phân loại toàn bảng (Mặc định)</h4>
-                  <button onClick={() => setIsEditClassifyModalOpen(true)} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                    <Edit2 className="w-4 h-4" />
+                  <button onClick={() => setIsEditClassifyModalOpen(true)} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors border border-orange-200">
+                    <SquarePen className="w-4 h-4" />
                     Chỉnh sửa toàn bảng
                   </button>
                 </div>
@@ -631,8 +631,8 @@ export function GenericProcessingPage({ systemName, datasets }: GenericProcessin
 
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-sm font-semibold text-slate-700">Phân loại theo từng trường dữ liệu</h4>
-                  <button onClick={() => setIsEditClassifyModalOpen(true)} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-fuchsia-700 bg-fuchsia-50 rounded-lg hover:bg-fuchsia-100 transition-colors">
-                    <Edit2 className="w-4 h-4" />
+                  <button onClick={() => setIsEditClassifyModalOpen(true)} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors border border-orange-200">
+                    <SquarePen className="w-4 h-4" />
                     Chỉnh sửa các trường
                   </button>
                 </div>

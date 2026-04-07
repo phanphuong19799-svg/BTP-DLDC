@@ -71,6 +71,7 @@ export interface EntityRelationship {
   mappingTable?: string;
   sourceKey?: string;
   targetKey?: string;
+  targetDisplayField?: string;
   status: RelationshipStatus;
   createdDate: string;
   createdBy: string;

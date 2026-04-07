@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { X, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { MasterDataAttribute, FieldDataType } from '../../categoryTypes';
+import { BaseModal } from '../../../../common/BaseModal';
 
 interface AttributeFormModalProps {
   isOpen: boolean;
@@ -12,6 +13,10 @@ interface AttributeFormModalProps {
   onSaveAndSubmit: (data: { id: string; code: string; name: string; type: 'attribute' | 'category' }) => void;
 }
 
+/**
+ * Standardized Attribute Form Modal using BaseModal.
+ * Provides a premium, consistent look for adding and editing attributes.
+ */
 export function AttributeFormModal({
   isOpen,
   onClose,
@@ -23,147 +28,172 @@ export function AttributeFormModal({
 }: AttributeFormModalProps) {
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 10005 }}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-white shadow-sm shrink-0">
-          <h3 className="text-[18px] font-bold text-slate-800">
-            {editingAttribute ? 'Cập nhật thuộc tính' : 'Thêm mới thuộc tính'}
-          </h3>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 rounded-lg transition-colors" title="Đóng">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
+  const footer = (
+    <>
+      <button 
+        type="button"
+        onClick={onClose} 
+        className="px-6 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold transition-all active:scale-95 text-sm"
+      >
+        Hủy
+      </button>
+      <button 
+        type="button"
+        onClick={onSave} 
+        className="px-6 py-2.5 rounded-xl bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold transition-all active:scale-95 text-sm"
+      >
+        Lưu tạm
+      </button>
+      <button 
+        type="button"
+        onClick={() => {
+          onSave();
+          onSaveAndSubmit({
+            id: formData.id || 'new',
+            code: formData.fieldName || 'ATTR-001',
+            name: formData.displayName || 'Thuộc tính mới',
+            type: 'attribute'
+          });
+        }}
+        className="px-8 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-bold flex items-center gap-2 shadow-xl shadow-blue-100 transition-all active:scale-95 text-sm"
+      >
+        <Send className="w-4 h-4"/>
+        Lưu và Trình duyệt
+      </button>
+    </>
+  );
 
-        <div className="p-6 overflow-y-auto space-y-5 custom-scrollbar">
-          <div>
-            <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Tên trường <span className="text-red-500">*</span></label>
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={editingAttribute ? 'Cập nhật thuộc tính' : 'Thêm mới thuộc tính'}
+      subtitle="Định nghĩa cấu trúc chi tiết cho trường dữ liệu"
+      footer={footer}
+      maxWidth="max-w-2xl"
+    >
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-1.5 md:col-span-2">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">
+              Tên trường <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               value={formData.fieldName || ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, fieldName: e.target.value })}
               placeholder="VD: citizen_id"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-[14px] font-mono"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100/50 focus:border-blue-500 transition-all text-sm font-mono font-bold text-slate-800"
             />
-            <p className="text-[12px] text-slate-500 mt-1">Tên trường trong database (không dấu, chữ thường)</p>
+            <p className="text-[11px] text-slate-400 font-medium italic">Tên định danh trong cơ sở dữ liệu (không dấu, chữ thường)</p>
           </div>
 
-          <div>
-            <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Tên hiển thị <span className="text-red-500">*</span></label>
+          <div className="space-y-1.5 md:col-span-2">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">
+              Tên hiển thị <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               value={formData.displayName || ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, displayName: e.target.value })}
               placeholder="VD: Số CCCD"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-[14px]"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100/50 focus:border-blue-500 transition-all text-sm font-bold text-slate-800"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Kiểu dữ liệu <span className="text-red-500">*</span></label>
-              <select
-                title="Kiểu dữ liệu"
-                value={formData.dataType || 'string'}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, dataType: e.target.value as FieldDataType })}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg bg-white text-[14px] h-[42px]"
-              >
-                <option value="string">Chuỗi (String)</option>
-                <option value="number">Số (Number)</option>
-                <option value="date">Ngày (Date)</option>
-                <option value="datetime">Ngày giờ (DateTime)</option>
-                <option value="boolean">Logic (Boolean)</option>
-                <option value="text">Văn bản dài (Text)</option>
-                <option value="email">Email</option>
-                <option value="phone">Số điện thoại</option>
-                <option value="url">URL</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Độ dài</label>
-              <input
-                type="number"
-                value={formData.length || ''}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, length: e.target.value ? parseInt(e.target.value) : undefined })}
-                placeholder="VD: 255"
-                className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-[14px]"
-              />
-            </div>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">
+              Kiểu dữ liệu <span className="text-red-500">*</span>
+            </label>
+            <select
+              title="Kiểu dữ liệu"
+              value={formData.dataType || 'string'}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, dataType: e.target.value as FieldDataType })}
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white focus:ring-4 focus:ring-blue-100/50 transition-all text-sm font-bold text-slate-800 h-[48px]"
+            >
+              <option value="string">Chuỗi (String)</option>
+              <option value="number">Số (Number)</option>
+              <option value="date">Ngày (Date)</option>
+              <option value="datetime">Ngày giờ (DateTime)</option>
+              <option value="boolean">Logic (Boolean)</option>
+              <option value="text">Văn bản dài (Text)</option>
+              <option value="email">Email</option>
+              <option value="phone">Số điện thoại</option>
+              <option value="url">URL</option>
+            </select>
           </div>
 
-          <div>
-            <label className="block text-[14px] font-semibold text-slate-700 mb-2">Ràng buộc</label>
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" checked={formData.required || false} onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, required: e.target.checked })} className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500" />
-                <span className="text-[14px] text-slate-600 group-hover:text-slate-900 transition-colors">Bắt buộc (Required)</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" checked={formData.unique || false} onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, unique: e.target.checked })} className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500" />
-                <span className="text-[14px] text-slate-600 group-hover:text-slate-900 transition-colors">Duy nhất (Unique)</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" checked={formData.indexed || false} onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, indexed: e.target.checked })} className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500" />
-                <span className="text-[14px] text-slate-600 group-hover:text-slate-900 transition-colors">Đánh index (Indexed)</span>
-              </label>
-            </div>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">Độ dài tối đa</label>
+            <input
+              type="number"
+              value={formData.length || ''}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, length: e.target.value ? parseInt(e.target.value) : undefined })}
+              placeholder="VD: 255"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100/50 transition-all text-sm font-bold text-slate-800"
+            />
           </div>
+        </div>
 
-          <div>
-            <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Giá trị mặc định</label>
+        <div className="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+          <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Cấu hình ràng buộc</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { key: 'required', label: 'Bắt buộc', desc: 'Required' },
+              { key: 'unique', label: 'Duy nhất', desc: 'Unique' },
+              { key: 'indexed', label: 'Đánh index', desc: 'Indexed' }
+            ].map((item) => (
+              <label key={item.key} className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all group">
+                <input 
+                  type="checkbox" 
+                  checked={(formData as any)[item.key] || false} 
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [item.key]: e.target.checked })} 
+                  className="w-5 h-5 rounded-lg text-blue-600 border-slate-300 focus:ring-blue-500" 
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors">{item.label}</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{item.desc}</span>
+                </div>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">Giá trị mặc định</label>
             <input
               type="text"
               value={formData.defaultValue || ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, defaultValue: e.target.value })}
               placeholder="Để trống nếu không có"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-[14px]"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100/50 transition-all text-sm font-bold text-slate-800"
             />
           </div>
 
-          <div>
-            <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Quy tắc xác thực</label>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">Quy tắc xác thực</label>
             <input
               type="text"
               value={formData.validationRules || ''}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, validationRules: e.target.value })}
-              placeholder="VD: regex:^[0-9]{12}$ hoặc enum:Nam,Nữ,Khác"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-[14px]"
+              placeholder="VD: regex hoặc enum"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100/50 transition-all text-sm font-bold text-slate-800"
             />
-            <p className="text-[11px] text-slate-400 mt-1">Sử dụng format: regex:pattern hoặc enum:value1,value2,value3</p>
           </div>
 
-          <div>
-            <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Mô tả</label>
+          <div className="space-y-1.5 md:col-span-2">
+            <label className="block text-xs font-bold uppercase tracking-widest text-slate-500">Mô tả ngắn gọn</label>
             <textarea
-              rows={2}
+              rows={3}
               value={formData.description || ''}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Mô tả chi tiết về thuộc tính này..."
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-[14px]"
+              placeholder="Mô tả mục đích sử dụng của thuộc tính này..."
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100/50 transition-all text-sm font-bold text-slate-800"
             />
           </div>
         </div>
-
-        <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end gap-3 shrink-0">
-           <button onClick={onClose} className="px-6 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium text-[14px]">Hủy</button>
-           <button onClick={onSave} className="px-6 py-2 rounded-lg bg-white border border-blue-200 text-blue-700 hover:bg-blue-50 font-medium text-[14px]">Lưu</button>
-           <button 
-             onClick={() => {
-                onSave();
-                onSaveAndSubmit({
-                   id: formData.id || 'new',
-                   code: formData.fieldName || 'ATTR-001',
-                   name: formData.displayName || 'Thuộc tính mới',
-                   type: 'attribute'
-                });
-             }}
-             className="px-6 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-700 font-bold flex items-center gap-2 shadow-lg shadow-orange-100 text-[14px]"
-           >
-              <Send className="w-4 h-4"/>
-              Lưu và Trình duyệt
-           </button>
-        </div>
       </div>
-    </div>
+    </BaseModal>
   );
 }

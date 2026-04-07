@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { Send } from 'lucide-react';
+import { Send, X } from 'lucide-react';
+
 
 interface ApprovalRequestModalProps {
   isOpen: boolean;
@@ -28,70 +29,78 @@ export function ApprovalRequestModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[200] p-4">
+    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[20000] p-4 text-slate-800">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200">
-        <div className="p-6 flex flex-col items-center">
-            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-6">
-               <Send className="w-8 h-8"/>
-            </div>
-            <h3 className="text-[20px] font-bold text-slate-800 mb-2">Gửi yêu cầu phê duyệt</h3>
-            <p className="text-slate-500 text-[14px] text-center mb-8">Bạn đang thực hiện trình duyệt nội dung cấu hình này.</p>
-            
-            <div className="w-full bg-slate-50 rounded-xl p-5 mb-6 space-y-4">
-               <div className="grid grid-cols-2 gap-y-3 text-[14px]">
-                  <span className="text-slate-500">Mã dữ liệu chủ</span>
-                  <span className="font-bold text-slate-800 text-right">{data?.code || 'MD-AGENCY-001'}</span>
-                  <span className="text-slate-500">Loại yêu cầu</span>
-                  <span className="text-right">
-                     <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[12px] font-medium">
-                        {data?.type === 'category' ? 'Phê duyệt danh mục' : 'Phê duyệt cấu trúc'}
-                     </span>
-                  </span>
-                  <span className="text-slate-500">Tên dữ liệu chủ</span>
-                  <span className="font-medium text-slate-800 text-right">{data?.name}</span>
-                  <span className="text-slate-500">Trạng thái</span>
-                  <span className="text-right">
-                     <span className="px-2 py-0.5 bg-yellow-50 text-yellow-600 rounded text-[12px] font-medium">Đang soạn thảo</span>
-                  </span>
-               </div>
-            </div>
-
-            <div className="w-full space-y-4">
-               <div>
-                  <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Người phê duyệt <span className="text-red-500">*</span></label>
-                  <select 
-                    title="Người phê duyệt"
-                    value={form.reviewer}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm({...form, reviewer: e.target.value})}
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-white text-[14px] focus:ring-2 focus:ring-blue-500"
-                  >
-                     <option value="">-- Chọn người phê duyệt --</option>
-                     {approvers.map(a => <option key={a.id} value={a.id}>{a.name} - {a.position}</option>)}
-                  </select>
-               </div>
-               <div>
-                  <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">Ghi chú</label>
-                  <textarea 
-                    rows={3}
-                    value={form.note}
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm({...form, note: e.target.value})}
-                    placeholder="Nhập ghi chú (nếu có)"
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-white text-[14px] focus:ring-2 focus:ring-blue-500"
-                  />
-               </div>
-            </div>
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+           <h3 className="text-[18px] font-bold text-slate-800">Trình duyệt danh mục</h3>
+           <button onClick={onClose} className="p-1.5 text-slate-400 hover:bg-slate-50 rounded-lg transition-colors" title="Đóng">
+              <X className="w-5 h-5"/>
+           </button>
         </div>
-        <div className="p-4 bg-slate-50/80 border-t border-slate-100 flex gap-3">
+
+        {/* Body */}
+        <div className="p-6 space-y-6">
+          {/* Info Banner */}
+          <div className="bg-slate-50 border border-slate-100 rounded-xl p-5">
+             <div className="space-y-3">
+                <div className="flex justify-between items-start">
+                   <span className="text-[14px] text-slate-500">Danh mục</span>
+                   <span className="text-[15px] font-bold text-slate-900 text-right">{data?.name || 'Danh mục dữ liệu B'}</span>
+                </div>
+                <div className="flex justify-between items-center text-[13px]">
+                   <span className="text-slate-500">Mã: {data?.code || 'ODC002'}</span>
+                </div>
+             </div>
+          </div>
+
+          <div className="space-y-4">
+             {/* Approver Select */}
+             <div className="space-y-1.5">
+                <label className="block text-[14px] font-semibold text-slate-700">Người phê duyệt <span className="text-red-500">*</span></label>
+                <select 
+                  title="Người phê duyệt"
+                  value={form.reviewer}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) => setForm({...form, reviewer: e.target.value})}
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-white text-[14px] focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                >
+                   <option value="">-- Chọn người phê duyệt --</option>
+                   {approvers.map(a => <option key={a.id} value={a.id}>{a.name} - {a.position}</option>)}
+                </select>
+             </div>
+
+             {/* Content Textarea */}
+             <div className="space-y-1.5">
+                <label className="block text-[14px] font-semibold text-slate-700">Nội dung trình duyệt</label>
+                <textarea 
+                  rows={4}
+                  value={form.note}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setForm({...form, note: e.target.value})}
+                  placeholder="Nhập nội dung trình duyệt... Ví dụ: Đề nghị Lãnh đạo xem xét phê duyệt danh mục dữ liệu mở theo Nghị định 47/2020/NĐ-CP"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white text-[14px] focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                />
+             </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex gap-3 justify-end items-center">
+           <button 
+             onClick={onClose}
+             className="px-8 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50 transition-all text-[14px]"
+           >
+              Hủy
+           </button>
            <button 
              onClick={onSubmit}
-             className="flex-1 py-3 bg-[#2563eb] text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
+             className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all text-[14px] shadow-lg shadow-blue-200"
            >
-              <Send className="w-4 h-4"/>
-              Gửi yêu cầu phê duyệt
+              <Send className="w-5 h-5 rotate-[-20deg]"/>
+              Gửi trình duyệt
            </button>
-           <button onClick={onClose} className="px-8 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors">Hủy</button>
         </div>
       </div>
     </div>
   );
 }
+

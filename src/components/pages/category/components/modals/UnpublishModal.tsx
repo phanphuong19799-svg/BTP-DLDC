@@ -22,11 +22,11 @@ export function UnpublishModal({
   if (!isOpen || !entity) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[300] p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[480px] overflow-hidden animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] overflow-hidden animate-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between p-5 border-b border-slate-100">
           <h3 className="text-lg font-bold text-slate-800">Hủy công khai danh mục</h3>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg">
+          <button onClick={onClose} className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg" title="Đóng">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -46,13 +46,21 @@ export function UnpublishModal({
               className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 text-sm"
             />
           </div>
-          <button
-            onClick={onConfirm}
-            className="w-full py-3 bg-red-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-red-700 transition-colors shadow-lg shadow-red-100"
-          >
-            <XCircle className="w-5 h-5" />
-            Xác nhận hủy công khai
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={onClose}
+              className="flex-1 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+            >
+              Hủy
+            </button>
+            <button
+              onClick={onConfirm}
+              className="flex-1 py-2.5 bg-red-600 text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-red-700 transition-colors shadow-lg shadow-red-100"
+            >
+              <XCircle className="w-4 h-4" />
+              Chấp nhận
+            </button>
+          </div>
         </div>
       </div>
     </div>

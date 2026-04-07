@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { X, FileText, Sliders } from 'lucide-react';
+import { X, FileText, Sliders, ChevronRight, ChevronLeft, Save, Send } from 'lucide-react';
 import { AttributesTab } from '../tabs/AttributesTab';
 import { MasterDataEntity, MasterDataAttribute, DataType, ScopeType, FieldDataType } from '../../categoryTypes';
+import { Portal } from '../../../../common/Portal';
 
 interface CategoryWizardModalProps {
   isOpen: boolean;
@@ -24,6 +25,10 @@ interface CategoryWizardModalProps {
   getDataTypeLabel: (type: FieldDataType) => string;
 }
 
+/**
+ * Giao diện Wizard Thêm mới danh mục chuẩn chuyên nghiệp.
+ * Kích thước vừa phải, font chữ tiêu chuẩn, dễ nhìn.
+ */
 export function CategoryWizardModal({
   isOpen,
   onClose,
@@ -46,160 +51,167 @@ export function CategoryWizardModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-        {/* Wizard Header */}
-        <div className="flex flex-col border-b border-slate-200 bg-white shrink-0">
-          <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-            <h2 className="text-[18px] font-bold text-slate-800">Cấu hình thông tin danh mục</h2>
-            <button onClick={onClose} className="p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 rounded-lg transition-colors" title="Đóng">
-              <X className="w-5 h-5" />
-            </button>
+    <Portal>
+      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+        <div className={`bg-white rounded-2xl shadow-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300 flex flex-col max-h-[90vh] ${step === 1 ? 'max-w-3xl' : 'max-w-5xl'}`}>
+          {/* Wizard Header */}
+          <div className="flex flex-col border-b border-slate-200 bg-white shrink-0">
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+                {entityId ? 'HIỆU CHỈNH DANH MỤC' : 'THIẾT LẬP DANH MỤC MỚI'}
+              </h2>
+              <button onClick={onClose} className="p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 rounded-xl transition-colors" title="Đóng">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex px-6 bg-white overflow-x-auto border-b border-slate-100">
+              {[
+                { s: 1, label: 'Thông tin chung', icon: FileText },
+                { s: 2, label: 'Thiết lập thuộc tính', icon: Sliders }
+              ].map((item) => {
+                const isActive = step === item.s;
+                const isLocked = !entityId && item.s > 1;
+                return (
+                  <button
+                    key={item.s}
+                    disabled={isLocked}
+                    onClick={() => setStep(item.s)}
+                    className={`flex items-center gap-2 py-4 px-6 border-b-2 font-bold text-[14px] whitespace-nowrap transition-colors ${
+                      isActive ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-blue-600'
+                    } ${isLocked ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div className="flex overflow-x-auto px-6 ">
-            {[
-              { step: 1, label: 'Thông tin chung', icon: FileText },
-              { step: 2, label: 'Thiết lập thuộc tính', icon: Sliders }
-            ].map((item) => {
-              const isActive = step === item.step;
-              const isLocked = !entityId && item.step > 1;
-              return (
-                <button
-                  key={item.step}
-                  disabled={isLocked}
-                  onClick={() => setStep(item.step)}
-                  className={`flex items-center gap-2 py-4 px-6 border-b-2 font-medium text-[15px] whitespace-nowrap transition-colors ${isActive ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-blue-600'} ${isLocked ? 'opacity-40 cursor-not-allowed' : ''}`}
-                >
-                  <item.icon className="w-4 h-4" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
-        {/* Wizard Content Area */}
-        <div className="flex-1 overflow-y-auto bg-slate-50/30 p-6 custom-scrollbar">
-          {step === 1 && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden max-w-4xl mx-auto">
-              <div className="p-5 border-b border-slate-100 bg-slate-50/50">
-                <h3 className="font-bold text-slate-800 text-[16px]">Thông tin cơ bản danh mục</h3>
-              </div>
-              <div className="p-8 space-y-6">
-                <div className="grid grid-cols-1 gap-6">
-                  <div>
-                    <label className="block text-[14px] font-semibold text-slate-700 mb-2">Tên danh sách <span className="text-red-500">*</span></label>
+          {/* Wizard Content Area */}
+          <div className="flex-1 overflow-y-auto bg-slate-50/20 p-8 custom-scrollbar">
+            {step === 1 && (
+              <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-400">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-6 bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                  <div className="col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Tên danh sách danh mục <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       value={formData.name || ''}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="VD: Danh mục quốc gia, Bộ dữ liệu cán bộ..."
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-[14px]"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm font-medium transition-all"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-[14px] font-semibold text-slate-700 mb-2">Loại dữ liệu <span className="text-red-500">*</span></label>
-                      <select
-                        title="Loại dữ liệu"
-                        value={formData.dataType || 'standard'}
-                        onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, dataType: e.target.value as DataType })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-[14px]"
-                      >
-                        <option value="standard">Dữ liệu chuẩn</option>
-                        <option value="reference">Dữ liệu tham chiếu</option>
-                        <option value="transactional">Dữ liệu giao dịch</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-[14px] font-semibold text-slate-700 mb-2">Cơ quan quản lý <span className="text-red-500">*</span></label>
-                      <input
-                        type="text"
-                        value={formData.managingAgency || ''}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, managingAgency: e.target.value })}
-                        placeholder="VD: Bộ Tư Pháp"
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-[14px]"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-[14px] font-semibold text-slate-700 mb-2">Phạm vi <span className="text-red-500">*</span></label>
-                      <select
-                        title="Phạm vi"
-                        value={formData.scope || 'national'}
-                        onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, scope: e.target.value as ScopeType })}
-                        className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-[14px]"
-                      >
-                        <option value="national">Cấp quốc gia</option>
-                        <option value="ministry">Cấp bộ</option>
-                        <option value="provincial">Cấp tỉnh</option>
-                        <option value="internal">Nội bộ</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-[14px] font-semibold text-slate-700 mb-2">Dữ liệu từ nguồn nào?</label>
-                      <select title="Nguồn dữ liệu" className="w-full px-4 py-2.5 border border-slate-300 rounded-lg bg-white text-[14px]">
-                        <option>Tự tạo/Nhập tay</option>
-                        <option>Lấy từ Kho DLDC</option>
-                        <option>Lấy từ hệ thống khác (API/Đồng bộ)</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[14px] font-semibold text-slate-700 mb-2">Mô tả chi tiết</label>
-                  <textarea
-                    rows={4}
-                    value={formData.description || ''}
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Nhập mô tả về mục đích và nội dung danh mục..."
-                    className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-[14px]"
-                  />
-                </div>
-                <div className="pt-6 border-t border-slate-100 flex justify-center gap-3">
-                  <button onClick={onClose} className="px-8 py-2.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium text-[14px]">Hủy</button>
-                  <button onClick={() => onSaveStep1('draft')} className="px-8 py-2.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium text-[14px]">Lưu nháp</button>
-                  <button onClick={() => onSaveStep1('submit')} className="px-8 py-2.5 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200 font-medium text-[14px]">Lưu và Trình duyệt</button>
-                  <button onClick={() => onSaveStep1('next')} className="px-10 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-bold shadow-lg shadow-blue-200 text-[14px]">Lưu và Tiếp tục</button>
-                </div>
-              </div>
-            </div>
-          )}
-          {step === 2 && (
-            <div className="h-full flex flex-col">
-              <div className="flex items-center justify-between mb-4 bg-blue-50/50 p-4 rounded-lg border border-blue-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                    <Sliders className="w-5 h-5" />
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Loại dữ liệu <span className="text-red-500">*</span></label>
+                    <select
+                      title="Loại dữ liệu"
+                      value={formData.dataType || 'standard'}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, dataType: e.target.value as DataType })}
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm font-medium transition-all h-[44px]"
+                    >
+                      <option value="standard">Dữ liệu chuẩn</option>
+                      <option value="reference">Dữ liệu tham chiếu</option>
+                      <option value="transactional">Dữ liệu giao dịch</option>
+                    </select>
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-800">Thiết lập danh sách thuộc tính</h4>
-                    <p className="text-sm text-slate-500">Định nghĩa cấu trúc chi tiết cho các trường dữ liệu.</p>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Cơ quan quản lý <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      value={formData.managingAgency || ''}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, managingAgency: e.target.value })}
+                      placeholder="VD: Bộ Tư Pháp"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm font-medium transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Phạm vi vĩ mô <span className="text-red-500">*</span></label>
+                    <select
+                      title="Phạm vi"
+                      value={formData.scope || 'national'}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, scope: e.target.value as ScopeType })}
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm font-medium transition-all h-[44px]"
+                    >
+                      <option value="national">Cấp quốc gia</option>
+                      <option value="ministry">Cấp bộ</option>
+                      <option value="provincial">Cấp tỉnh</option>
+                      <option value="internal">Sử dụng nội bộ</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Nguồn dữ liệu</label>
+                    <select title="Nguồn dữ liệu" className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium h-[44px]">
+                      <option>Tự cập nhật trực tiếp</option>
+                      <option>Đồng bộ Kho DLDC</option>
+                      <option>Kết nối API (NGSP/LGSP)</option>
+                    </select>
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Mô tả mục đích & vai trò</label>
+                    <textarea
+                      rows={4}
+                      value={formData.description || ''}
+                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
+                      placeholder="Mô tả chi tiết về cấu trúc dữ liệu và cách thức vận hành..."
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm font-medium transition-all resize-none"
+                    />
                   </div>
                 </div>
               </div>
-              <div className="flex-1 bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm p-6">
-                <AttributesTab
-                  wizardMode={true}
-                  wizardEntityId={entityId}
-                  entities={entities}
-                  attributes={attributes}
-                  selectedEntityId={entityId || ''}
-                  setSelectedEntityId={() => { }}
-                  selectedAttributes={selectedAttributes}
-                  onSelectAttribute={onSelectAttribute}
-                  onSelectAll={onSelectAllAttributes}
-                  onAddAttribute={onAddAttribute}
-                  onEditAttribute={onEditAttribute}
-                  onDeleteAttribute={onDeleteAttribute}
-                  getDataTypeLabel={getDataTypeLabel}
-                />
+            )}
+            {step === 2 && (
+              <div className="h-full flex flex-col animate-in slide-in-from-right-2 duration-400">
+                <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col">
+                  <AttributesTab
+                    wizardMode={true}
+                    wizardEntityId={entityId}
+                    entities={entities}
+                    attributes={attributes}
+                    selectedEntityId={entityId || ''}
+                    setSelectedEntityId={() => { }}
+                    selectedAttributes={selectedAttributes}
+                    onSelectAttribute={onSelectAttribute}
+                    onSelectAll={onSelectAllAttributes}
+                    onAddAttribute={onAddAttribute}
+                    onEditAttribute={onEditAttribute}
+                    onDeleteAttribute={onDeleteAttribute}
+                    getDataTypeLabel={getDataTypeLabel}
+                  />
+                </div>
               </div>
+            )}
+          </div>
+
+          {/* Wizard Footer */}
+          <div className="px-8 py-5 border-t border-slate-200 bg-white flex justify-between items-center shrink-0">
+            <div className="flex gap-3">
+              <button onClick={onClose} className="px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 font-bold text-sm transition-colors">Hủy bỏ</button>
+              {step === 2 && (
+                <button onClick={() => setStep(1)} className="px-6 py-2.5 border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-sm flex items-center gap-2 transition-colors">
+                  <ChevronLeft className="w-4 h-4" /> Quay lại
+                </button>
+              )}
             </div>
-          )}
+
+            <div className="flex gap-3">
+              <button onClick={() => onSaveStep1('draft')} className="px-6 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-sm flex items-center gap-2 transition-colors">
+                <Save className="w-4 h-4" /> Lưu tạm
+              </button>
+              {step === 1 ? (
+                <button onClick={() => onSaveStep1('next')} className="px-8 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-blue-100 transition-colors">
+                  Tiếp tục <ChevronRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <button onClick={() => onSaveStep1('submit')} className="px-10 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-blue-100 transition-colors">
+                  <Send className="w-4 h-4" /> Hoàn tất & Trình duyệt
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Portal>
   );
 }

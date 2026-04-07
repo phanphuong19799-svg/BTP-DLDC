@@ -1,7 +1,9 @@
-import React from 'react';
-import { ApprovalRequest, ApprovalType, ApprovalStatus } from '../../categoryTypes';
+import React, { useState } from 'react';
+import { Clock, CheckSquare, XCircle, Eye, Ban, Check } from 'lucide-react';
+import { ApprovalRequest, ApprovalType, ApprovalStatus, MasterDataEntity } from '../../categoryTypes';
 
 interface ApprovalTabProps {
+  entities: MasterDataEntity[];
   approvalTab: ApprovalType;
   setApprovalTab: (tab: ApprovalType) => void;
   requests: ApprovalRequest[];
@@ -14,6 +16,7 @@ interface ApprovalTabProps {
 }
 
 export function ApprovalTab({
+  entities,
   approvalTab,
   setApprovalTab,
   requests,
@@ -24,105 +27,212 @@ export function ApprovalTab({
   approvalTypeLabels,
   approvalStatusLabels
 }: ApprovalTabProps) {
-  const filteredRequests = requests.filter(req => {
-    const matchesStatus = statusFilter === 'all' || req.status === statusFilter;
-    return matchesStatus;
-  });
+  const [expandedHistory, setExpandedHistory] = useState<string[]>([]);
+
+  const pendingCount = requests.filter(r => r.status === 'pending').length;
+  const approvedCount = requests.filter(r => r.status === 'approved').length;
+  const rejectedCount = requests.filter(r => r.status === 'rejected').length;
+  const totalCount = requests.length;
+
+  const filteredRequests = requests.filter(req =>
+    statusFilter === 'all' || req.status === statusFilter
+  );
+
+  const toggleHistory = (id: string) =>
+    setExpandedHistory(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+
+  const tabList = [
+    { key: 'all' as const, label: 'Tất cả', count: totalCount },
+    { key: 'pending' as const, label: 'Chờ phê duyệt', count: pendingCount },
+    { key: 'approved' as const, label: 'Đã phê duyệt', count: approvedCount },
+    { key: 'rejected' as const, label: 'Từ chối', count: rejectedCount },
+  ];
 
   return (
-    <div className="space-y-6">
-       {/* Statistics Cards */}
-       <div className="grid grid-cols-4 gap-4">
-          <div 
-            onClick={() => setStatusFilter('all')}
-            className={`bg-white border p-4 rounded-xl shadow-sm cursor-pointer transition-all ${statusFilter === 'all' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 hover:border-blue-300'}`}
-          >
-             <div className="text-sm font-medium text-slate-500">Tất cả</div>
-             <div className="text-2xl font-bold text-slate-800 mt-1">{requests.length}</div>
-          </div>
-          <div 
-            onClick={() => setStatusFilter('pending')}
-            className={`bg-white border p-4 rounded-xl shadow-sm cursor-pointer transition-all border-l-4 border-l-orange-400 ${statusFilter === 'pending' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 hover:border-blue-300'}`}
-          >
-             <div className="text-sm font-medium text-slate-500">Chờ phê duyệt</div>
-             <div className="text-2xl font-bold text-orange-600 mt-1">
-               {requests.filter(r => r.status === 'pending').length}
-             </div>
-          </div>
-          <div 
-            onClick={() => setStatusFilter('approved')}
-            className={`bg-white border p-4 rounded-xl shadow-sm cursor-pointer transition-all border-l-4 border-l-green-400 ${statusFilter === 'approved' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 hover:border-blue-300'}`}
-          >
-             <div className="text-sm font-medium text-slate-500">Đã phê duyệt</div>
-             <div className="text-2xl font-bold text-green-600 mt-1">
-               {requests.filter(r => r.status === 'approved').length}
-             </div>
-          </div>
-          <div 
-            onClick={() => setStatusFilter('rejected')}
-            className={`bg-white border p-4 rounded-xl shadow-sm cursor-pointer transition-all border-l-4 border-l-red-400 ${statusFilter === 'rejected' ? 'border-blue-500 ring-2 ring-blue-100' : 'border-slate-200 hover:border-blue-300'}`}
-          >
-             <div className="text-sm font-medium text-slate-500">Đã từ chối</div>
-             <div className="text-2xl font-bold text-red-600 mt-1">
-               {requests.filter(r => r.status === 'rejected').length}
-             </div>
-          </div>
-       </div>
+    <div className="space-y-5">
+      {/* Page Header */}
+      <div>
+        <h2 className="text-[17px] font-bold text-slate-800">Phê duyệt danh sách dữ liệu chủ</h2>
+        <p className="text-[13px] text-slate-500 mt-0.5">Lãnh đạo nghiệp vụ xem xét và phê duyệt các bộ dữ liệu chủ chờ phê duyệt</p>
+      </div>
 
-       {/* Unified Results Table */}
-       <div className="space-y-8">
-          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-            <div className="bg-[#f8fafc] border-b border-slate-200 p-4 flex items-center justify-between">
-               <h3 className="font-bold text-slate-800 text-base">Danh sách yêu cầu chờ duyệt</h3>
-               {filteredRequests.filter(r => r.status === 'pending').length > 0 && (
-                 <button
-                   onClick={() => onApproveAll('all')}
-                   className="px-4 py-2 bg-[#2563eb] text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
-                 >
-                   Duyệt tất cả ({filteredRequests.filter(r => r.status === 'pending').length})
-                 </button>
-               )}
-            </div>
-            
-            {filteredRequests.length > 0 ? (
-              <table className="w-full text-sm text-left">
-                 <thead className="bg-[#f8fafc] text-slate-600 font-bold border-b border-slate-100">
-                    <tr>
-                       <th className="px-6 py-4">Mã yêu cầu</th>
-                       <th className="px-6 py-4">Loại phê duyệt</th>
-                       <th className="px-6 py-4 w-[35%]">Thực thể</th>
-                       <th className="px-6 py-4">Người yêu cầu</th>
-                       <th className="px-6 py-4">Ngày yêu cầu</th>
-                       <th className="px-6 py-4">Trạng thái</th>
-                    </tr>
-                 </thead>
-                 <tbody className="divide-y divide-slate-100">
-                    {filteredRequests.map(req => (
-                       <tr key={req.id} className="hover:bg-slate-50 transition-colors cursor-pointer group" onClick={() => onViewDetail(req)}>
-                          <td className="px-6 py-4 font-mono font-bold text-blue-600">REQ-{req.id.padStart(3, '0')}</td>
-                          <td className="px-6 py-4 font-medium text-slate-700">{approvalTypeLabels[req.type]}</td>
-                          <td className="px-6 py-4">
-                             <div className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{req.entityName}</div>
-                             <div className="text-[11px] text-slate-400">{req.entityCode}</div>
-                          </td>
-                          <td className="px-6 py-4 text-slate-600">{req.requestedBy}</td>
-                          <td className="px-6 py-4 text-slate-600">{req.requestedDate}</td>
-                          <td className="px-6 py-4">
-                             <span className={`px-2 py-1 rounded-full text-[11px] font-bold ${approvalStatusLabels[req.status].color}`}>
-                                {approvalStatusLabels[req.status].label}
-                             </span>
-                          </td>
-                       </tr>
-                    ))}
-                 </tbody>
-              </table>
-            ) : (
-              <div className="px-6 py-10 text-center text-slate-500 italic bg-white">
-                Không có yêu cầu phê duyệt nào phù hợp.
-              </div>
-            )}
+      {/* Stat Cards */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex justify-between items-center">
+          <div>
+            <div className="text-[13px] text-orange-700 font-medium mb-0.5">Chờ phê duyệt</div>
+            <div className="text-3xl font-black text-orange-600">{pendingCount}</div>
           </div>
-       </div>
+          <Clock className="w-9 h-9 text-orange-400 stroke-2" />
+        </div>
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex justify-between items-center">
+          <div>
+            <div className="text-[13px] text-green-700 font-medium mb-0.5">Đã phê duyệt</div>
+            <div className="text-3xl font-black text-green-600">{approvedCount}</div>
+          </div>
+          <CheckSquare className="w-9 h-9 text-green-400 stroke-2" />
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex justify-between items-center">
+          <div>
+            <div className="text-[13px] text-red-700 font-medium mb-0.5">Từ chối</div>
+            <div className="text-3xl font-black text-red-600">{rejectedCount}</div>
+          </div>
+          <XCircle className="w-9 h-9 text-red-400 stroke-2" />
+        </div>
+      </div>
+
+      {/* Status Filter Tab Bar */}
+      <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-sm flex-wrap">
+        <span className="text-[13px] text-slate-600 font-semibold mr-1">Trang thái:</span>
+        {tabList.map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => setStatusFilter(tab.key)}
+            className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all ${
+              statusFilter === tab.key
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            {tab.label} ({tab.count})
+          </button>
+        ))}
+      </div>
+
+      {/* Cards List */}
+      <div className="space-y-4">
+        {filteredRequests.length === 0 ? (
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+            <div className="bg-[#f8fafc] border-b border-slate-200 p-4">
+              <h3 className="font-bold text-slate-800 text-[14px]">Danh sách yêu cầu chờ duyệt</h3>
+            </div>
+            <div className="p-12 text-center text-slate-500 italic text-[14px]">
+              Không có yêu cầu phê duyệt nào phù hợp.
+            </div>
+          </div>
+        ) : (
+          filteredRequests.map(req => {
+            const entity = entities.find((e: any) => e.id === req.entityId);
+            const isPending = req.status === 'pending';
+            const historyOpen = expandedHistory.includes(req.id);
+
+            return (
+              <div key={req.id} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                {/* Card Body */}
+                <div className="p-5 flex gap-5">
+                  {/* Left Content */}
+                  <div className="flex-1 min-w-0">
+                    {/* Title + Status Badge */}
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="text-[15px] font-bold text-slate-800">{req.entityName}</h4>
+                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                        req.status === 'pending' ? 'bg-orange-50 text-orange-600 border-orange-200' :
+                        req.status === 'approved' ? 'bg-green-50 text-green-700 border-green-200' :
+                        'bg-red-50 text-red-600 border-red-200'
+                      }`}>
+                        {approvalStatusLabels[req.status].label}
+                      </span>
+                    </div>
+
+                    {/* Code */}
+                    <div className="text-[13px] font-bold text-amber-600 mb-3">
+                      Mã: {req.entityCode}
+                    </div>
+
+                    {/* Info Grid 2 cols */}
+                    <div className="grid grid-cols-2 gap-x-10 gap-y-1.5 mb-4 text-[13px]">
+                      <div>
+                        <span className="text-slate-500">Cơ quan quản lý: </span>
+                        <span className="text-slate-800 font-semibold">
+                          {entity?.managingAgency || 'Cục Hộ tịch - Quốc tịch - Chứng thực'}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500">Loại dữ liệu: </span>
+                        <span className="text-slate-800 font-semibold">Dữ liệu chuẩn</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500">Ngày gửi: </span>
+                        <span className="text-slate-800 font-semibold">{req.requestedDate}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500">Người gửi: </span>
+                        <span className="text-slate-800 font-semibold">{req.requestedBy}</span>
+                      </div>
+                    </div>
+
+                    {/* Tags row */}
+                    <div className="flex items-center gap-3 text-[12px] text-slate-600 flex-wrap">
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block"></span>
+                        15 thuộc tính
+                      </span>
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block"></span>
+                        3 quy tắc hợp nhất
+                      </span>
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block"></span>
+                        2 quan hệ
+                      </span>
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1 text-green-600 font-semibold">
+                        <Check className="w-3 h-3" />
+                        Có đính danh
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Right — vertical action buttons */}
+                  <div className="flex flex-col gap-2 shrink-0 items-stretch min-w-[128px]">
+                    <button
+                      onClick={() => onViewDetail(req)}
+                      className="flex items-center justify-center gap-1.5 px-3 py-2 border border-slate-200 text-blue-600 rounded-lg text-[13px] font-bold hover:bg-blue-50 transition-colors"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      Xem chi tiết
+                    </button>
+                    {isPending && (
+                      <>
+                        <button className="flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 text-white rounded-lg text-[13px] font-bold hover:bg-green-700 transition-colors">
+                          <Check className="w-3.5 h-3.5" />
+                          Phê duyệt
+                        </button>
+                        <button className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-600 text-white rounded-lg text-[13px] font-bold hover:bg-red-700 transition-colors">
+                          <Ban className="w-3.5 h-3.5" />
+                          Từ chối
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Collapsible History */}
+                <div className="border-t border-slate-100">
+                  <button
+                    onClick={() => toggleHistory(req.id)}
+                    className="w-full flex items-center gap-2 px-5 py-2.5 text-[12px] text-slate-500 hover:bg-slate-50 transition-colors"
+                  >
+                    <Clock className="w-3.5 h-3.5" />
+                    Lịch sử cập nhật (1) {historyOpen ? '▲' : '▼'}
+                  </button>
+                  {historyOpen && (
+                    <div className="px-5 pb-4 text-[13px] text-slate-600 bg-slate-50/50 border-t border-slate-100">
+                      <div className="py-2 flex gap-3">
+                        <span className="text-slate-400">{req.requestedDate}</span>
+                        <span>—</span>
+                        <span>{req.requestedBy} đã gửi yêu cầu phê duyệt</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }

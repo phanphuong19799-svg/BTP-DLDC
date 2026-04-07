@@ -64,12 +64,6 @@ export function ScreenFlowDiagram() {
       description: 'Xử lý và chuẩn hóa dữ liệu',
       children: [
         {
-          id: 'processing-rule-setup',
-          label: 'Thiết lập quy tắc',
-          icon: Settings,
-          description: 'Cấu hình quy tắc làm sạch, chuẩn hóa, biến đổi'
-        },
-        {
           id: 'processing-internal-data',
           label: 'Dữ liệu trong ngành',
           icon: Building,

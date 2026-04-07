@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { Settings, CheckSquare, XCircle, Search, Filter, Plus, Edit, Trash2, Send, Globe, Share2 } from 'lucide-react';
+import { Settings, CheckSquare, XCircle, Search, Filter, Plus, Globe } from 'lucide-react';
+import { ActionIconButton } from '../../../../common/ActionIconButton';
 import { MasterDataEntity, LifecycleStatus } from '../../categoryTypes';
 import { dataTypeLabels, lifecycleLabels } from '../../categoryConstants';
 
@@ -17,6 +18,8 @@ interface SetupTabProps {
   onSubmitApproval: (id: string, type: 'category' | 'structure') => void;
   onPublish: (entity: MasterDataEntity) => void;
   onUnpublish: (entity: MasterDataEntity) => void;
+  onApproveClick: (entity: MasterDataEntity) => void;
+  onRejectClick: (entity: MasterDataEntity) => void;
 }
 
 export function SetupTab({
@@ -32,7 +35,9 @@ export function SetupTab({
   onDelete,
   onSubmitApproval,
   onPublish,
-  onUnpublish
+  onUnpublish,
+  onApproveClick,
+  onRejectClick
 }: SetupTabProps) {
   const filteredEntities = entities.filter(e => {
     const matchesSearch = e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -166,44 +171,31 @@ export function SetupTab({
                     </td>
                   )}
                   <td className="px-6 py-4 text-right">
-                     <div className="flex items-center justify-end gap-1.5 opacity-60 group-hover:opacity-100 transition-all">
-                        {entity.lifecycleStatus === 'draft' && (
-                          <button
-                            onClick={() => onSubmitApproval(entity.id, 'category')}
-                            className="p-1.5 text-blue-600 bg-blue-50 rounded hover:bg-blue-100"
-                            title="Trình phê duyệt"
-                          >
-                            <Send className="w-4 h-4" />
-                          </button>
-                        )}
-                        {entity.lifecycleStatus === 'active' && (
-                          <>
-                            {userRole === 'leader' && (
-                              !isPublished ? (
-                                <button
-                                  onClick={() => onPublish(entity)}
-                                  className="px-2 py-1 text-xs text-green-600 bg-green-50 rounded hover:bg-green-100 flex items-center gap-1"
-                                  title="Công khai"
-                                >
-                                  <Share2 className="w-3 h-3" />
-                                  Công khai
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => onUnpublish(entity)}
-                                  className="px-2 py-1 text-xs text-red-600 bg-red-50 rounded hover:bg-red-100 flex items-center gap-1"
-                                  title="Hủy công khai"
-                                >
-                                  <XCircle className="w-3 h-3" />
-                                  Hủy
-                                </button>
-                              )
-                            )}
-                          </>
-                        )}
-                        <button onClick={() => onEdit(entity)} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl" title="Sửa"><Edit className="w-4 h-4"/></button>
-                        <button onClick={() => onDelete(entity.id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl" title="Xóa"><Trash2 className="w-4 h-4"/></button>
-                     </div>
+                      <div className="flex items-center justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-all">
+                        <ActionIconButton 
+                          action="submit" 
+                          onClick={() => onSubmitApproval(entity.id, 'category')} 
+                          disabled={entity.lifecycleStatus === 'active' || entity.lifecycleStatus === 'pending_approval'}
+                          title={entity.lifecycleStatus === 'active' ? "Đã duyệt" : (entity.lifecycleStatus === 'pending_approval' ? "Đang chờ duyệt" : "Trình duyệt")} 
+                        />
+                        <ActionIconButton action="approve" onClick={() => onApproveClick(entity)} title="Phê duyệt" />
+                        <ActionIconButton action="reject" onClick={() => onRejectClick(entity)} title="Từ chối duyệt" />
+                        
+                        <div className="w-px h-4 bg-slate-200 mx-1"></div>
+                        
+                        <ActionIconButton 
+                          action="edit" 
+                          onClick={() => onEdit(entity)} 
+                          disabled={entity.lifecycleStatus === 'active' || entity.lifecycleStatus === 'pending_approval'}
+                          title="Sửa" 
+                        />
+                        <ActionIconButton 
+                          action="delete" 
+                          onClick={() => onDelete(entity.id)} 
+                          disabled={entity.lifecycleStatus === 'active' || entity.lifecycleStatus === 'pending_approval'}
+                          title="Xóa" 
+                        />
+                      </div>
                   </td>
                 </tr>
               );

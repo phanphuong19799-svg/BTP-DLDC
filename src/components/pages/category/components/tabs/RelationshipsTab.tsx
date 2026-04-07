@@ -36,6 +36,7 @@ export function RelationshipsTab({
     relationshipType: '1-n',
     sourceKey: '',
     targetKey: '',
+    targetDisplayField: '',
     mappingTable: '',
     status: 'active'
   });
@@ -51,15 +52,14 @@ export function RelationshipsTab({
       return;
     }
 
-    // Validate based on relation type
     if (formData.relationshipType === 'n-n') {
       if (!formData.mappingTable || !formData.sourceKey || !formData.targetKey) {
         alert('Quan hệ n-n cần có đầy đủ: Bảng liên kết, Khóa nguồn, Khóa đích');
         return;
       }
     } else {
-      if (!formData.sourceKey || !formData.targetKey) {
-        alert('Quan hệ 1-n, n-1 hoặc 1-1 cần có đầy đủ: Khóa ngoại, Khóa tham chiếu');
+      if (!formData.sourceKey || !formData.targetKey || !formData.targetDisplayField) {
+        alert('Cần khai báo đầy đủ: Khóa ngoại, Khóa tham chiếu và Trường hiển thị thông tin');
         return;
       }
     }
@@ -92,6 +92,7 @@ export function RelationshipsTab({
         relationshipType: formData.relationshipType!,
         sourceKey: formData.sourceKey,
         targetKey: formData.targetKey,
+        targetDisplayField: formData.targetDisplayField,
         mappingTable: formData.mappingTable,
         status: formData.status as RelationshipStatus,
         createdDate: dateStr,
@@ -124,6 +125,7 @@ export function RelationshipsTab({
       relationshipType: '1-n',
       sourceKey: '',
       targetKey: '',
+      targetDisplayField: '',
       mappingTable: '',
       status: 'active'
     });
@@ -222,6 +224,11 @@ export function RelationshipsTab({
                             <div className="text-slate-500">
                               → {relationship.targetKey}
                             </div>
+                            {relationship.targetDisplayField && (
+                              <div className="text-emerald-600 mt-1 font-medium bg-emerald-50 inline-block px-1.5 py-0.5 rounded">
+                                Lấy: {relationship.targetDisplayField}
+                              </div>
+                            )}
                           </div>
                         )}
                       </td>
@@ -449,6 +456,22 @@ export function RelationshipsTab({
                         />
                         <p className="text-[11px] text-slate-500 mt-1">Trường nằm trong Danh mục Đích</p>
                       </div>
+                    </div>
+                    
+                    <div className="pt-2 border-t border-blue-100 mt-2">
+                       <label className="block text-[13px] font-semibold text-emerald-700 mb-1.5">
+                         Trường lấy dữ liệu (Lookup Display Field) <span className="text-red-600">*</span>
+                       </label>
+                       <input
+                         type="text"
+                         value={formData.targetDisplayField || ''}
+                         onChange={(e: any) => setFormData({ ...formData, targetDisplayField: e.target.value })}
+                         placeholder="VD: authority_name"
+                         className="w-full px-4 py-2 border border-emerald-200 bg-emerald-50/50 rounded-lg text-[14px] focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+                       />
+                       <p className="text-[11px] text-slate-500 mt-1">
+                         Là trường thông tin (VD: <b>Tên tổ chức</b>) nằm trong Danh mục Đích sẽ được kéo sang và hiển thị tại Danh mục Nguồn thay cho chuỗi mã khóa ngoại vô nghĩa.
+                       </p>
                     </div>
                   </div>
                 )}

@@ -341,11 +341,6 @@ const menuItems: MenuItem[] = [
     color: "text-purple-600",
     subItems: [
       {
-        id: "processing-rule-setup",
-        label: "Thiết lập quy tắc xử lý dữ liệu",
-        icon: Settings,
-      },
-      {
         id: "processing-internal",
         label: "CSDL Trong ngành",
         icon: Building2,
@@ -837,11 +832,10 @@ export function Sidebar({
                       onNavigate(item.id);
                     }
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                    isActive
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${isActive
                       ? "bg-blue-50 text-blue-700 shadow-sm"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
+                    }`}
                 >
                   <Icon
                     className={`w-5 h-5 flex-shrink-0 ${isActive ? item.color : ""}`}
@@ -885,13 +879,12 @@ export function Sidebar({
                                 onNavigate(subItem.id);
                               }
                             }}
-                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm ${
-                              isGroupHeader
+                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm ${isGroupHeader
                                 ? "bg-slate-100 text-slate-700 font-medium hover:bg-slate-200"
                                 : isSubActive
                                   ? "bg-blue-50 text-blue-700"
                                   : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                            }`}
+                              }`}
                           >
                             {SubIcon && <SubIcon className="w-4 h-4 flex-shrink-0" />}
                             <span
@@ -924,7 +917,7 @@ export function Sidebar({
                                   const hasLevel4Items =
                                     nestedItem.subItems &&
                                     nestedItem.subItems.length >
-                                      0;
+                                    0;
 
                                   return (
                                     <div key={nestedItem.id}>
@@ -940,11 +933,10 @@ export function Sidebar({
                                             );
                                           }
                                         }}
-                                        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all ${
-                                          isNestedActive
+                                        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all ${isNestedActive
                                             ? "bg-blue-50 text-blue-700"
                                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                        }`}
+                                          }`}
                                       >
                                         {NestedIcon && (
                                           <NestedIcon className="w-3 h-3 flex-shrink-0" />
@@ -982,11 +974,10 @@ export function Sidebar({
                                                         level4Item.id,
                                                       )
                                                     }
-                                                    className={`w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all ${
-                                                      isLevel4Active
+                                                    className={`w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all ${isLevel4Active
                                                         ? "bg-blue-50 text-blue-700"
                                                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                                    }`}
+                                                      }`}
                                                   >
                                                     {Level4Icon && <Level4Icon className="w-3 h-3 flex-shrink-0" />}
                                                     <span className="text-xs truncate">
