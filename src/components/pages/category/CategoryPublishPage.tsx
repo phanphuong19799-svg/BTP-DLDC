@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { Globe, Share2, Eye, Download, RefreshCw, CheckCircle } from 'lucide-react';
 
 const mockPublished = [
@@ -84,8 +84,9 @@ export function CategoryPublishPage() {
 
       <div className="bg-white border border-slate-200 rounded-lg p-4">
         <select
+          title="Trạng thái"
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
           className="px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="all">Tất cả trạng thái</option>

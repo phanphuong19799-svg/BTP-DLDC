@@ -96,7 +96,7 @@ export function NotificationBrowser() {
 
   const filteredNotifications = notifications.filter(n => {
     const matchSearch = n.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       n.content.toLowerCase().includes(searchTerm.toLowerCase());
+      n.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchFilter = filterStatus === 'all' || n.status === filterStatus;
     return matchSearch && matchFilter;
   });
@@ -230,88 +230,88 @@ export function NotificationBrowser() {
               {filteredNotifications.map((notification) => {
                 const readPercentage = Math.round((notification.readCount / notification.totalRecipients) * 100);
                 const readColor = readPercentage >= 75 ? 'text-green-600' : readPercentage >= 50 ? 'text-blue-600' : readPercentage >= 25 ? 'text-orange-600' : 'text-red-600';
-                
+
                 return (
-                <tr key={notification.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl flex-shrink-0">{notification.icon}</span>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-slate-900 text-sm truncate">{notification.title}</div>
-                        <div className="text-slate-500 text-xs mt-0.5">{notification.id}</div>
+                  <tr key={notification.id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl flex-shrink-0">{notification.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-slate-900 text-sm truncate">{notification.title}</div>
+                          <div className="text-slate-500 text-xs mt-0.5">{notification.id}</div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-slate-600 text-sm line-clamp-2">
-                      {notification.content}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div>
-                      <div className="text-slate-900 text-sm">{notification.sender}</div>
-                      <div className="text-slate-500 text-xs mt-0.5">{notification.senderRole}</div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-slate-700 text-sm">
-                      <div>{notification.target}</div>
-                      <div className="text-xs text-slate-500 mt-0.5">({notification.targetCount} người)</div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    {getStatusBadge(notification.status)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-slate-700 text-sm">
-                      {notification.status === 'sent' && notification.sentTime}
-                      {notification.status === 'scheduled' && notification.scheduledTime}
-                      {notification.status === 'draft' && <span className="text-slate-400">Chưa có</span>}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-sm">
-                      <div className={readColor}>
-                        {notification.readCount}/{notification.totalRecipients}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-slate-600 text-sm line-clamp-2">
+                        {notification.content}
                       </div>
-                      <div className={`text-xs mt-0.5 ${readColor}`}>
-                        ({readPercentage}%)
+                    </td>
+                    <td className="px-4 py-3">
+                      <div>
+                        <div className="text-slate-900 text-sm">{notification.sender}</div>
+                        <div className="text-slate-500 text-xs mt-0.5">{notification.senderRole}</div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-slate-600 text-sm line-clamp-2">
-                      {notification.notes || <span className="text-slate-400">-</span>}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Xem chi tiết"
-                        onClick={() => {
-                          setSelectedNotification(notification);
-                          setShowViewModal(true);
-                        }}
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button
-                        className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
-                        title="Chỉnh sửa"
-                        onClick={() => {
-                          setSelectedNotification(notification);
-                          setShowEditModal(true);
-                        }}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-slate-700 text-sm">
+                        <div>{notification.target}</div>
+                        <div className="text-xs text-slate-500 mt-0.5">({notification.targetCount} người)</div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      {getStatusBadge(notification.status)}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-slate-700 text-sm">
+                        {notification.status === 'sent' && notification.sentTime}
+                        {notification.status === 'scheduled' && notification.scheduledTime}
+                        {notification.status === 'draft' && <span className="text-slate-400">Chưa có</span>}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-sm">
+                        <div className={readColor}>
+                          {notification.readCount}/{notification.totalRecipients}
+                        </div>
+                        <div className={`text-xs mt-0.5 ${readColor}`}>
+                          ({readPercentage}%)
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-slate-600 text-sm line-clamp-2">
+                        {notification.notes || <span className="text-slate-400">-</span>}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Xem chi tiết"
+                          onClick={() => {
+                            setSelectedNotification(notification);
+                            setShowViewModal(true);
+                          }}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                          title="Chỉnh sửa"
+                          onClick={() => {
+                            setSelectedNotification(notification);
+                            setShowEditModal(true);
+                          }}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
@@ -426,7 +426,7 @@ export function NotificationBrowser() {
                 Hủy
               </button>
               <button className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors">
-                Lưu nháp
+                Lưu
               </button>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 Gửi thông báo
@@ -546,7 +546,7 @@ export function NotificationBrowser() {
                 Hủy
               </button>
               <button className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors">
-                Lưu nháp
+                Lưu
               </button>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 Gửi thông báo
@@ -666,7 +666,7 @@ export function NotificationBrowser() {
                 Hủy
               </button>
               <button className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors">
-                Lưu nháp
+                Lưu
               </button>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 Gửi thông báo

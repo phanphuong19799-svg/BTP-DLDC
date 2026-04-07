@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { Search, Filter, Download, FileText } from 'lucide-react';
 
 // Mock data for demonstration
@@ -112,9 +112,10 @@ export function CategoryReportPage() {
                   <label className="block text-sm text-slate-700 mb-2">Từ khóa</label>
                   <input
                     type="text"
+                    title="Từ khóa"
                     placeholder="Nhập từ khóa..."
                     value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
@@ -122,8 +123,9 @@ export function CategoryReportPage() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-2">Chủ đề</label>
                   <select
+                    title="Chủ đề"
                     value={filterCategory}
-                    onChange={(e) => setFilterCategory(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterCategory(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="all">Tất cả</option>
@@ -137,8 +139,9 @@ export function CategoryReportPage() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-2">Hiệu lực</label>
                   <select
+                    title="Hiệu lực"
                     value={validityFilter}
-                    onChange={(e) => setValidityFilter(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setValidityFilter(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="all">Tất cả</option>
@@ -152,8 +155,9 @@ export function CategoryReportPage() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-2">Trạng thái công bố</label>
                   <select
+                    title="Trạng thái công bố"
                     value={publicStatusFilter}
-                    onChange={(e) => setPublicStatusFilter(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setPublicStatusFilter(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="all">Tất cả</option>
@@ -165,8 +169,9 @@ export function CategoryReportPage() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-2">Trạng thái phê duyệt</label>
                   <select
+                    title="Trạng thái phê duyệt"
                     value={approvalFilter}
-                    onChange={(e) => setApprovalFilter(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setApprovalFilter(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="all">Tất cả</option>

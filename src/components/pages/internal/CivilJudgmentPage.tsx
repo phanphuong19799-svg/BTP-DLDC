@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, FileText, Gavel, User, DollarSign, Shield, Search as SearchIcon, FileCheck, Receipt, Package, Scale, Megaphone, MessageSquare, BookOpen } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -80,6 +81,11 @@ export function CivilJudgmentPage({ mode = 'thu thập', context = 'thu thập' 
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL thi hành án dân sự" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Yêu cầu thi hành án của cá nhân, cơ quan, tổ chức', category: 'CSDL thi hành án dân sự', todayCount: 20000, errorCount: 30 },

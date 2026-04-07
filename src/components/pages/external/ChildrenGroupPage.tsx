@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Download, Baby } from 'lucide-react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { DataDetailModal } from '../../DataDetailModal';
 
 interface StatCard {
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface ChildrenGroupPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function ChildrenGroupPage({ mode = 'thu thập' }: ChildrenGroupPageProps) {
+export function ChildrenGroupPage({ mode = 'thu thập', context = 'thu thập' }: ChildrenGroupPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -63,6 +65,10 @@ export function ChildrenGroupPage({ mode = 'thu thập' }: ChildrenGroupPageProp
   };
 
   const stats = generateData();
+
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="Trẻ em" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Trẻ em', category: 'Trẻ em', todayCount: 267000, errorCount: 38 },
@@ -130,33 +136,13 @@ export function ChildrenGroupPage({ mode = 'thu thập' }: ChildrenGroupPageProp
                   <div className="text-xs text-slate-500 mb-2">
                     Số liệu đã thu thập
                   </div>
-                  {/* Number display - different format based on mode */}
-                  {mode === 'xử lý' ? (
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-base font-semibold text-slate-700">
-                          {stat.totalCollected.toLocaleString()}
-                        </span>
-                        <span className="text-slate-400">/</span>
-                        <span className="text-base font-semibold text-slate-700">
-                          {stat.totalProcessed.toLocaleString()}
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          ({stat.processingRate}%)
-                        </span>
-                      </div>
-                      <div className={`text-xs font-medium ${stat.change.startsWith('-') ? 'text-red-500' : 'text-green-500'}`}>
-                        {stat.change.startsWith('-') ? '▼' : '▲'} {stat.change}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-semibold text-slate-700">{stat.value}</span>
-                      <span className={`text-xs font-medium ${stat.change.startsWith('-') ? 'text-red-500' : 'text-green-500'}`}>
-                        {stat.change.startsWith('-') ? '▼' : '▲'} {stat.change}
-                      </span>
-                    </div>
-                  )}
+                  {/* Number display */}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-semibold text-slate-700">{stat.value}</span>
+                    <span className={`text-xs font-medium ${stat.change.startsWith('-') ? 'text-red-500' : 'text-green-500'}`}>
+                      {stat.change.startsWith('-') ? '▼' : '▲'} {stat.change}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

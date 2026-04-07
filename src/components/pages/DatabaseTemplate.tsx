@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from './processing/GenericProcessingPage';
 import { Calendar, Download, FileUser, UserCheck, Users, Baby, Heart, UserX, UsersRound, FileEdit, FileCheck, FileX } from 'lucide-react';
 import { DataDetailModal } from '../DataDetailModal';
 
@@ -78,6 +79,11 @@ export function DatabaseTemplate({
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName={categoryName} datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Hồ sơ khai sinh', category: categoryName, todayCount: 20000, errorCount: 30 },

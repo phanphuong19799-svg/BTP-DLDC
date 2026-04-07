@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, FileText, Shield, UserCheck, Package } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -68,6 +69,11 @@ export function SecurityMeasuresPage({ mode = 'thu thập', context = 'thu thậ
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL về biện pháp BD" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Thông tin chung (Bao gồm người đăng ký và Hợp đồng bảo đảm)', category: 'CSDL về biện pháp BD', todayCount: 20000, errorCount: 30 },

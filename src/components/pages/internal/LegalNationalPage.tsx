@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, FileText, BookOpen, GitBranch, FileCheck, FolderTree } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface LegalNationalPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function LegalNationalPage({ mode = 'thu thập' }: LegalNationalPageProps) {
+export function LegalNationalPage({ mode = 'thu thập', context = 'thu thập' }: LegalNationalPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -67,6 +69,11 @@ export function LegalNationalPage({ mode = 'thu thập' }: LegalNationalPageProp
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL quốc gia về PL" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Văn bản quy phạm pháp luật', category: 'CSDL quốc gia về PL', todayCount: 20000, errorCount: 30 },

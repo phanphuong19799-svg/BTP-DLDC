@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Search, Filter, Download, FileText, BarChart3, PieChart, TrendingUp, Calendar, Building2, Tag, FileType, Shield, Eye, MousePointer } from 'lucide-react';
+import { useState, ChangeEvent } from 'react';
+import { Search, Filter, Download, FileText, BarChart3, PieChart, TrendingUp, Calendar, Building2, Tag, FileType, Shield, Eye, MousePointer, RefreshCw, Database } from 'lucide-react';
 import { BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Mock data for demonstration
@@ -199,9 +199,10 @@ export function CategoryStatisticsReportPage() {
                     <label className="block text-sm text-slate-700 mb-2">Từ khóa</label>
                     <input
                       type="text"
+                      title="Từ khóa"
                       placeholder="Nhập từ khóa..."
                       value={searchKeyword}
-                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                   </div>
@@ -209,8 +210,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Chủ đề</label>
                     <select
+                      title="Chủ đề"
                       value={filterCategory}
-                      onChange={(e) => setFilterCategory(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterCategory(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="all">Tất cả</option>
@@ -224,8 +226,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Cơ quan công bố</label>
                     <select
+                      title="Cơ quan công bố"
                       value={filterAgency}
-                      onChange={(e) => setFilterAgency(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterAgency(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="all">Tất cả</option>
@@ -241,8 +244,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Định dạng</label>
                     <select
+                      title="Định dạng"
                       value={filterFormat}
-                      onChange={(e) => setFilterFormat(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterFormat(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="all">Tất cả</option>
@@ -256,8 +260,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Giấy phép</label>
                     <select
+                      title="Giấy phép"
                       value={filterLicense}
-                      onChange={(e) => setFilterLicense(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterLicense(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="all">Tất cả</option>
@@ -373,8 +378,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Nhóm theo</label>
                     <select
+                      title="Nhóm theo"
                       value={statsGroupBy}
-                      onChange={(e) => setStatsGroupBy(e.target.value as any)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatsGroupBy(e.target.value as any)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="category">Theo chủ đề</option>
@@ -387,8 +393,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Khoảng thời gian</label>
                     <select
+                      title="Khoảng thời gian"
                       value={statsTimeRange}
-                      onChange={(e) => setStatsTimeRange(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatsTimeRange(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="2024">Năm 2024</option>
@@ -405,6 +412,7 @@ export function CategoryStatisticsReportPage() {
                     </button>
                     <button 
                       onClick={handleExportExcel}
+                      title="Xuất Excel"
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                     >
                       <Download className="w-4 h-4" />
@@ -491,7 +499,7 @@ export function CategoryStatisticsReportPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
-                      {(statsGroupBy === 'category' ? statsByCategory : statsByAgency).map((item, index) => (
+                      {(statsGroupBy === 'category' ? statsByCategory : statsByAgency).map((item: any, index) => (
                         <tr key={index} className="hover:bg-slate-50">
                           <td className="px-4 py-3 text-sm text-slate-900">{item.name}</td>
                           <td className="px-4 py-3 text-sm text-slate-900 text-right">
@@ -523,8 +531,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Phân loại theo</label>
                     <select
+                      title="Phân loại theo"
                       value={classifyBy}
-                      onChange={(e) => setClassifyBy(e.target.value as any)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setClassifyBy(e.target.value as any)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="source">Theo nguồn cung cấp</option>
@@ -574,7 +583,7 @@ export function CategoryStatisticsReportPage() {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                        label={({ name, percent }: { name: string, percent: number }) => `${name} (${(percent * 100).toFixed(0)}%)`}
                         outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
@@ -660,8 +669,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Khoảng thời gian</label>
                     <select
+                      title="Khoảng thời gian"
                       value={accessTimeRange}
-                      onChange={(e) => setAccessTimeRange(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setAccessTimeRange(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="7days">7 ngày gần nhất</option>
@@ -675,8 +685,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Chỉ số</label>
                     <select
+                      title="Chỉ số"
                       value={accessMetric}
-                      onChange={(e) => setAccessMetric(e.target.value as any)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setAccessMetric(e.target.value as any)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="both">Lượt xem và tải</option>
@@ -693,6 +704,7 @@ export function CategoryStatisticsReportPage() {
                     <button 
                       onClick={handleExportPDF}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                      title="Xuất PDF"
                     >
                       <FileText className="w-4 h-4" />
                     </button>

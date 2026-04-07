@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { BarChart3, TrendingUp, Calendar, Download, RefreshCw, Database } from 'lucide-react';
+import { useState, ChangeEvent } from 'react';
+import { BarChart3, TrendingUp, Calendar, Download, RefreshCw, Database, FileText } from 'lucide-react';
 
 const mockStatistics = [
   { id: '1', period: 'Tháng 12/2024', totalCategories: 24, newCategories: 2, totalRecords: 15234, updates: 45 },
@@ -18,6 +18,10 @@ export function CategoryStatisticsPage() {
     return (((current - previous) / previous) * 100).toFixed(1);
   };
 
+  const handleExportPDF = () => {
+    console.log('Exporting PDF...');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -25,10 +29,19 @@ export function CategoryStatisticsPage() {
           <h1 className="text-slate-900">Thu thập số liệu thống kê danh mục</h1>
           <p className="text-sm text-slate-600 mt-1">Theo dõi và phân tích số liệu thống kê về các danh mục</p>
         </div>
-        <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
-          <RefreshCw className="w-4 h-4" />
-          Làm mới dữ liệu
-        </button>
+        <div className="flex items-center gap-2">
+          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+            <RefreshCw className="w-4 h-4" />
+            Làm mới dữ liệu
+          </button>
+          <button 
+            onClick={handleExportPDF}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            title="Xuất PDF"
+          >
+            <FileText className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-lg p-4">
@@ -36,8 +49,9 @@ export function CategoryStatisticsPage() {
           <Calendar className="w-5 h-5 text-slate-600" />
           <label className="text-sm text-slate-700">Thời kỳ:</label>
           <select
+            title="Thời kỳ"
             value={selectedPeriod}
-            onChange={(e) => setSelectedPeriod(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedPeriod(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="week">Theo tuần</option>
@@ -46,8 +60,9 @@ export function CategoryStatisticsPage() {
             <option value="year">Theo năm</option>
           </select>
           <select
+            title="Năm"
             value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedYear(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="2024">Năm 2024</option>
@@ -182,7 +197,7 @@ export function CategoryStatisticsPage() {
                   <span className="text-slate-900">{item.records.toLocaleString()} bản ghi</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
-                  <div className="bg-indigo-600 h-2 rounded-full" style={{ width: `${item.percentage}%` }}></div>
+                  <div className={`bg-indigo-600 h-2 rounded-full w-[${item.percentage}%]`} role="progressbar" aria-valuenow={item.percentage} aria-valuemin={0} aria-valuemax={100} title={`Tiến độ ${item.percentage}%`}></div>
                 </div>
               </div>
             ))}
@@ -199,7 +214,7 @@ export function CategoryStatisticsPage() {
                   <span className="text-slate-600">{week}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-32 bg-slate-200 rounded-full h-2">
-                      <div className="bg-indigo-600 h-2 rounded-full" style={{ width: `${percentage}%` }}></div>
+                      <div className={`bg-indigo-600 h-2 rounded-full w-[${percentage}%]`} role="progressbar" aria-valuenow={percentage} aria-valuemin={0} aria-valuemax={100} title={`Tiến độ ${percentage}%`}></div>
                     </div>
                     <span className="text-slate-900 w-12 text-right">{percentage}%</span>
                   </div>

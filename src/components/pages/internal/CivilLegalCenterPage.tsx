@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, FileDown, FileUp } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface CivilLegalCenterPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function CivilLegalCenterPage({ mode = 'thu thập' }: CivilLegalCenterPageProps) {
+export function CivilLegalCenterPage({ mode = 'thu thập', context = 'thu thập' }: CivilLegalCenterPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -64,6 +66,11 @@ export function CivilLegalCenterPage({ mode = 'thu thập' }: CivilLegalCenterPa
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL TT Tư Pháp dân sự" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Hồ sơ ủy thác tư pháp đến', category: 'CSDL TT Tư Pháp dân sự', todayCount: 20000, errorCount: 30 },

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, Building2, FileSignature, FileText, Home, GitBranch, User } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface CivilLegalInfoPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function CivilLegalInfoPage({ mode = 'thu thập' }: CivilLegalInfoPageProps) {
+export function CivilLegalInfoPage({ mode = 'thu thập', context = 'thu thập' }: CivilLegalInfoPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -68,6 +70,11 @@ export function CivilLegalInfoPage({ mode = 'thu thập' }: CivilLegalInfoPagePr
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="HTTT TTTG pháp lý dân sự" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Tổ chức thực hiện trợ giúp pháp lý', category: 'HT TTTG pháp lý dân sự', todayCount: 20000, errorCount: 30 },

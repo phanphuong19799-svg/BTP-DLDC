@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import * as React from 'react';
+import { useState, ChangeEvent } from 'react';
 import { 
   Settings, 
   CheckCircle2, 
@@ -530,6 +531,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
+            title="Danh sách danh mục"
           >
             <List className="w-4 h-4" />
             Danh sách
@@ -541,6 +543,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
+            title="Phê duyệt danh mục"
           >
             <CheckCircle2 className="w-4 h-4" />
             Phê duyệt
@@ -552,6 +555,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
+            title="Thống kê danh mục"
           >
             <TrendingUp className="w-4 h-4" />
             Thu thập số liệu thống kê
@@ -563,6 +567,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
+            title="Lịch sử cập nhật"
           >
             <Clock className="w-4 h-4" />
             Lịch sử cập nhật
@@ -580,17 +585,19 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
+                      title="Tìm kiếm danh mục"
                       placeholder="Tìm kiếm theo tên, mã danh mục..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div className="relative">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
+                      title="Lọc theo loại"
                       value={filterType}
-                      onChange={(e) => setFilterType(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterType(e.target.value)}
                       className="pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                     >
                       <option value="all">Tất cả loại</option>
@@ -602,8 +609,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <div className="relative">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
+                      title="Lọc theo trạng thái"
                       value={filterStatus}
-                      onChange={(e) => setFilterStatus(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
                       className="pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                     >
                       <option value="all">Tất cả trạng thái</option>
@@ -613,6 +621,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   </div>
                   <button
                     onClick={() => setShowImportModal(true)}
+                    title="Nhập từ Excel"
                     className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
                   >
                     <Upload className="w-4 h-4" />
@@ -620,6 +629,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   </button>
                   <button
                     onClick={() => setShowAddModal(true)}
+                    title="Thêm danh mục mới"
                     className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
                   >
                     <Plus className="w-4 h-4" />
@@ -689,7 +699,8 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                                     name: category.name,
                                     type: category.type,
                                     status: category.status,
-                                    description: category.description
+                                    description: category.description,
+                                    approver: ''
                                   });
                                   setShowEditModal(true);
                                 }}
@@ -804,17 +815,19 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
+                      title="Tìm kiếm bản ghi phê duyệt"
                       placeholder="Tìm kiếm theo mã, tên bản ghi..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div className="relative">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
+                      title="Lọc trạng thái phê duyệt"
                       value={approvalStatusFilter}
-                      onChange={(e) => setApprovalStatusFilter(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setApprovalStatusFilter(e.target.value)}
                       className="pl-10 pr-8 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                     >
                       <option value="all">Tất cả trạng thái</option>
@@ -835,6 +848,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                         <th className="px-4 py-3 text-left">
                           <input
                             type="checkbox"
+                            title="Chọn tất cả"
                             checked={selectedApprovalIds.length === filteredApprovalRequests.filter(r => r.status === 'pending').length && filteredApprovalRequests.filter(r => r.status === 'pending').length > 0}
                             onChange={toggleSelectAllApprovals}
                             className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
@@ -858,6 +872,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                             {request.status === 'pending' && (
                               <input
                                 type="checkbox"
+                                title="Chọn bản ghi"
                                 checked={selectedApprovalIds.includes(request.id)}
                                 onChange={() => toggleSelectApproval(request.id)}
                                 className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
@@ -942,6 +957,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <label className="block text-sm text-slate-700 mb-2">Từ ngày</label>
                     <input
                       type="date"
+                      title="Chọn từ ngày"
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
@@ -949,12 +965,13 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <label className="block text-sm text-slate-700 mb-2">Đến ngày</label>
                     <input
                       type="date"
+                      title="Chọn đến ngày"
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Loại thống kê</label>
-                    <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select title="Chọn loại thống kê" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option>Số lượt sử dụng</option>
                       <option>Số lượt xem</option>
                       <option>Số lượt tải</option>
@@ -1037,7 +1054,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <span className="text-sm text-slate-900">524 lượt</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+                      <div className="bg-blue-600 h-2 rounded-full w-full" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" title="Tiến độ 100%"></div>
                     </div>
                   </div>
                   <div>
@@ -1046,7 +1063,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <span className="text-sm text-slate-900">412 lượt</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '78%' }}></div>
+                      <div className="bg-blue-600 h-2 rounded-full w-[78%]" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" title="Tiến độ 78%"></div>
                     </div>
                   </div>
                   <div>
@@ -1055,7 +1072,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <span className="text-sm text-slate-900">356 lượt</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '68%' }}></div>
+                      <div className="bg-blue-600 h-2 rounded-full w-[68%]" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" title="Tiến độ 68%"></div>
                     </div>
                   </div>
                   <div>
@@ -1064,7 +1081,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <span className="text-sm text-slate-900">298 lượt</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '57%' }}></div>
+                      <div className="bg-blue-600 h-2 rounded-full w-[57%]" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" title="Tiến độ 57%"></div>
                     </div>
                   </div>
                   <div>
@@ -1073,7 +1090,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <span className="text-sm text-slate-900">187 lượt</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '36%' }}></div>
+                      <div className="bg-blue-600 h-2 rounded-full w-[36%]" role="progressbar" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100" title="Tiến độ 36%"></div>
                     </div>
                   </div>
                 </div>
@@ -1092,6 +1109,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               <button
                 onClick={() => setShowAddModal(false)}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1129,7 +1147,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
-                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select 
+                    title="Loại danh mục"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
                     <option value="">Chọn loại</option>
                     <option value="standard">Tiêu chuẩn</option>
                     <option value="reference">Tham chiếu</option>
@@ -1138,7 +1159,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 </div>
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
-                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select 
+                    title="Trạng thái"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
                     <option value="active">Hoạt động</option>
                     <option value="inactive">Ngừng hoạt động</option>
                   </select>
@@ -1388,7 +1412,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Phiên bản cũ</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select 
+                  title="Phiên bản cũ"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="v2.0">v2.0 - 20/11/2025</option>
                   <option value="v2.5">v2.5 - 01/12/2025</option>
                   <option value="v3.0">v3.0 - 15/12/2025</option>
@@ -1397,7 +1424,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               </div>
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Phiên bản mới</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select 
+                  title="Phiên bản mới"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="v3.2">v3.2 - 05/01/2026 (Hiện tại)</option>
                   <option value="v3.1">v3.1 - 28/12/2025</option>
                   <option value="v3.0">v3.0 - 15/12/2025</option>
@@ -1431,6 +1461,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   setSelectedCategory(null);
                 }}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1510,6 +1541,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   setSelectedCategory(null);
                 }}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1521,8 +1553,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Mã danh mục *</label>
                   <input
                     type="text"
+                    title="Mã danh mục"
                     value={editedCategoryData.code}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, code: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedCategoryData({ ...editedCategoryData, code: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập mã danh mục"
                   />
@@ -1531,8 +1564,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Tên danh mục *</label>
                   <input
                     type="text"
+                    title="Tên danh mục"
                     value={editedCategoryData.name}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, name: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedCategoryData({ ...editedCategoryData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập tên danh mục"
                   />
@@ -1540,8 +1574,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
                   <select
+                    title="Loại danh mục"
                     value={editedCategoryData.type}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, type: e.target.value as 'standard' | 'reference' | 'system' })}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditedCategoryData({ ...editedCategoryData, type: e.target.value as 'standard' | 'reference' | 'system' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="standard">Tiêu chuẩn</option>
@@ -1552,8 +1587,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
                   <select
+                    title="Trạng thái"
                     value={editedCategoryData.status}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, status: e.target.value as 'active' | 'inactive' })}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditedCategoryData({ ...editedCategoryData, status: e.target.value as 'active' | 'inactive' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="active">Hoạt động</option>
@@ -1563,8 +1599,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div className="col-span-2">
                   <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
                   <textarea
+                    title="Mô tả"
                     value={editedCategoryData.description}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, description: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditedCategoryData({ ...editedCategoryData, description: e.target.value })}
                     rows={3}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập mô tả"
@@ -1576,8 +1613,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <span className="text-slate-500 text-xs ml-1">(Bắt buộc khi gửi phê duyệt)</span>
                   </label>
                   <select
+                    title="Người phê duyệt"
                     value={editedCategoryData.approver}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, approver: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditedCategoryData({ ...editedCategoryData, approver: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Chọn người phê duyệt</option>
@@ -1609,6 +1647,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     setSelectedCategory(null);
                     // Show success message for direct save
                   }}
+                  title="Lưu thay đổi"
                   className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
                 >
                   <Save className="w-4 h-4" />
@@ -1662,8 +1701,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Tên trường *</label>
                   <input
                     type="text"
+                    title="Tên trường"
                     value={newFieldData.name}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, name: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập tên trường"
                   />
@@ -1671,8 +1711,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
                   <select
+                    title="Kiểu dữ liệu"
                     value={newFieldData.dataType}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="TEXT">Text</option>
@@ -1687,8 +1728,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
                   <select
+                    title="Trường bắt buộc"
                     value={newFieldData.required ? 'true' : 'false'}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="true">Có</option>
@@ -1699,8 +1741,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Giá trị mặc định</label>
                   <input
                     type="text"
+                    title="Giá trị mặc định"
                     value={newFieldData.defaultValue || ''}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập giá trị mặc định"
                   />
@@ -1750,8 +1793,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Tên trường *</label>
                   <input
                     type="text"
+                    title="Tên trường"
                     value={newFieldData.name}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       setNewFieldData({ ...newFieldData, name: e.target.value });
                       if (fieldErrors.name) {
                         setFieldErrors({ ...fieldErrors, name: '' });
@@ -1767,8 +1811,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
                   <select
+                    title="Kiểu dữ liệu"
                     value={newFieldData.dataType}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="TEXT">Text</option>
@@ -1785,8 +1830,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Khóa chính</label>
                   <select
+                    title="Khóa chính"
                     value={newFieldData.isPrimaryKey ? 'true' : 'false'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const isPrimary = e.target.value === 'true';
                       setNewFieldData({ ...newFieldData, isPrimaryKey: isPrimary });
                     }}
@@ -1799,8 +1845,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
                   <select
+                    title="Trường bắt buộc"
                     value={newFieldData.required ? 'true' : 'false'}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="true">Có</option>
@@ -1811,8 +1858,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Độ dài tối đa</label>
                   <input
                     type="number"
+                    title="Độ dài tối đa"
                     value={newFieldData.maxLength || ''}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập độ dài tối đa"
                   />
@@ -1823,8 +1871,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <label className="block text-sm text-slate-700 mb-1">Giá trị mặc định</label>
                 <input
                   type="text"
+                  title="Giá trị mặc định"
                   value={newFieldData.defaultValue || ''}
-                  onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập giá trị mặc định"
                 />
@@ -1835,8 +1884,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div className="mb-3">
                   <label className="block text-sm text-slate-700 mb-1">Khóa ngoại</label>
                   <select
+                    title="Khóa ngoại"
                     value={newFieldData.isForeignKey ? 'true' : 'false'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const isForeign = e.target.value === 'true';
                       setNewFieldData({ ...newFieldData, isForeignKey: isForeign });
                     }}
@@ -1852,8 +1902,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <div>
                       <label className="block text-sm text-slate-700 mb-1">Bảng tham chiếu *</label>
                       <select
+                        title="Bảng tham chiếu"
                         value={newFieldData.referenceTable || ''}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                           setNewFieldData({ ...newFieldData, referenceTable: e.target.value });
                           if (fieldErrors.referenceTable) {
                             setFieldErrors({ ...fieldErrors, referenceTable: '' });
@@ -1873,8 +1924,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <div>
                       <label className="block text-sm text-slate-700 mb-1">Trường tham chiếu *</label>
                       <select
+                        title="Trường tham chiếu"
                         value={newFieldData.referenceField || ''}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                           setNewFieldData({ ...newFieldData, referenceField: e.target.value });
                           if (fieldErrors.referenceField) {
                             setFieldErrors({ ...fieldErrors, referenceField: '' });
@@ -1899,8 +1951,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
                 <textarea
                   rows={3}
+                  title="Mô tả"
                   value={newFieldData.description || ''}
-                  onChange={(e) => setNewFieldData({ ...newFieldData, description: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNewFieldData({ ...newFieldData, description: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập mô tả về trường..."
                 />
@@ -2286,8 +2339,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   Nội dung phê duyệt <span className="text-slate-400">(Không bắt buộc)</span>
                 </label>
                 <textarea
+                  title="Ghi chú phê duyệt"
                   value={approvalComment}
-                  onChange={(e) => setApprovalComment(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setApprovalComment(e.target.value)}
                   rows={4}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập nội dung phê duyệt, ghi chú hoặc ý kiến (nếu có)..."
@@ -2350,8 +2404,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   Lý do từ chối <span className="text-red-600">*</span>
                 </label>
                 <textarea
+                  title="Lý do từ chối"
                   value={approvalComment}
-                  onChange={(e) => setApprovalComment(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setApprovalComment(e.target.value)}
                   rows={4}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập lý do từ chối yêu cầu thay đổi..."
@@ -2407,6 +2462,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
             </div>
             <button
               onClick={() => setShowSuccessNotification(false)}
+              title="Đóng thông báo"
               className="text-green-600 hover:text-green-800"
             >
               <X className="w-4 h-4" />

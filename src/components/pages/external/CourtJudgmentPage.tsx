@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Download, Scale } from 'lucide-react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { DataDetailModal } from '../../DataDetailModal';
 
 interface StatCard {
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface CourtJudgmentPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function CourtJudgmentPage({ mode = 'thu thập' }: CourtJudgmentPageProps) {
+export function CourtJudgmentPage({ mode = 'thu thập', context = 'thu thập' }: CourtJudgmentPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -63,6 +65,10 @@ export function CourtJudgmentPage({ mode = 'thu thập' }: CourtJudgmentPageProp
   };
 
   const stats = generateData();
+
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL Thông tin Bản án" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Thông tin Bản án, quyết định từ TAND tối cao', category: 'CSDL Thông tin Bản án', todayCount: 398000, errorCount: 45 },

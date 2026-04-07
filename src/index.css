@@ -74,7 +74,7 @@
 
 @layer theme {
   :root, :host {
-    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-sans: Arial, Helvetica, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --color-red-50: oklch(.971 .013 17.38);
     --color-red-100: oklch(.936 .032 17.717);
@@ -286,7 +286,7 @@
     -webkit-text-size-adjust: 100%;
     tab-size: 4;
     line-height: 1.5;
-    font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+    font-family: var(--default-font-family, 'Inter', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
     font-feature-settings: var(--default-font-feature-settings, normal);
     font-variation-settings: var(--default-font-variation-settings, normal);
     -webkit-tap-highlight-color: transparent;
@@ -5473,4 +5473,42 @@ input[type="range"].slider-thumb-blue::-moz-range-progress {
     opacity: var(--tw-enter-opacity, 1);
     transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
   }
+}
+
+/* --- Global Overrides for Typography --- */
+body {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 14px !important;
+  color: #000000 !important;
+}
+
+body * {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+
+/* Yeu cau 10.5pt, chu den, chu thuong, khong boi dam dong bo toan bo he thong */
+table th, table thead th, th.uppercase {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  font-weight: normal !important;
+  font-size: 14px !important;
+  color: #000000 !important;
+}
+
+table td, table tbody td {
+  font-weight: normal !important;
+  font-size: 14px !important;
+  color: #000000 !important;
+}
+
+table td [class*='text-slate-'], table td [class*='text-gray-'] {
+  color: #000000 !important;
+  font-weight: normal !important;
+}
+
+/* Xoa uppercase tren toan bo chu de khong gay kho chiu */
+.uppercase, .tracking-wider {
+  text-transform: none !important;
+  letter-spacing: normal !important;
 }

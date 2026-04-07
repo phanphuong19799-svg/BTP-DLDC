@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, User, Users, FileText, Building2, FolderOpen, Video, MessageSquare, Handshake, UserCheck, Wallet, Target, CheckCircle, Megaphone, Trophy } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface FamilyBasePageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function FamilyBasePage({ mode = 'thu thập' }: FamilyBasePageProps) {
+export function FamilyBasePage({ mode = 'thu thập', context = 'thu thập' }: FamilyBasePageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -78,6 +80,11 @@ export function FamilyBasePage({ mode = 'thu thập' }: FamilyBasePageProps) {
   };
 
   const stats = generateData();
+
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL PB, GĐ và HG cơ sở" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
 
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Báo cáo viên pháp luật', category: 'CSDL PB, GĐ và HG cơ sở', todayCount: 20000, errorCount: 30 },
