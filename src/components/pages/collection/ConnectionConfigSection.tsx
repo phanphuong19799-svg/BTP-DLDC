@@ -1,12 +1,35 @@
 import { Plus, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface ConnectionConfigSectionProps {
   dataClassification?: string;
 }
 
 export function ConnectionConfigSection({ dataClassification }: ConnectionConfigSectionProps) {
+  const [connectionType, setConnectionType] = useState('REST');
+
   return (
     <div className="space-y-5">
+      {/* Phương thức kết nối */}
+      <div>
+        <label htmlFor="conn-type" className="block text-sm text-slate-700 font-medium mb-2">
+          Phương thức kết nối <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="conn-type"
+          title="Phương thức kết nối"
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={connectionType}
+          onChange={(e) => setConnectionType(e.target.value)}
+        >
+          <option value="REST">API RESTful</option>
+          <option value="SOAP">API SOAP</option>
+          <option value="DB">Database (Oracle/Postgres)</option>
+        </select>
+      </div>
+
+      {connectionType === 'REST' && (
+        <div className="space-y-5">
       {/* Endpoint */}
       <div>
         <h3 className="text-sm text-slate-700 mb-3">Cấu hình Endpoint</h3>
@@ -77,7 +100,7 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
             </div>
             <div>
               <label htmlFor="conn-auth" className="block text-sm text-slate-600 mb-1">
-                Authentication
+                Authentication <span className="text-red-500">*</span>
               </label>
               <input
                 id="conn-auth"
@@ -85,6 +108,7 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
                 type="text"
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Bearer token"
+                required
               />
             </div>
           </div>
@@ -273,6 +297,89 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
           />
         </div>
       </div>
+      </div>
+      )}
+
+      {connectionType === 'SOAP' && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-slate-700 mb-3 pb-2 border-b border-slate-200">Cấu hình API SOAP</h3>
+          <div>
+            <label className="block text-sm text-slate-600 mb-1">WSDL URL <span className="text-red-500">*</span></label>
+            <input type="url" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://api.example.com/service?wsdl" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">SOAP Action</label>
+              <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="http://tempuri.org/Action" />
+            </div>
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Loại Auth <span className="text-red-500">*</span></label>
+              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ws-security">WS-Security</option>
+                <option value="basic">Basic Auth</option>
+                <option value="bearer">Bearer Token</option>
+              </select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Username <span className="text-red-500">*</span></label>
+              <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập username" required />
+            </div>
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Password <span className="text-red-500">*</span></label>
+              <input type="password" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập password" required />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm text-slate-600 mb-1">XML Payload</label>
+            <textarea className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} placeholder="<soapenv:Envelope>..." />
+          </div>
+        </div>
+      )}
+
+      {connectionType === 'DB' && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-slate-700 mb-3 pb-2 border-b border-slate-200">Cấu hình Database</h3>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Loại Cơ sở dữ liệu <span className="text-red-500">*</span></label>
+              <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="oracle">Oracle</option>
+                <option value="postgres">PostgreSql</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Host/IP <span className="text-red-500">*</span></label>
+              <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="192.168.1.100" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Port <span className="text-red-500">*</span></label>
+              <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="1521 / 5432" />
+            </div>
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Database Name / SID <span className="text-red-500">*</span></label>
+              <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="ORCL / db_name" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Username <span className="text-red-500">*</span></label>
+              <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập DB Username" required />
+            </div>
+            <div>
+              <label className="block text-sm text-slate-600 mb-1">Password <span className="text-red-500">*</span></label>
+              <input type="password" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập DB Password" required />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm text-slate-600 mb-1">Schema (Optional)</label>
+            <input type="text" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="public / schema_name" />
+          </div>
+        </div>
+      )}
 
       {/* Ánh xạ trường dữ liệu đầu thu thập */}
       <div>
@@ -545,6 +652,16 @@ export function ConnectionConfigSection({ dataClassification }: ConnectionConfig
           </div>
         </div>
       )}
+      {/* Nút kiểm tra kết nối */}
+      <div className="mt-4 pt-4 border-t border-slate-200">
+        <button
+          type="button"
+          onClick={() => alert('Đang kiểm tra kết nối tới Server...\n\n(Mockup: Kết nối thành công 200 OK)')}
+          className="px-4 py-2 bg-slate-100 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium"
+        >
+          Kiểm tra kết nối
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,53 +1,50 @@
-interface ContactInfoSectionProps {
+﻿interface ContactInfoSectionProps {
   isEdit?: boolean;
   defaultValues?: any;
-  unitName?: string;
-  onUnitNameChange?: (name: string) => void;
 }
 
-export function ContactInfoSection({ isEdit = false, defaultValues, unitName, onUnitNameChange }: ContactInfoSectionProps) {
+export function ContactInfoSection({ isEdit = false, defaultValues }: ContactInfoSectionProps) {
   return (
     <div className="space-y-4">
       <div className="text-sm text-slate-600 mb-2">
-        Thông tin đơn vị cung cấp dữ liệu
+        Th├┤ng tin ─æ╞ín vß╗ï cung cß║Ñp dß╗» liß╗çu
       </div>
       
       <div>
         <label htmlFor="contact-unit-name" className="block text-sm text-slate-600 mb-1">
-          Tên đơn vị
+          T├¬n ─æ╞ín vß╗ï
         </label>
         <input
           id="contact-unit-name"
-          title="Tên đơn vị"
+          title="T├¬n ─æ╞ín vß╗ï"
           type="text"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="VD: Cục Hộ tịch, quốc tịch, chứng thực"
-          value={unitName !== undefined ? unitName : defaultValues?.unitName || ''}
-          onChange={(e) => onUnitNameChange?.(e.target.value)}
+          placeholder="VD: Cß╗Ñc Hß╗Ö tß╗ïch, quß╗æc tß╗ïch, chß╗⌐ng thß╗▒c"
+          defaultValue={defaultValues?.unitName}
         />
       </div>
 
       <div>
         <label htmlFor="contact-address" className="block text-sm text-slate-600 mb-1">
-          Địa chỉ
+          ─Éß╗ïa chß╗ë
         </label>
         <input
           id="contact-address"
-          title="Địa chỉ"
+          title="─Éß╗ïa chß╗ë"
           type="text"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Nhập địa chỉ đơn vị"
+          placeholder="Nhß║¡p ─æß╗ïa chß╗ë ─æ╞ín vß╗ï"
           defaultValue={defaultValues?.address}
         />
       </div>
 
       <div>
         <label htmlFor="contact-phone" className="block text-sm text-slate-600 mb-1">
-          Số điện thoại
+          Sß╗æ ─æiß╗çn thoß║íi
         </label>
         <input
           id="contact-phone"
-          title="Số điện thoại"
+          title="Sß╗æ ─æiß╗çn thoß║íi"
           type="tel"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="VD: 024 3733 9999"
@@ -57,11 +54,11 @@ export function ContactInfoSection({ isEdit = false, defaultValues, unitName, on
 
       <div>
         <label htmlFor="contact-email" className="block text-sm text-slate-600 mb-1">
-          Địa chỉ email
+          ─Éß╗ïa chß╗ë email
         </label>
         <input
           id="contact-email"
-          title="Địa chỉ email"
+          title="─Éß╗ïa chß╗ë email"
           type="email"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="example@moj.gov.vn"
@@ -71,35 +68,35 @@ export function ContactInfoSection({ isEdit = false, defaultValues, unitName, on
 
       <div>
         <label htmlFor="technical-contact" className="block text-sm text-slate-600 mb-1">
-          Người đầu mối ký thuật
+          Ng╞░ß╗¥i ─æß║ºu mß╗æi k├╜ thuß║¡t
         </label>
         <input
           id="technical-contact"
-          title="Người đầu mối ký thuật"
+          title="Ng╞░ß╗¥i ─æß║ºu mß╗æi k├╜ thuß║¡t"
           type="text"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Nguyễn Văn A SĐT: 0987654321"
+          placeholder="Nguyß╗àn V─ân A S─ÉT: 0987654321"
           defaultValue={defaultValues?.technicalContact}
         />
       </div>
 
       <div>
         <label htmlFor="contact-note" className="block text-sm text-slate-600 mb-1">
-          Ghi chú
+          Ghi ch├║
         </label>
         <textarea
           id="contact-note"
-          title="Ghi chú"
+          title="Ghi ch├║"
           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows={3}
-          placeholder="Thông tin bổ sung về đơn vị"
+          placeholder="Th├┤ng tin bß╗ò sung vß╗ü ─æ╞ín vß╗ï"
           defaultValue={defaultValues?.note}
         />
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
         <p className="text-xs text-blue-700">
-          <strong>Lưu ý:</strong> Email này sẽ nhận thông báo khi kết nối API thành công hoặc có vấn đề phát sinh.
+          <strong>L╞░u ├╜:</strong> Email n├áy sß║╜ nhß║¡n th├┤ng b├ío khi kß║┐t nß╗æi API th├ánh c├┤ng hoß║╖c c├│ vß║Ñn ─æß╗ü ph├ít sinh.
         </p>
       </div>
     </div>
