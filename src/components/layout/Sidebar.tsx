@@ -76,6 +76,8 @@ import {
 import imgLogo from "figma:asset/0b9fbf72a74cf9ec02b7371d312e91e368f930d8.png";
 import imgImageLogo from "figma:asset/009541fc5d689d29107b655d2b8ecd57f6d4b3ff.png";
 
+import { VersionHistoryModal } from "../modals/VersionHistoryModal";
+
 interface SidebarProps {
   currentPage: string;
   onNavigate: (page: string) => void;
@@ -808,6 +810,7 @@ export function Sidebar({
   const [expandedMenus, setExpandedMenus] = useState<
     Set<string>
   >(new Set());
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
 
   const toggleMenu = (menuId: string) => {
     const newExpanded = new Set(expandedMenus);
@@ -1038,16 +1041,24 @@ export function Sidebar({
 
       {/* Footer */}
       <div className="p-4 border-t border-slate-200">
-        <div className="bg-slate-50 rounded-lg p-3">
+        <button 
+          onClick={() => setShowVersionHistory(true)}
+          className="w-full bg-slate-50 rounded-lg p-3 text-left hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
+        >
           <div className="flex items-center gap-2 mb-2">
             <FileText className="w-4 h-4 text-slate-600" />
-            <span className="text-xs text-slate-600">
+            <span className="text-xs text-slate-600 font-medium">
               Phiên bản
             </span>
           </div>
-          <div className="text-sm text-slate-900">v2.1.0</div>
-        </div>
+          <div className="text-sm font-semibold text-slate-900">v2.1.0</div>
+        </button>
       </div>
+
+      <VersionHistoryModal 
+        isOpen={showVersionHistory}
+        onClose={() => setShowVersionHistory(false)}
+      />
     </aside>
   );
 }
