@@ -184,13 +184,13 @@ export function MasterDataScaleManagementPage() {
 
     if (editingEntity) {
       // Update existing
-      setEntities(entities.map(e => 
-        e.id === editingEntity.id 
-          ? { 
-              ...e, 
-              ...formData as MasterDataEntity,
-              updatedDate: dateStr 
-            }
+      setEntities(entities.map(e =>
+        e.id === editingEntity.id
+          ? {
+            ...e,
+            ...formData as MasterDataEntity,
+            updatedDate: dateStr
+          }
           : e
       ));
     } else {
@@ -241,7 +241,7 @@ export function MasterDataScaleManagementPage() {
 
   const filteredEntities = entities.filter(e => {
     const matchesSearch = e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         e.code.toLowerCase().includes(searchTerm.toLowerCase());
+      e.code.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterStatus === 'all' || e.lifecycleStatus === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -251,68 +251,62 @@ export function MasterDataScaleManagementPage() {
       <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
         {/* Tabs */}
         <div className="flex border-b border-slate-200 overflow-x-auto">
-          <button
+          <button title="Nút bấm"
             onClick={() => setActiveTab('setup')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${
-              activeTab === 'setup'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${activeTab === 'setup'
                 ? 'bg-white text-slate-900 border-b-2 border-slate-900'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Settings className="w-4 h-4" />
             Thiết lập DL chủ
           </button>
-          <button
+          <button title="Nút bấm"
             onClick={() => setActiveTab('attributes')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${
-              activeTab === 'attributes'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${activeTab === 'attributes'
                 ? 'bg-white text-slate-900 border-b-2 border-slate-900'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Sliders className="w-4 h-4" />
-            Thiết lập quản lý thuộc tính
+            Thiết lập thuộc tính
           </button>
-          <button
+          <button title="Nút bấm"
             onClick={() => setActiveTab('merge-rules')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${
-              activeTab === 'merge-rules'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${activeTab === 'merge-rules'
                 ? 'bg-white text-slate-900 border-b-2 border-slate-900'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <GitCompare className="w-4 h-4" />
             Thiết lập quy tắc hợp nhất
           </button>
-          <button
+          <button title="Nút bấm"
             onClick={() => setActiveTab('relationships')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${
-              activeTab === 'relationships'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${activeTab === 'relationships'
                 ? 'bg-white text-slate-900 border-b-2 border-slate-900'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Network className="w-4 h-4" />
             Thiết lập quan hệ thực thể
           </button>
-          <button
+          <button title="Nút bấm"
             onClick={() => setActiveTab('identifier-rules')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${
-              activeTab === 'identifier-rules'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${activeTab === 'identifier-rules'
                 ? 'bg-white text-slate-900 border-b-2 border-slate-900'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Key className="w-4 h-4" />
             Quy tắc định danh duy nhất
           </button>
-          <button
+          <button title="Nút bấm"
             onClick={() => setActiveTab('approval')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${
-              activeTab === 'approval'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors whitespace-nowrap ${activeTab === 'approval'
                 ? 'bg-white text-slate-900 border-b-2 border-slate-900'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckSquare className="w-4 h-4" />
             Phê duyệt
@@ -331,14 +325,14 @@ export function MasterDataScaleManagementPage() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <button
+                  <button title="Nút bấm"
                     onClick={() => setShowWizard(true)}
                     className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Tạo mới (Wizard 5 bước)
                   </button>
-                  <button
+                  <button title="Nút bấm"
                     onClick={() => setShowForm(true)}
                     className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
                   >
@@ -352,7 +346,7 @@ export function MasterDataScaleManagementPage() {
               <div className="flex gap-4">
                 <div className="flex-1 relative">
                   <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
+                  <input title="Dữ liệu"
                     type="text"
                     placeholder="Tìm kiếm theo tên hoặc mã..."
                     value={searchTerm}
@@ -362,7 +356,7 @@ export function MasterDataScaleManagementPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-slate-600" />
-                  <select
+                  <select title="Lựa chọn"
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value as LifecycleStatus | 'all')}
                     className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -405,13 +399,13 @@ export function MasterDataScaleManagementPage() {
                         <td className="px-4 py-3 text-sm text-slate-600">{entity.updatedDate}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-end gap-2">
-                            <button
+                            <button title="Nút bấm"
                               onClick={() => handleEdit(entity)}
                               className="p-1 text-blue-600 hover:bg-blue-50 rounded"
                             >
                               <Edit className="w-4 h-4" />
                             </button>
-                            <button
+                            <button title="Nút bấm"
                               onClick={() => handleDelete(entity.id)}
                               className="p-1 text-red-600 hover:bg-red-50 rounded"
                             >
@@ -433,7 +427,7 @@ export function MasterDataScaleManagementPage() {
                       <h3 className="text-lg text-slate-900">
                         {editingEntity ? 'Chỉnh sửa thực thể dữ liệu chủ' : 'Thêm mới thực thể dữ liệu chủ'}
                       </h3>
-                      <button onClick={handleCloseForm} className="p-1 hover:bg-slate-100 rounded">
+                      <button title="Nút bấm" onClick={handleCloseForm} className="p-1 hover:bg-slate-100 rounded">
                         <X className="w-5 h-5" />
                       </button>
                     </div>
@@ -445,7 +439,7 @@ export function MasterDataScaleManagementPage() {
                           <label className="block text-sm text-slate-700 mb-1">
                             Mã dữ liệu chủ <span className="text-slate-500">(chi tiết)</span>
                           </label>
-                          <input
+                          <input title="Dữ liệu"
                             type="text"
                             value={editingEntity.code}
                             disabled
@@ -459,7 +453,7 @@ export function MasterDataScaleManagementPage() {
                         <label className="block text-sm text-slate-700 mb-1">
                           Tên dữ liệu chủ <span className="text-red-600">*</span>
                         </label>
-                        <input
+                        <input title="Dữ liệu"
                           type="text"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -473,7 +467,7 @@ export function MasterDataScaleManagementPage() {
                         <label className="block text-sm text-slate-700 mb-1">
                           Loại dữ liệu <span className="text-red-600">*</span>
                         </label>
-                        <select
+                        <select title="Lựa chọn"
                           value={formData.dataType}
                           onChange={(e) => setFormData({ ...formData, dataType: e.target.value as DataType })}
                           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -489,7 +483,7 @@ export function MasterDataScaleManagementPage() {
                         <label className="block text-sm text-slate-700 mb-1">
                           Cơ quan quản lý <span className="text-red-600">*</span>
                         </label>
-                        <input
+                        <input title="Dữ liệu"
                           type="text"
                           value={formData.managingAgency}
                           onChange={(e) => setFormData({ ...formData, managingAgency: e.target.value })}
@@ -503,7 +497,7 @@ export function MasterDataScaleManagementPage() {
                         <label className="block text-sm text-slate-700 mb-1">
                           Phạm vi sử dụng <span className="text-red-600">*</span>
                         </label>
-                        <select
+                        <select title="Lựa chọn"
                           value={formData.scope}
                           onChange={(e) => setFormData({ ...formData, scope: e.target.value as ScopeType })}
                           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -518,7 +512,7 @@ export function MasterDataScaleManagementPage() {
                       {/* Description */}
                       <div>
                         <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
-                        <textarea
+                        <textarea title="Dữ liệu"
                           value={formData.description}
                           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                           placeholder="Dữ liệu chuẩn về công dân Việt Nam bao gồm thông tin cá nhân như họ tên, ngày sinh, số CCCD, nơi cư trú theo quy định của Luật CCCD 2023"
@@ -532,7 +526,7 @@ export function MasterDataScaleManagementPage() {
                         <label className="block text-sm text-slate-700 mb-1">
                           Trạng thái vòng đời <span className="text-slate-500">(chi tiết)</span>
                         </label>
-                        <select
+                        <select title="Lựa chọn"
                           value={formData.lifecycleStatus}
                           onChange={(e) => setFormData({ ...formData, lifecycleStatus: e.target.value as LifecycleStatus })}
                           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -547,13 +541,13 @@ export function MasterDataScaleManagementPage() {
                       {/* SECTION: Data Source Configuration */}
                       <div className="pt-4 border-t border-slate-200">
                         <h4 className="text-sm text-slate-900 mb-3">Cấu hình nguồn dữ liệu</h4>
-                        
+
                         {/* Data Source Type */}
                         <div className="mb-4">
                           <label className="block text-sm text-slate-700 mb-1">
                             Nguồn dữ liệu <span className="text-red-600">*</span>
                           </label>
-                          <select
+                          <select title="Lựa chọn"
                             value={formData.dataSource || 'dldc'}
                             onChange={(e) => setFormData({ ...formData, dataSource: e.target.value as DataSourceType })}
                             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -572,7 +566,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Bảng dữ liệu <span className="text-red-600">*</span>
                               </label>
-                              <select
+                              <select title="Lựa chọn"
                                 value={formData.dldcTable || ''}
                                 onChange={(e) => setFormData({ ...formData, dldcTable: e.target.value })}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -594,8 +588,8 @@ export function MasterDataScaleManagementPage() {
                               <div className="border border-slate-300 rounded-lg p-3 bg-white space-y-2 max-h-40 overflow-y-auto">
                                 {['id', 'full_name', 'citizen_id', 'date_of_birth', 'address', 'phone_number', 'email', 'created_date', 'updated_date'].map(col => (
                                   <label key={col} className="flex items-center gap-2 text-sm">
-                                    <input 
-                                      type="checkbox" 
+                                    <input title="Dữ liệu"
+                                      type="checkbox"
                                       checked={formData.dldcColumns?.includes(col) || false}
                                       onChange={(e) => {
                                         const current = formData.dldcColumns || [];
@@ -622,7 +616,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Hệ thống nguồn <span className="text-red-600">*</span>
                               </label>
-                              <input
+                              <input title="Dữ liệu"
                                 type="text"
                                 value={formData.apiSystem || ''}
                                 onChange={(e) => setFormData({ ...formData, apiSystem: e.target.value })}
@@ -634,7 +628,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Đơn vị quản lý <span className="text-red-600">*</span>
                               </label>
-                              <input
+                              <input title="Dữ liệu"
                                 type="text"
                                 value={formData.apiManagingUnit || ''}
                                 onChange={(e) => setFormData({ ...formData, apiManagingUnit: e.target.value })}
@@ -646,7 +640,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 API Endpoint <span className="text-red-600">*</span>
                               </label>
-                              <input
+                              <input title="Dữ liệu"
                                 type="text"
                                 value={formData.apiEndpoint || ''}
                                 onChange={(e) => setFormData({ ...formData, apiEndpoint: e.target.value })}
@@ -658,7 +652,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Phương thức <span className="text-red-600">*</span>
                               </label>
-                              <select
+                              <select title="Lựa chọn"
                                 value={formData.apiMethod || 'GET'}
                                 onChange={(e) => setFormData({ ...formData, apiMethod: e.target.value as 'GET' | 'POST' | 'PUT' })}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -678,7 +672,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Hệ thống nguồn <span className="text-red-600">*</span>
                               </label>
-                              <input
+                              <input title="Dữ liệu"
                                 type="text"
                                 value={formData.apiSystem || ''}
                                 onChange={(e) => setFormData({ ...formData, apiSystem: e.target.value })}
@@ -690,7 +684,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Đơn vị quản lý <span className="text-red-600">*</span>
                               </label>
-                              <input
+                              <input title="Dữ liệu"
                                 type="text"
                                 value={formData.apiManagingUnit || ''}
                                 onChange={(e) => setFormData({ ...formData, apiManagingUnit: e.target.value })}
@@ -702,7 +696,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 API Endpoint <span className="text-red-600">*</span>
                               </label>
-                              <input
+                              <input title="Dữ liệu"
                                 type="text"
                                 value={formData.apiEndpoint || ''}
                                 onChange={(e) => setFormData({ ...formData, apiEndpoint: e.target.value })}
@@ -714,7 +708,7 @@ export function MasterDataScaleManagementPage() {
                               <label className="block text-sm text-slate-700 mb-1">
                                 Phương thức <span className="text-red-600">*</span>
                               </label>
-                              <select
+                              <select title="Lựa chọn"
                                 value={formData.apiMethod || 'GET'}
                                 onChange={(e) => setFormData({ ...formData, apiMethod: e.target.value as 'GET' | 'POST' | 'PUT' })}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -740,13 +734,13 @@ export function MasterDataScaleManagementPage() {
                         {formData.dataSource && formData.dataSource !== 'manual' && (
                           <div className="mt-4 pt-4 border-t border-slate-200">
                             <h5 className="text-sm text-slate-900 mb-3">Chiến lược cập nhật</h5>
-                            
+
                             <div className="grid grid-cols-2 gap-3">
                               <div>
                                 <label className="block text-sm text-slate-700 mb-1">
                                   Loại cập nhật <span className="text-red-600">*</span>
                                 </label>
-                                <select
+                                <select title="Lựa chọn"
                                   value={formData.updateStrategy || 'reference'}
                                   onChange={(e) => setFormData({ ...formData, updateStrategy: e.target.value as UpdateStrategyType })}
                                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -756,13 +750,13 @@ export function MasterDataScaleManagementPage() {
                                   <option value="realtime">Thời gian thực (Realtime)</option>
                                 </select>
                               </div>
-                              
+
                               {formData.updateStrategy === 'scheduled' && (
                                 <div>
                                   <label className="block text-sm text-slate-700 mb-1">
                                     Tần suất đồng bộ <span className="text-red-600">*</span>
                                   </label>
-                                  <select
+                                  <select title="Lựa chọn"
                                     value={formData.syncFrequency || 'daily'}
                                     onChange={(e) => setFormData({ ...formData, syncFrequency: e.target.value as SyncFrequencyType })}
                                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -799,7 +793,7 @@ export function MasterDataScaleManagementPage() {
                             <label className="block text-sm text-slate-700 mb-1">
                               Ngày tạo <span className="text-slate-500">(chi tiết)</span>
                             </label>
-                            <input
+                            <input title="Dữ liệu"
                               type="text"
                               value={editingEntity.createdDate}
                               disabled
@@ -810,7 +804,7 @@ export function MasterDataScaleManagementPage() {
                             <label className="block text-sm text-slate-700 mb-1">
                               Cập nhật lần cuối <span className="text-slate-500">(chi tiết)</span>
                             </label>
-                            <input
+                            <input title="Dữ liệu"
                               type="text"
                               value={editingEntity.updatedDate}
                               disabled
@@ -821,7 +815,7 @@ export function MasterDataScaleManagementPage() {
                             <label className="block text-sm text-slate-700 mb-1">
                               Người tạo <span className="text-slate-500">(chi tiết)</span>
                             </label>
-                            <input
+                            <input title="Dữ liệu"
                               type="text"
                               value={editingEntity.createdBy}
                               disabled
@@ -881,7 +875,7 @@ export function MasterDataScaleManagementPage() {
         onSubmit={(wizardData) => {
           const now = new Date();
           const dateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-          
+
           const newEntity: MasterDataEntity = {
             id: String(entities.length + 1),
             code: generateCode(wizardData.dataType),
@@ -904,7 +898,7 @@ export function MasterDataScaleManagementPage() {
             updateStrategy: wizardData.updateStrategy,
             syncFrequency: wizardData.syncFrequency
           };
-          
+
           setEntities([...entities, newEntity]);
           setShowWizard(false);
           alert(`✅ Tạo thành công "${wizardData.name}" với ${wizardData.attributes.length} thuộc tính!\\n\\nĐã gửi yêu cầu phê duyệt.`);

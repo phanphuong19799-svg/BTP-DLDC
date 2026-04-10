@@ -54,7 +54,7 @@ export function ResetPasswordModal({ isOpen, onClose, user }: ResetPasswordModal
             </div>
             <h2 className="text-slate-900">Reset mật khẩu</h2>
           </div>
-          <button onClick={handleClose} className="text-slate-400 hover:text-slate-600">
+          <button onClick={handleClose} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
             <X className="w-6 h-6" />
           </button>
         </div>

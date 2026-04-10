@@ -682,7 +682,7 @@ export function MasterDataAPage() {
               <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm">
                 Trước
               </button>
-              <button className="px-3 py-1 bg-purple-600 text-white rounded text-sm">
+              <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-purple-600 text-white rounded text-sm">
                 1
               </button>
               <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm">
@@ -791,7 +791,7 @@ export function MasterDataAPage() {
               <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm">
                 Trước
               </button>
-              <button className="px-3 py-1 bg-purple-600 text-white rounded text-sm">
+              <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-purple-600 text-white rounded text-sm">
                 1
               </button>
               <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm">

@@ -83,7 +83,7 @@ export function ProcessRequestModal({ isOpen, onClose, request, onProcess }: Pro
           <button
             onClick={onClose}
             disabled={processing}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-500" />
           </button>

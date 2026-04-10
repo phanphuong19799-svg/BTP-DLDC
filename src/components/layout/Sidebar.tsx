@@ -55,6 +55,7 @@ import {
   ClipboardList,
   GraduationCap,
   FileSearch,
+  Search,
   Handshake,
   Bell,
   MessageSquare,
@@ -74,6 +75,8 @@ import {
 } from "lucide-react";
 import imgLogo from "figma:asset/0b9fbf72a74cf9ec02b7371d312e91e368f930d8.png";
 import imgImageLogo from "figma:asset/009541fc5d689d29107b655d2b8ecd57f6d4b3ff.png";
+
+import { VersionHistoryModal } from "../modals/VersionHistoryModal";
 
 interface SidebarProps {
   currentPage: string;
@@ -341,19 +344,98 @@ const menuItems: MenuItem[] = [
     color: "text-purple-600",
     subItems: [
       {
-        id: "processing-rule-setup",
-        label: "Thiết lập quy tắc xử lý dữ liệu",
-        icon: Settings,
+        id: "processing-internal",
+        label: "CSDL Trong ngành",
+        icon: Building2,
+        subItems: [
+          {
+            id: "processing-data-info-civil-registry",
+            label: "CSDL Hộ tịch điện tử",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-case-management",
+            label: "HT quản lý hồ sơ QT (3)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-civil-judgment",
+            label: "CSDL thi hành án dân sự (16)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-security-measures",
+            label: "CSDL về biện pháp BD (4)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-legal-national",
+            label: "CSDL quốc gia về PL (5)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-civil-legal-center",
+            label: "CSDL TT Tư Pháp dân sự (2)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-civil-legal-info",
+            label: "HTTT TTTG pháp lý dân sự (6)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-legal-center",
+            label: "HTTT TG Pháp lý",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-family-base",
+            label: "CSDL PB, GĐ và HG cơ sở (16)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-auction",
+            label: "CSDL quản lý đấu giá TS (24)",
+            icon: Database,
+          },
+          {
+            id: "processing-data-info-international",
+            label: "CSDL Hợp tác quốc tế (6)",
+            icon: Database,
+          },
+        ],
       },
       {
         id: "processing-external",
-        label: "Xử lý dữ liệu với CSDL ngoài ngành",
-        icon: Database,
-      },
-      {
-        id: "processing-internal",
-        label: "Xử lý dữ liệu với CSDL trong ngành",
-        icon: Database,
+        label: "CSDL Ngoài ngành",
+        icon: Building,
+        subItems: [
+          {
+            id: "processing-external-court-judgment",
+            label: "CSDL Thông tin Bản án (1)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-category-group",
+            label: "Danh mục (8)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-social-security",
+            label: "BHXH và Giảm nghèo (7)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-meritorious-group",
+            label: "Người có công (3)",
+            icon: Database,
+          },
+          {
+            id: "processing-external-children-group",
+            label: "Trẻ em (1)",
+            icon: Database,
+          },
+        ],
       },
     ],
   },
@@ -375,7 +457,7 @@ const menuItems: MenuItem[] = [
         subItems: [
           {
             id: "category-a",
-            label: "Danh mục A",
+            label: "Biên tập danh mục A",
             icon: FolderOpen,
           },
         ],
@@ -386,9 +468,36 @@ const menuItems: MenuItem[] = [
         icon: FileText,
       },
       {
-        id: "category-report",
+        id: "category-report-group",
         label: "Thống kê danh mục",
         icon: BarChart3,
+        subItems: [
+          {
+            id: "category-report",
+            label: "Khai thác báo cáo",
+            icon: Search,
+          },
+          {
+            id: "category-report-list",
+            label: "Báo cáo thống kê danh sách danh mục",
+            icon: FileText,
+          },
+          {
+            id: "category-report-exploitation",
+            label: "Báo cáo tình trạng khai thác danh mục",
+            icon: Activity,
+          },
+          {
+            id: "category-report-status",
+            label: "Báo cáo trạng thái danh mục",
+            icon: CheckSquare,
+          },
+          {
+            id: "category-report-version",
+            label: "Báo cáo phiên bản danh mục",
+            icon: HistoryIcon,
+          },
+        ],
       },
     ],
   },
@@ -410,7 +519,7 @@ const menuItems: MenuItem[] = [
         subItems: [
           {
             id: "open-data-category-a",
-            label: "Danh mục A",
+            label: "Biên tập danh mục A",
             icon: FolderOpen,
           },
         ],
@@ -701,6 +810,7 @@ export function Sidebar({
   const [expandedMenus, setExpandedMenus] = useState<
     Set<string>
   >(new Set());
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
 
   const toggleMenu = (menuId: string) => {
     const newExpanded = new Set(expandedMenus);
@@ -753,11 +863,10 @@ export function Sidebar({
                       onNavigate(item.id);
                     }
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-blue-50 text-blue-700 shadow-sm"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${isActive
+                    ? "bg-blue-50 text-blue-700 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    }`}
                 >
                   <Icon
                     className={`w-5 h-5 flex-shrink-0 ${isActive ? item.color : ""}`}
@@ -801,13 +910,12 @@ export function Sidebar({
                                 onNavigate(subItem.id);
                               }
                             }}
-                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm ${
-                              isGroupHeader
-                                ? "bg-slate-100 text-slate-700 font-medium hover:bg-slate-200"
-                                : isSubActive
-                                  ? "bg-blue-50 text-blue-700"
-                                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                            }`}
+                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm ${isGroupHeader
+                              ? "bg-slate-100 text-slate-700 font-medium hover:bg-slate-200"
+                              : isSubActive
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                              }`}
                           >
                             {SubIcon && <SubIcon className="w-4 h-4 flex-shrink-0" />}
                             <span
@@ -840,7 +948,7 @@ export function Sidebar({
                                   const hasLevel4Items =
                                     nestedItem.subItems &&
                                     nestedItem.subItems.length >
-                                      0;
+                                    0;
 
                                   return (
                                     <div key={nestedItem.id}>
@@ -856,11 +964,10 @@ export function Sidebar({
                                             );
                                           }
                                         }}
-                                        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all ${
-                                          isNestedActive
-                                            ? "bg-blue-50 text-blue-700"
-                                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                        }`}
+                                        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all ${isNestedActive
+                                          ? "bg-blue-50 text-blue-700"
+                                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                          }`}
                                       >
                                         {NestedIcon && (
                                           <NestedIcon className="w-3 h-3 flex-shrink-0" />
@@ -898,11 +1005,10 @@ export function Sidebar({
                                                         level4Item.id,
                                                       )
                                                     }
-                                                    className={`w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all ${
-                                                      isLevel4Active
-                                                        ? "bg-blue-50 text-blue-700"
-                                                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                                    }`}
+                                                    className={`w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all ${isLevel4Active
+                                                      ? "bg-blue-50 text-blue-700"
+                                                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                                      }`}
                                                   >
                                                     {Level4Icon && <Level4Icon className="w-3 h-3 flex-shrink-0" />}
                                                     <span className="text-xs truncate">
@@ -935,16 +1041,24 @@ export function Sidebar({
 
       {/* Footer */}
       <div className="p-4 border-t border-slate-200">
-        <div className="bg-slate-50 rounded-lg p-3">
+        <button 
+          onClick={() => setShowVersionHistory(true)}
+          className="w-full bg-slate-50 rounded-lg p-3 text-left hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
+        >
           <div className="flex items-center gap-2 mb-2">
             <FileText className="w-4 h-4 text-slate-600" />
-            <span className="text-xs text-slate-600">
+            <span className="text-xs text-slate-600 font-medium">
               Phiên bản
             </span>
           </div>
-          <div className="text-sm text-slate-900">v2.1.0</div>
-        </div>
+          <div className="text-sm font-semibold text-slate-900">v2.1.0</div>
+        </button>
       </div>
+
+      <VersionHistoryModal 
+        isOpen={showVersionHistory}
+        onClose={() => setShowVersionHistory(false)}
+      />
     </aside>
   );
 }

@@ -234,7 +234,7 @@ export function DataViewer({ dataName, onClose }: DataViewerProps) {
               <h3 className="text-slate-900">Xem và Sửa Dữ liệu</h3>
               <p className="text-sm text-slate-500 mt-1">{dataName} • {filteredRecords.length} bản ghi</p>
             </div>
-            <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+            <button onClick={onClose} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
               <X className="w-6 h-6" />
             </button>
           </div>

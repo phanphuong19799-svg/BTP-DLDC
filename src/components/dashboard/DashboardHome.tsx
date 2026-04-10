@@ -18,7 +18,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'CSDL A', source: 'Hệ thống A', syncedCount: 1245832, lastSync: '11/12/2024 14:30', status: 'success' },
     { id: '2', name: 'CSDL B', source: 'Hệ thống B', syncedCount: 892456, lastSync: '11/12/2024 14:25', status: 'success' },
     { id: '3', name: 'CSDL C', source: 'Hệ thống C', syncedCount: 567234, lastSync: '11/12/2024 14:20', status: 'warning' },
-    { id: '4', name: 'Danh mục A', source: 'Đơn vị A', syncedCount: 423189, lastSync: '11/12/2024 14:15', status: 'success' },
+    { id: '4', name: 'Biên tập danh mục A', source: 'Đơn vị A', syncedCount: 423189, lastSync: '11/12/2024 14:15', status: 'success' },
     { id: '5', name: 'Danh mục B', source: 'Đơn vị B', syncedCount: 356890, lastSync: '11/12/2024 14:10', status: 'success' },
     { id: '6', name: 'Danh mục C', source: 'Đơn vị C', syncedCount: 289345, lastSync: '11/12/2024 14:05', status: 'error' },
     { id: '7', name: 'Dịch vụ A', source: 'Hệ thống A', syncedCount: 234567, lastSync: '11/12/2024 14:00', status: 'success' },
@@ -30,7 +30,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'CSDL A - Đã làm sạch', source: 'Quy trình xử lý', syncedCount: 1208945, lastSync: '11/12/2024 15:00', status: 'success' },
     { id: '2', name: 'CSDL B - Đã chuẩn hóa', source: 'Quy trình xử lý', syncedCount: 865234, lastSync: '11/12/2024 14:55', status: 'success' },
     { id: '3', name: 'CSDL C - Đã biến đổi', source: 'Quy trình xử lý', syncedCount: 534567, lastSync: '11/12/2024 14:50', status: 'success' },
-    { id: '4', name: 'Danh mục A - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 415678, lastSync: '11/12/2024 14:45', status: 'success' },
+    { id: '4', name: 'Biên tập danh mục A - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 415678, lastSync: '11/12/2024 14:45', status: 'success' },
     { id: '5', name: 'Danh mục B - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 348921, lastSync: '11/12/2024 14:40', status: 'success' },
     { id: '6', name: 'Danh mục C - Chờ xử lý', source: 'Quy trình xử lý', syncedCount: 267890, lastSync: '11/12/2024 14:35', status: 'warning' },
     { id: '7', name: 'Dịch vụ A - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 228456, lastSync: '11/12/2024 14:30', status: 'success' },
@@ -40,7 +40,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'API CSDL A', source: 'Dịch vụ chia sẻ', syncedCount: 45632, lastSync: '11/12/2024 15:30', status: 'success' },
     { id: '2', name: 'API CSDL B', source: 'Dịch vụ chia sẻ', syncedCount: 38945, lastSync: '11/12/2024 15:25', status: 'success' },
     { id: '3', name: 'API CSDL C', source: 'Dịch vụ chia sẻ', syncedCount: 27834, lastSync: '11/12/2024 15:20', status: 'success' },
-    { id: '4', name: 'Export Danh mục A', source: 'Xuất dữ liệu', syncedCount: 15678, lastSync: '11/12/2024 15:15', status: 'success' },
+    { id: '4', name: 'Export Biên tập danh mục A', source: 'Xuất dữ liệu', syncedCount: 15678, lastSync: '11/12/2024 15:15', status: 'success' },
     { id: '5', name: 'Export Danh mục B', source: 'Xuất dữ liệu', syncedCount: 12456, lastSync: '11/12/2024 15:10', status: 'success' },
     { id: '6', name: 'Đồng bộ Hệ thống A', source: 'Tích hợp', syncedCount: 9347, lastSync: '11/12/2024 15:05', status: 'success' },
     { id: '7', name: 'Đồng bộ Hệ thống B', source: 'Tích hợp', syncedCount: 7000, lastSync: '11/12/2024 15:00', status: 'success' },
@@ -49,7 +49,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
 
 export function DashboardHome() {
   const [selectedKPI, setSelectedKPI] = useState<string | null>(null);
-  
+
   const kpis = [
     {
       id: 'Thu thập',
@@ -196,7 +196,7 @@ export function DashboardHome() {
   return (
     <div className="space-y-6">
       <PageHeader title="Tổng quan" icon={LayoutDashboard} />
-      
+
       {/* Mô hình kiến trúc hệ thống */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -221,15 +221,15 @@ export function DashboardHome() {
           </div>
         </div>
       </div>
-      
+
       {/* Main KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {kpis.map((kpi) => {
           const Icon = kpi.icon;
-          
+
           return (
-            <div 
-              key={kpi.id} 
+            <div
+              key={kpi.id}
               onClick={() => setSelectedKPI(kpi.id)}
               className={`bg-white rounded-xl border-2 ${kpi.borderColor} p-8 hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group`}
             >
@@ -246,13 +246,13 @@ export function DashboardHome() {
 
               {/* Label */}
               <div className="text-slate-600 mb-2">{kpi.label}</div>
-              
+
               {/* Value */}
               <div className="text-4xl text-slate-900 mb-1">{kpi.value}</div>
-              
+
               {/* Subtitle */}
               <div className="text-sm text-slate-500 mb-4">{kpi.subtitle}</div>
-              
+
               {/* Detail */}
               <div className="pt-4 border-t border-slate-100">
                 <div className="text-xs text-slate-600">{kpi.detail}</div>
@@ -275,19 +275,19 @@ export function DashboardHome() {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="day" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
                 }}
                 formatter={(value: number) => value.toLocaleString()}
               />
-              <Line 
-                type="monotone" 
-                dataKey="value" 
-                stroke="#3b82f6" 
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#3b82f6"
                 strokeWidth={3}
                 dot={{ fill: '#3b82f6', r: 4 }}
                 activeDot={{ r: 6 }}
@@ -307,9 +307,9 @@ export function DashboardHome() {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="stage" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
@@ -338,7 +338,7 @@ export function DashboardHome() {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }: { name: string; percent: number }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
@@ -347,9 +347,9 @@ export function DashboardHome() {
                   <Cell key={`share-cell-${entry.name}-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
@@ -374,9 +374,9 @@ export function DashboardHome() {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis type="number" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis dataKey="name" type="category" stroke="#64748b" style={{ fontSize: '12px' }} width={80} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
@@ -400,28 +400,28 @@ export function DashboardHome() {
             <AreaChart data={masterDataTrendData}>
               <defs>
                 <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="month" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
                 }}
                 formatter={(value: number) => value.toLocaleString()}
               />
-              <Area 
-                type="monotone" 
-                dataKey="total" 
-                stroke="#22c55e" 
+              <Area
+                type="monotone"
+                dataKey="total"
+                stroke="#22c55e"
                 strokeWidth={3}
-                fillOpacity={1} 
+                fillOpacity={1}
                 fill="url(#colorTotal)"
                 name="Tổng bản ghi"
               />
@@ -443,9 +443,9 @@ export function DashboardHome() {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis type="number" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis dataKey="category" type="category" stroke="#64748b" style={{ fontSize: '12px' }} width={120} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
@@ -471,9 +471,9 @@ export function DashboardHome() {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="category" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
@@ -499,28 +499,28 @@ export function DashboardHome() {
             <AreaChart data={userAccountData}>
               <defs>
                 <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="month" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
                 }}
                 formatter={(value: number) => value.toLocaleString()}
               />
-              <Area 
-                type="monotone" 
-                dataKey="users" 
-                stroke="#06b6d4" 
+              <Area
+                type="monotone"
+                dataKey="users"
+                stroke="#06b6d4"
                 strokeWidth={3}
-                fillOpacity={1} 
+                fillOpacity={1}
                 fill="url(#colorUsers)"
                 name="Số tài khoản"
               />
@@ -539,9 +539,9 @@ export function DashboardHome() {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="service" stroke="#64748b" style={{ fontSize: '12px' }} />
               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px',
                   fontSize: '12px'
@@ -566,7 +566,8 @@ export function DashboardHome() {
                   Danh sách dữ liệu đã thu thập và đồng bộ
                 </p>
               </div>
-              <button 
+              <button
+                title="Đóng"
                 onClick={() => setSelectedKPI(null)}
                 className="text-slate-400 hover:text-slate-600 transition-colors"
               >
@@ -583,7 +584,7 @@ export function DashboardHome() {
                 </div>
                 <div className="text-2xl text-slate-900">{currentData.length}</div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Hash className="w-4 h-4 text-green-600" />
@@ -591,7 +592,7 @@ export function DashboardHome() {
                 </div>
                 <div className="text-2xl text-slate-900">{totalSynced.toLocaleString()}</div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -601,7 +602,7 @@ export function DashboardHome() {
                   {currentData.filter(r => r.status === 'success').length}
                 </div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
@@ -628,8 +629,8 @@ export function DashboardHome() {
                 </thead>
                 <tbody>
                   {currentData.map((record, index) => (
-                    <tr 
-                      key={record.id} 
+                    <tr
+                      key={record.id}
                       className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                     >
                       <td className="py-3 px-4 text-sm text-slate-600">{index + 1}</td>

@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { 
-  Settings, 
-  CheckCircle2, 
-  Globe, 
-  FileText, 
+import * as React from 'react';
+import { useState, ChangeEvent } from 'react';
+import {
+  Settings,
+  CheckCircle2,
+  Globe,
+  FileText,
   TrendingUp,
   Plus,
   Search,
@@ -22,6 +23,8 @@ import {
   Check,
   AlertCircle,
   Share2,
+  Lock,
+  Unlock,
   Download,
   FileDown,
   BarChart3,
@@ -32,6 +35,10 @@ import {
   Send,
   Upload
 } from 'lucide-react';
+import { PowerOff } from 'lucide-react';
+import { CreateVersionModal } from './components/modals/CreateVersionModal';
+import { ArchiveRecordModal } from './components/modals/ArchiveRecordModal';
+import { RecordFormModal } from './components/modals/RecordFormModal';
 
 interface CategoryPageProps {
   categoryName: string;
@@ -72,6 +79,8 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddFieldModal, setShowAddFieldModal] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const [showCreateVersionModal, setShowCreateVersionModal] = useState(false);
   const [showFieldFormModal, setShowFieldFormModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showApprovalDetailModal, setShowApprovalDetailModal] = useState(false);
@@ -104,20 +113,26 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
     referenceTable: '',
     referenceField: ''
   });
-  
+
   // Validation errors
-  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
-  
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+
   // Approval filters
   const [approvalStatusFilter, setApprovalStatusFilter] = useState('all');
   const [approvalRequestFilter, setApprovalRequestFilter] = useState('all');
-  
+
   // Bulk approval states
   const [selectedApprovalIds, setSelectedApprovalIds] = useState<number[]>([]);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [approvalComment, setApprovalComment] = useState('');
   const [pendingApprovalIds, setPendingApprovalIds] = useState<number[]>([]);
+
+  // Version Popups States
+  const [showCompareModal, setShowCompareModal] = useState(false);
+  const [showVersionDetailModal, setShowVersionDetailModal] = useState(false);
+  const [showRestoreModal, setShowRestoreModal] = useState(false);
+  const [selectedVersionData, setSelectedVersionData] = useState<any>(null);
 
   // Mock approvers list
   const approvers = [
@@ -215,7 +230,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
 
   const filteredApprovalRequests = approvalRequests.filter(req => {
     const matchesStatus = approvalStatusFilter === 'all' || req.status === approvalStatusFilter;
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch = searchTerm === '' ||
       req.recordCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
       req.recordName.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
@@ -293,7 +308,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
   };
 
   const toggleSelectApproval = (id: number) => {
-    setSelectedApprovalIds(prev => 
+    setSelectedApprovalIds(prev =>
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
@@ -334,7 +349,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
         return null;
     }
   };
-  
+
   // Mock data - Danh sách tỉnh thành Việt Nam
   const [categories, setCategories] = useState<Category[]>([
     { id: '1', code: 'VN01', name: 'Hà Nội', description: 'Thành phố trực thuộc Trung ương', type: 'standard', status: 'active', createdDate: '01/01/2024', fields: [{ id: 'f1', name: 'Mã tỉnh', dataType: 'TEXT', required: true }, { id: 'f2', name: 'Tên tỉnh', dataType: 'TEXT', required: true }] },
@@ -411,8 +426,8 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
 
   const filteredCategories = categories.filter(cat => {
     const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.description.toLowerCase().includes(searchTerm.toLowerCase());
+      cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'all' || cat.type === filterType;
     const matchesStatus = filterStatus === 'all' || cat.status === filterStatus;
     return matchesSearch && matchesType && matchesStatus;
@@ -460,15 +475,15 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
         // Simple CSV parsing (for demo - in production use a library like xlsx)
         const text = new TextDecoder().decode(data as ArrayBuffer);
         const rows = text.split('\n').map(row => row.split(','));
-        
+
         // Skip header row and parse data
         const parsedData = rows.slice(1).filter(row => row.length >= 4).map((row, index) => ({
           id: `import-${index}`,
           code: row[0]?.trim() || '',
           name: row[1]?.trim() || '',
           description: row[2]?.trim() || '',
-          type: (row[3]?.trim().toLowerCase() === 'tiêu chuẩn' ? 'standard' : 
-                 row[3]?.trim().toLowerCase() === 'tham chiếu' ? 'reference' : 'system') as 'standard' | 'reference' | 'system',
+          type: (row[3]?.trim().toLowerCase() === 'tiêu chuẩn' ? 'standard' :
+            row[3]?.trim().toLowerCase() === 'tham chiếu' ? 'reference' : 'system') as 'standard' | 'reference' | 'system',
           status: 'active' as 'active' | 'inactive',
           createdDate: new Date().toLocaleDateString('vi-VN'),
           fields: []
@@ -499,13 +514,13 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
 
     // Add imported data to categories
     setCategories([...categories, ...importPreviewData]);
-    
+
     // Reset and close modal
     setShowImportModal(false);
     setImportFile(null);
     setImportPreviewData([]);
     setImportErrors([]);
-    
+
     // Show success notification
     setShowSuccessNotification(true);
     setTimeout(() => setShowSuccessNotification(false), 3000);
@@ -525,47 +540,47 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('setup')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'setup'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'setup'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
+            title="Danh sách danh mục"
           >
             <List className="w-4 h-4" />
             Danh sách
           </button>
           <button
             onClick={() => setActiveTab('approval')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'approval'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'approval'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
+            title="Phê duyệt danh mục"
           >
             <CheckCircle2 className="w-4 h-4" />
             Phê duyệt
           </button>
           <button
             onClick={() => setActiveTab('stats')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'stats'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'stats'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
+            title="Thống kê danh mục"
           >
             <TrendingUp className="w-4 h-4" />
             Thu thập số liệu thống kê
           </button>
           <button
             onClick={() => setActiveTab('version-history')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'version-history'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'version-history'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
+            title="Quản lý phiên bản danh mục"
           >
             <Clock className="w-4 h-4" />
-            Lịch sử cập nhật
+            Quản lý phiên bản danh mục
           </button>
         </div>
 
@@ -580,17 +595,19 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
+                      title="Tìm kiếm danh mục"
                       placeholder="Tìm kiếm theo tên, mã danh mục..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div className="relative">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
+                      title="Lọc theo loại"
                       value={filterType}
-                      onChange={(e) => setFilterType(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterType(e.target.value)}
                       className="pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                     >
                       <option value="all">Tất cả loại</option>
@@ -602,8 +619,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <div className="relative">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
+                      title="Lọc theo trạng thái"
                       value={filterStatus}
-                      onChange={(e) => setFilterStatus(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
                       className="pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                     >
                       <option value="all">Tất cả trạng thái</option>
@@ -613,6 +631,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   </div>
                   <button
                     onClick={() => setShowImportModal(true)}
+                    title="Nhập từ Excel"
                     className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
                   >
                     <Upload className="w-4 h-4" />
@@ -620,10 +639,11 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   </button>
                   <button
                     onClick={() => setShowAddModal(true)}
+                    title="Thêm bản ghi mới"
                     className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
                   >
                     <Plus className="w-4 h-4" />
-                    Thêm danh mục mới
+                    Thêm bản ghi mới
                   </button>
                 </div>
               </div>
@@ -689,20 +709,25 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                                     name: category.name,
                                     type: category.type,
                                     status: category.status,
-                                    description: category.description
+                                    description: category.description,
+                                    approver: ''
                                   });
                                   setShowEditModal(true);
                                 }}
                                 className="p-1 text-orange-600 hover:bg-orange-50 rounded"
-                                title="Chỉnh sửa"
+                                title="Chỉnh sửa cấu trúc"
                               >
                                 <Edit2 className="w-4 h-4" />
                               </button>
                               <button
+                                onClick={() => {
+                                  setSelectedCategory(category);
+                                  setShowArchiveModal(true);
+                                }}
                                 className="p-1 text-red-600 hover:bg-red-50 rounded"
-                                title="Xóa"
+                                title="Ngừng áp dụng bản ghi"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <PowerOff className="w-4 h-4" />
                               </button>
                             </div>
                           </td>
@@ -804,17 +829,19 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
+                      title="Tìm kiếm bản ghi phê duyệt"
                       placeholder="Tìm kiếm theo mã, tên bản ghi..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div className="relative">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <select
+                      title="Lọc trạng thái phê duyệt"
                       value={approvalStatusFilter}
-                      onChange={(e) => setApprovalStatusFilter(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setApprovalStatusFilter(e.target.value)}
                       className="pl-10 pr-8 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
                     >
                       <option value="all">Tất cả trạng thái</option>
@@ -835,6 +862,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                         <th className="px-4 py-3 text-left">
                           <input
                             type="checkbox"
+                            title="Chọn tất cả"
                             checked={selectedApprovalIds.length === filteredApprovalRequests.filter(r => r.status === 'pending').length && filteredApprovalRequests.filter(r => r.status === 'pending').length > 0}
                             onChange={toggleSelectAllApprovals}
                             className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
@@ -858,6 +886,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                             {request.status === 'pending' && (
                               <input
                                 type="checkbox"
+                                title="Chọn bản ghi"
                                 checked={selectedApprovalIds.includes(request.id)}
                                 onChange={() => toggleSelectApproval(request.id)}
                                 className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
@@ -942,6 +971,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <label className="block text-sm text-slate-700 mb-2">Từ ngày</label>
                     <input
                       type="date"
+                      title="Chọn từ ngày"
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
@@ -949,12 +979,13 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <label className="block text-sm text-slate-700 mb-2">Đến ngày</label>
                     <input
                       type="date"
+                      title="Chọn đến ngày"
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Loại thống kê</label>
-                    <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select title="Chọn loại thống kê" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option>Số lượt sử dụng</option>
                       <option>Số lượt xem</option>
                       <option>Số lượt tải</option>
@@ -1036,45 +1067,35 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <span className="text-sm text-slate-700">Hệ thống Văn bản pháp luật</span>
                       <span className="text-sm text-slate-900">524 lượt</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '100%' }}></div>
-                    </div>
+                    <progress value={100} max={100} className="w-full h-2 rounded-full overflow-hidden [&::-webkit-progress-bar]:bg-slate-100 [&::-webkit-progress-value]:bg-blue-600 [&::-moz-progress-bar]:bg-blue-600 bg-slate-100 appearance-none" title="Tiến độ 100%"></progress>
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-slate-700">Hệ thống Đăng ký kinh doanh</span>
                       <span className="text-sm text-slate-900">412 lượt</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '78%' }}></div>
-                    </div>
+                    <progress value={78} max={100} className="w-full h-2 rounded-full overflow-hidden [&::-webkit-progress-bar]:bg-slate-100 [&::-webkit-progress-value]:bg-blue-600 [&::-moz-progress-bar]:bg-blue-600 bg-slate-100 appearance-none" title="Tiến độ 78%"></progress>
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-slate-700">Hệ thống Công chứng</span>
                       <span className="text-sm text-slate-900">356 lượt</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '68%' }}></div>
-                    </div>
+                    <progress value={68} max={100} className="w-full h-2 rounded-full overflow-hidden [&::-webkit-progress-bar]:bg-slate-100 [&::-webkit-progress-value]:bg-blue-600 [&::-moz-progress-bar]:bg-blue-600 bg-slate-100 appearance-none" title="Tiến độ 68%"></progress>
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-slate-700">Hệ thống Trợ giúp pháp lý</span>
                       <span className="text-sm text-slate-900">298 lượt</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '57%' }}></div>
-                    </div>
+                    <progress value={57} max={100} className="w-full h-2 rounded-full overflow-hidden [&::-webkit-progress-bar]:bg-slate-100 [&::-webkit-progress-value]:bg-blue-600 [&::-moz-progress-bar]:bg-blue-600 bg-slate-100 appearance-none" title="Tiến độ 57%"></progress>
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-slate-700">Hệ thống Hộ tịch</span>
                       <span className="text-sm text-slate-900">187 lượt</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '36%' }}></div>
-                    </div>
+                    <progress value={36} max={100} className="w-full h-2 rounded-full overflow-hidden [&::-webkit-progress-bar]:bg-slate-100 [&::-webkit-progress-value]:bg-blue-600 [&::-moz-progress-bar]:bg-blue-600 bg-slate-100 appearance-none" title="Tiến độ 36%"></progress>
                   </div>
                 </div>
               </div>
@@ -1084,14 +1105,52 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
       </div>
 
       {/* Add/Edit Modal */}
+
+      {/* Create Version Modal */}
+      <CreateVersionModal
+        isOpen={showCreateVersionModal}
+        onClose={() => setShowCreateVersionModal(false)}
+        currentVersion="v3.2"
+        onSave={(data: any) => {
+          setShowCreateVersionModal(false);
+          setSuccessNotificationMessage('Đã tạo phiên bản mới ' + data.name + ' thành công!');
+          setShowSuccessNotification(true);
+          setTimeout(() => setShowSuccessNotification(false), 3000);
+        }}
+      />
+
+      {/* Archive Modal */}
+      {showArchiveModal && selectedCategory && (
+        <ArchiveRecordModal
+          isOpen={showArchiveModal}
+          onClose={() => {
+            setShowArchiveModal(false);
+            setSelectedCategory(null);
+          }}
+          recordName={selectedCategory.name}
+          onConfirm={() => {
+            setCategories(categories.map(c =>
+              c.id === selectedCategory.id
+                ? { ...c, status: 'inactive' }
+                : c
+            ));
+            setShowArchiveModal(false);
+            setSelectedCategory(null);
+            setSuccessNotificationMessage('Đã ngừng áp dụng bản ghi thành công!');
+            setShowSuccessNotification(true);
+            setTimeout(() => setShowSuccessNotification(false), 3000);
+          }}
+        />
+      )}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-slate-200 flex items-center justify-between">
-              <h3 className="text-lg text-slate-900">Thêm danh mục mới</h3>
+              <h3 className="text-lg text-slate-900">Thêm bản ghi mới</h3>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1101,7 +1160,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Mã danh mục *</label>
-                  <input
+                  <input title="Dữ liệu"
                     type="text"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập mã danh mục"
@@ -1109,7 +1168,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 </div>
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Tên danh mục *</label>
-                  <input
+                  <input title="Dữ liệu"
                     type="text"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập tên danh mục"
@@ -1119,7 +1178,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
 
               <div>
                 <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
-                <textarea
+                <textarea title="Trường dữ liệu"
                   rows={3}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập mô tả về danh mục..."
@@ -1129,7 +1188,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
-                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select
+                    title="Loại danh mục"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
                     <option value="">Chọn loại</option>
                     <option value="standard">Tiêu chuẩn</option>
                     <option value="reference">Tham chiếu</option>
@@ -1138,7 +1200,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 </div>
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
-                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select
+                    title="Trạng thái"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
                     <option value="active">Hoạt động</option>
                     <option value="inactive">Ngừng hoạt động</option>
                   </select>
@@ -1260,6 +1325,16 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
 
       {activeTab === 'version-history' && (
         <div className="space-y-4">
+          <div className="flex justify-between items-center bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+             <div>
+                <h3 className="font-bold text-slate-800 text-[15px]">Danh sách phiên bản</h3>
+                <p className="text-sm text-slate-500 mt-1">Quản lý, tra cứu và đóng băng các phiên bản của danh mục hệ thống</p>
+             </div>
+             <button onClick={() => setShowCreateVersionModal(true)} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition-colors text-sm shadow-md shadow-blue-100">
+                <Plus className="w-4 h-4"/>
+                Tạo phiên bản mới
+             </button>
+          </div>
           {/* Version History Table */}
           <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
@@ -1354,20 +1429,38 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-center gap-2">
                           <button
+                            onClick={() => {
+                               setSelectedVersionData(history);
+                               setShowVersionDetailModal(true);
+                            }}
                             className="p-1 text-blue-600 hover:bg-blue-50 rounded"
                             title="Xem chi tiết"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           {history.status === 'archived' && (
-                            <button
-                              className="p-1 text-green-600 hover:bg-green-50 rounded"
-                              title="Khôi phục phiên bản"
-                            >
-                              <Clock className="w-4 h-4" />
-                            </button>
+                            <>
+                               <button
+                                 onClick={() => {
+                                    setSelectedVersionData(history);
+                                    setShowRestoreModal(true);
+                                 }}
+                                 className="p-1 text-green-600 hover:bg-green-50 rounded"
+                                 title="Nâng cấp làm phiên bản nháp (Khôi phục)"
+                               >
+                                 <Clock className="w-4 h-4" />
+                               </button>
+                               <button
+                                 onClick={() => alert(`Đã khóa tham chiếu phiên bản ${history.version}`)}
+                                 className="p-1 text-orange-600 hover:bg-orange-50 rounded"
+                                 title="Khóa phiên bản (Không cho tham chiếu)"
+                               >
+                                 <Lock className="w-4 h-4" />
+                               </button>
+                            </>
                           )}
                           <button
+                            onClick={() => alert('Đang tải xuống dữ liệu phiên bản ' + history.version)}
                             className="p-1 text-slate-600 hover:bg-slate-50 rounded"
                             title="Tải xuống"
                           >
@@ -1388,7 +1481,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Phiên bản cũ</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select
+                  title="Phiên bản cũ"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="v2.0">v2.0 - 20/11/2025</option>
                   <option value="v2.5">v2.5 - 01/12/2025</option>
                   <option value="v3.0">v3.0 - 15/12/2025</option>
@@ -1397,7 +1493,10 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               </div>
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Phiên bản mới</label>
-                <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select
+                  title="Phiên bản mới"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="v3.2">v3.2 - 05/01/2026 (Hiện tại)</option>
                   <option value="v3.1">v3.1 - 28/12/2025</option>
                   <option value="v3.0">v3.0 - 15/12/2025</option>
@@ -1406,11 +1505,17 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               </div>
             </div>
             <div className="mt-4 flex gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              <button 
+                onClick={() => setShowCompareModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+              >
                 <BarChart3 className="w-4 h-4" />
                 So sánh
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm">
+              <button 
+                onClick={() => alert('Đang xuất báo cáo so sánh...')}
+                className="flex items-center gap-2 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm"
+              >
                 <Download className="w-4 h-4" />
                 Xuất báo cáo so sánh
               </button>
@@ -1431,6 +1536,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   setSelectedCategory(null);
                 }}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1510,6 +1616,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   setSelectedCategory(null);
                 }}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1521,8 +1628,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Mã danh mục *</label>
                   <input
                     type="text"
+                    title="Mã danh mục"
                     value={editedCategoryData.code}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, code: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedCategoryData({ ...editedCategoryData, code: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập mã danh mục"
                   />
@@ -1531,8 +1639,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Tên danh mục *</label>
                   <input
                     type="text"
+                    title="Tên danh mục"
                     value={editedCategoryData.name}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, name: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditedCategoryData({ ...editedCategoryData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập tên danh mục"
                   />
@@ -1540,8 +1649,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
                   <select
+                    title="Loại danh mục"
                     value={editedCategoryData.type}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, type: e.target.value as 'standard' | 'reference' | 'system' })}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditedCategoryData({ ...editedCategoryData, type: e.target.value as 'standard' | 'reference' | 'system' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="standard">Tiêu chuẩn</option>
@@ -1552,8 +1662,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
                   <select
+                    title="Trạng thái"
                     value={editedCategoryData.status}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, status: e.target.value as 'active' | 'inactive' })}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditedCategoryData({ ...editedCategoryData, status: e.target.value as 'active' | 'inactive' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="active">Hoạt động</option>
@@ -1563,8 +1674,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div className="col-span-2">
                   <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
                   <textarea
+                    title="Mô tả"
                     value={editedCategoryData.description}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, description: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditedCategoryData({ ...editedCategoryData, description: e.target.value })}
                     rows={3}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập mô tả"
@@ -1576,8 +1688,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <span className="text-slate-500 text-xs ml-1">(Bắt buộc khi gửi phê duyệt)</span>
                   </label>
                   <select
+                    title="Người phê duyệt"
                     value={editedCategoryData.approver}
-                    onChange={(e) => setEditedCategoryData({ ...editedCategoryData, approver: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEditedCategoryData({ ...editedCategoryData, approver: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Chọn người phê duyệt</option>
@@ -1602,19 +1715,20 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 Hủy
               </button>
               <div className="flex gap-3">
-                <button 
+                <button
                   onClick={() => {
                     // Direct save for users with permission
                     setShowEditModal(false);
                     setSelectedCategory(null);
                     // Show success message for direct save
                   }}
+                  title="Lưu thay đổi"
                   className="flex items-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
                 >
                   <Save className="w-4 h-4" />
                   Lưu thay đổi
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     // Validate approver selection
                     if (!editedCategoryData.approver) {
@@ -1648,7 +1762,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-slate-200 flex items-center justify-between">
               <h3 className="text-lg text-slate-900">Thêm trường dữ liệu mới</h3>
-              <button
+              <button title="Đóng" aria-label="Đóng"
                 onClick={() => setShowAddFieldModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -1662,8 +1776,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Tên trường *</label>
                   <input
                     type="text"
+                    title="Tên trường"
                     value={newFieldData.name}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, name: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập tên trường"
                   />
@@ -1671,8 +1786,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
                   <select
+                    title="Kiểu dữ liệu"
                     value={newFieldData.dataType}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="TEXT">Text</option>
@@ -1687,8 +1803,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
                   <select
+                    title="Trường bắt buộc"
                     value={newFieldData.required ? 'true' : 'false'}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="true">Có</option>
@@ -1699,8 +1816,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Giá trị mặc định</label>
                   <input
                     type="text"
+                    title="Giá trị mặc định"
                     value={newFieldData.defaultValue || ''}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập giá trị mặc định"
                   />
@@ -1709,7 +1827,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
             </div>
 
             <div className="p-6 border-t border-slate-200 flex justify-end gap-3">
-              <button
+              <button title="Đóng" aria-label="Đóng"
                 onClick={() => setShowAddFieldModal(false)}
                 className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
               >
@@ -1736,7 +1854,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-slate-200 flex items-center justify-between">
               <h3 className="text-lg text-slate-900">Thêm trường dữ liệu mới</h3>
-              <button
+              <button title="Đóng" aria-label="Đóng"
                 onClick={() => setShowFieldFormModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -1750,8 +1868,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Tên trường *</label>
                   <input
                     type="text"
+                    title="Tên trường"
                     value={newFieldData.name}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       setNewFieldData({ ...newFieldData, name: e.target.value });
                       if (fieldErrors.name) {
                         setFieldErrors({ ...fieldErrors, name: '' });
@@ -1767,8 +1886,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
                   <select
+                    title="Kiểu dữ liệu"
                     value={newFieldData.dataType}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="TEXT">Text</option>
@@ -1785,8 +1905,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Khóa chính</label>
                   <select
+                    title="Khóa chính"
                     value={newFieldData.isPrimaryKey ? 'true' : 'false'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const isPrimary = e.target.value === 'true';
                       setNewFieldData({ ...newFieldData, isPrimaryKey: isPrimary });
                     }}
@@ -1799,8 +1920,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
                   <select
+                    title="Trường bắt buộc"
                     value={newFieldData.required ? 'true' : 'false'}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="true">Có</option>
@@ -1811,8 +1933,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <label className="block text-sm text-slate-700 mb-1">Độ dài tối đa</label>
                   <input
                     type="number"
+                    title="Độ dài tối đa"
                     value={newFieldData.maxLength || ''}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập độ dài tối đa"
                   />
@@ -1823,8 +1946,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <label className="block text-sm text-slate-700 mb-1">Giá trị mặc định</label>
                 <input
                   type="text"
+                  title="Giá trị mặc định"
                   value={newFieldData.defaultValue || ''}
-                  onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập giá trị mặc định"
                 />
@@ -1835,8 +1959,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <div className="mb-3">
                   <label className="block text-sm text-slate-700 mb-1">Khóa ngoại</label>
                   <select
+                    title="Khóa ngoại"
                     value={newFieldData.isForeignKey ? 'true' : 'false'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const isForeign = e.target.value === 'true';
                       setNewFieldData({ ...newFieldData, isForeignKey: isForeign });
                     }}
@@ -1852,8 +1977,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <div>
                       <label className="block text-sm text-slate-700 mb-1">Bảng tham chiếu *</label>
                       <select
+                        title="Bảng tham chiếu"
                         value={newFieldData.referenceTable || ''}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                           setNewFieldData({ ...newFieldData, referenceTable: e.target.value });
                           if (fieldErrors.referenceTable) {
                             setFieldErrors({ ...fieldErrors, referenceTable: '' });
@@ -1862,7 +1988,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                         className={`w-full px-3 py-2 border ${fieldErrors.referenceTable ? 'border-red-500' : 'border-slate-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       >
                         <option value="">Chọn bảng</option>
-                        <option value="danh_muc_a">Danh mục A</option>
+                        <option value="danh_muc_a">Biên tập danh mục A</option>
                         <option value="danh_muc_b">Danh mục B</option>
                         <option value="danh_muc_c">Danh mục C</option>
                       </select>
@@ -1873,8 +1999,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     <div>
                       <label className="block text-sm text-slate-700 mb-1">Trường tham chiếu *</label>
                       <select
+                        title="Trường tham chiếu"
                         value={newFieldData.referenceField || ''}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                           setNewFieldData({ ...newFieldData, referenceField: e.target.value });
                           if (fieldErrors.referenceField) {
                             setFieldErrors({ ...fieldErrors, referenceField: '' });
@@ -1899,8 +2026,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 <label className="block text-sm text-slate-700 mb-1">Mô tả</label>
                 <textarea
                   rows={3}
+                  title="Mô tả"
                   value={newFieldData.description || ''}
-                  onChange={(e) => setNewFieldData({ ...newFieldData, description: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNewFieldData({ ...newFieldData, description: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập mô tả về trường..."
                 />
@@ -1917,22 +2045,22 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
               <button
                 onClick={() => {
                   // Validation
-                  const errors: {[key: string]: string} = {};
-                  
+                  const errors: { [key: string]: string } = {};
+
                   // Kiểm tra tên trường bắt buộc
                   if (!newFieldData.name.trim()) {
                     errors.name = 'Tên trường không được để trống';
                   }
-                  
+
                   // Kiểm tra trùng tên trường (ngoại trừ trường đang sửa)
-                  const isDuplicate = newCategoryFields.some((field, index) => 
-                    field.name.toLowerCase() === newFieldData.name.toLowerCase() && 
+                  const isDuplicate = newCategoryFields.some((field, index) =>
+                    field.name.toLowerCase() === newFieldData.name.toLowerCase() &&
                     index !== editingFieldIndex
                   );
                   if (isDuplicate) {
                     errors.name = 'Tên trường đã tồn tại';
                   }
-                  
+
                   // Kiểm tra khóa ngoại
                   if (newFieldData.isForeignKey) {
                     if (!newFieldData.referenceTable) {
@@ -1942,18 +2070,18 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                       errors.referenceField = 'Vui lòng chọn trường tham chiếu';
                     }
                   }
-                  
+
                   if (Object.keys(errors).length > 0) {
                     setFieldErrors(errors);
                     return;
                   }
-                  
+
                   // Nếu đang đặt khóa chính, bỏ khóa chính của các trường khác
                   let fieldsToUpdate = [...newCategoryFields];
                   if (newFieldData.isPrimaryKey) {
                     fieldsToUpdate = fieldsToUpdate.map(f => ({ ...f, isPrimaryKey: false }));
                   }
-                  
+
                   if (editingFieldIndex !== null) {
                     fieldsToUpdate[editingFieldIndex] = { ...newFieldData, id: newCategoryFields[editingFieldIndex].id };
                     setNewCategoryFields(fieldsToUpdate);
@@ -1989,7 +2117,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <p className="text-sm text-slate-500">Tải lên file Excel để nhập hàng loạt danh mục</p>
                 </div>
               </div>
-              <button onClick={handleCancelImport} className="text-slate-400 hover:text-slate-600">
+              <button onClick={handleCancelImport} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -2001,7 +2129,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   Chọn file Excel <span className="text-red-500">*</span>
                 </label>
                 <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center">
-                  <input
+                  <input title="Trường dữ liệu"
                     type="file"
                     accept=".xlsx,.xls,.csv"
                     onChange={handleFileChange}
@@ -2020,7 +2148,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                     </p>
                   </label>
                 </div>
-                
+
                 {/* Template Download */}
                 <div className="mt-4 flex items-center gap-2 text-sm">
                   <FileDown className="w-4 h-4 text-blue-600" />
@@ -2104,7 +2232,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                 )}
               </div>
               <div className="flex gap-3">
-                <button
+                <button title="Đóng" aria-label="Đóng"
                   onClick={handleCancelImport}
                   className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
                 >
@@ -2138,8 +2266,8 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   <p className="text-sm text-slate-500">Xem các thay đổi của bản ghi</p>
                 </div>
               </div>
-              <button 
-                onClick={() => setShowApprovalDetailModal(false)} 
+              <button title="Đóng" aria-label="Đóng"
+                onClick={() => setShowApprovalDetailModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
                 <X className="w-5 h-5" />
@@ -2286,8 +2414,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   Nội dung phê duyệt <span className="text-slate-400">(Không bắt buộc)</span>
                 </label>
                 <textarea
+                  title="Ghi chú phê duyệt"
                   value={approvalComment}
-                  onChange={(e) => setApprovalComment(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setApprovalComment(e.target.value)}
                   rows={4}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập nội dung phê duyệt, ghi chú hoặc ý kiến (nếu có)..."
@@ -2350,8 +2479,9 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
                   Lý do từ chối <span className="text-red-600">*</span>
                 </label>
                 <textarea
+                  title="Lý do từ chối"
                   value={approvalComment}
-                  onChange={(e) => setApprovalComment(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setApprovalComment(e.target.value)}
                   rows={4}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập lý do từ chối yêu cầu thay đổi..."
@@ -2407,6 +2537,7 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
             </div>
             <button
               onClick={() => setShowSuccessNotification(false)}
+              title="Đóng thông báo"
               className="text-green-600 hover:text-green-800"
             >
               <X className="w-4 h-4" />
@@ -2414,6 +2545,215 @@ export function CategoryPage({ categoryName, categoryId }: CategoryPageProps) {
           </div>
         </div>
       )}
+
+      {/* Compare Modal */}
+      {showCompareModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-slate-800">
+                 <BarChart3 className="w-5 h-5 text-blue-600"/>
+                 <h3 className="text-[17px] font-bold">So sánh phiên bản dữ liệu</h3>
+              </div>
+              <button title="Đóng" aria-label="Đóng" onClick={() => setShowCompareModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4 mb-4">
+                 <p className="text-[14px] text-blue-800">Đang so sánh <strong>v2.0</strong> với <strong>v3.2 (Hiện tại)</strong></p>
+                 <p className="text-[13px] text-slate-600 mt-1">Phát hiện <span className="font-bold text-red-600">3 thay đổi</span> về cấu trúc và <span className="font-bold text-orange-600">1 thay đổi</span> về quy tắc.</p>
+              </div>
+              
+              <div className="border border-slate-200 rounded-xl overflow-hidden">
+                 <table className="w-full text-left text-[13px]">
+                   <thead className="bg-[#f8fafc] border-b border-slate-200 text-slate-700">
+                     <tr>
+                       <th className="px-4 py-3 font-semibold w-1/4">Tên trường / Thuộc tính</th>
+                       <th className="px-4 py-3 font-semibold w-[15%]">Hành động</th>
+                       <th className="px-4 py-3 font-semibold w-[30%]">Phiên bản cũ (v2.0)</th>
+                       <th className="px-4 py-3 font-semibold w-[30%]">Phiên bản mới (v3.2)</th>
+                     </tr>
+                   </thead>
+                   <tbody className="divide-y divide-slate-100">
+                     {/* Added Field */}
+                     <tr className="bg-green-50/30">
+                       <td className="px-4 py-3 font-medium text-slate-800">Số điện thoại liên hệ</td>
+                       <td className="px-4 py-3"><span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">Thêm mới</span></td>
+                       <td className="px-4 py-3 text-slate-500 italic">Chưa có</td>
+                       <td className="px-4 py-3 text-slate-800">
+                         <div className="flex flex-col gap-1">
+                           <span>Kiểu dữ liệu: <code className="bg-white border border-slate-200 px-1 rounded text-blue-600">string</code></span>
+                           <span>Chiều dài: <code className="bg-white border border-slate-200 px-1 rounded">20</code></span>
+                         </div>
+                       </td>
+                     </tr>
+                     {/* Modified Field - DataType */}
+                     <tr className="bg-blue-50/30">
+                       <td className="px-4 py-3 font-medium text-slate-800">Mã tỉnh</td>
+                       <td className="px-4 py-3"><span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded">Sửa kiểu dữ liệu</span></td>
+                       <td className="px-4 py-3 text-slate-800">
+                         Kiểu dữ liệu: <code className="bg-white border border-slate-200 px-1 rounded text-red-600">number</code>
+                       </td>
+                       <td className="px-4 py-3 text-green-700 font-medium">
+                         Kiểu dữ liệu: <code className="bg-white border border-slate-200 px-1 rounded text-green-600">string</code>
+                       </td>
+                     </tr>
+                     {/* Modified Field - Constraint */}
+                     <tr className="bg-purple-50/30">
+                       <td className="px-4 py-3 font-medium text-slate-800">Mã tỉnh</td>
+                       <td className="px-4 py-3"><span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded">Sửa ràng buộc</span></td>
+                       <td className="px-4 py-3 text-slate-800">
+                         Unique Index: <span className="text-red-500 font-medium">Không có</span>
+                       </td>
+                       <td className="px-4 py-3 text-green-700 font-medium">
+                         Unique Index: <span className="text-green-600 font-medium">Đã thiết lập</span>
+                       </td>
+                     </tr>
+                     {/* Removed Field */}
+                     <tr className="bg-red-50/30">
+                       <td className="px-4 py-3 font-medium text-slate-800">Ghi chú phụ</td>
+                       <td className="px-4 py-3"><span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">Xóa bỏ</span></td>
+                       <td className="px-4 py-3 text-slate-800">
+                         Trường dữ liệu kiểu <code className="bg-white border border-slate-200 px-1 rounded">string</code>
+                       </td>
+                       <td className="px-4 py-3 text-slate-500 italic">
+                         Đã gỡ bỏ khỏi cấu trúc
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+              </div>
+            </div>
+            <div className="p-5 border-t border-slate-200 flex justify-end gap-3 bg-slate-50">
+              <button title="Đóng" aria-label="Đóng" onClick={() => setShowCompareModal(false)} className="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-[14px]">
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Version Detail Modal */}
+      {showVersionDetailModal && selectedVersionData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                 <Eye className="w-5 h-5 text-blue-600"/>
+                 <h3 className="text-[17px] font-bold text-slate-800">Chi tiết phiên bản {selectedVersionData.version}</h3>
+              </div>
+              <button title="Đóng" aria-label="Đóng" onClick={() => setShowVersionDetailModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+               <div className="grid grid-cols-2 gap-4 text-[13px]">
+                  <div><span className="text-slate-500">Người cập nhật:</span> <strong className="text-slate-800 block text-[14px]">{selectedVersionData.changedBy}</strong></div>
+                  <div><span className="text-slate-500">Thời gian cập nhật:</span> <strong className="text-slate-800 block text-[14px]">{selectedVersionData.date}</strong></div>
+                  <div><span className="text-slate-500">Loại thay đổi:</span> <span className={`inline-block px-2.5 py-1 mt-1 rounded-full text-xs font-medium ${
+                      selectedVersionData.type === 'Cấu trúc' ? 'bg-purple-100 text-purple-700' :
+                      selectedVersionData.type === 'Dữ liệu' ? 'bg-blue-100 text-blue-700' :
+                      'bg-orange-100 text-orange-700'
+                    }`}>{selectedVersionData.type}</span></div>
+                  <div><span className="text-slate-500">Trạng thái:</span> <span className={`inline-block px-2.5 py-1 mt-1 rounded-full text-xs font-medium ${
+                      selectedVersionData.status === 'active' ? 'bg-green-100 text-green-700' :
+                      'bg-slate-100 text-slate-600'
+                    }`}>{selectedVersionData.status === 'active' ? 'Đang dùng' : 'Lưu trữ'}</span></div>
+               </div>
+               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                 <h4 className="font-semibold text-slate-700 mb-2 text-[13px]">Nội dung thay đổi chi tiết</h4>
+                 <p className="text-[14px] text-slate-800">{selectedVersionData.description}</p>
+               </div>
+            </div>
+            <div className="p-5 border-t border-slate-200 flex justify-end bg-slate-50">
+              <button title="Đóng" aria-label="Đóng" onClick={() => setShowVersionDetailModal(false)} className="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-[14px]">
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Restore Modal */}
+      {showRestoreModal && selectedVersionData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-5 border-b border-slate-200">
+              <div className="flex flex-col items-center gap-3 text-center">
+                 <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                   <Clock className="w-6 h-6"/>
+                 </div>
+                 <div>
+                    <h3 className="text-[18px] font-bold text-slate-800">Xác nhận khôi phục</h3>
+                    <p className="text-[14px] text-slate-500 mt-1">Khôi phục về phiên bản <strong>{selectedVersionData.version}</strong>?</p>
+                 </div>
+              </div>
+            </div>
+            <div className="p-5 text-[14px] text-slate-600 text-center">
+              Hệ thống sẽ tạo ra một phiên bản mới (Nháp) dựa trên dữ liệu của phiên bản {selectedVersionData.version}. Các cấu trúc hiện tại sẽ không bị ghi đè cho đến khi bạn xác nhận và lưu.
+            </div>
+            <div className="p-5 border-t border-slate-200 flex justify-center gap-3 bg-slate-50">
+              <button onClick={() => setShowRestoreModal(false)} className="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors text-[14px] flex-1">
+                Hủy
+              </button>
+              <button onClick={() => {
+                 setShowRestoreModal(false);
+                 setSuccessNotificationMessage(`Khôi phục thành công dự thảo làm việc từ phiên bản ${selectedVersionData.version}`);
+                 setShowSuccessNotification(true);
+              }} className="px-5 py-2.5 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors text-[14px] flex-1 flex items-center justify-center gap-2">
+                <CheckCircle2 className="w-5 h-5"/> Khôi phục
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Version Modal */}
+      {showCreateVersionModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full">
+            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
+              <h3 className="font-bold text-slate-800 text-[16px]">Tạo phiên bản mới</h3>
+              <button title="Đóng" aria-label="Đóng" onClick={() => setShowCreateVersionModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5"/>
+              </button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-[13px] text-blue-800 flex gap-2">
+                 <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5"/>
+                 <p>Hệ thống sẽ sao chép cấu trúc và nội dung từ bản ghi hiện tại để tạo thành nền tảng cho phiên bản nâng cấp tiếp theo.</p>
+              </div>
+
+              <div>
+                 <label className="block text-sm font-semibold text-slate-700 mb-1">Tên phiên bản <span className="text-red-500">*</span></label>
+                 <input title="Tên phiên bản" type="text" className="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 outline-none" defaultValue="v3.3" />
+              </div>
+              
+              <div>
+                 <label className="block text-sm font-semibold text-slate-700 mb-1">Ngày bắt đầu hiệu lực <span className="text-red-500">*</span></label>
+                 <input title="Ngày bắt đầu hiệu lực" type="date" className="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <div>
+                 <label className="block text-sm font-semibold text-slate-700 mb-1">Mô tả thay đổi</label>
+                 <textarea title="Mô tả thay đổi" rows={3} className="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 outline-none" placeholder="Nhập lý do tạo mới hoặc các nội dung dự kiến thay đổi..."></textarea>
+              </div>
+            </div>
+            <div className="p-5 border-t border-slate-200 bg-slate-50 flex justify-end gap-3 rounded-b-lg">
+               <button onClick={() => setShowCreateVersionModal(false)} className="px-5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50">Hủy bỏ</button>
+               <button onClick={() => {
+                  setShowCreateVersionModal(false);
+                  setSuccessNotificationMessage("Đã tạo và lưu trữ phiên bản mới xuất phát từ cấu trúc hiện tại.");
+                  setShowSuccessNotification(true);
+               }} className="px-5 py-2.5 bg-blue-600 rounded-xl text-sm font-bold text-white hover:bg-blue-700 flex items-center gap-2">
+                 <Save className="w-4 h-4"/> Lưu phiên bản
+               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

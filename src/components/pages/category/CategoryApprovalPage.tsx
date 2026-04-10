@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CheckSquare, XSquare, Eye, Clock, CheckCircle, XCircle, Send, Plus, X } from 'lucide-react';
 
 interface Category {
@@ -22,7 +22,7 @@ interface ApprovalRequest {
 }
 
 const mockCategories: Category[] = [
-  { id: '1', code: 'CAT001', name: 'Danh mục A', type: 'standard', description: 'Danh mục tiêu chuẩn A', recordCount: 1245, status: 'active' },
+  { id: '1', code: 'CAT001', name: 'Biên tập danh mục A', type: 'standard', description: 'Danh mục tiêu chuẩn A', recordCount: 1245, status: 'active' },
   { id: '2', code: 'CAT002', name: 'Danh mục B', type: 'standard', description: 'Danh mục tiêu chuẩn B', recordCount: 892, status: 'active' },
   { id: '3', code: 'CAT003', name: 'Danh mục C', type: 'reference', description: 'Danh mục tham chiếu C', recordCount: 567, status: 'active' },
   { id: '4', code: 'CAT004', name: 'Danh mục D', type: 'reference', description: 'Danh mục tham chiếu D', recordCount: 423, status: 'active' },
@@ -31,7 +31,7 @@ const mockCategories: Category[] = [
 ];
 
 const mockRequests: ApprovalRequest[] = [
-  { id: '1', code: 'REQ001', categoryName: 'Danh mục A mới', type: 'create', submittedBy: 'Nguyễn Văn A', date: '10/12/2024', status: 'pending' },
+  { id: '1', code: 'REQ001', categoryName: 'Biên tập danh mục A mới', type: 'create', submittedBy: 'Nguyễn Văn A', date: '10/12/2024', status: 'pending' },
   { id: '2', code: 'REQ002', categoryName: 'Danh mục B', type: 'update', submittedBy: 'Trần Thị B', date: '09/12/2024', status: 'approved' },
   { id: '3', code: 'REQ003', categoryName: 'Danh mục C', type: 'delete', submittedBy: 'Lê Văn C', date: '08/12/2024', status: 'rejected' },
 ];
@@ -60,12 +60,12 @@ export function CategoryApprovalPage() {
   });
 
   const filteredRequests = selectedTab === 'all' ? mockRequests : mockRequests.filter(r => r.status === selectedTab);
-  const filteredCategories = filterType === 'all' 
-    ? mockCategories 
+  const filteredCategories = filterType === 'all'
+    ? mockCategories
     : mockCategories.filter(c => c.type === filterType);
 
   const handleCategoryToggle = (categoryId: string) => {
-    setSelectedCategories(prev => 
+    setSelectedCategories(prev =>
       prev.includes(categoryId)
         ? prev.filter(id => id !== categoryId)
         : [...prev, categoryId]
@@ -145,7 +145,7 @@ export function CategoryApprovalPage() {
         <div>
           <h1 className="text-slate-900">Phê duyệt danh mục</h1>
         </div>
-        <button 
+        <button
           onClick={() => setShowSubmitModal(true)}
           className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center gap-2"
         >
@@ -207,20 +207,19 @@ export function CategoryApprovalPage() {
             <button
               key={tab}
               onClick={() => setSelectedTab(tab)}
-              className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-                selectedTab === tab
+              className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === tab
                   ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
+                }`}
             >
               {tab === 'pending' && <Clock className="w-4 h-4" />}
               {tab === 'approved' && <CheckCircle className="w-4 h-4" />}
               {tab === 'rejected' && <XCircle className="w-4 h-4" />}
               {tab === 'all' && <CheckSquare className="w-4 h-4" />}
-              {tab === 'pending' ? `Chờ duyệt (${stats.pending})` : 
-               tab === 'approved' ? `Đã duyệt (${stats.approved})` : 
-               tab === 'rejected' ? `Từ chối (${stats.rejected})` : 
-               `Tất cả (${stats.total})`}
+              {tab === 'pending' ? `Chờ duyệt (${stats.pending})` :
+                tab === 'approved' ? `Đã duyệt (${stats.approved})` :
+                  tab === 'rejected' ? `Từ chối (${stats.rejected})` :
+                    `Tất cả (${stats.total})`}
             </button>
           ))}
         </div>
@@ -298,7 +297,8 @@ export function CategoryApprovalPage() {
                   Chọn các danh mục cần trình duyệt hoặc tạo mới
                 </p>
               </div>
-              <button 
+              <button
+                title="Đóng"
                 onClick={() => {
                   setShowSubmitModal(false);
                   setSelectedCategories([]);
@@ -314,8 +314,9 @@ export function CategoryApprovalPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <select
+                    title="Loại danh mục filter"
                     value={filterType}
-                    onChange={(e) => setFilterType(e.target.value as any)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterType(e.target.value as any)}
                     className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="all">Tất cả loại</option>
@@ -323,14 +324,14 @@ export function CategoryApprovalPage() {
                     <option value="reference">Tham chiếu</option>
                     <option value="system">Hệ thống</option>
                   </select>
-                  
+
                   <button
                     onClick={handleSelectAll}
                     className="px-3 py-2 text-sm text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100"
                   >
                     {selectedCategories.length === filteredCategories.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
                   </button>
-                  
+
                   {selectedCategories.length > 0 && (
                     <span className="text-sm text-slate-600">
                       Đã chọn: <span className="text-indigo-700">{selectedCategories.length}</span> danh mục
@@ -355,18 +356,18 @@ export function CategoryApprovalPage() {
                     <div
                       key={category.id}
                       onClick={() => handleCategoryToggle(category.id)}
-                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                        isSelected
+                      className={`border rounded-lg p-4 cursor-pointer transition-all ${isSelected
                           ? 'border-indigo-500 bg-indigo-50 shadow-md'
                           : 'border-slate-200 bg-white hover:border-indigo-300 hover:shadow-sm'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-2">
                           <input
+                            title="Chọn danh mục"
                             type="checkbox"
                             checked={isSelected}
-                            onChange={() => {}}
+                            onChange={() => { }}
                             className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
                           />
                           <code className="px-2 py-0.5 bg-slate-100 text-indigo-700 rounded text-xs">
@@ -375,21 +376,20 @@ export function CategoryApprovalPage() {
                         </div>
                         {getTypeBadge(category.type)}
                       </div>
-                      
+
                       <h4 className="text-sm text-slate-900 mb-2">{category.name}</h4>
                       <p className="text-xs text-slate-500 mb-3 line-clamp-2">
                         {category.description}
                       </p>
-                      
+
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-slate-600">
                           {category.recordCount.toLocaleString()} bản ghi
                         </span>
-                        <span className={`px-2 py-0.5 rounded-full ${
-                          category.status === 'active' 
-                            ? 'bg-green-100 text-green-700' 
+                        <span className={`px-2 py-0.5 rounded-full ${category.status === 'active'
+                            ? 'bg-green-100 text-green-700'
                             : 'bg-slate-100 text-slate-600'
-                        }`}>
+                          }`}>
                           {category.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}
                         </span>
                       </div>
@@ -418,11 +418,10 @@ export function CategoryApprovalPage() {
               <button
                 onClick={handleSubmitSelected}
                 disabled={selectedCategories.length === 0}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                  selectedCategories.length === 0
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${selectedCategories.length === 0
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                }`}
+                  }`}
               >
                 <Send className="w-4 h-4" />
                 Trình duyệt ({selectedCategories.length})
@@ -438,7 +437,8 @@ export function CategoryApprovalPage() {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
               <h2 className="text-slate-900">Tạo danh mục mới và trình duyệt</h2>
-              <button 
+              <button
+                title="Đóng"
                 onClick={() => setShowCreateModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -454,7 +454,7 @@ export function CategoryApprovalPage() {
                 <input
                   type="text"
                   value={newCategory.name}
-                  onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewCategory({ ...newCategory, name: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Nhập tên danh mục"
                 />
@@ -465,8 +465,9 @@ export function CategoryApprovalPage() {
                   Loại danh mục <span className="text-red-500">*</span>
                 </label>
                 <select
+                  title="Loại danh mục mới"
                   value={newCategory.type}
-                  onChange={(e) => setNewCategory({ ...newCategory, type: e.target.value as any })}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNewCategory({ ...newCategory, type: e.target.value as any })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="standard">Tiêu chuẩn</option>
@@ -481,7 +482,7 @@ export function CategoryApprovalPage() {
                 </label>
                 <textarea
                   value={newCategory.description}
-                  onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewCategory({ ...newCategory, description: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   rows={4}
                   placeholder="Nhập mô tả danh mục"
@@ -499,11 +500,10 @@ export function CategoryApprovalPage() {
               <button
                 onClick={handleCreateAndSubmit}
                 disabled={!newCategory.name}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                  !newCategory.name
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${!newCategory.name
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                }`}
+                  }`}
               >
                 <Send className="w-4 h-4" />
                 Tạo và trình duyệt
@@ -524,7 +524,8 @@ export function CategoryApprovalPage() {
                   Yêu cầu: <span className="text-indigo-700">{selectedRequest.categoryName}</span>
                 </p>
               </div>
-              <button 
+              <button
+                title="Đóng"
                 onClick={() => {
                   setShowSendToReviewerModal(false);
                   setSelectedRecipient('');
@@ -541,8 +542,9 @@ export function CategoryApprovalPage() {
                   Chọn người duyệt <span className="text-red-500">*</span>
                 </label>
                 <select
+                  title="Chọn người duyệt"
                   value={selectedRecipient}
-                  onChange={(e) => setSelectedRecipient(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedRecipient(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="">-- Chọn người duyệt --</option>
@@ -557,7 +559,7 @@ export function CategoryApprovalPage() {
                 <label className="block text-sm text-slate-700 mb-2">Nội dung yêu cầu</label>
                 <textarea
                   value={sendNote}
-                  onChange={(e) => setSendNote(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSendNote(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   rows={4}
                   placeholder="Nhập nội dung gửi kèm (nếu có)"
@@ -597,11 +599,10 @@ export function CategoryApprovalPage() {
               <button
                 onClick={handleSendToReviewer}
                 disabled={!selectedRecipient}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                  !selectedRecipient
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${!selectedRecipient
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     : 'bg-indigo-600 text-white hover:bg-indigo-700'
-                }`}
+                  }`}
               >
                 <Send className="w-4 h-4" />
                 Gửi trình duyệt

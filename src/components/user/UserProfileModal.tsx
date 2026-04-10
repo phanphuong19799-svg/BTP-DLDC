@@ -16,7 +16,7 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
           <h3 className="text-slate-900">Thông tin tài khoản</h3>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>

@@ -170,7 +170,7 @@ export function MasterDataWizard({ isOpen, onClose, onSubmit }: MasterDataWizard
             <h2 className="text-xl text-slate-900">Tạo mới dữ liệu chủ</h2>
             <p className="text-sm text-slate-600 mt-1">Quy trình 5 bước</p>
           </div>
-          <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded">
+          <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded" title="Đóng" aria-label="Đóng">
             <X className="w-5 h-5" />
           </button>
         </div>

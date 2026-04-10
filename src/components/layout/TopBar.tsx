@@ -592,7 +592,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Ngôn ngữ & Múi giờ</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -640,7 +640,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Giao diện</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -664,11 +664,11 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Màu chủ đạo</label>
                 <div className="flex gap-3">
-                  <button className="w-12 h-12 bg-blue-600 rounded-lg border-2 border-blue-800"></button>
-                  <button className="w-12 h-12 bg-green-600 rounded-lg border-2 border-transparent hover:border-green-800"></button>
-                  <button className="w-12 h-12 bg-purple-600 rounded-lg border-2 border-transparent hover:border-purple-800"></button>
-                  <button className="w-12 h-12 bg-orange-600 rounded-lg border-2 border-transparent hover:border-orange-800"></button>
-                  <button className="w-12 h-12 bg-red-600 rounded-lg border-2 border-transparent hover:border-red-800"></button>
+                  <button title="Hành động" aria-label="Hành động" className="w-12 h-12 bg-blue-600 rounded-lg border-2 border-blue-800"></button>
+                  <button title="Hành động" aria-label="Hành động" className="w-12 h-12 bg-green-600 rounded-lg border-2 border-transparent hover:border-green-800"></button>
+                  <button title="Hành động" aria-label="Hành động" className="w-12 h-12 bg-purple-600 rounded-lg border-2 border-transparent hover:border-purple-800"></button>
+                  <button title="Hành động" aria-label="Hành động" className="w-12 h-12 bg-orange-600 rounded-lg border-2 border-transparent hover:border-orange-800"></button>
+                  <button title="Hành động" aria-label="Hành động" className="w-12 h-12 bg-red-600 rounded-lg border-2 border-transparent hover:border-red-800"></button>
                 </div>
               </div>
             </div>
@@ -696,7 +696,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Định dạng hiển thị</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -752,7 +752,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Email thông báo</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -818,7 +818,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Cài đặt âm thanh</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -885,7 +885,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Xác thực 2 yếu tố</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -946,7 +946,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Quản lý phiên đăng nhập</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -1029,7 +1029,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Sao lưu & Phục hồi</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -1113,7 +1113,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Quản lý cơ sở dữ liệu</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -1193,7 +1193,7 @@ export function TopBar({ title, description, onUserMenuClick, currentPage, bread
                 </div>
                 <h2 className="text-slate-900">Nhật ký hệ thống</h2>
               </div>
-              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeSettingsModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-6 h-6" />
               </button>
             </div>

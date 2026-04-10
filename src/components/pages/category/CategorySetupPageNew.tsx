@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { 
-  Settings, 
-  CheckCircle2, 
-  Globe, 
-  FileText, 
+import { useState, ChangeEvent } from 'react';
+import {
+  Settings,
+  CheckCircle2,
+  Globe,
+  FileText,
   TrendingUp,
   Plus,
   Search,
@@ -68,16 +68,16 @@ export function CategorySetupPageNew() {
     referenceTable: '',
     referenceField: ''
   });
-  
+
   // Validation errors
-  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
-  
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+
   // Mock data
   const [categories, setCategories] = useState<Category[]>([
     {
       id: '1',
       code: 'CAT001',
-      name: 'Danh mục A',
+      name: 'Biên tập danh mục A',
       description: 'Danh mục quản lý thông tin A',
       type: 'standard',
       status: 'active',
@@ -125,8 +125,8 @@ export function CategorySetupPageNew() {
 
   const filteredCategories = categories.filter(cat => {
     const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.description.toLowerCase().includes(searchTerm.toLowerCase());
+      cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'all' || cat.type === filterType;
     const matchesStatus = filterStatus === 'all' || cat.status === filterStatus;
     return matchesSearch && matchesType && matchesStatus;
@@ -171,55 +171,50 @@ export function CategorySetupPageNew() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('setup')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'setup'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'setup'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Settings className="w-4 h-4" />
             Thiết lập
           </button>
           <button
             onClick={() => setActiveTab('approval')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'approval'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'approval'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckCircle2 className="w-4 h-4" />
             Phê duyệt
           </button>
           <button
             onClick={() => setActiveTab('publish')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'publish'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'publish'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Globe className="w-4 h-4" />
             Công khai
           </button>
           <button
             onClick={() => setActiveTab('report')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'report'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'report'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <FileText className="w-4 h-4" />
             Báo cáo và tìm kiếm
           </button>
           <button
             onClick={() => setActiveTab('stats')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'stats'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'stats'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <TrendingUp className="w-4 h-4" />
             Thu thập số liệu thống kê
@@ -233,6 +228,7 @@ export function CategorySetupPageNew() {
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4">
+
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                       <Settings className="w-5 h-5 text-white" />
@@ -304,15 +300,16 @@ export function CategorySetupPageNew() {
                     type="text"
                     placeholder="Tìm kiếm theo tên, mã danh mục..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-slate-400" />
                   <select
+                    title="Lọc loại"
                     value={filterType}
-                    onChange={(e) => setFilterType(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterType(e.target.value)}
                     className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="all">Tất cả loại</option>
@@ -324,8 +321,9 @@ export function CategorySetupPageNew() {
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-slate-400" />
                   <select
+                    title="Lọc trạng thái"
                     value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
                     className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="all">Tất cả trạng thái</option>
@@ -446,6 +444,7 @@ export function CategorySetupPageNew() {
               <button
                 onClick={() => setShowAddModal(false)}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -483,7 +482,10 @@ export function CategorySetupPageNew() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
-                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select
+                    title="Loại danh mục"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
                     <option value="">Chọn loại</option>
                     <option value="standard">Tiêu chuẩn</option>
                     <option value="reference">Tham chiếu</option>
@@ -492,7 +494,10 @@ export function CategorySetupPageNew() {
                 </div>
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
-                  <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select
+                    title="Trạng thái"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
                     <option value="active">Hoạt động</option>
                     <option value="inactive">Ngừng hoạt động</option>
                   </select>
@@ -737,6 +742,7 @@ export function CategorySetupPageNew() {
               <button
                 onClick={() => setShowAddFieldModal(false)}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -749,7 +755,7 @@ export function CategorySetupPageNew() {
                   <input
                     type="text"
                     value={newFieldData.name}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, name: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập tên trường"
                   />
@@ -757,8 +763,9 @@ export function CategorySetupPageNew() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
                   <select
+                    title="Kiểu dữ liệu"
                     value={newFieldData.dataType}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="TEXT">Text</option>
@@ -773,8 +780,9 @@ export function CategorySetupPageNew() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
                   <select
+                    title="Bắt buộc"
                     value={newFieldData.required ? 'true' : 'false'}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="true">Có</option>
@@ -786,7 +794,7 @@ export function CategorySetupPageNew() {
                   <input
                     type="text"
                     value={newFieldData.defaultValue || ''}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập giá trị mặc định"
                   />
@@ -825,6 +833,7 @@ export function CategorySetupPageNew() {
               <button
                 onClick={() => setShowFieldFormModal(false)}
                 className="text-slate-400 hover:text-slate-600"
+                title="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -837,7 +846,7 @@ export function CategorySetupPageNew() {
                   <input
                     type="text"
                     value={newFieldData.name}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       setNewFieldData({ ...newFieldData, name: e.target.value });
                       if (fieldErrors.name) {
                         setFieldErrors({ ...fieldErrors, name: '' });
@@ -853,8 +862,9 @@ export function CategorySetupPageNew() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Kiểu dữ liệu *</label>
                   <select
+                    title="Kiểu dữ liệu"
                     value={newFieldData.dataType}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, dataType: e.target.value })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="TEXT">Text</option>
@@ -871,8 +881,9 @@ export function CategorySetupPageNew() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Khóa chính</label>
                   <select
+                    title="Khóa chính"
                     value={newFieldData.isPrimaryKey ? 'true' : 'false'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const isPrimary = e.target.value === 'true';
                       setNewFieldData({ ...newFieldData, isPrimaryKey: isPrimary });
                     }}
@@ -885,8 +896,9 @@ export function CategorySetupPageNew() {
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Bắt buộc *</label>
                   <select
+                    title="Bắt buộc"
                     value={newFieldData.required ? 'true' : 'false'}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setNewFieldData({ ...newFieldData, required: e.target.value === 'true' })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="true">Có</option>
@@ -898,7 +910,7 @@ export function CategorySetupPageNew() {
                   <input
                     type="number"
                     value={newFieldData.maxLength || ''}
-                    onChange={(e) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, maxLength: parseInt(e.target.value) })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Nhập độ dài tối đa"
                   />
@@ -910,7 +922,7 @@ export function CategorySetupPageNew() {
                 <input
                   type="text"
                   value={newFieldData.defaultValue || ''}
-                  onChange={(e) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNewFieldData({ ...newFieldData, defaultValue: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập giá trị mặc định"
                 />
@@ -921,8 +933,9 @@ export function CategorySetupPageNew() {
                 <div className="mb-3">
                   <label className="block text-sm text-slate-700 mb-1">Khóa ngoại</label>
                   <select
+                    title="Khóa ngoại"
                     value={newFieldData.isForeignKey ? 'true' : 'false'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                       const isForeign = e.target.value === 'true';
                       setNewFieldData({ ...newFieldData, isForeignKey: isForeign });
                     }}
@@ -938,8 +951,9 @@ export function CategorySetupPageNew() {
                     <div>
                       <label className="block text-sm text-slate-700 mb-1">Bảng tham chiếu *</label>
                       <select
+                        title="Bảng tham chiếu"
                         value={newFieldData.referenceTable || ''}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                           setNewFieldData({ ...newFieldData, referenceTable: e.target.value });
                           if (fieldErrors.referenceTable) {
                             setFieldErrors({ ...fieldErrors, referenceTable: '' });
@@ -948,7 +962,7 @@ export function CategorySetupPageNew() {
                         className={`w-full px-3 py-2 border ${fieldErrors.referenceTable ? 'border-red-500' : 'border-slate-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       >
                         <option value="">Chọn bảng</option>
-                        <option value="danh_muc_a">Danh mục A</option>
+                        <option value="danh_muc_a">Biên tập danh mục A</option>
                         <option value="danh_muc_b">Danh mục B</option>
                         <option value="danh_muc_c">Danh mục C</option>
                       </select>
@@ -959,8 +973,9 @@ export function CategorySetupPageNew() {
                     <div>
                       <label className="block text-sm text-slate-700 mb-1">Trường tham chiếu *</label>
                       <select
+                        title="Trường tham chiếu"
                         value={newFieldData.referenceField || ''}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                           setNewFieldData({ ...newFieldData, referenceField: e.target.value });
                           if (fieldErrors.referenceField) {
                             setFieldErrors({ ...fieldErrors, referenceField: '' });
@@ -986,7 +1001,7 @@ export function CategorySetupPageNew() {
                 <textarea
                   rows={3}
                   value={newFieldData.description || ''}
-                  onChange={(e) => setNewFieldData({ ...newFieldData, description: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNewFieldData({ ...newFieldData, description: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Nhập mô tả về trường..."
                 />
@@ -1003,22 +1018,22 @@ export function CategorySetupPageNew() {
               <button
                 onClick={() => {
                   // Validation
-                  const errors: {[key: string]: string} = {};
-                  
+                  const errors: { [key: string]: string } = {};
+
                   // Kiểm tra tên trường bắt buộc
                   if (!newFieldData.name.trim()) {
                     errors.name = 'Tên trường không được để trống';
                   }
-                  
+
                   // Kiểm tra trùng tên trường (ngoại trừ trường đang sửa)
-                  const isDuplicate = newCategoryFields.some((field, index) => 
-                    field.name.toLowerCase() === newFieldData.name.toLowerCase() && 
+                  const isDuplicate = newCategoryFields.some((field, index) =>
+                    field.name.toLowerCase() === newFieldData.name.toLowerCase() &&
                     index !== editingFieldIndex
                   );
                   if (isDuplicate) {
                     errors.name = 'Tên trường đã tồn tại';
                   }
-                  
+
                   // Kiểm tra khóa ngoại
                   if (newFieldData.isForeignKey) {
                     if (!newFieldData.referenceTable) {
@@ -1028,18 +1043,18 @@ export function CategorySetupPageNew() {
                       errors.referenceField = 'Vui lòng chọn trường tham chiếu';
                     }
                   }
-                  
+
                   if (Object.keys(errors).length > 0) {
                     setFieldErrors(errors);
                     return;
                   }
-                  
+
                   // Nếu đang đặt khóa chính, bỏ khóa chính của các trường khác
                   let fieldsToUpdate = [...newCategoryFields];
                   if (newFieldData.isPrimaryKey) {
                     fieldsToUpdate = fieldsToUpdate.map(f => ({ ...f, isPrimaryKey: false }));
                   }
-                  
+
                   if (editingFieldIndex !== null) {
                     fieldsToUpdate[editingFieldIndex] = { ...newFieldData, id: newCategoryFields[editingFieldIndex].id };
                     setNewCategoryFields(fieldsToUpdate);

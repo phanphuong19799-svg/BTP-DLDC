@@ -69,7 +69,7 @@ export function AddDataSourceForm({ onBack }: AddDataSourceFormProps) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <button
+        <button title="Hành động" aria-label="Hành động"
           onClick={onBack}
           className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
         >

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { 
-  Plus, 
-  Edit2, 
-  Trash2, 
-  Key, 
-  Link, 
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Key,
+  Link,
   Save,
   Send,
   ChevronRight,
@@ -74,7 +74,7 @@ export function SetupCategoryStructure() {
   ];
 
   const dataTypes = [
-    'VARCHAR', 'NVARCHAR', 'INT', 'BIGINT', 'DECIMAL', 
+    'VARCHAR', 'NVARCHAR', 'INT', 'BIGINT', 'DECIMAL',
     'DATE', 'DATETIME', 'BOOLEAN', 'TEXT', 'JSON'
   ];
 
@@ -172,7 +172,7 @@ export function SetupCategoryStructure() {
                 className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
               >
                 <Save className="w-5 h-5" />
-                Lưu nháp
+                Lưu
               </button>
               <button
                 onClick={handleSendApproval}
@@ -319,7 +319,7 @@ export function SetupCategoryStructure() {
             <div className="p-6 border-b border-slate-200">
               <h3 className="text-lg text-slate-900">Thêm trường dữ liệu mới</h3>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -455,7 +455,7 @@ export function SetupCategoryStructure() {
             <div className="p-6 border-b border-slate-200">
               <h3 className="text-lg text-slate-900">Chỉnh sửa trường dữ liệu</h3>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>

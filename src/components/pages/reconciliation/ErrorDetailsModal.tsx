@@ -88,7 +88,7 @@ export function ErrorDetailsModal({ isOpen, onClose, recordCode }: ErrorDetailsM
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
+            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>

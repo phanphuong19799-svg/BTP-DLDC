@@ -1,0 +1,131 @@
+III	QUY TRÌNH XỬ LÝ DỮ LIỆU
+III.1	 xử lý dữ liệu danh mục từ Bộ ngành ngoài
+152	 biến đổi dữ liệu Dữ liệu danh mục dùng chung thu thập qua TTDLQG
+153	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo - Hưởng trợ giúp xã hội
+154	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo - Hưởng trợ giúp xã hội
+155	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo - Thông tin người nghèo, cận nghèo
+156	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo - Người đơn thân
+157	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo - Trẻ em là đối tượng bảo trợ xã hội
+158	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo -Người có HIV
+159	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo -Người cao tuổi
+160	 biến đổi dữ liệu Bảo trợ xã hội và giảm nghèo - Thông tin về người khuyết tật
+161	 biến đổi dữ liệu Người có công - Hồ sơ công nhận người có công
+162	 biến đổi dữ liệu Người có công - Hồ sơ liệt sĩ:
+163	 biến đổi dữ liệu Người có công - Hồ sơ công nhận thân nhân người có công
+164	 biến đổi dữ liệu Trẻ em -Trẻ em
+165	 làm sạch Thông tin Bản án, quyết định
+166	 chuẩn hóa Thông tin Bản án, quyết định
+167	 biến đổi Thông tin Bản án, quyết định
+III.2	 chuẩn hóa, làm sạch dữ liệu thu thập từ các Hệ thống trong ngành
+III.2.1	Cục Hành chính tư pháp
+III.2.1.1	CSDL Hộ tịch điện tử
+168	 làm sạch Bộ dữ liệu hồ sơ đăng ký khai sinh
+171	 làm sạch Bộ dữ liệu hồ sơ đăng ký kết hôn
+174	 làm sạch Bộ dữ liệu hồ sơ cấp Giấy xác nhận tình trạng hôn nhân
+177	 làm sạch Bộ dữ liệu hồ sơ đăng ký khai tử
+180	 làm sạch Bộ dữ liệu hồ sơ đăng ký nhận cha, mẹ, con
+183	 làm sạch Bộ dữ liệu hồ sơ đăng ký nuôi con nuôi
+186	 làm sạch Bộ dữ liệu hồ sơ đăng ký giám hộ
+189	 làm sạch Bộ dữ liệu hồ sơ đăng ký chấm dứt giám hộ
+192	 làm sạch Bộ dữ liệu hồ sơ đăng ký thay đổi, cải chính, bổ sung thông tin hộ tịch, xác định lại dân tộc
+195	 làm sạch Bộ dữ liệu hồ sơ đăng ký giám sát việc giám hộ
+198	 làm sạch Bộ dữ liệu hồ sơ đăng ký chấm dứt giám sát việc giám hộ
+201	 làm sạch Bộ dữ liệu hồ sơ ghi vào sổ việc ly hôn/hủy việc kết hôn đã thực hiện tại cơ quan có thẩm quyền của nước ngoài (ghi chú ly hôn)
+III.2.1.2	Hệ thống quản lý hồ sơ quốc tịch
+204	 làm sạch Nhập Quốc tịch
+207	 làm sạch Thôi Quốc tịch
+210	 làm sạch Trở lại Quốc tịch
+III.2.2	Cục Quản lý thi hành án dân sự
+III.2.2.1	Cơ sở dữ liệu thi hành án dân sự
+213	 làm sạch Yêu cầu thi hành án của cá nhân, cơ quan, tổ chức
+216	 làm sạch Quyết định thi hành án dân sự
+219	 làm sạch Người phải thi hành án, người được thi hành án, người có quyền lợi nghĩa vụ liên quan
+222	 làm sạch Nghĩa vụ thi hành án
+225	 làm sạch Trạng thái thi hành án
+228	 làm sạch Tài sản thi hành án
+231	 làm sạch Xác minh điều kiện trong thi hành án dân sự
+234	 làm sạch Cưỡng chế thi hành án trong thi hành án dân sự
+237	 làm sạch Áp dụng biện pháp bảo đảm trong thi hành án dân sự
+240	 làm sạch Chứng từ nghiệp vụ trong thi hành án dân sự
+243	 làm sạch Biên lai thu tiền thi hành án dân sự
+246	 làm sạch Vật chứng trong thi hành án dân sự
+249	 làm sạch Thẩm định giá tài sản trong thi hành án dân sự
+252	 làm sạch Đấu giá tài sản trong thi hành án dân sự
+255	 làm sạch Giải quyết khiếu nại, tố cáo trong thi hành án dân sự
+258	 làm sạch Hướng dẫn nghiệp vụ trong thi hành án dân sự
+III.2.3	Cục Đăng ký giao dịch bảo đảm và BTNN
+III.2.3.1	Cơ sở dữ liệu về biện pháp bảo đảm
+261	 làm sạch Thông tin chung (Bao gồm người đăng ký và Hợp đồng bảo đảm)
+264	 làm sạch Bên bảo đảm
+267	 làm sạch Bên nhận bảo đảm
+270	 làm sạch Bên nhận bảo đảm
+271	 chuẩn hóa Tài sản bảo đảm
+III.2.4	Cục Kiểm tra văn bản và Quản lý xử lý vi phạm hành chính
+III.2.4.1	CSDL quốc gia về pháp luật
+273	 làm sạch Văn bản quy phạm pháp luật
+276	 làm sạch Nội dung của văn bản quy phạm pháp luật
+279	 làm sạch Quan hệ giữa các điều khoản trong các văn bản quy phạm pháp luật
+282	 làm sạch Văn bản hợp nhất
+285	 làm sạch Hệ thống hóa văn bản quy phạm pháp luật
+III.2.4.2	Cơ sở dữ liệu tương trợ tư pháp về dân sự
+288	 làm sạch Hồ sơ ủy thác tư pháp đến
+291	 làm sạch Hồ sơ ủy thác tư pháp đi
+III.2.4.3	Hệ thống thông tin trợ giúp pháp lý
+294	 làm sạch Tổ chức thực hiện trợ giúp pháp lý
+297	 làm sạch Tổ chức đăng ký tham gia trợ giúp pháp lý
+300	 làm sạch Thông tin văn bản cử người thực hiện trợ giúp pháp lý
+303	 làm sạch Trung tâm TGPL nhà nước
+306	 làm sạch Chi nhánh TGPL
+309	 làm sạch Người thực hiện TGPL
+III.2.4.4	CSDL phổ biến, giáo dục pháp luật và hoà giải cơ sở
+312	 làm sạch Báo cáo viên pháp luật
+315	 làm sạch Tuyên truyền viên pháp luật
+318	 làm sạch Chương trình, kế hoạch về phổ biến, giáo dục pháp luật
+321	 làm sạch Hội đồng phối hợp phổ biến, giáo dục pháp luật
+324	 làm sạch Đề án
+327	 làm sạch Hội nghị tập huấn (trực tuyến, trực tiếp)
+330	 làm sạch Hội thảo
+333	 làm sạch Tổ hoà giải
+336	 làm sạch Hoà giải viên
+339	 làm sạch Vụ việc hoà giải
+342	 làm sạch Tập huấn viên
+345	 làm sạch Kinh phí phổ biến giáo dục pháp luật
+348	 làm sạch Tiêu chí, chỉ tiêu tiếp cận pháp luật
+351	 làm sạch Đánh giá cấp xã đạt chuẩn tiếp cận pháp luật
+354	 làm sạch Cuộc PBGDPL
+357	 làm sạch Cuộc thi tìm hiểu về pháp luật
+III.2.5	Cục Bổ trợ tư pháp
+III.2.5.1	CSDL quản lý đấu giá tài sản
+360	 làm sạch Đấu giá viên
+363	 làm sạch Tổ chức hành nghề đấu giá
+366	 làm sạch Người có tài sản đấu giá
+369	 làm sạch Thông tin việc đấu giá
+372	 làm sạch Tài sản đấu giá
+375	 làm sạch Công chứng viên
+378	 làm sạch Thông tin ngăn chặn
+381	 làm sạch Tổ chức hành nghề công chứng
+384	 làm sạch Tài sản trong giao dịch công chứng
+387	 làm sạch Kết quả hoạt động công chứng
+390	 làm sạch Quản tài viên
+393	 làm sạch Doanh nghiệp quản lý, thanh lý tài sản
+396	 làm sạch Luật sư Việt Nam
+399	 làm sạch Người được cấp chứng chỉ hành nghề luật sư
+402	 làm sạch Tổ chức hành nghề luật sư Việt Nam
+405	 làm sạch Luật sư nước ngoài
+408	 làm sạch Tổ chức hành nghề luật sư nước ngoài
+411	 làm sạch Trọng tài viên
+414	 làm sạch Trung tâm trọng tài
+417	 làm sạch Chi nhánh của tổ chức trọng tài
+420	 làm sạch Văn phòng đại diện của trung tâm trọng tài
+423	 làm sạch Hòa giải viên thương mại
+426	 làm sạch Trung tâm hòa giải thương mại
+429	 làm sạch Giám định viên tư pháp
+432	 làm sạch Tổ chức giám định tư pháp
+III.2.6	Vụ Hợp tác quốc tế
+III.2.5.1	CSDL Hợp tác quốc tế
+435	 làm sạch Thông tin điều ước quốc tế, thỏa thuận quốc tế
+438	 làm sạch Thôngquan chương trình dự án
+441	 làm sạch Danh sách chuyên gia
+444	 làm sạch Thông tin hội nghị, hội thảo
+447	 làm sạch Thông tin sản phẩm nghiên cứu, truyền thông
+450	 làm sạch Thông tin Đoàn

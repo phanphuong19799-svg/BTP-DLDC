@@ -20,7 +20,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'CSDL A', source: 'Hệ thống A', syncedCount: 1245832, lastSync: '11/12/2024 14:30', status: 'success' },
     { id: '2', name: 'CSDL B', source: 'Hệ thống B', syncedCount: 892456, lastSync: '11/12/2024 14:25', status: 'success' },
     { id: '3', name: 'CSDL C', source: 'Hệ thống C', syncedCount: 567234, lastSync: '11/12/2024 14:20', status: 'warning' },
-    { id: '4', name: 'Danh mục A', source: 'Đơn vị A', syncedCount: 423189, lastSync: '11/12/2024 14:15', status: 'success' },
+    { id: '4', name: 'Biên tập danh mục A', source: 'Đơn vị A', syncedCount: 423189, lastSync: '11/12/2024 14:15', status: 'success' },
     { id: '5', name: 'Danh mục B', source: 'Đơn vị B', syncedCount: 356890, lastSync: '11/12/2024 14:10', status: 'success' },
     { id: '6', name: 'Danh mục C', source: 'Đơn vị C', syncedCount: 289345, lastSync: '11/12/2024 14:05', status: 'error' },
     { id: '7', name: 'Dịch vụ A', source: 'Hệ thống A', syncedCount: 234567, lastSync: '11/12/2024 14:00', status: 'success' },
@@ -32,7 +32,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'CSDL A - Đã làm sạch', source: 'Quy trình xử lý', syncedCount: 1208945, lastSync: '11/12/2024 15:00', status: 'success' },
     { id: '2', name: 'CSDL B - Đã chuẩn hóa', source: 'Quy trình xử lý', syncedCount: 865234, lastSync: '11/12/2024 14:55', status: 'success' },
     { id: '3', name: 'CSDL C - Đã biến đổi', source: 'Quy trình xử lý', syncedCount: 534567, lastSync: '11/12/2024 14:50', status: 'success' },
-    { id: '4', name: 'Danh mục A - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 415678, lastSync: '11/12/2024 14:45', status: 'success' },
+    { id: '4', name: 'Biên tập danh mục A - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 415678, lastSync: '11/12/2024 14:45', status: 'success' },
     { id: '5', name: 'Danh mục B - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 348921, lastSync: '11/12/2024 14:40', status: 'success' },
     { id: '6', name: 'Danh mục C - Chờ xử lý', source: 'Quy trình xử lý', syncedCount: 267890, lastSync: '11/12/2024 14:35', status: 'warning' },
     { id: '7', name: 'Dịch vụ A - Đã xử lý', source: 'Quy trình xử lý', syncedCount: 228456, lastSync: '11/12/2024 14:30', status: 'success' },
@@ -42,7 +42,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'API CSDL A', source: 'Dịch vụ chia sẻ', syncedCount: 45632, lastSync: '11/12/2024 15:30', status: 'success' },
     { id: '2', name: 'API CSDL B', source: 'Dịch vụ chia sẻ', syncedCount: 38945, lastSync: '11/12/2024 15:25', status: 'success' },
     { id: '3', name: 'API CSDL C', source: 'Dịch vụ chia sẻ', syncedCount: 27834, lastSync: '11/12/2024 15:20', status: 'success' },
-    { id: '4', name: 'Export Danh mục A', source: 'Xuất dữ liệu', syncedCount: 15678, lastSync: '11/12/2024 15:15', status: 'success' },
+    { id: '4', name: 'Export Biên tập danh mục A', source: 'Xuất dữ liệu', syncedCount: 15678, lastSync: '11/12/2024 15:15', status: 'success' },
     { id: '5', name: 'Export Danh mục B', source: 'Xuất dữ liệu', syncedCount: 12456, lastSync: '11/12/2024 15:10', status: 'success' },
     { id: '6', name: 'Đồng bộ Hệ thống A', source: 'Tích hợp', syncedCount: 9347, lastSync: '11/12/2024 15:05', status: 'success' },
     { id: '7', name: 'Đồng bộ Hệ thống B', source: 'Tích hợp', syncedCount: 7000, lastSync: '11/12/2024 15:00', status: 'success' },
@@ -51,7 +51,7 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'CSDL A - Lỗi dữ liệu', source: 'Kiểm tra chất lượng', syncedCount: 36887, lastSync: '11/12/2024 14:30', status: 'error' },
     { id: '2', name: 'CSDL B - Lỗi format', source: 'Kiểm tra chất lượng', syncedCount: 27222, lastSync: '11/12/2024 14:25', status: 'error' },
     { id: '3', name: 'CSDL C - Lỗi đồng bộ', source: 'Kiểm tra chất lượng', syncedCount: 32667, lastSync: '11/12/2024 14:20', status: 'error' },
-    { id: '4', name: 'Danh mục A - Lỗi nhỏ', source: 'Kiểm tra chất lượng', syncedCount: 7511, lastSync: '11/12/2024 14:15', status: 'warning' },
+    { id: '4', name: 'Biên tập danh mục A - Lỗi nhỏ', source: 'Kiểm tra chất lượng', syncedCount: 7511, lastSync: '11/12/2024 14:15', status: 'warning' },
     { id: '5', name: 'Danh mục B - Lỗi nhỏ', source: 'Kiểm tra chất lượng', syncedCount: 7969, lastSync: '11/12/2024 14:10', status: 'warning' },
     { id: '6', name: 'Danh mục C - Lỗi nghiêm trọng', source: 'Kiểm tra chất lượng', syncedCount: 21455, lastSync: '11/12/2024 14:05', status: 'error' },
   ],
@@ -73,14 +73,14 @@ const detailedData: { [key: string]: DataRecord[] } = {
     { id: '1', name: 'Làm sạch CSDL A', source: 'Xử lý dữ liệu', syncedCount: 5, lastSync: '11/12/2024 16:05', status: 'success' },
     { id: '2', name: 'Chuẩn hóa CSDL B', source: 'Xử lý dữ liệu', syncedCount: 7, lastSync: '11/12/2024 16:03', status: 'success' },
     { id: '3', name: 'Biến đổi CSDL C', source: 'Xử lý dữ liệu', syncedCount: 4, lastSync: '11/12/2024 16:02', status: 'success' },
-    { id: '4', name: 'Đồng bộ Danh mục A', source: 'Thu thập', syncedCount: 3, lastSync: '11/12/2024 16:01', status: 'success' },
+    { id: '4', name: 'Đồng bộ Biên tập danh mục A', source: 'Thu thập', syncedCount: 3, lastSync: '11/12/2024 16:01', status: 'success' },
     { id: '5', name: 'Xuất dữ liệu Dịch vụ A', source: 'Chia sẻ', syncedCount: 4, lastSync: '11/12/2024 16:00', status: 'success' },
   ],
   'Tỷ lệ chính xác': [
     { id: '1', name: 'CSDL A - Kiểm tra', source: 'QA', syncedCount: 1219945, lastSync: '11/12/2024 15:00', status: 'success' },
     { id: '2', name: 'CSDL B - Kiểm tra', source: 'QA', syncedCount: 873011, lastSync: '11/12/2024 14:55', status: 'success' },
     { id: '3', name: 'CSDL C - Kiểm tra', source: 'QA', syncedCount: 555567, lastSync: '11/12/2024 14:50', status: 'success' },
-    { id: '4', name: 'Danh mục A - Xác thực', source: 'QA', syncedCount: 413789, lastSync: '11/12/2024 14:45', status: 'success' },
+    { id: '4', name: 'Biên tập danh mục A - Xác thực', source: 'QA', syncedCount: 413789, lastSync: '11/12/2024 14:45', status: 'success' },
     { id: '5', name: 'Danh mục B - Xác thực', source: 'QA', syncedCount: 349145, lastSync: '11/12/2024 14:40', status: 'success' },
   ],
 };
@@ -214,10 +214,10 @@ export function KPICards({ timeRange = '30days', sourceUnit = 'all' }: KPICardsP
         {kpis.map((kpi) => {
           const Icon = kpi.icon;
           const TrendIcon = kpi.trend === 'up' ? TrendingUp : TrendingDown;
-          
+
           return (
-            <div 
-              key={kpi.label} 
+            <div
+              key={kpi.label}
               onClick={() => setSelectedKPI(kpi.label)}
               className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer group"
             >
@@ -250,7 +250,8 @@ export function KPICards({ timeRange = '30days', sourceUnit = 'all' }: KPICardsP
                   Chi tiết dữ liệu đã thu thập và đồng bộ
                 </p>
               </div>
-              <button 
+              <button
+                title="Đóng"
                 onClick={() => setSelectedKPI(null)}
                 className="text-slate-400 hover:text-slate-600 transition-colors"
               >
@@ -267,7 +268,7 @@ export function KPICards({ timeRange = '30days', sourceUnit = 'all' }: KPICardsP
                 </div>
                 <div className="text-2xl text-slate-900">{currentData.length}</div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Hash className="w-4 h-4 text-green-600" />
@@ -275,7 +276,7 @@ export function KPICards({ timeRange = '30days', sourceUnit = 'all' }: KPICardsP
                 </div>
                 <div className="text-2xl text-slate-900">{totalSynced.toLocaleString()}</div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -285,7 +286,7 @@ export function KPICards({ timeRange = '30days', sourceUnit = 'all' }: KPICardsP
                   {currentData.filter(r => r.status === 'success').length}
                 </div>
               </div>
-              
+
               <div className="bg-white rounded-lg p-4 border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
@@ -312,8 +313,8 @@ export function KPICards({ timeRange = '30days', sourceUnit = 'all' }: KPICardsP
                 </thead>
                 <tbody>
                   {currentData.map((record, index) => (
-                    <tr 
-                      key={record.id} 
+                    <tr
+                      key={record.id}
                       className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                     >
                       <td className="py-3 px-4 text-sm text-slate-600">{index + 1}</td>

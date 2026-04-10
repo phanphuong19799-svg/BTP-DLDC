@@ -326,7 +326,7 @@ export function DataManagementDetail({ dataName, dataId }: DataManagementDetailP
                 <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">
                   Trước
                 </button>
-                <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
                   1
                 </button>
                 <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">

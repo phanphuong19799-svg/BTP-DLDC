@@ -39,7 +39,7 @@ const mockCategories: Category[] = [
   {
     id: '1',
     code: 'NCAT001',
-    name: 'Danh mục A',
+    name: 'Biên tập danh mục A',
     description: 'Danh mục quản lý thông tin A',
     dataType: 'standard',
     isActive: true,
@@ -82,7 +82,7 @@ const mockApprovalRequests: ApprovalRequest[] = [
   {
     id: '2',
     categoryCode: 'NCAT001',
-    categoryName: 'Danh mục A',
+    categoryName: 'Biên tập danh mục A',
     requestType: 'update',
     requester: 'Trần Thị B',
     requestDate: '10/12/2024',
@@ -105,7 +105,7 @@ const mockPublishedCategories: PublishedCategory[] = [
   {
     id: '1',
     code: 'NCAT001',
-    name: 'Danh mục A',
+    name: 'Biên tập danh mục A',
     description: 'Danh mục quản lý thông tin A',
     publishDate: '01/11/2024',
     downloads: 1245,
@@ -139,22 +139,22 @@ export function NewCategorySetupPage() {
   const [categories, setCategories] = useState<Category[]>(mockCategories);
   const [approvalRequests] = useState<ApprovalRequest[]>(mockApprovalRequests);
   const [publishedCategories] = useState<PublishedCategory[]>(mockPublishedCategories);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
-  
+
   // Approval tab filters
   const [approvalFilterStatus, setApprovalFilterStatus] = useState<string>('all');
   const [approvalFilterType, setApprovalFilterType] = useState<string>('all');
-  
+
   // Publish tab filters
   const [publishFilterStatus, setPublishFilterStatus] = useState<string>('all');
 
   // Filter logic for Setup tab
   const filteredCategories = categories.filter(cat => {
     const matchSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       cat.code.toLowerCase().includes(searchTerm.toLowerCase());
+      cat.code.toLowerCase().includes(searchTerm.toLowerCase());
     const matchStatus = filterStatus === 'all' || (filterStatus === 'active' ? cat.isActive : !cat.isActive);
     const matchType = filterType === 'all' || cat.dataType === filterType;
     return matchSearch && matchStatus && matchType;
@@ -283,55 +283,50 @@ export function NewCategorySetupPage() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('setup')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'setup'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'setup'
                 ? 'bg-purple-50 text-purple-700 border-b-2 border-purple-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Settings className="w-4 h-4" />
             Thiết lập
           </button>
           <button
             onClick={() => setActiveTab('approval')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'approval'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'approval'
                 ? 'bg-purple-50 text-purple-700 border-b-2 border-purple-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckSquare className="w-4 h-4" />
             Phê duyệt
           </button>
           <button
             onClick={() => setActiveTab('publish')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'publish'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'publish'
                 ? 'bg-purple-50 text-purple-700 border-b-2 border-purple-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Share2 className="w-4 h-4" />
             Công khai danh mục
           </button>
           <button
             onClick={() => setActiveTab('report')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'report'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'report'
                 ? 'bg-purple-50 text-purple-700 border-b-2 border-purple-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <FileSearch className="w-4 h-4" />
             Báo cáo và tìm kiếm
           </button>
           <button
             onClick={() => setActiveTab('statistics')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'statistics'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'statistics'
                 ? 'bg-purple-50 text-purple-700 border-b-2 border-purple-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <BarChart3 className="w-4 h-4" />
             Thu thập số liệu thống kê
@@ -359,9 +354,8 @@ export function NewCategorySetupPage() {
               <div className="grid grid-cols-4 gap-4">
                 <button
                   onClick={() => handleStatsClick('all')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-purple-300 ${
-                    filterStatus === 'all' && filterType === 'all' ? 'ring-2 ring-purple-500 bg-purple-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-purple-300 ${filterStatus === 'all' && filterType === 'all' ? 'ring-2 ring-purple-500 bg-purple-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -375,9 +369,8 @@ export function NewCategorySetupPage() {
                 </button>
                 <button
                   onClick={() => handleStatsClick('active')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-green-300 ${
-                    filterStatus === 'active' ? 'ring-2 ring-green-500 bg-green-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-green-300 ${filterStatus === 'active' ? 'ring-2 ring-green-500 bg-green-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -391,9 +384,8 @@ export function NewCategorySetupPage() {
                 </button>
                 <button
                   onClick={() => handleStatsClick('standard')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-blue-300 ${
-                    filterType === 'standard' ? 'ring-2 ring-blue-500 bg-blue-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-blue-300 ${filterType === 'standard' ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -407,9 +399,8 @@ export function NewCategorySetupPage() {
                 </button>
                 <button
                   onClick={() => handleStatsClick('reference')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-amber-300 ${
-                    filterType === 'reference' ? 'ring-2 ring-amber-500 bg-amber-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-amber-300 ${filterType === 'reference' ? 'ring-2 ring-amber-500 bg-amber-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
@@ -558,9 +549,8 @@ export function NewCategorySetupPage() {
               <div className="grid grid-cols-3 gap-4">
                 <button
                   onClick={() => handleApprovalStatsClick('pending')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-yellow-300 ${
-                    approvalFilterStatus === 'pending' ? 'ring-2 ring-yellow-500 bg-yellow-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-yellow-300 ${approvalFilterStatus === 'pending' ? 'ring-2 ring-yellow-500 bg-yellow-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -574,9 +564,8 @@ export function NewCategorySetupPage() {
                 </button>
                 <button
                   onClick={() => handleApprovalStatsClick('approved')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-green-300 ${
-                    approvalFilterStatus === 'approved' ? 'ring-2 ring-green-500 bg-green-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-green-300 ${approvalFilterStatus === 'approved' ? 'ring-2 ring-green-500 bg-green-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -590,9 +579,8 @@ export function NewCategorySetupPage() {
                 </button>
                 <button
                   onClick={() => handleApprovalStatsClick('rejected')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-red-300 ${
-                    approvalFilterStatus === 'rejected' ? 'ring-2 ring-red-500 bg-red-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-red-300 ${approvalFilterStatus === 'rejected' ? 'ring-2 ring-red-500 bg-red-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
@@ -728,9 +716,8 @@ export function NewCategorySetupPage() {
               <div className="grid grid-cols-4 gap-4">
                 <button
                   onClick={() => handlePublishStatsClick('all')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-purple-300 ${
-                    publishFilterStatus === 'all' ? 'ring-2 ring-purple-500 bg-purple-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-purple-300 ${publishFilterStatus === 'all' ? 'ring-2 ring-purple-500 bg-purple-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -744,9 +731,8 @@ export function NewCategorySetupPage() {
                 </button>
                 <button
                   onClick={() => handlePublishStatsClick('public')}
-                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-green-300 ${
-                    publishFilterStatus === 'public' ? 'ring-2 ring-green-500 bg-green-50' : ''
-                  }`}
+                  className={`bg-slate-50 border border-slate-200 rounded-lg p-4 text-left transition-all hover:shadow-md hover:border-green-300 ${publishFilterStatus === 'public' ? 'ring-2 ring-green-500 bg-green-50' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -1094,7 +1080,7 @@ export function NewCategorySetupPage() {
                 <h3 className="text-sm text-slate-700 mb-4">Top 5 danh mục được sử dụng nhiều nhất</h3>
                 <div className="space-y-3">
                   {[
-                    { name: 'Danh mục A', count: 547, percentage: 85 },
+                    { name: 'Biên tập danh mục A', count: 547, percentage: 85 },
                     { name: 'Danh mục B', count: 423, percentage: 72 },
                     { name: 'Danh mục C', count: 312, percentage: 58 },
                     { name: 'Danh mục D', count: 198, percentage: 42 },
@@ -1106,8 +1092,8 @@ export function NewCategorySetupPage() {
                         <span className="text-sm text-slate-900">{item.count} lượt</span>
                       </div>
                       <div className="w-full bg-slate-100 rounded-full h-2">
-                        <div 
-                          className="bg-purple-600 h-2 rounded-full" 
+                        <div
+                          className="bg-purple-600 h-2 rounded-full"
                           style={{ width: `${item.percentage}%` }}
                         />
                       </div>

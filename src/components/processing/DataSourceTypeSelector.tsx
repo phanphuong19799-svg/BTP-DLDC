@@ -353,7 +353,7 @@ export function DataSourceTypeSelector() {
                     Cấu hình quy tắc
                   </button>
                   {source.status === 'active' && (
-                    <button className="px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                    <button title="Hành động" aria-label="Hành động" className="px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
                       <Play className="w-4 h-4 text-slate-600" />
                     </button>
                   )}

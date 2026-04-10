@@ -212,6 +212,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
+                      title="Tìm kiếm"
                       placeholder="Tìm kiếm theo họ tên, số giấy chứng nhận..."
                       className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -306,7 +307,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                 <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">
                   Trước
                 </button>
-                <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
                   1
                 </button>
                 <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">
@@ -329,6 +330,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                   <label className="block text-sm text-slate-700 mb-2">Tên kết nối <span className="text-red-500">*</span></label>
                   <input
                     type="text"
+                    title="Tên kết nối"
                     defaultValue={`Kết nối LGSP - ${categoryName}`}
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -337,6 +339,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                   <label className="block text-sm text-slate-700 mb-2">Mã dịch vụ <span className="text-red-500">*</span></label>
                   <input
                     type="text"
+                    title="Mã dịch vụ"
                     defaultValue="LGSP_DV_001"
                     className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -351,13 +354,14 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                     <label className="block text-sm text-slate-700 mb-2">Endpoint URL <span className="text-red-500">*</span></label>
                     <input
                       type="text"
+                      title="Endpoint URL"
                       defaultValue="https://lgsp.gov.vn/api/v2/data-sync"
                       className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Phương thức <span className="text-red-500">*</span></label>
-                    <select className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select title="Phương thức" className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option>POST</option>
                       <option>GET</option>
                       <option>PUT</option>
@@ -367,6 +371,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                     <label className="block text-sm text-slate-700 mb-2">Client ID <span className="text-red-500">*</span></label>
                     <input
                       type="text"
+                      title="Client ID"
                       defaultValue="MOJ_DLDC_CLIENT_2024"
                       className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -375,6 +380,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                     <label className="block text-sm text-slate-700 mb-2">Client Secret <span className="text-red-500">*</span></label>
                     <input
                       type="password"
+                      title="Client Secret"
                       defaultValue="••••••••••••••••"
                       className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -410,6 +416,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="date"
+                    title="Từ ngày"
                     className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -417,6 +424,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="date"
+                    title="Đến ngày"
                     className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -485,7 +493,7 @@ export function CategoryManagementDetail({ categoryName, categoryId }: CategoryM
                 <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">
                   Trước
                 </button>
-                <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
                   1
                 </button>
                 <button className="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">

@@ -56,7 +56,7 @@ export function ImportDataModal({ isOpen, onClose, onImport }: ImportDataModalPr
           <h3 className="text-slate-900">Nhập dữ liệu từ file</h3>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-600" />
           </button>

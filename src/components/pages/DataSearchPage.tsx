@@ -192,10 +192,10 @@ export function DataSearchPage() {
                   <td className="px-6 py-4 text-gray-600">{result.updated}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <button className="p-1 hover:bg-gray-100 rounded">
+                      <button className="p-1 hover:bg-gray-100 rounded" title="Xem chi tiết" aria-label="Xem chi tiết">
                         <Eye className="w-4 h-4 text-blue-600" />
                       </button>
-                      <button className="p-1 hover:bg-gray-100 rounded">
+                      <button title="Tải xuống" aria-label="Tải xuống" className="p-1 hover:bg-gray-100 rounded">
                         <Download className="w-4 h-4 text-green-600" />
                       </button>
                     </div>

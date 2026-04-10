@@ -126,7 +126,7 @@ const sampleVersionHistory: VersionHistoryItem[] = [
 
 // Danh sách các bảng danh mục có sẵn
 const availableCategories: CategoryOption[] = [
-  { id: 'cat_a', name: 'Danh mục A', description: 'Văn bản pháp luật' },
+  { id: 'cat_a', name: 'Biên tập danh mục A', description: 'Văn bản pháp luật' },
   { id: 'cat_b', name: 'Danh mục B', description: 'Đăng ký kinh doanh' },
   { id: 'cat_c', name: 'Danh mục C', description: 'Công chứng' },
   { id: 'cat_d', name: 'Danh mục D', description: 'TGPL' },
@@ -177,7 +177,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
       id: 1,
       datasetCode: 'ODCAT001',
       datasetName: 'Mục 1',
-      categoryName: 'Danh mục A',
+      categoryName: 'Biên tập danh mục A',
       frequency: 'daily',
       startTime: '08:00',
       dataSource: 'https://api.example.com/data/legal-docs',
@@ -216,7 +216,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
 
   const filteredData = data.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.code.toLowerCase().includes(searchTerm.toLowerCase());
+      item.code.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -242,8 +242,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
 
   const confirmPublish = () => {
     if (selectedItem) {
-      setData(data.map(item => 
-        item.id === selectedItem.id 
+      setData(data.map(item =>
+        item.id === selectedItem.id
           ? { ...item, publishStatus: 'published' as const }
           : item
       ));
@@ -254,8 +254,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
 
   const confirmUnpublish = () => {
     if (selectedItem) {
-      setData(data.map(item => 
-        item.id === selectedItem.id 
+      setData(data.map(item =>
+        item.id === selectedItem.id
           ? { ...item, publishStatus: 'unpublished' as const }
           : item
       ));
@@ -283,7 +283,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
   };
 
   const handleBulkPublish = () => {
-    setData(data.map(item => 
+    setData(data.map(item =>
       selectedIds.has(item.id)
         ? { ...item, publishStatus: 'published' as const }
         : item
@@ -293,7 +293,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
   };
 
   const handleBulkUnpublish = () => {
-    setData(data.map(item => 
+    setData(data.map(item =>
       selectedIds.has(item.id)
         ? { ...item, publishStatus: 'unpublished' as const }
         : item
@@ -303,7 +303,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
   };
 
   const handleBulkApproval = () => {
-    setData(data.map(item => 
+    setData(data.map(item =>
       selectedIds.has(item.id)
         ? { ...item, approvalStatus: 'approved' as const }
         : item
@@ -321,55 +321,50 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
         <div className="flex gap-6">
           <button
             onClick={() => setActiveTab('category')}
-            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'category'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
+            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'category'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
           >
             <FileText className="w-4 h-4" />
             Danh sách dữ liệu
           </button>
           <button
             onClick={() => setActiveTab('metadata')}
-            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'metadata'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
+            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'metadata'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
           >
             <Info className="w-4 h-4" />
             Metadata
           </button>
           <button
             onClick={() => setActiveTab('license')}
-            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'license'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
+            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'license'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
           >
             <Shield className="w-4 h-4" />
             Giấy phép
           </button>
           <button
             onClick={() => setActiveTab('version')}
-            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'version'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
+            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'version'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
           >
             <HistoryIcon className="w-4 h-4" />
             Lịch sử phiên bản
           </button>
           <button
             onClick={() => setActiveTab('schedule')}
-            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${
-              activeTab === 'schedule'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
+            className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'schedule'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
           >
             <Clock className="w-4 h-4" />
             Thiết lập lịch công bố
@@ -408,19 +403,19 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   </select>
                 </div>
                 <div className="flex items-center gap-3">
-                  <button 
+                  <button
                     className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 whitespace-nowrap"
                   >
                     <Upload className="w-4 h-4" />
                     Import
                   </button>
-                  <button 
+                  <button
                     className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 flex items-center gap-2 whitespace-nowrap"
                   >
                     <Download className="w-4 h-4" />
                     Export
                   </button>
-                  <button 
+                  <button
                     onClick={() => setShowAddModal(true)}
                     className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 flex items-center gap-2 whitespace-nowrap"
                   >
@@ -486,7 +481,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   </div>
                 </div>
               )}
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-50 border-b border-slate-200">
@@ -574,7 +569,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                           <td className="px-4 py-3 text-sm text-slate-700">{item.updatedBy}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
-                              <button 
+                              <button
                                 onClick={() => {
                                   setSelectedItem(item);
                                   setShowDetailModal(true);
@@ -584,7 +579,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
-                              <button 
+                              <button
                                 onClick={() => {
                                   setSelectedItem(item);
                                   setShowEditModal(true);
@@ -594,7 +589,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                               >
                                 <Edit2 className="w-4 h-4" />
                               </button>
-                              <button 
+                              <button
                                 className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
                                 title="Xóa"
                               >
@@ -640,7 +635,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <div className="bg-white rounded-lg border border-slate-200">
             <div className="p-6">
               <h2 className="text-slate-900 mb-6">Thông tin Metadata</h2>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-50 border-b border-slate-200">
@@ -736,7 +731,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <div className="bg-white rounded-lg border border-slate-200">
             <div className="p-6">
               <h2 className="text-slate-900 mb-6">Thông tin Giấy phép</h2>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-50 border-b border-slate-200">
@@ -829,7 +824,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <div className="bg-white rounded-lg border border-slate-200">
             <div className="p-6">
               <h2 className="text-slate-900 mb-6">Lịch sử phiên bản</h2>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-50 border-b border-slate-200">
@@ -879,7 +874,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                 <h2 className="text-slate-900">Danh sách lịch công bố tự động</h2>
                 <p className="text-sm text-slate-600 mt-1">Thiết lập lịch tự động cập nhật và công bố dữ liệu</p>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   setScheduleFormData({
                     datasetId: '',
@@ -997,7 +992,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   placeholder="Nhập mã..."
                   value={formData.code}
-                  onChange={(e) => setFormData({...formData, code: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                 />
               </div>
               <div>
@@ -1007,7 +1002,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   placeholder="Nhập tên..."
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
               </div>
               <div>
@@ -1017,15 +1012,15 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   rows={3}
                   placeholder="Nhập mô tả..."
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
               </div>
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Trạng thái</label>
-                <select 
+                <select
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   value={formData.status}
-                  onChange={(e) => setFormData({...formData, status: e.target.value as 'active' | 'inactive'})}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'inactive' })}
                 >
                   <option value="active">Hoạt động</option>
                   <option value="inactive">Không hoạt động</option>
@@ -1054,11 +1049,10 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     setShowSubmitApprovalModal(true);
                     setFormData({ code: '', name: '', description: '', status: 'active' });
                   }}
-                  className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                    !formData.code || !formData.name
-                      ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
+                  className={`px-4 py-2 rounded-lg flex items-center gap-2 ${!formData.code || !formData.name
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
                   disabled={!formData.code || !formData.name}
                 >
                   <FileCheck className="w-4 h-4" />
@@ -1093,14 +1087,13 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     setShowAddModal(false);
                     setFormData({ code: '', name: '', description: '', status: 'active' });
                   }}
-                  className={`px-4 py-2 rounded-lg ${
-                    !formData.code || !formData.name
-                      ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-700'
-                  }`}
+                  className={`px-4 py-2 rounded-lg ${!formData.code || !formData.name
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    }`}
                   disabled={!formData.code || !formData.name}
                 >
-                  Lưu nháp
+                  Lưu
                 </button>
               </div>
             </div>
@@ -1330,7 +1323,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     Gửi phê duyệt
                   </button>
                 )}
-                
+
                 {/* Approve - show when pending (for leader) */}
                 {selectedItem.approvalStatus === 'pending' && (
                   <button
@@ -1344,7 +1337,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     Phê duyệt
                   </button>
                 )}
-                
+
                 {/* Reject - show when pending (for leader) */}
                 {selectedItem.approvalStatus === 'pending' && (
                   <button
@@ -1358,7 +1351,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     Từ chối
                   </button>
                 )}
-                
+
                 {/* Publish - only when approved */}
                 {selectedItem.approvalStatus === 'approved' && selectedItem.publishStatus === 'unpublished' && (
                   <button
@@ -1372,13 +1365,13 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     Công khai
                   </button>
                 )}
-                
+
                 {/* Unpublish - when published */}
                 {selectedItem.publishStatus === 'published' && (
                   <button
                     onClick={() => {
-                      setData(data.map(item => 
-                        item.id === selectedItem.id 
+                      setData(data.map(item =>
+                        item.id === selectedItem.id
                           ? { ...item, publishStatus: 'unpublished' as const }
                           : item
                       ));
@@ -1393,7 +1386,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   </button>
                 )}
               </div>
-              
+
               <button
                 onClick={() => {
                   setShowDetailModal(false);
@@ -1440,7 +1433,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
               </div>
               <div>
                 <label className="block text-sm text-slate-700 mb-2">Trạng thái</label>
-                <select 
+                <select
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   defaultValue={selectedItem?.status}
                 >
@@ -1448,7 +1441,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   <option value="inactive">Không hoạt động</option>
                 </select>
               </div>
-              
+
               {/* Display current approval status */}
               <div className="bg-slate-50 p-3 rounded-lg">
                 <div className="flex items-center justify-between">
@@ -1486,7 +1479,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   <FileCheck className="w-4 h-4" />
                   Trình duyệt
                 </button>
-                
+
                 {/* Publish button - only enabled if approved */}
                 <button
                   onClick={() => {
@@ -1497,11 +1490,10 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     setShowEditModal(false);
                     setShowPublishFromModalModal(true);
                   }}
-                  className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                    selectedItem.approvalStatus === 'approved'
-                      ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                      : 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                  }`}
+                  className={`px-4 py-2 rounded-lg flex items-center gap-2 ${selectedItem.approvalStatus === 'approved'
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    }`}
                   disabled={selectedItem.approvalStatus !== 'approved'}
                   title={selectedItem.approvalStatus !== 'approved' ? 'Chỉ dữ liệu đã phê duyệt mới được công khai' : 'Công khai'}
                 >
@@ -1680,8 +1672,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   }
                   if (selectedItem) {
                     const approverName = approvers.find(a => a.id === selectedApprover)?.name || '';
-                    setData(data.map(item => 
-                      item.id === selectedItem.id 
+                    setData(data.map(item =>
+                      item.id === selectedItem.id
                         ? { ...item, approvalStatus: 'pending' as const }
                         : item
                     ));
@@ -1692,11 +1684,10 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   setSubmitApprovalNote('');
                   setSelectedItem(null);
                 }}
-                className={`px-4 py-2 rounded-lg ${
-                  !selectedApprover
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
+                className={`px-4 py-2 rounded-lg ${!selectedApprover
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
                 disabled={!selectedApprover}
               >
                 Gửi phê duyệt
@@ -1758,8 +1749,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                 <button
                   onClick={() => {
                     if (selectedItem) {
-                      setData(data.map(item => 
-                        item.id === selectedItem.id 
+                      setData(data.map(item =>
+                        item.id === selectedItem.id
                           ? { ...item, publishStatus: 'published' as const }
                           : item
                       ));
@@ -1829,8 +1820,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
               <button
                 onClick={() => {
                   if (selectedItem) {
-                    setData(data.map(item => 
-                      item.id === selectedItem.id 
+                    setData(data.map(item =>
+                      item.id === selectedItem.id
                         ? { ...item, approvalStatus: 'approved' as const }
                         : item
                     ));
@@ -1896,8 +1887,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     return;
                   }
                   if (selectedItem) {
-                    setData(data.map(item => 
-                      item.id === selectedItem.id 
+                    setData(data.map(item =>
+                      item.id === selectedItem.id
                         ? { ...item, approvalStatus: 'rejected' as const }
                         : item
                     ));
@@ -1907,11 +1898,10 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   setSelectedItem(null);
                   alert(`Đã từ chối phê duyệt.\nLý do: ${rejectReason}`);
                 }}
-                className={`px-4 py-2 rounded-lg ${
-                  !rejectReason.trim()
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-red-600 text-white hover:bg-red-700'
-                }`}
+                className={`px-4 py-2 rounded-lg ${!rejectReason.trim()
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                  : 'bg-red-600 text-white hover:bg-red-700'
+                  }`}
                 disabled={!rejectReason.trim()}
               >
                 Xác nhận từ chối
@@ -1928,7 +1918,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
             <h2 className="text-slate-900 mb-4">
               {selectedSchedule ? 'Chi tiết lịch công bố' : 'Thêm lịch công bố tự động'}
             </h2>
-            
+
             <div className="space-y-4">
               {/* Step 1: Select Categories */}
               {!selectedSchedule && (
@@ -2010,9 +2000,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     </div>
                   </div>
                 ) : (
-                  <div className={`border rounded-lg p-3 max-h-48 overflow-y-auto ${
-                    selectedCategoryIds.size === 0 ? 'border-slate-200 bg-slate-50' : 'border-slate-300'
-                  }`}>
+                  <div className={`border rounded-lg p-3 max-h-48 overflow-y-auto ${selectedCategoryIds.size === 0 ? 'border-slate-200 bg-slate-50' : 'border-slate-300'
+                    }`}>
                     <div className="space-y-2">
                       {selectedCategoryIds.size === 0 ? (
                         <p className="text-sm text-slate-500 text-center py-4">
@@ -2080,8 +2069,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   </div>
                 )}
                 <p className="text-xs text-slate-500 mt-1">
-                  {selectedSchedule 
-                    ? 'Chỉ hiển thị các dataset đã được phê duyệt' 
+                  {selectedSchedule
+                    ? 'Chỉ hiển thị các dataset đã được phê duyệt'
                     : `Đã chọn ${selectedDatasetIds.size} dataset từ ${selectedCategoryIds.size} danh mục`
                   }
                 </p>
@@ -2103,7 +2092,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   <select
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     value={scheduleFormData.frequency}
-                    onChange={(e) => setScheduleFormData({...scheduleFormData, frequency: e.target.value as any})}
+                    onChange={(e) => setScheduleFormData({ ...scheduleFormData, frequency: e.target.value as any })}
                   >
                     <option value="daily">Hàng ngày</option>
                     <option value="weekly">Hàng tuần (Thứ 2 hàng tuần)</option>
@@ -2127,7 +2116,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     type="time"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     value={scheduleFormData.startTime}
-                    onChange={(e) => setScheduleFormData({...scheduleFormData, startTime: e.target.value})}
+                    onChange={(e) => setScheduleFormData({ ...scheduleFormData, startTime: e.target.value })}
                   />
                 )}
                 <p className="text-xs text-slate-500 mt-1">
@@ -2161,7 +2150,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       placeholder="https://api.example.com/data/endpoint"
                       value={scheduleFormData.dataSource}
-                      onChange={(e) => setScheduleFormData({...scheduleFormData, dataSource: e.target.value})}
+                      onChange={(e) => setScheduleFormData({ ...scheduleFormData, dataSource: e.target.value })}
                     />
                     <p className="text-xs text-slate-500 mt-1">
                       URL API hoặc đường dẫn file dữ liệu nguồn
@@ -2200,12 +2189,12 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       value={selectedSchedule.status}
                       onChange={(e) => {
-                        setSchedules(schedules.map(s => 
-                          s.id === selectedSchedule.id 
-                            ? {...s, status: e.target.value as 'active' | 'inactive'}
+                        setSchedules(schedules.map(s =>
+                          s.id === selectedSchedule.id
+                            ? { ...s, status: e.target.value as 'active' | 'inactive' }
                             : s
                         ));
-                        setSelectedSchedule({...selectedSchedule, status: e.target.value as 'active' | 'inactive'});
+                        setSelectedSchedule({ ...selectedSchedule, status: e.target.value as 'active' | 'inactive' });
                       }}
                     >
                       <option value="active">Đang hoạt động</option>
@@ -2245,7 +2234,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     // Tạo lịch cho tất cả các dataset đã chọn
                     const newSchedules: ScheduleItem[] = [];
                     let currentId = schedules.length + 1;
-                    
+
                     selectedDatasetIds.forEach(datasetId => {
                       const selectedDataset = data.find(d => d.id === datasetId);
                       if (selectedDataset) {
@@ -2277,11 +2266,10 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     });
                     alert(`Đã thiết lập lịch công bố tự động cho ${newSchedules.length} dataset thành công!`);
                   }}
-                  className={`px-4 py-2 rounded-lg ${
-                    selectedDatasetIds.size === 0 || !scheduleFormData.dataSource
-                      ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-700'
-                  }`}
+                  className={`px-4 py-2 rounded-lg ${selectedDatasetIds.size === 0 || !scheduleFormData.dataSource
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    }`}
                   disabled={selectedDatasetIds.size === 0 || !scheduleFormData.dataSource}
                 >
                   Lưu lịch ({selectedDatasetIds.size} dataset)

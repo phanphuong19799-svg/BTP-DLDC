@@ -435,8 +435,8 @@ export function DataProcessingStatus() {
               <button className="px-3 py-1 border border-slate-200 rounded hover:bg-white transition-colors text-sm">
                 Trước
               </button>
-              <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
-              <button className="px-3 py-1 border border-slate-200 rounded hover:bg-white transition-colors text-sm">2</button>
+              <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+              <button title="Hành động" aria-label="Hành động" className="px-3 py-1 border border-slate-200 rounded hover:bg-white transition-colors text-sm">2</button>
               <button className="px-3 py-1 border border-slate-200 rounded hover:bg-white transition-colors text-sm">
                 Sau
               </button>

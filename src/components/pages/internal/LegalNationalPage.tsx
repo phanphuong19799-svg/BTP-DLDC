@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, FileText, BookOpen, GitBranch, FileCheck, FolderTree } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface LegalNationalPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function LegalNationalPage({ mode = 'thu thập' }: LegalNationalPageProps) {
+export function LegalNationalPage({ mode = 'thu thập', context = 'thu thập' }: LegalNationalPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -68,6 +70,11 @@ export function LegalNationalPage({ mode = 'thu thập' }: LegalNationalPageProp
 
   const stats = generateData();
 
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL quốc gia về PL" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
+
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Văn bản quy phạm pháp luật', category: 'CSDL quốc gia về PL', todayCount: 20000, errorCount: 30 },
     { name: 'Dữ liệu Nội dung của văn bản quy phạm pháp luật', category: 'CSDL quốc gia về PL', todayCount: 20000, errorCount: 30 },
@@ -106,7 +113,7 @@ export function LegalNationalPage({ mode = 'thu thập' }: LegalNationalPageProp
             onChange={(e) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button title="Hành động" aria-label="Hành động" className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>

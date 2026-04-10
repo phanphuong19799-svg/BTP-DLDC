@@ -17,7 +17,7 @@ const mockSearchResults: SearchResult[] = [
     id: '1',
     code: 'OD001',
     name: 'Bộ dữ liệu A',
-    category: 'Danh mục A',
+    category: 'Biên tập danh mục A',
     publishDate: '01/11/2024',
     lastUpdate: '10/12/2024',
     downloadCount: 1523,
@@ -54,7 +54,7 @@ export function OpenDataReportPage() {
 
   const filteredResults = mockSearchResults.filter(result => {
     const matchesKeyword = result.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-                          result.code.toLowerCase().includes(searchKeyword.toLowerCase());
+      result.code.toLowerCase().includes(searchKeyword.toLowerCase());
     const matchesCategory = searchCategory === 'all' || result.category === searchCategory;
     const matchesFormat = searchFormat === 'all' || result.format.includes(searchFormat);
     return matchesKeyword && matchesCategory && matchesFormat;
@@ -73,22 +73,20 @@ export function OpenDataReportPage() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('search')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'search'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'search'
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Search className="w-4 h-4" />
             Tìm kiếm
           </button>
           <button
             onClick={() => setActiveTab('report')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'report'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'report'
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <BarChart3 className="w-4 h-4" />
             Báo cáo
@@ -128,7 +126,7 @@ export function OpenDataReportPage() {
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       >
                         <option value="all">Tất cả danh mục</option>
-                        <option value="Danh mục A">Danh mục A</option>
+                        <option value="Biên tập danh mục A">Biên tập danh mục A</option>
                         <option value="Danh mục B">Danh mục B</option>
                         <option value="Danh mục C">Danh mục C</option>
                       </select>
@@ -270,7 +268,7 @@ export function OpenDataReportPage() {
                 </div>
                 <div className="bg-white border border-slate-200 rounded-lg p-4">
                   <div className="text-xs text-slate-600 mb-1">Danh mục phổ biến</div>
-                  <div className="text-sm text-slate-900 mt-1">Danh mục A</div>
+                  <div className="text-sm text-slate-900 mt-1">Biên tập danh mục A</div>
                   <div className="text-xs text-slate-500 mt-1">567 lượt tải</div>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-lg p-4">
@@ -285,7 +283,7 @@ export function OpenDataReportPage() {
                 <div className="bg-white border border-slate-200 rounded-lg p-6">
                   <h4 className="text-sm text-slate-900 mb-4">Thống kê lượt tải theo danh mục</h4>
                   <div className="space-y-3">
-                    {['Danh mục A', 'Danh mục B', 'Danh mục C'].map((category) => {
+                    {['Biên tập danh mục A', 'Danh mục B', 'Danh mục C'].map((category) => {
                       const count = mockSearchResults.filter(r => r.category === category).reduce((sum, r) => sum + r.downloadCount, 0);
                       const total = mockSearchResults.reduce((sum, r) => sum + r.downloadCount, 0);
                       const percentage = (count / total) * 100;
@@ -296,8 +294,8 @@ export function OpenDataReportPage() {
                             <span className="text-slate-900">{count.toLocaleString()} ({percentage.toFixed(0)}%)</span>
                           </div>
                           <div className="w-full bg-slate-200 rounded-full h-2">
-                            <div 
-                              className="bg-emerald-600 h-2 rounded-full" 
+                            <div
+                              className="bg-emerald-600 h-2 rounded-full"
                               style={{ width: `${percentage}%` }}
                             ></div>
                           </div>
@@ -320,8 +318,8 @@ export function OpenDataReportPage() {
                             <span className="text-slate-900">{count} ({percentage.toFixed(0)}%)</span>
                           </div>
                           <div className="w-full bg-slate-200 rounded-full h-2">
-                            <div 
-                              className="bg-blue-600 h-2 rounded-full" 
+                            <div
+                              className="bg-blue-600 h-2 rounded-full"
                               style={{ width: `${percentage}%` }}
                             ></div>
                           </div>

@@ -53,7 +53,7 @@ export function LGSPConnectionModal({ isOpen, onClose }: LGSPConnectionModalProp
           <h2 className="text-lg text-slate-900">Thêm kết nối API</h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-slate-400 hover:text-slate-600 transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>

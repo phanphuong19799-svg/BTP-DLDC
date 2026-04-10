@@ -8,11 +8,10 @@ import { ExternalDataPage } from '../pages/collection/ExternalDataPage';
 import { InternalDataPage } from '../pages/collection/InternalDataPage';
 import { CollectionSetupPage } from '../pages/collection/CollectionSetupPage';
 import { DataProcessingPage } from '../pages/DataProcessingPage';
-import { ProcessingRuleSetupPage } from '../pages/processing/ProcessingRuleSetupPage';
 import { ProcessedDataPage } from '../pages/processing/ProcessedDataPage';
 import { CategoryManagementPage } from '../pages/CategoryManagementPage';
 import { ScreenFlowDiagram } from '../pages/ScreenFlowDiagram';
-import { CategorySetupPage } from '../pages/category/CategorySetupPage';
+import CategorySetupPage from '../pages/category/CategorySetupPage';
 import { CategoryAPage } from '../pages/category/CategoryAPage';
 import { CategoryBPage } from '../pages/category/CategoryBPage';
 import { CategoryCPage } from '../pages/category/CategoryCPage';
@@ -26,6 +25,10 @@ import { CategoryJPage } from '../pages/category/CategoryJPage';
 import { CategoryPublishedListPage } from '../pages/category/CategoryPublishedListPage';
 import { CategoryReportPage } from '../pages/category/CategoryReportPage';
 import { CategoryStatisticsReportPage } from '../pages/category/CategoryStatisticsReportPage';
+import { CategoryReportListPage } from '../pages/category/reports/CategoryReportListPage';
+import { CategoryReportExploitationPage } from '../pages/category/reports/CategoryReportExploitationPage';
+import { CategoryReportStatusPage } from '../pages/category/reports/CategoryReportStatusPage';
+import { CategoryReportVersionPage } from '../pages/category/reports/CategoryReportVersionPage';
 import { NewCategorySetupPage } from '../pages/new-category';
 import { CategorySetupPageNew } from '../pages/category/CategorySetupPageNew';
 import { OpenDataCategoryPage } from '../pages/OpenDataCategoryPage';
@@ -149,7 +152,9 @@ import { BusinessRegistrationPage } from '../pages/internal/BusinessRegistration
 import { BusinessInfoPage } from '../pages/internal/BusinessInfoPage';
 import { StateCompensationPage } from '../pages/internal/StateCompensationPage';
 import { ProcessingCivilRegistryPage } from '../pages/processing/ProcessingCivilRegistryPage';
+import { CivilRegistryProcessingPage } from '../pages/processing/CivilRegistryProcessingPage';
 import { ProcessingNationalityPage } from '../pages/processing/ProcessingNationalityPage';
+import { NationalityProcessingPage } from '../pages/processing/NationalityProcessingPage';
 import { ProcessingJudgmentPage } from '../pages/processing/ProcessingJudgmentPage';
 import { ProcessingJudgmentDbPage } from '../pages/processing/ProcessingJudgmentDbPage';
 import { ProcessingSecurityPage } from '../pages/processing/ProcessingSecurityPage';
@@ -222,8 +227,8 @@ const pageConfig: Record<string, { title: string; description: string }> = {
     description: 'Quản lý chi tiết danh mục dữ liệu mở A'
   },
   'category-a': {
-    title: 'Danh mục A',
-    description: 'Quản lý chi tiết Danh mục A'
+    title: 'Biên tập danh mục A',
+    description: 'Quản lý chi tiết Biên tập danh mục A'
   },
   'category-report': {
     title: 'Khai thác tìm kiếm',
@@ -267,11 +272,11 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
   const [showAccessHistoryModal, setShowAccessHistoryModal] = useState(false);
   const [showActionHistoryModal, setShowActionHistoryModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  
-  
+
+
   // User role - for demo purposes, set to 'leader' to show publish tab
   const userRole: 'leader' | 'staff' | 'admin' = 'leader';
-  
+
   const currentPageConfig = pageConfig[currentPage] || pageConfig.dashboard;
 
   useEffect(() => {
@@ -307,18 +312,18 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
     <div className="flex h-screen bg-slate-50">
       {/* Sidebar */}
       <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} />
-      
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <TopBar 
-          title={currentPageConfig.title} 
+        <TopBar
+          title={currentPageConfig.title}
           description={currentPageConfig.description}
           onUserMenuClick={handleUserMenuClick}
           currentPage={currentPage}
           breadcrumb={getBreadcrumbPath(currentPage)}
         />
-        
+
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-[1600px] mx-auto p-6">
@@ -333,10 +338,9 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'collection-reconciliation-setup' && <ReconciliationSetupPage />}
             {currentPage === 'collection-reconciliation-management' && <DataReconciliationPage />}
             {currentPage === 'processing' && <DataProcessingPage />}
-            {currentPage === 'processing-rule-setup' && <ProcessingRuleSetupPage />}
-            {currentPage === 'processing-external' && <ProcessingRuleSetupPage initialCategory="Dữ liệu ngoài ngành" />}
-            {currentPage === 'processing-internal' && <ProcessingRuleSetupPage initialCategory="Dữ liệu trong ngành" />}
-            {currentPage === 'processed-data' && <ProcessedDataPage />}
+            {currentPage === 'processing-external' && <DataProcessingPage initialCategory="Dữ liệu ngoài ngành" />}
+            {currentPage === 'processing-internal' && <DataProcessingPage initialCategory="Dữ liệu trong ngành" />}
+            {currentPage === 'processed-data' && <ProcessedDataPage title="Dữ liệu đã xử lý" dataType="Toàn cục" />}
             {currentPage === 'category' && <CategoryManagementPage />}
             {currentPage === 'category-setup' && <CategorySetupPage userRole={userRole} />}
             {currentPage === 'category-a' && <CategoryAPage />}
@@ -351,6 +355,10 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'category-j' && <CategoryJPage />}
             {currentPage === 'category-published-list' && <CategoryPublishedListPage />}
             {currentPage === 'category-report' && <CategoryReportPage />}
+            {currentPage === 'category-report-list' && <CategoryReportListPage />}
+            {currentPage === 'category-report-exploitation' && <CategoryReportExploitationPage />}
+            {currentPage === 'category-report-status' && <CategoryReportStatusPage />}
+            {currentPage === 'category-report-version' && <CategoryReportVersionPage />}
             {currentPage === 'category-statistics-report' && <CategoryStatisticsReportPage />}
             {currentPage === 'new-category-setup' && <NewCategorySetupPage />}
             {currentPage === 'open-data' && <OpenDataCategoryPage />}
@@ -477,7 +485,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'processing-cooperation-dept' && <ProcessingCooperationDeptPage />}
             {currentPage === 'processing-cooperation-db' && <ProcessingCooperationDbPage />}
             {currentPage === 'processing-cooperation' && <ProcessingCooperationPage />}
-            
+
             {/* Processing - Internal Data (Dữ liệu trong ngành) */}
             {currentPage === 'processing-registry' && <ProcessedDataPage title="HT quản lý hồ sơ QT" dataType="Hồ sơ QT" />}
             {currentPage === 'processing-civil-judgment' && <ProcessedDataPage title="CSDL thi hành án dân sự" dataType="Thi hành án" />}
@@ -488,7 +496,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'processing-legal-center' && <ProcessedDataPage title="HTTT TG Pháp lý" dataType="Trợ giúp pháp lý" />}
             {currentPage === 'processing-family-base' && <ProcessedDataPage title="CSDL PB, GĐ và HG cơ sở" dataType="Hòa giải cơ sở" />}
             {currentPage === 'processing-international' && <ProcessedDataPage title="CSDL Hợp tác quốc tế" dataType="Hợp tác quốc tế" />}
-            
+
             {/* Processing - Civil Registry Certificates */}
             {currentPage === 'processing-birth-certificate' && <ProcessedDataPage title="Giấy khai sinh" dataType="khai sinh" />}
             {currentPage === 'processing-death-certificate' && <ProcessedDataPage title="Giấy khai tử" dataType="khai tử" />}
@@ -496,43 +504,14 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'processing-divorce-certificate' && <ProcessedDataPage title="Giấy đăng ký ly hôn" dataType="ly hôn" />}
             {currentPage === 'processing-adoption-certificate' && <ProcessedDataPage title="Giấy đăng ký nhận con nuôi" dataType="nhận con nuôi" />}
             {currentPage === 'processing-guardianship-certificate' && <ProcessedDataPage title="Giấy đăng ký giám hộ" dataType="giám hộ" />}
-            
-            {/* Processing - External Data (Dữ liệu ngoài ngành) */}
-            {currentPage === 'processing-external-court-judgment' && <ProcessedDataPage title="CSDL Thông tin Bản án" dataType="Bản án" />}
-            
-            {/* Processing - External Category Group */}
-            {currentPage === 'processing-external-gender-category' && <ProcessedDataPage title="Danh mục giới tính" dataType="Giới tính" />}
-            {currentPage === 'processing-external-ethnic-category' && <ProcessedDataPage title="Danh mục dân tộc" dataType="Dân tộc" />}
-            {currentPage === 'processing-external-country-nationality' && <ProcessedDataPage title="Danh mục Quốc gia, Quốc tịch" dataType="Quốc gia" />}
-            {currentPage === 'processing-external-religion-category' && <ProcessedDataPage title="Danh mục Tôn giáo" dataType="Tôn giáo" />}
-            {currentPage === 'processing-external-agency-category' && <ProcessedDataPage title="Danh mục cơ quan" dataType="Cơ quan" />}
-            {currentPage === 'processing-external-administrative-unit' && <ProcessedDataPage title="Danh mục đơn vị hành chính" dataType="Đơn vị hành chính" />}
-            {currentPage === 'processing-external-family-relationship' && <ProcessedDataPage title="Danh mục mối quan hệ gia đình" dataType="Quan hệ gia đình" />}
-            {currentPage === 'processing-external-identity-document' && <ProcessedDataPage title="Danh mục giấy tờ tùy thân" dataType="Giấy tờ tùy thân" />}
-            
-            {/* Processing - External Social Security */}
-            {currentPage === 'processing-external-social-assistance' && <ProcessedDataPage title="Hưởng trợ giúp XH" dataType="Trợ giúp xã hội" />}
-            {currentPage === 'processing-external-poverty-info' && <ProcessedDataPage title="Thông tin người nghèo, cận nghèo" dataType="Người nghèo" />}
-            {currentPage === 'processing-external-single-person' && <ProcessedDataPage title="Người đơn thân" dataType="Người đơn thân" />}
-            {currentPage === 'processing-external-children-social-protection' && <ProcessedDataPage title="Trẻ em là đối tượng BTXH" dataType="Trẻ em BTXH" />}
-            {currentPage === 'processing-external-hiv-person' && <ProcessedDataPage title="Người có HIV" dataType="Người có HIV" />}
-            {currentPage === 'processing-external-elderly-person' && <ProcessedDataPage title="Người cao tuổi" dataType="Người cao tuổi" />}
-            {currentPage === 'processing-external-disabled-person' && <ProcessedDataPage title="Người khuyết tật" dataType="Người khuyết tật" />}
-            
-            {/* Processing - External Meritorious Group */}
-            {currentPage === 'processing-external-meritorious-person' && <ProcessedDataPage title="Hồ sơ công nhận người có công" dataType="Người có công" />}
-            {currentPage === 'processing-external-martyr-record' && <ProcessedDataPage title="Hồ sơ liệt sĩ" dataType="Liệt sĩ" />}
-            {currentPage === 'processing-external-meritorious-relative' && <ProcessedDataPage title="Hồ sơ thân nhân người có công" dataType="Thân nhân người có công" />}
-            
-            {/* Processing - External Children Group */}
-            {currentPage === 'processing-external-children-info' && <ProcessedDataPage title="Trẻ em" dataType="Trẻ em" />}
+
             {currentPage === 'notification-browser' && <NotificationBrowser />}
             {currentPage === 'user-guide' && <UserGuidePage />}
             {currentPage === 'user-guide-search' && <UserGuidePage />}
             {currentPage === 'user-guide-faq' && <UserGuidePage />}
             {currentPage === 'user-guide-video' && <UserGuidePage />}
             {currentPage === 'user-guide-documents' && <UserGuidePage />}
-            
+
             {/* Data Info A-J */}
             {currentPage === 'data-info-a' && <DataManagementDetail dataName="Dữ liệu A" dataId="data-info-a" />}
             {currentPage === 'data-info-b' && <DataManagementDetail dataName="Dữ liệu B" dataId="data-info-b" />}
@@ -544,9 +523,9 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'data-info-h' && <DataManagementDetail dataName="Dữ liệu H" dataId="data-info-h" />}
             {currentPage === 'data-info-i' && <DataManagementDetail dataName="Dữ liệu I" dataId="data-info-i" />}
             {currentPage === 'data-info-j' && <DataManagementDetail dataName="Dữ liệu J" dataId="data-info-j" />}
-            
+
             {/* Category Management A-J */}
-            {currentPage === 'category-management-a' && <DataManagementDetail dataName="Danh mục A" dataId="category-management-a" />}
+            {currentPage === 'category-management-a' && <DataManagementDetail dataName="Biên tập danh mục A" dataId="category-management-a" />}
             {currentPage === 'category-management-b' && <DataManagementDetail dataName="Danh mục B" dataId="category-management-b" />}
             {currentPage === 'category-management-c' && <DataManagementDetail dataName="Danh mục C" dataId="category-management-c" />}
             {currentPage === 'category-management-d' && <DataManagementDetail dataName="Danh mục D" dataId="category-management-d" />}
@@ -556,7 +535,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'category-management-h' && <DataManagementDetail dataName="Danh mục H" dataId="category-management-h" />}
             {currentPage === 'category-management-i' && <DataManagementDetail dataName="Danh mục I" dataId="category-management-i" />}
             {currentPage === 'category-management-j' && <DataManagementDetail dataName="Danh mục J" dataId="category-management-j" />}
-            
+
             {/* External Data */}
             {currentPage === 'external-children-info' && <ChildrenInfoPage />}
             {currentPage === 'external-court-judgment' && <CourtJudgmentPage />}
@@ -564,13 +543,13 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'external-social-security' && <SocialSecurityGroupPage />}
             {currentPage === 'external-meritorious-group' && <MeritoriousGroupPage />}
             {currentPage === 'external-children-group' && <ChildrenGroupPage />}
-            
+
             {/* Processing External Data - CSDL Ngoài ngành */}
-            {currentPage === 'processing-external-court-judgment' && <CourtJudgmentPage />}
-            {currentPage === 'processing-external-category-group' && <CategoryGroupPage />}
-            {currentPage === 'processing-external-social-security' && <SocialSecurityGroupPage />}
-            {currentPage === 'processing-external-meritorious-group' && <MeritoriousGroupPage />}
-            {currentPage === 'processing-external-children-group' && <ChildrenGroupPage />}
+            {currentPage === 'processing-external-court-judgment' && <CourtJudgmentPage mode="xử lý" />}
+            {currentPage === 'processing-external-category-group' && <CategoryGroupPage mode="xử lý" />}
+            {currentPage === 'processing-external-social-security' && <SocialSecurityGroupPage mode="xử lý" />}
+            {currentPage === 'processing-external-meritorious-group' && <MeritoriousGroupPage mode="xử lý" />}
+            {currentPage === 'processing-external-children-group' && <ChildrenGroupPage mode="xử lý" />}
             {currentPage === 'external-gender-category' && <GenderCategoryPage />}
             {currentPage === 'external-ethnic-category' && <EthnicCategoryPage />}
             {currentPage === 'external-country-nationality' && <CountryNationalityPage />}
@@ -589,7 +568,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'external-meritorious-person' && <MeritoriousPersonPage />}
             {currentPage === 'external-martyr-record' && <MartyrRecordPage />}
             {currentPage === 'external-meritorious-relative' && <MeritoriousRelativePage />}
-            
+
             {/* Data Info */}
             {currentPage === 'data-info-civil-registry' && <CivilRegistryDatabasePage />}
             {currentPage === 'data-info-case-management' && <CaseManagementPage />}
@@ -603,10 +582,10 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'data-info-auction' && <AuctionPage />}
             {currentPage === 'data-info-international' && <InternationalPage />}
             {currentPage === 'collection-statistics' && <StatisticsCollectionPage />}
-            
+
             {/* Processing Data Info - CSDL Trong ngành */}
-            {currentPage === 'processing-data-info-civil-registry' && <CivilRegistryDatabasePage mode="xử lý" />}
-            {currentPage === 'processing-data-info-case-management' && <CaseManagementPage mode="xử lý" />}
+            {currentPage === 'processing-data-info-civil-registry' && <CivilRegistryProcessingPage />}
+            {currentPage === 'processing-data-info-case-management' && <NationalityProcessingPage />}
             {currentPage === 'processing-data-info-civil-judgment' && <CivilJudgmentPage mode="xử lý" />}
             {currentPage === 'processing-data-info-security-measures' && <SecurityMeasuresPage mode="xử lý" />}
             {currentPage === 'processing-data-info-legal-national' && <LegalNationalPage mode="xử lý" />}
@@ -617,7 +596,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'processing-data-info-auction' && <AuctionPage mode="xử lý" />}
             {currentPage === 'processing-data-info-international' && <InternationalPage mode="xử lý" />}
             {currentPage === 'processing-collection-statistics' && <StatisticsCollectionPage mode="xử lý" />}
-            
+
             {/* Reconciliation Pages */}
             {currentPage === 'reconciliation-external-categories' && <ExternalCategoriesReconciliationPage />}
             {currentPage === 'reconciliation-external-court-judgment' && <ExternalCourtJudgmentReconciliationPage />}
@@ -635,7 +614,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'reconciliation-internal-statistics' && <InternalReconciliationPage databaseName="Thu thập số liệu thống kê" databaseCode="SLTK" />}
             {currentPage === 'reconciliation-internal-notary' && <InternalReconciliationPage databaseName="HTTT các tổ chức hành nghề công chứng" databaseCode="CONGCHUNG" />}
             {currentPage === 'reconciliation-internal-authentication' && <InternalReconciliationPage databaseName="CSDL chứng thực" databaseCode="CHUNGTHUC" />}
-            
+
             {/* Data Provision - CSDL Trong ngành */}
             {currentPage === 'provision-data-info-civil-registry' && <CivilRegistryDatabasePage context="chia sẻ" />}
             {currentPage === 'provision-data-info-case-management' && <CaseManagementPage context="chia sẻ" />}
@@ -649,7 +628,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'provision-data-info-auction' && <AuctionPage context="chia sẻ" />}
             {currentPage === 'provision-data-info-international' && <InternationalPage context="chia sẻ" />}
             {currentPage === 'provision-collection-statistics' && <StatisticsCollectionPage context="chia sẻ" />}
-            
+
             {/* Data Provision - CSDL Ngoài ngành */}
             {currentPage === 'provision-external-court-judgment' && <CourtJudgmentPage context="chia sẻ" />}
             {currentPage === 'provision-external-category-group' && <CategoryGroupPage context="chia sẻ" />}
@@ -666,9 +645,9 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
       <ChangeBackgroundModal isOpen={showChangeBackgroundModal} onClose={() => setShowChangeBackgroundModal(false)} />
       <AccessHistoryModal isOpen={showAccessHistoryModal} onClose={() => setShowAccessHistoryModal(false)} />
       <ActionHistoryModal isOpen={showActionHistoryModal} onClose={() => setShowActionHistoryModal(false)} />
-      <LogoutModal 
-        isOpen={showLogoutModal} 
-        onClose={() => setShowLogoutModal(false)} 
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
         onConfirm={() => {
           setShowLogoutModal(false);
           if (onLogout) {
@@ -676,7 +655,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
           } else {
             alert('Đăng xuất thành công!');
           }
-        }} 
+        }}
       />
     </div>
   );
@@ -687,7 +666,7 @@ const getBreadcrumbPath = (pageId: string): string[] => {
   const breadcrumbMap: Record<string, string[]> = {
     // Dashboard
     'dashboard': ['Tổng quan hệ thống'],
-    
+
     // Collection
     'collection-dashboard': ['Quản lý thu thập', 'Dashboard'],
     'collection-setup': ['Quản lý thu thập', 'Thiết lập thu thập'],
@@ -706,7 +685,7 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'data-info-international': ['Quản lý thu thập', 'CSDL Trong ngành', 'CSDL Hợp tác quốc tế'],
     'collection-statistics': ['Quản lý thu thập', 'CSDL Trong ngành', 'CSDL Thống kê thu thập'],
     'category-management': ['Quản lý thu thập', 'CSDL Trong ngành', 'Quản lý danh mục'],
-    'category-management-a': ['Quản lý thu thập', 'CSDL Trong ngành', 'Quản lý danh mục', 'Danh mục A'],
+    'category-management-a': ['Quản lý thu thập', 'CSDL Trong ngành', 'Quản lý danh mục', 'Biên tập danh mục A'],
     'collection-internal': ['Quản lý thu thập', 'CSDL Ngoài ngành'],
     'external-court-judgment': ['Quản lý thu thập', 'CSDL Ngoài ngành', 'CSDL Thông tin Bản án, quyết định từ TAND tối cah'],
     'external-category-group': ['Quản lý thu thập', 'CSDL Ngoài ngành', 'CSDL Nhóm danh mục'],
@@ -733,12 +712,12 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'external-meritorious-relative': ['Quản lý thu thập', 'CSDL Ngoài ngành', 'CSDL Ngời có công - Hồ sơ công nhận thân nhân người có công'],
     'external-children-info': ['Quản lý thu thập', 'CSDL Ngoài ngành', 'CSDL Trẻ em - Trẻ em'],
     'collection-reconciliation': ['Quản lý thu thập', 'Đối soát dữ liệu'],
-    
+
     // Reconciliation - External Ministry
     'reconciliation-external-ministry': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ ngoài ngành'],
     'reconciliation-external-categories': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ ngoài ngành', 'Đối soát tổng hợp các danh mục từ Bộ ngành ngoài (qua Trung tâm dữ liệu Quốc gia)'],
     'reconciliation-external-court-judgment': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ ngoài ngành', 'Đối soát tổng hợp dữ liệu về Thông tin Bản án, quyết định'],
-    
+
     // Reconciliation - Internal Ministry
     'reconciliation-internal-ministry': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành'],
     'reconciliation-internal-civil-registry': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'CSDL Hộ tịch điện tử'],
@@ -755,9 +734,8 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'reconciliation-internal-statistics': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'Thu thập số liệu thống kê'],
     'reconciliation-internal-notary': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'HTTT các tổ chức hành nghề công chứng'],
     'reconciliation-internal-authentication': ['Quản lý thu thập', 'Đối soát dữ liệu', 'Đối soát dữ liệu từ Bộ trong ngành', 'CSDL chứng thực'],
-    
+
     // Processing
-    'processing-rule-setup': ['Xử lý dữ liệu', 'Thiết lập quy tắc xử lý dữ liệu'],
     'processed-data': ['Xử lý dữ liệu', 'Dữ liệu đã xử lý'],
     'processing-internal-data': ['Xử lý dữ liệu', 'CSDL Trong ngành'],
     'processing-data-info-civil-registry': ['Xử lý dữ liệu', 'CSDL Trong ngành', 'CSDL Hộ tịch điện tử'],
@@ -779,32 +757,37 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'processing-external-social-security': ['Xử lý dữ liệu', 'CSDL Ngoài ngành', 'BHXH và Giảm nghèo'],
     'processing-external-meritorious-group': ['Xử lý dữ liệu', 'CSDL Ngoài ngành', 'Người có công'],
     'processing-external-children-group': ['Xử lý dữ liệu', 'CSDL Ngoài ngành', 'Trẻ em'],
-    
+
     // Category
     'category-setup': ['Quản lý danh mục', 'Thiết lập danh mục'],
-    'category-list': ['Quản lý danh mục', 'Danh sách danh mục'],
-    'category-a': ['Quản lý danh mục', 'Danh sách danh mục', 'Danh mục A'],
+    'category-list': ['Quản lý danh mục', 'Biên tập danh mục'],
+    'category-a': ['Quản lý danh mục', 'Biên tập danh mục', 'Biên tập danh mục A'],
     'category-published-list': ['Quản lý danh mục', 'Công khai danh mục'],
-    'category-report': ['Quản lý danh mục', 'Thống kê danh mục'],
-    
+    'category-report-group': ['Quản lý danh mục', 'Thống kê danh mục'],
+    'category-report': ['Quản lý danh mục', 'Thống kê danh mục', 'Khai thác báo cáo'],
+    'category-report-list': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo thống kê danh sách danh mục'],
+    'category-report-exploitation': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo tình trạng khai thác danh mục'],
+    'category-report-status': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo trạng thái danh mục'],
+    'category-report-version': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo phiên bản danh mục'],
+
     // Open Data
     'open-data-setup': ['Dữ liệu mở', 'Quản lý danh mục'],
-    'open-data-category-list': ['Dữ liệu mở', 'Danh sách danh mục'],
-    'open-data-category-a': ['Dữ liệu mở', 'Danh sách danh mục', 'Danh mục A'],
+    'open-data-category-list': ['Dữ liệu mở', 'Biên tập danh mục'],
+    'open-data-category-a': ['Dữ liệu mở', 'Biên tập danh mục', 'Biên tập danh mục A'],
     'open-data-published-list': ['Dữ liệu mở', 'Dữ liệu mở công bố'],
     'open-data-report': ['Dữ liệu mở', 'Thống kê dữ liệu mở'],
-    
+
     // Master Data
     'master-data-scale-management': ['Quản lý dữ liệu chủ', 'Quản lý quy mô dữ liệu chủ'],
     'master-data-update': ['Quản lý dữ liệu chủ', 'Cập nhật dữ liệu chủ'],
     'master-data-update-a': ['Quản lý dữ liệu chủ', 'Cập nhật dữ liệu chủ', 'Dữ liệu chủ A'],
     'master-data-reports': ['Quản lý dữ liệu chủ', 'Báo cáo tìm kiếm dữ liệu chủ'],
-    
+
     // Orchestration
     'orchestration-service-setup': ['Điều phối dữ liệu', 'Thiết lập dịch vụ'],
     'orchestration-api-management': ['Điều phối dữ liệu', 'API cung cấp dữ liệu'],
     'orchestration-reconciliation-api': ['Điều phối dữ liệu', 'API đối soát dữ liệu'],
-    
+
     // Data Provision - CSDL Trong ngành
     'provision-internal': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Trong ngành'],
     'provision-data-info-civil-registry': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Trong ngành', 'CSDL Hộ tịch điện tử'],
@@ -819,7 +802,7 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'provision-data-info-auction': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Trong ngành', 'CSDL quản lý đấu giá TS'],
     'provision-data-info-international': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Trong ngành', 'CSDL Hợp tác quốc tế'],
     'provision-collection-statistics': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Trong ngành', 'Thu thập số liệu thống kê'],
-    
+
     // Data Provision - CSDL Ngoài ngành
     'provision-external': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Ngoài ngành'],
     'provision-external-court-judgment': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Ngoài ngành', 'CSDL Thông tin Bản án'],
@@ -827,7 +810,7 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'provision-external-social-security': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Ngoài ngành', 'BHXH và Giảm nghèo'],
     'provision-external-meritorious-group': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Ngoài ngành', 'Người có công'],
     'provision-external-children-group': ['Điều phối dữ liệu', 'Dịch vụ cung cấp dữ liệu', 'CSDL Ngoài ngành', 'Trẻ em'],
-    
+
     // Admin
     'admin-users': ['Quản trị & vận hành', 'Quản trị người dùng', 'Quản lý người dùng'],
     'admin-groups': ['Quản trị & vận hành', 'Quản trị người dùng', 'Quản lý nhóm người dùng'],
@@ -840,13 +823,13 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'admin-account-log': ['Quản trị & vận hành', 'Quản lý nhật ký', 'Nhật ký quản lý tài khoản'],
     'admin-config-log': ['Quản trị & vận hành', 'Quản lý nhật ký', 'Nhật ký thay đổi cấu hình'],
     'admin-statistics': ['Quản trị & vận hành', 'Thống kê & báo cáo', 'Xem biểu đồ thống kê'],
-    
+
     // Notifications
     'notifications': ['Quản lý thông báo'],
-    
+
     // User Guide
     'user-guide': ['Hướng dẫn sử dụng'],
   };
-  
+
   return breadcrumbMap[pageId] || [pageConfig[pageId]?.title || 'Trang chủ'];
 };

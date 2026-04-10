@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { Search, FileText, Calendar, User, Download, Eye, Filter, ChevronDown, Globe, CheckCircle, AlertCircle, RefreshCw, XCircle } from 'lucide-react';
+import { useState, ChangeEvent } from 'react';
+import { Search, FileText, Calendar, User, Download, Eye, Filter, ChevronDown, Globe, CheckCircle, AlertCircle, RefreshCw, XCircle, Share2, Clock, Ban } from 'lucide-react';
+import { PublishConfigModal } from './components/modals/PublishConfigModal';
+import { UnpublishModal } from './components/modals/UnpublishModal';
+
 
 interface PublishedData {
   id: string;
@@ -10,9 +13,10 @@ interface PublishedData {
   publisher: string;
   format: string[];
   downloadCount: number;
-  status: 'published' | 'updated' | 'deprecated';
+  status: 'published' | 'updated' | 'deprecated' | 'ready';
   description: string;
   lastUpdate: string;
+  scopes?: string[];
 }
 
 const mockPublishedData: PublishedData[] = [
@@ -27,7 +31,8 @@ const mockPublishedData: PublishedData[] = [
     downloadCount: 1250,
     status: 'published',
     description: 'Danh mục văn bản quy phạm pháp luật được công bố công khai',
-    lastUpdate: '25/12/2024'
+    lastUpdate: '25/12/2024',
+    scopes: ['public']
   },
   {
     id: '2',
@@ -53,7 +58,8 @@ const mockPublishedData: PublishedData[] = [
     downloadCount: 850,
     status: 'published',
     description: 'Danh sách các tổ chức hành nghề công chứng trên toàn quốc',
-    lastUpdate: '20/12/2024'
+    lastUpdate: '20/12/2024',
+    scopes: ['extended', 'internal']
   },
   {
     id: '4',
@@ -66,7 +72,8 @@ const mockPublishedData: PublishedData[] = [
     downloadCount: 620,
     status: 'published',
     description: 'Thống kê các trường hợp được hỗ trợ trợ giúp pháp lý',
-    lastUpdate: '15/12/2024'
+    lastUpdate: '15/12/2024',
+    scopes: ['internal']
   },
   {
     id: '5',
@@ -81,6 +88,19 @@ const mockPublishedData: PublishedData[] = [
     description: 'Phiên bản cũ - Đã ngưng cập nhật từ 01/01/2024',
     lastUpdate: '31/12/2023'
   },
+  {
+    id: '6',
+    code: 'DMCB006',
+    name: 'Danh mục quốc tịch',
+    category: 'Hộ tịch',
+    publishDate: '',
+    publisher: 'Bộ Tư pháp',
+    format: ['JSON', 'CSV'],
+    downloadCount: 0,
+    status: 'ready',
+    description: 'Danh mục quốc tịch cập nhật 2026, đã duyệt và sẵn sàng công khai',
+    lastUpdate: '10/01/2026'
+  },
 ];
 
 export function CategoryPublishedListPage() {
@@ -89,9 +109,17 @@ export function CategoryPublishedListPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedData, setSelectedData] = useState<PublishedData | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<'publish' | 'unpublish'>('publish');
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [showUnpublishModal, setShowUnpublishModal] = useState(false);
 
   // Filter data
-  const filteredData = mockPublishedData.filter(item => {
+  const tabData = mockPublishedData.filter(item => {
+    if (activeTab === 'publish') return true;
+    return item.status === 'published';
+  });
+
+  const filteredData = tabData.filter(item => {
     const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                        item.code.toLowerCase().includes(searchTerm.toLowerCase());
     const matchStatus = selectedStatus === 'all' || item.status === selectedStatus;
@@ -104,16 +132,19 @@ export function CategoryPublishedListPage() {
       published: 'bg-green-100 text-green-700 border-green-200',
       updated: 'bg-blue-100 text-blue-700 border-blue-200',
       deprecated: 'bg-orange-100 text-orange-700 border-orange-200',
+      ready: 'bg-purple-100 text-purple-700 border-purple-200',
     };
     const labels = {
       published: 'Đã công bố',
       updated: 'Đã cập nhật',
       deprecated: 'Ngưng cập nhật',
+      ready: 'Sẵn sàng công bố',
     };
     const icons = {
       published: CheckCircle,
       updated: RefreshCw,
       deprecated: XCircle,
+      ready: Clock,
     };
     const Icon = icons[status as keyof typeof icons];
     
@@ -136,6 +167,22 @@ export function CategoryPublishedListPage() {
 
   return (
     <div className="space-y-6">
+      {/* Tabs */}
+      <div className="flex bg-white px-2 pt-2 border-b border-slate-200">
+        <button 
+          onClick={() => setActiveTab('publish')}
+          className={`flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'publish' ? 'border-blue-600 text-blue-600 bg-blue-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
+        >
+          <Share2 className="w-4 h-4"/> Công khai danh mục
+        </button>
+        <button 
+          onClick={() => setActiveTab('unpublish')}
+          className={`flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'unpublish' ? 'border-blue-600 text-blue-600 bg-blue-50/50' : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
+        >
+          <Ban className="w-4 h-4"/> Hủy công khai danh mục
+        </button>
+      </div>
+
       {/* Search & Filters */}
       <div className="bg-white border border-slate-200 rounded-lg p-6">
         <div className="grid grid-cols-4 gap-4">
@@ -143,16 +190,18 @@ export function CategoryPublishedListPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
+              title="Tìm kiếm"
               placeholder="Tìm kiếm theo tên, mã danh mục..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <div>
             <select
+              title="Lĩnh vực"
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
               className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">Tất cả lĩnh vực</option>
@@ -165,11 +214,13 @@ export function CategoryPublishedListPage() {
           </div>
           <div>
             <select
+              title="Trạng thái"
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedStatus(e.target.value)}
               className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">Tất cả trạng thái</option>
+              <option value="ready">Sẵn sàng công bố</option>
               <option value="published">Đã công bố</option>
               <option value="updated">Đã cập nhật</option>
               <option value="deprecated">Ngưng cập nhật</option>
@@ -268,6 +319,31 @@ export function CategoryPublishedListPage() {
                       >
                         <Eye className="w-4 h-4" />
                       </button>
+                      {activeTab === 'publish' && (item.status === 'ready' || item.status === 'updated') && (
+                        <button 
+                          onClick={() => { setSelectedData(item); setShowPublishModal(true); }}
+                          className="p-1.5 text-purple-600 hover:bg-purple-50 rounded" 
+                          title="Công bố danh mục"
+                        >
+                          <Share2 className="w-4 h-4" />
+                        </button>
+                      )}
+                      {activeTab === 'publish' && item.status === 'published' && (
+                        <button className="p-1.5 text-amber-600 hover:bg-amber-50 rounded" title="Cập nhật thông tin công bố">
+                          <RefreshCw className="w-4 h-4" />
+                        </button>
+                      )}
+                      
+                      {activeTab === 'unpublish' && item.status === 'published' && (
+                        <button 
+                          onClick={() => { setSelectedData(item); setShowUnpublishModal(true); }}
+                          className="p-1.5 text-red-600 hover:bg-red-50 rounded" 
+                          title="Hủy công khai"
+                        >
+                          <Ban className="w-4 h-4" />
+                        </button>
+                      )}
+
                       <div className="relative group">
                         <button className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded" title="Tải xuống">
                           <Download className="w-4 h-4" />
@@ -386,6 +462,41 @@ export function CategoryPublishedListPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Publish Config Modal */}
+      {showPublishModal && selectedData && (
+        <PublishConfigModal
+          isOpen={showPublishModal}
+          onClose={() => {
+            setShowPublishModal(false);
+            setSelectedData(null);
+          }}
+          recordName={selectedData.name}
+          onConfirm={(config) => {
+            setShowPublishModal(false);
+            setSelectedData(null);
+            alert('Mã ' + selectedData.code + ' đã được công bố danh mục thành công. Số phạm vi đã chọn: ' + config.scopes.length);
+          }}
+        />
+      )}
+
+      {/* Unpublish Modal */}
+      {showUnpublishModal && selectedData && (
+        <UnpublishModal
+          isOpen={showUnpublishModal}
+          onClose={() => {
+            setShowUnpublishModal(false);
+            setSelectedData(null);
+          }}
+          recordName={selectedData.name}
+          scopes={selectedData.scopes}
+          onConfirm={(reason, selectedScopes) => {
+            setShowUnpublishModal(false);
+            setSelectedData(null);
+            alert(`Mã ${selectedData.code} đã được ngừng công khai đối với các phạm vi đã chọn. Lý do: ${reason}`);
+          }}
+        />
       )}
     </div>
   );

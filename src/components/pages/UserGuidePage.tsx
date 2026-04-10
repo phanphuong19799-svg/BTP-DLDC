@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { 
-  BookOpen, 
-  ChevronRight, 
-  Download, 
-  Video, 
+import {
+  BookOpen,
+  ChevronRight,
+  Download,
+  Video,
   FileText,
   Search,
   Database,
@@ -67,7 +67,7 @@ const sections: Section[] = [
       {
         id: 'external-collection',
         title: '2.2. Thu thập dữ liệu từ Bộ ngành ngoài',
-        content: 'Các bước thu thập dữ liệu từ Bộ ngành ngoài:\n\n1. Vào menu "Thu thập CSDL" → "Đối tịch tư Bộ ngành ngoài"\n2. Chọn danh mục cần thu thập (ví dụ: Danh mục A)\n3. Cấu hình kết nối: nhập URL API, Authentication key, tần suất đồng bộ\n4. Ánh xạ trường dữ liệu từ nguồn sang schema đích\n5. Thiết lập lịch thu thập tự động (theo giờ/ngày/tuần)\n6. Chạy thử nghiệm và kiểm tra kết quả\n7. Kích hoạt thu thập tự động\n\nHệ thống sẽ ghi log chi tiết mỗi lần thu thập và cảnh báo khi có lỗi.'
+        content: 'Các bước thu thập dữ liệu từ Bộ ngành ngoài:\n\n1. Vào menu "Thu thập CSDL" → "Đối tịch tư Bộ ngành ngoài"\n2. Chọn danh mục cần thu thập (ví dụ: Biên tập danh mục A)\n3. Cấu hình kết nối: nhập URL API, Authentication key, tần suất đồng bộ\n4. Ánh xạ trường dữ liệu từ nguồn sang schema đích\n5. Thiết lập lịch thu thập tự động (theo giờ/ngày/tuần)\n6. Chạy thử nghiệm và kiểm tra kết quả\n7. Kích hoạt thu thập tự động\n\nHệ thống sẽ ghi log chi tiết mỗi lần thu thập và cảnh báo khi có lỗi.'
       },
       {
         id: 'internal-collection',
@@ -111,7 +111,7 @@ const sections: Section[] = [
       {
         id: 'category-setup',
         title: '4.1. Thiết lập danh mục',
-        content: 'Hướng dẫn thiết lập danh mục mới:\n\n1. Vào menu "Quản lý danh mục" → "Thiết lập danh mục"\n2. Click nút "Thêm danh mục mới"\n3. Nhập thông tin cơ bản:\n   - Mã danh mục (unique)\n   - Tên danh mục (tiếng Việt và tiếng Anh)\n   - Mô tả và mục đích sử dụng\n   - Phân loại danh mục\n4. Định nghĩa cấu trúc dữ liệu:\n   - Thêm các trường dữ liệu (fields)\n   - Chọn kiểu dữ liệu (text, number, date, boolean...)\n   - Thiết lập ràng buộc (required, unique, format...)\n   - Định nghĩa quan hệ với danh mục khác\n5. Cấu hình quyền truy cập\n6. Lưu nháp hoặc gửi phê duyệt'
+        content: 'Hướng dẫn thiết lập danh mục mới:\n\n1. Vào menu "Quản lý danh mục" → "Thiết lập danh mục"\n2. Click nút "Thêm danh mục mới"\n3. Nhập thông tin cơ bản:\n   - Mã danh mục (unique)\n   - Tên danh mục (tiếng Việt và tiếng Anh)\n   - Mô tả và mục đích sử dụng\n   - Phân loại danh mục\n4. Định nghĩa cấu trúc dữ liệu:\n   - Thêm các trường dữ liệu (fields)\n   - Chọn kiểu dữ liệu (text, number, date, boolean...)\n   - Thiết lập ràng buộc (required, unique, format...)\n   - Định nghĩa quan hệ với danh mục khác\n5. Cấu hình quyền truy cập\n6. Lưu hoặc gửi phê duyệt'
       },
       {
         id: 'category-approval',
@@ -292,17 +292,17 @@ export function UserGuidePage() {
 
   const filteredSections = sections.map(section => {
     if (searchQuery === '') return section;
-    
-    const matchedSubsections = section.subsections.filter(sub => 
+
+    const matchedSubsections = section.subsections.filter(sub =>
       sub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sub.content.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    
-    if (matchedSubsections.length > 0 || 
-        section.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+
+    if (matchedSubsections.length > 0 ||
+      section.title.toLowerCase().includes(searchQuery.toLowerCase())) {
       return { ...section, subsections: matchedSubsections.length > 0 ? matchedSubsections : section.subsections };
     }
-    
+
     return null;
   }).filter(Boolean) as Section[];
 
@@ -325,22 +325,21 @@ export function UserGuidePage() {
             />
           </div>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto p-4">
           <div className="space-y-1">
             {filteredSections.map((section) => {
               const Icon = section.icon;
               const isActive = selectedSection === section.id;
-              
+
               return (
                 <button
                   key={section.id}
                   onClick={() => setSelectedSection(section.id)}
-                  className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${
-                    isActive
-                      ? 'bg-violet-50 text-violet-700'
-                      : 'text-slate-600 hover:bg-slate-50'
-                  }`}
+                  className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${isActive
+                    ? 'bg-violet-50 text-violet-700'
+                    : 'text-slate-600 hover:bg-slate-50'
+                    }`}
                 >
                   <Icon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isActive ? 'text-violet-600' : 'text-slate-400'}`} />
                   <span className="text-sm leading-tight">{section.title}</span>
@@ -413,7 +412,7 @@ export function UserGuidePage() {
                             </ul>
                           );
                         }
-                        
+
                         // Check if paragraph is numbered list
                         if (/^\d+\./.test(paragraph.trim())) {
                           const items = paragraph.split('\n').filter(item => item.trim());
@@ -450,7 +449,7 @@ export function UserGuidePage() {
                       })}
                     </div>
                   </div>
-                  
+
                   {index < currentSection.subsections.length - 1 && (
                     <div className="mt-8 pt-8 border-t border-slate-100" />
                   )}
@@ -473,7 +472,7 @@ export function UserGuidePage() {
                 <ChevronRight className="w-4 h-4 rotate-180" />
                 Phần trước
               </button>
-              
+
               <button
                 onClick={() => {
                   const currentIndex = sections.findIndex(s => s.id === selectedSection);

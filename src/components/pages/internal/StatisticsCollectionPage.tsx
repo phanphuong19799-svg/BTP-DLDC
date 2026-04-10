@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, FileText, Scale, Eye, FileCheck, BookOpen, MapPin, Shield, UserCheck, Plane, MessageSquare, FileSearch, Briefcase, Gavel, Stamp, DollarSign, Users, FileBarChart, ClipboardList, Package } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface StatisticsCollectionPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function StatisticsCollectionPage({ mode = 'thu thập' }: StatisticsCollectionPageProps) {
+export function StatisticsCollectionPage({ mode = 'thu thập', context = 'thu thập' }: StatisticsCollectionPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -84,6 +86,11 @@ export function StatisticsCollectionPage({ mode = 'thu thập' }: StatisticsColl
 
   const stats = generateData();
 
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="Thu thập số liệu thống kê" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
+
   const tableData: DatabaseRecord[] = [
     { name: 'Xây dựng văn bản quy phạm pháp luật', category: 'Thu thập số liệu thống kê', todayCount: 18500, errorCount: 25 },
     { name: 'Kiểm tra văn bản quy phạm pháp luật', category: 'Thu thập số liệu thống kê', todayCount: 21200, errorCount: 18 },
@@ -138,7 +145,7 @@ export function StatisticsCollectionPage({ mode = 'thu thập' }: StatisticsColl
             onChange={(e) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button title="Hành động" aria-label="Hành động" className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>

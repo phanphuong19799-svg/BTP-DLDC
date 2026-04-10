@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { 
-  LayoutDashboard, Database, Settings, Share2, GitCompare, Shield, 
+import {
+  LayoutDashboard, Database, Settings, Share2, GitCompare, Shield,
   FileText, FolderTree, HardDrive, Network, Globe, Building2, Building,
   Users, List, BarChart3, FileSearch, RefreshCw, Package, Bell, HelpCircle,
   FolderCog, ChevronRight, ZoomIn, ZoomOut, Maximize2
@@ -63,12 +63,6 @@ export function ScreenFlowDiagram() {
       color: 'bg-purple-100 text-purple-700 border-purple-300',
       description: 'Xử lý và chuẩn hóa dữ liệu',
       children: [
-        {
-          id: 'processing-rule-setup',
-          label: 'Thiết lập quy tắc',
-          icon: Settings,
-          description: 'Cấu hình quy tắc làm sạch, chuẩn hóa, biến đổi'
-        },
         {
           id: 'processing-internal-data',
           label: 'Dữ liệu trong ngành',
@@ -216,7 +210,7 @@ export function ScreenFlowDiagram() {
           icon: FolderCog,
           description: 'Cung cấp danh mục cho các đơn vị',
           subChildren: [
-            { id: 'data-provision-catalog-a', label: 'Danh mục A' },
+            { id: 'data-provision-catalog-a', label: 'Biên tập danh mục A' },
             { id: 'data-provision-catalog-b', label: 'Danh mục B' },
             { id: 'data-provision-catalog-c', label: 'Danh mục C' }
           ]
@@ -339,7 +333,7 @@ export function ScreenFlowDiagram() {
 
       {/* Flow Diagram */}
       <div className="flex-1 overflow-auto p-8">
-        <div 
+        <div
           className="min-w-max transition-transform duration-200"
           style={{ transform: `scale(${zoom})`, transformOrigin: 'top left' }}
         >
@@ -385,9 +379,8 @@ export function ScreenFlowDiagram() {
               {menuStructure.map((menu, index) => (
                 <div
                   key={menu.id}
-                  className={`bg-white rounded-lg border-2 shadow-sm hover:shadow-md transition-all ${
-                    selectedMenu === menu.id ? 'ring-4 ring-blue-200' : ''
-                  } ${menu.color}`}
+                  className={`bg-white rounded-lg border-2 shadow-sm hover:shadow-md transition-all ${selectedMenu === menu.id ? 'ring-4 ring-blue-200' : ''
+                    } ${menu.color}`}
                   onClick={() => setSelectedMenu(menu.id)}
                 >
                   {/* Menu Header */}
@@ -418,7 +411,7 @@ export function ScreenFlowDiagram() {
                               {child.description && (
                                 <div className="text-xs text-slate-500 mt-0.5">{child.description}</div>
                               )}
-                              
+
                               {/* Sub-children */}
                               {child.subChildren && child.subChildren.length > 0 && (
                                 <div className="mt-2 space-y-1 pl-4 border-l-2 border-slate-300">
@@ -468,7 +461,7 @@ export function ScreenFlowDiagram() {
                   <span className="text-xs text-slate-600">Menu con cấp 2</span>
                 </div>
               </div>
-              
+
               <div className="mt-4 pt-4 border-t border-slate-200">
                 <div className="text-xs text-slate-500">
                   <strong>Quy trình xử lý dữ liệu 3 bước:</strong>
@@ -478,7 +471,7 @@ export function ScreenFlowDiagram() {
                     <li><strong>Biến đổi (Transformation):</strong> Biến đổi dữ liệu theo quy tắc nghiệp vụ</li>
                   </ol>
                 </div>
-                
+
                 <div className="text-xs text-slate-500 mt-3">
                   <strong>Phân biệt nguồn dữ liệu:</strong>
                   <ul className="list-disc list-inside mt-2 space-y-1 ml-2">

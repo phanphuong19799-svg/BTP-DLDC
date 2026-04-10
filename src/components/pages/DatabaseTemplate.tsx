@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from './processing/GenericProcessingPage';
 import { Calendar, Download, FileUser, UserCheck, Users, Baby, Heart, UserX, UsersRound, FileEdit, FileCheck, FileX } from 'lucide-react';
 import { DataDetailModal } from '../DataDetailModal';
 
@@ -79,6 +80,11 @@ export function DatabaseTemplate({
 
   const stats = generateData();
 
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName={categoryName} datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
+
   const tableData: DatabaseRecord[] = [
     { name: 'Hồ sơ khai sinh', category: categoryName, todayCount: 20000, errorCount: 30 },
     { name: 'Hồ sơ đăng ký kết hôn', category: categoryName, todayCount: 20000, errorCount: 30 },
@@ -117,7 +123,7 @@ export function DatabaseTemplate({
             onChange={(e) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button title="Hành động" aria-label="Hành động" className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>

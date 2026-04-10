@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { Globe, Share2, Eye, Download, RefreshCw, CheckCircle } from 'lucide-react';
 
 const mockPublished = [
-  { id: '1', code: 'CAT001', name: 'Danh mục A', publishDate: '01/11/2024', viewCount: 3456, downloadCount: 892, status: 'published' },
+  { id: '1', code: 'CAT001', name: 'Biên tập danh mục A', publishDate: '01/11/2024', viewCount: 3456, downloadCount: 892, status: 'published' },
   { id: '2', code: 'CAT002', name: 'Danh mục B', publishDate: '15/11/2024', viewCount: 2134, downloadCount: 567, status: 'published' },
   { id: '3', code: 'CAT003', name: 'Danh mục C', publishDate: '01/12/2024', viewCount: 892, downloadCount: 234, status: 'draft' },
 ];
@@ -84,8 +84,9 @@ export function CategoryPublishPage() {
 
       <div className="bg-white border border-slate-200 rounded-lg p-4">
         <select
+          title="Trạng thái"
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
           className="px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="all">Tất cả trạng thái</option>

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Search, Filter, Download, FileText, BarChart3, PieChart, TrendingUp, Calendar, Building2, Tag, FileType, Shield, Eye, MousePointer } from 'lucide-react';
+import { useState, ChangeEvent } from 'react';
+import { Search, Filter, Download, FileText, BarChart3, PieChart, TrendingUp, Calendar, Building2, Tag, FileType, Shield, Eye, MousePointer, RefreshCw, Database, SlidersHorizontal, X } from 'lucide-react';
 import { BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Mock data for demonstration
@@ -8,9 +8,11 @@ const mockDatasets = [
     id: 'DS001',
     name: 'Danh sách văn bản quy phạm pháp luật 2024',
     category: 'Văn bản pháp luật',
-    agency: 'Bộ Tư pháp',
-    format: 'JSON',
-    license: 'CC BY 4.0',
+    version: 'v2.1',
+    validity: 'Hiệu lực',
+    exploitationStatus: 'Đang khai thác',
+    publishStatus: 'Đã công bố',
+    approvalStatus: 'Đã phê duyệt',
     publishedDate: '2024-01-15',
     views: 1250,
     downloads: 340,
@@ -19,9 +21,11 @@ const mockDatasets = [
     id: 'DS002',
     name: 'Dữ liệu đăng ký kinh doanh Q1/2024',
     category: 'Đăng ký kinh doanh',
-    agency: 'Cục Đăng ký kinh doanh',
-    format: 'Excel',
-    license: 'ODC-BY',
+    version: 'v1.5',
+    validity: 'Hiệu lực',
+    exploitationStatus: 'Tạm dừng',
+    publishStatus: 'Chưa công bố',
+    approvalStatus: 'Đang chờ',
     publishedDate: '2024-02-10',
     views: 890,
     downloads: 220,
@@ -30,9 +34,11 @@ const mockDatasets = [
     id: 'DS003',
     name: 'Thống kê công chứng viên 2024',
     category: 'Công chứng',
-    agency: 'Cục Công chứng',
-    format: 'CSV',
-    license: 'CC BY 4.0',
+    version: 'v1.0',
+    validity: 'Hết hiệu lực',
+    exploitationStatus: 'Ngừng khai thác',
+    publishStatus: 'Đã công bố',
+    approvalStatus: 'Đã phê duyệt',
     publishedDate: '2024-03-05',
     views: 670,
     downloads: 180,
@@ -41,9 +47,11 @@ const mockDatasets = [
     id: 'DS004',
     name: 'Danh sách trung tâm TGPL',
     category: 'Trợ giúp pháp lý',
-    agency: 'Cục TGPL',
-    format: 'JSON',
-    license: 'ODbL',
+    version: 'v3.0',
+    validity: 'Hiệu lực',
+    exploitationStatus: 'Đang khai thác',
+    publishStatus: 'Chưa công bố',
+    approvalStatus: 'Đang chờ',
     publishedDate: '2024-01-20',
     views: 550,
     downloads: 140,
@@ -88,11 +96,12 @@ export function CategoryStatisticsReportPage() {
   const [activeTab, setActiveTab] = useState<'search' | 'statistics' | 'classification' | 'access'>('search');
   
   // Search & Filter States
+  const [showAdvancedSearchModal, setShowAdvancedSearchModal] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
-  const [filterAgency, setFilterAgency] = useState('all');
-  const [filterFormat, setFilterFormat] = useState('all');
-  const [filterLicense, setFilterLicense] = useState('all');
+  const [filterValidity, setFilterValidity] = useState('all');
+  const [filterPublishStatus, setFilterPublishStatus] = useState('all');
+  const [filterApprovalStatus, setFilterApprovalStatus] = useState('all');
   
   // Statistics States
   const [statsGroupBy, setStatsGroupBy] = useState<'agency' | 'category' | 'license' | 'time'>('category');
@@ -108,9 +117,9 @@ export function CategoryStatisticsReportPage() {
   const filteredDatasets = mockDatasets.filter(dataset => {
     if (searchKeyword && !dataset.name.toLowerCase().includes(searchKeyword.toLowerCase())) return false;
     if (filterCategory !== 'all' && dataset.category !== filterCategory) return false;
-    if (filterAgency !== 'all' && dataset.agency !== filterAgency) return false;
-    if (filterFormat !== 'all' && dataset.format !== filterFormat) return false;
-    if (filterLicense !== 'all' && dataset.license !== filterLicense) return false;
+    if (filterValidity !== 'all' && dataset.validity !== filterValidity) return false;
+    if (filterPublishStatus !== 'all' && dataset.publishStatus !== filterPublishStatus) return false;
+    if (filterApprovalStatus !== 'all' && dataset.approvalStatus !== filterApprovalStatus) return false;
     return true;
   });
 
@@ -187,106 +196,144 @@ export function CategoryStatisticsReportPage() {
           {/* Tab 1: Tìm kiếm và lọc */}
           {activeTab === 'search' && (
             <div className="space-y-6">
-              {/* Filter Panel */}
+              {/* Basic Search Panel */}
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
-                <h3 className="text-slate-900 mb-4 flex items-center gap-2">
-                  <Filter className="w-5 h-5 text-emerald-600" />
-                  Bộ lọc tìm kiếm
-                </h3>
-                
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm text-slate-700 mb-2">Từ khóa</label>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
-                      placeholder="Nhập từ khóa..."
+                      title="Từ khóa"
+                      placeholder="Tìm kiếm toàn văn (Nhập từ khóa mã danh mục, tên danh mục...)"
                       value={searchKeyword}
-                      onChange={(e) => setSearchKeyword(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword(e.target.value)}
+                      className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm"
                     />
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm text-slate-700 mb-2">Chủ đề</label>
-                    <select
-                      value={filterCategory}
-                      onChange={(e) => setFilterCategory(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
-                      <option value="all">Tất cả</option>
-                      <option value="Văn bản pháp luật">Văn bản pháp luật</option>
-                      <option value="Đăng ký kinh doanh">Đăng ký kinh doanh</option>
-                      <option value="Công chứng">Công chứng</option>
-                      <option value="Trợ giúp pháp lý">Trợ giúp pháp lý</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm text-slate-700 mb-2">Cơ quan công bố</label>
-                    <select
-                      value={filterAgency}
-                      onChange={(e) => setFilterAgency(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
-                      <option value="all">Tất cả</option>
-                      <option value="Bộ Tư pháp">Bộ Tư pháp</option>
-                      <option value="Cục Đăng ký kinh doanh">Cục Đăng ký kinh doanh</option>
-                      <option value="Cục Công chứng">Cục Công chứng</option>
-                      <option value="Cục TGPL">Cục TGPL</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm text-slate-700 mb-2">Định dạng</label>
-                    <select
-                      value={filterFormat}
-                      onChange={(e) => setFilterFormat(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
-                      <option value="all">Tất cả</option>
-                      <option value="JSON">JSON</option>
-                      <option value="Excel">Excel</option>
-                      <option value="CSV">CSV</option>
-                      <option value="XML">XML</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm text-slate-700 mb-2">Giấy phép</label>
-                    <select
-                      value={filterLicense}
-                      onChange={(e) => setFilterLicense(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    >
-                      <option value="all">Tất cả</option>
-                      <option value="CC BY 4.0">CC BY 4.0</option>
-                      <option value="ODC-BY">ODC-BY</option>
-                      <option value="ODbL">ODbL</option>
-                    </select>
-                  </div>
-
-                  <div className="flex items-end gap-2">
-                    <button className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2">
-                      <Search className="w-4 h-4" />
-                      Tìm kiếm
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setSearchKeyword('');
-                        setFilterCategory('all');
-                        setFilterAgency('all');
-                        setFilterFormat('all');
-                        setFilterLicense('all');
-                      }}
-                      className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200"
-                    >
-                      Đặt lại
-                    </button>
-                  </div>
+                  <button className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-medium flex items-center gap-2 shadow-sm whitespace-nowrap">
+                    <Search className="w-4 h-4" />
+                    Tìm kiếm
+                  </button>
+                  <button 
+                    onClick={() => setShowAdvancedSearchModal(true)}
+                    className="px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 font-medium flex items-center gap-2 shadow-sm whitespace-nowrap relative"
+                  >
+                    <SlidersHorizontal className="w-5 h-5 text-slate-500" />
+                    Tìm kiếm nâng cao
+                    {(filterCategory !== 'all' || filterValidity !== 'all' || filterPublishStatus !== 'all' || filterApprovalStatus !== 'all') && (
+                        <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full border-2 border-white">
+                           !
+                        </span>
+                    )}
+                  </button>
                 </div>
               </div>
+
+              {/* Advanced Search Modal */}
+              {showAdvancedSearchModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[99999] p-4">
+                  <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
+                    <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                          <SlidersHorizontal className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-800">Tìm kiếm nâng cao</h3>
+                      </div>
+                      <button
+                        title="Đóng" aria-label="Đóng"
+                        onClick={() => setShowAdvancedSearchModal(false)}
+                        className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div className="p-6">
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-2">Chủ đề</label>
+                          <select
+                            title="Chủ đề"
+                            value={filterCategory}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterCategory(e.target.value)}
+                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          >
+                            <option value="all">Tất cả</option>
+                            <option value="Văn bản pháp luật">Văn bản pháp luật</option>
+                            <option value="Đăng ký kinh doanh">Đăng ký kinh doanh</option>
+                            <option value="Công chứng">Công chứng</option>
+                            <option value="Trợ giúp pháp lý">Trợ giúp pháp lý</option>
+                          </select>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-2">Hiệu lực</label>
+                          <select
+                            title="Hiệu lực"
+                            value={filterValidity}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterValidity(e.target.value)}
+                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          >
+                            <option value="all">Tất cả</option>
+                            <option value="Hiệu lực">Hiệu lực</option>
+                            <option value="Hết hiệu lực">Hết hiệu lực</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-2">Trạng thái công bố</label>
+                          <select
+                            title="Trạng thái công bố"
+                            value={filterPublishStatus}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterPublishStatus(e.target.value)}
+                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          >
+                            <option value="all">Tất cả</option>
+                            <option value="Đã công bố">Đã công bố</option>
+                            <option value="Chưa công bố">Chưa công bố</option>
+                          </select>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-2">Trạng thái phê duyệt</label>
+                          <select
+                            title="Trạng thái phê duyệt"
+                            value={filterApprovalStatus}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterApprovalStatus(e.target.value)}
+                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          >
+                            <option value="all">Tất cả</option>
+                            <option value="Đã phê duyệt">Đã phê duyệt</option>
+                            <option value="Đang chờ">Đang chờ</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                      <button 
+                        onClick={() => {
+                          setFilterCategory('all');
+                          setFilterValidity('all');
+                          setFilterPublishStatus('all');
+                          setFilterApprovalStatus('all');
+                        }}
+                        className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-medium transition-colors"
+                      >
+                        Đặt lại
+                      </button>
+                      <button 
+                        onClick={() => setShowAdvancedSearchModal(false)}
+                        className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-colors flex items-center gap-2"
+                      >
+                        <Filter className="w-5 h-5" />
+                        Áp dụng bộ lọc
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Results Summary */}
               <div className="bg-white border border-slate-200 rounded-lg p-4">
@@ -322,9 +369,11 @@ export function CategoryStatisticsReportPage() {
                         <th className="px-4 py-3 text-left text-xs text-slate-600">Mã Dataset</th>
                         <th className="px-4 py-3 text-left text-xs text-slate-600">Tên Dataset</th>
                         <th className="px-4 py-3 text-left text-xs text-slate-600">Chủ đề</th>
-                        <th className="px-4 py-3 text-left text-xs text-slate-600">Cơ quan</th>
-                        <th className="px-4 py-3 text-left text-xs text-slate-600">Định dạng</th>
-                        <th className="px-4 py-3 text-left text-xs text-slate-600">Giấy phép</th>
+                        <th className="px-4 py-3 text-left text-xs text-slate-600">Phiên bản</th>
+                        <th className="px-4 py-3 text-left text-xs text-slate-600">Hiệu lực</th>
+                        <th className="px-4 py-3 text-left text-xs text-slate-600">Tình trạng khai thác</th>
+                        <th className="px-4 py-3 text-left text-xs text-slate-600">Trạng thái công bố</th>
+                        <th className="px-4 py-3 text-left text-xs text-slate-600">Trạng thái phê duyệt</th>
                         <th className="px-4 py-3 text-left text-xs text-slate-600">Ngày công bố</th>
                         <th className="px-4 py-3 text-right text-xs text-slate-600">Lượt xem</th>
                         <th className="px-4 py-3 text-right text-xs text-slate-600">Lượt tải</th>
@@ -336,17 +385,31 @@ export function CategoryStatisticsReportPage() {
                           <td className="px-4 py-3 text-sm text-slate-900">{dataset.id}</td>
                           <td className="px-4 py-3 text-sm text-slate-900">{dataset.name}</td>
                           <td className="px-4 py-3 text-sm">
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-50 text-blue-700">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
                               {dataset.category}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-slate-600">{dataset.agency}</td>
+                          <td className="px-4 py-3 text-sm font-medium text-purple-600">{dataset.version}</td>
                           <td className="px-4 py-3 text-sm">
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-slate-100 text-slate-700">
-                              {dataset.format}
-                            </span>
+                             <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${dataset.validity === 'Hiệu lực' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                                {dataset.validity}
+                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-slate-600">{dataset.license}</td>
+                          <td className="px-4 py-3 text-sm">
+                             <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${dataset.exploitationStatus === 'Đang khai thác' ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20' : dataset.exploitationStatus === 'Tạm dừng' ? 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20' : 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20'}`}>
+                                {dataset.exploitationStatus}
+                             </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm">
+                             <span className={`font-medium ${dataset.publishStatus === 'Đã công bố' ? 'text-blue-600' : 'text-slate-700'}`}>
+                                {dataset.publishStatus}
+                             </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm">
+                             <span className={`font-medium ${dataset.approvalStatus === 'Đã phê duyệt' ? 'text-purple-600' : 'text-orange-500'}`}>
+                                {dataset.approvalStatus}
+                             </span>
+                          </td>
                           <td className="px-4 py-3 text-sm text-slate-600">{dataset.publishedDate}</td>
                           <td className="px-4 py-3 text-sm text-slate-900 text-right">{dataset.views.toLocaleString()}</td>
                           <td className="px-4 py-3 text-sm text-slate-900 text-right">{dataset.downloads.toLocaleString()}</td>
@@ -373,8 +436,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Nhóm theo</label>
                     <select
+                      title="Nhóm theo"
                       value={statsGroupBy}
-                      onChange={(e) => setStatsGroupBy(e.target.value as any)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatsGroupBy(e.target.value as any)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="category">Theo chủ đề</option>
@@ -387,8 +451,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Khoảng thời gian</label>
                     <select
+                      title="Khoảng thời gian"
                       value={statsTimeRange}
-                      onChange={(e) => setStatsTimeRange(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatsTimeRange(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="2024">Năm 2024</option>
@@ -405,6 +470,7 @@ export function CategoryStatisticsReportPage() {
                     </button>
                     <button 
                       onClick={handleExportExcel}
+                      title="Xuất Excel"
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                     >
                       <Download className="w-4 h-4" />
@@ -491,7 +557,7 @@ export function CategoryStatisticsReportPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
-                      {(statsGroupBy === 'category' ? statsByCategory : statsByAgency).map((item, index) => (
+                      {(statsGroupBy === 'category' ? statsByCategory : statsByAgency).map((item: any, index) => (
                         <tr key={index} className="hover:bg-slate-50">
                           <td className="px-4 py-3 text-sm text-slate-900">{item.name}</td>
                           <td className="px-4 py-3 text-sm text-slate-900 text-right">
@@ -523,8 +589,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Phân loại theo</label>
                     <select
+                      title="Phân loại theo"
                       value={classifyBy}
-                      onChange={(e) => setClassifyBy(e.target.value as any)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setClassifyBy(e.target.value as any)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="source">Theo nguồn cung cấp</option>
@@ -574,7 +641,7 @@ export function CategoryStatisticsReportPage() {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                        label={({ name, percent }: { name: string, percent: number }) => `${name} (${(percent * 100).toFixed(0)}%)`}
                         outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
@@ -660,8 +727,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Khoảng thời gian</label>
                     <select
+                      title="Khoảng thời gian"
                       value={accessTimeRange}
-                      onChange={(e) => setAccessTimeRange(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setAccessTimeRange(e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="7days">7 ngày gần nhất</option>
@@ -675,8 +743,9 @@ export function CategoryStatisticsReportPage() {
                   <div>
                     <label className="block text-sm text-slate-700 mb-2">Chỉ số</label>
                     <select
+                      title="Chỉ số"
                       value={accessMetric}
-                      onChange={(e) => setAccessMetric(e.target.value as any)}
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) => setAccessMetric(e.target.value as any)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="both">Lượt xem và tải</option>
@@ -693,6 +762,7 @@ export function CategoryStatisticsReportPage() {
                     <button 
                       onClick={handleExportPDF}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                      title="Xuất PDF"
                     >
                       <FileText className="w-4 h-4" />
                     </button>

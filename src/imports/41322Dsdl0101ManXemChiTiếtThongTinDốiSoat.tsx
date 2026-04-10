@@ -52,7 +52,7 @@ type TextText1Props = {
 function TextText1({ text, additionalClassNames = "" }: TextText1Props) {
   return (
     <Wrapper additionalClassNames={additionalClassNames}>
-      <p className="font-['Arimo:Regular',sans-serif] font-normal leading-[20px] relative shrink-0 text-[#0f172b] text-[14px]">{text}</p>
+      <p className="font-normal leading-[20px] relative shrink-0 text-[#0f172b] text-[14px]">{text}</p>
     </Wrapper>
   );
 }
@@ -64,7 +64,7 @@ type TextTextProps = {
 function TextText({ text, additionalClassNames = "" }: TextTextProps) {
   return (
     <Wrapper additionalClassNames={additionalClassNames}>
-      <p className="font-['Arimo:Regular',sans-serif] font-normal leading-[20px] relative shrink-0 text-[#45556c] text-[14px]">{text}</p>
+      <p className="font-normal leading-[20px] relative shrink-0 text-[#45556c] text-[14px]">{text}</p>
     </Wrapper>
   );
 }
@@ -78,10 +78,10 @@ export default function Component41322Dsdl0101ManXemChiTitThongTinDiSoat() {
           <div className="h-[51.974px] relative shrink-0 w-[190.341px]" data-name="Container">
             <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col gap-[3.991px] items-start relative size-full">
               <div className="h-[27.983px] relative shrink-0 w-full" data-name="Heading 3">
-                <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[28px] left-0 text-[#0f172b] text-[18px] top-[-1.18px]">Chi tiết bản ghi đối soát</p>
+                <p className="absolute font-normal leading-[28px] left-0 text-[#0f172b] text-[18px] top-[-1.18px]">Chi tiết bản ghi đối soát</p>
               </div>
               <div className="content-stretch flex h-[20px] items-start relative shrink-0 w-full" data-name="Paragraph">
-                <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[20px] min-h-px min-w-px relative text-[#62748e] text-[14px] whitespace-pre-wrap">CSDL-HT-2024-12</p>
+                <p className="flex-[1_0_0] font-normal leading-[20px] min-h-px min-w-px relative text-[#62748e] text-[14px] whitespace-pre-wrap">CSDL-HT-2024-12</p>
               </div>
             </div>
           </div>
@@ -105,46 +105,46 @@ export default function Component41322Dsdl0101ManXemChiTitThongTinDiSoat() {
             <div className="absolute bg-[#eff6ff] content-stretch flex flex-col gap-[3.991px] h-[85.781px] items-start left-0 pb-[0.909px] pt-[16.903px] px-[16.903px] rounded-[10px] top-0 w-[416.009px]" data-name="Container">
               <div aria-hidden="true" className="absolute border-[#bedbff] border-[0.909px] border-solid inset-0 pointer-events-none rounded-[10px]" />
               <div className="content-stretch flex h-[20px] items-start relative shrink-0 w-full" data-name="Container">
-                <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[20px] min-h-px min-w-px relative text-[#1447e6] text-[14px] whitespace-pre-wrap">Mã bộ dữ liệu</p>
+                <p className="flex-[1_0_0] font-normal leading-[20px] min-h-px min-w-px relative text-[#1447e6] text-[14px] whitespace-pre-wrap">Mã bộ dữ liệu</p>
               </div>
               <div className="h-[27.983px] relative shrink-0 w-full" data-name="Container">
-                <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[28px] left-0 text-[#1c398e] text-[18px] top-[-1.18px]">CSDL-HT-2024-12</p>
+                <p className="absolute font-normal leading-[28px] left-0 text-[#1c398e] text-[18px] top-[-1.18px]">CSDL-HT-2024-12</p>
               </div>
             </div>
             <div className="absolute bg-[#faf5ff] content-stretch flex flex-col gap-[3.991px] h-[85.781px] items-start left-[432px] pb-[0.909px] pt-[16.903px] px-[16.903px] rounded-[10px] top-0 w-[416.009px]" data-name="Container">
               <div aria-hidden="true" className="absolute border-[#e9d4ff] border-[0.909px] border-solid inset-0 pointer-events-none rounded-[10px]" />
               <div className="content-stretch flex h-[20px] items-start relative shrink-0 w-full" data-name="Container">
-                <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[20px] min-h-px min-w-px relative text-[#8200db] text-[14px] whitespace-pre-wrap">Tên bộ dữ liệu</p>
+                <p className="flex-[1_0_0] font-normal leading-[20px] min-h-px min-w-px relative text-[#8200db] text-[14px] whitespace-pre-wrap">Tên bộ dữ liệu</p>
               </div>
               <div className="h-[27.983px] relative shrink-0 w-full" data-name="Container">
-                <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[28px] left-0 text-[#59168b] text-[18px] top-[-1.18px]">CSDL Hộ tịch - Tháng 12/2024</p>
+                <p className="absolute font-normal leading-[28px] left-0 text-[#59168b] text-[18px] top-[-1.18px]">CSDL Hộ tịch - Tháng 12/2024</p>
               </div>
             </div>
             <div className="absolute bg-[#f0fdf4] content-stretch flex flex-col gap-[3.991px] h-[105.767px] items-start left-0 pb-[0.909px] pt-[16.903px] px-[16.903px] rounded-[10px] top-[101.78px] w-[416.009px]" data-name="Container">
               <div aria-hidden="true" className="absolute border-[#b9f8cf] border-[0.909px] border-solid inset-0 pointer-events-none rounded-[10px]" />
               <div className="content-stretch flex h-[20px] items-start relative shrink-0 w-full" data-name="Container">
-                <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[20px] min-h-px min-w-px relative text-[#008236] text-[14px] whitespace-pre-wrap">Hệ thống cung cấp</p>
+                <p className="flex-[1_0_0] font-normal leading-[20px] min-h-px min-w-px relative text-[#008236] text-[14px] whitespace-pre-wrap">Hệ thống cung cấp</p>
               </div>
               <div className="h-[27.983px] relative shrink-0 w-full" data-name="Container">
-                <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[28px] left-0 text-[#0d542b] text-[18px] top-[-1.18px]">Hệ thống Hộ tịch điện tử</p>
+                <p className="absolute font-normal leading-[28px] left-0 text-[#0d542b] text-[18px] top-[-1.18px]">Hệ thống Hộ tịch điện tử</p>
               </div>
               <div className="content-stretch flex h-[15.994px] items-start relative shrink-0 w-full" data-name="Container">
-                <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[16px] min-h-px min-w-px relative text-[#00a63e] text-[12px] whitespace-pre-wrap">SYS_HOTICH</p>
+                <p className="flex-[1_0_0] font-normal leading-[16px] min-h-px min-w-px relative text-[#00a63e] text-[12px] whitespace-pre-wrap">SYS_HOTICH</p>
               </div>
             </div>
             <div className="absolute bg-[#fff7ed] content-stretch flex flex-col gap-[3.991px] h-[105.767px] items-start left-[432px] pb-[0.909px] pt-[16.903px] px-[16.903px] rounded-[10px] top-[101.78px] w-[416.009px]" data-name="Container">
               <div aria-hidden="true" className="absolute border-[#ffd6a7] border-[0.909px] border-solid inset-0 pointer-events-none rounded-[10px]" />
               <div className="content-stretch flex h-[20px] items-start relative shrink-0 w-full" data-name="Container">
-                <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[20px] min-h-px min-w-px relative text-[#ca3500] text-[14px] whitespace-pre-wrap">Loại dữ liệu</p>
+                <p className="flex-[1_0_0] font-normal leading-[20px] min-h-px min-w-px relative text-[#ca3500] text-[14px] whitespace-pre-wrap">Loại dữ liệu</p>
               </div>
               <div className="h-[27.983px] relative shrink-0 w-full" data-name="Container">
-                <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[28px] left-0 text-[#7e2a0c] text-[18px] top-[-1.18px]">Hộ tịch</p>
+                <p className="absolute font-normal leading-[28px] left-0 text-[#7e2a0c] text-[18px] top-[-1.18px]">Hộ tịch</p>
               </div>
             </div>
           </div>
           <div className="content-stretch flex flex-col gap-[11.989px] h-[217.727px] items-start relative shrink-0 w-full" data-name="Container">
             <div className="content-stretch flex h-[20px] items-start relative shrink-0 w-full" data-name="Heading 4">
-              <p className="flex-[1_0_0] font-['Arimo:Regular',sans-serif] font-normal leading-[20px] min-h-px min-w-px relative text-[#0f172b] text-[14px] whitespace-pre-wrap">Thông tin đối soát</p>
+              <p className="flex-[1_0_0] font-normal leading-[20px] min-h-px min-w-px relative text-[#0f172b] text-[14px] whitespace-pre-wrap">Thông tin đối soát</p>
             </div>
             <div className="bg-[#f8fafc] h-[185.739px] relative rounded-[10px] shrink-0 w-full" data-name="Container">
               <div className="content-stretch flex flex-col gap-[11.989px] items-start pt-[15.994px] px-[15.994px] relative size-full">
@@ -178,7 +178,7 @@ export default function Component41322Dsdl0101ManXemChiTitThongTinDiSoat() {
                           </defs>
                         </svg>
                       </div>
-                      <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[16px] left-[28.88px] text-[#008236] text-[12px] top-[3.9px]">Khớp dữ liệu</p>
+                      <p className="absolute font-normal leading-[16px] left-[28.88px] text-[#008236] text-[12px] top-[3.9px]">Khớp dữ liệu</p>
                     </div>
                   </div>
                 </Container>
@@ -193,7 +193,7 @@ export default function Component41322Dsdl0101ManXemChiTitThongTinDiSoat() {
                       </div>
                       <div className="h-[20px] relative shrink-0 w-[51.889px]" data-name="Text">
                         <div className="bg-clip-padding border-0 border-[transparent] border-solid relative size-full">
-                          <p className="absolute font-['Arimo:Regular',sans-serif] font-normal leading-[20px] left-0 text-[#0f172b] text-[14px] top-[-2px] w-[52px] whitespace-pre-wrap">100.00%</p>
+                          <p className="absolute font-normal leading-[20px] left-0 text-[#0f172b] text-[14px] top-[-2px] w-[52px] whitespace-pre-wrap">100.00%</p>
                         </div>
                       </div>
                     </div>
@@ -208,7 +208,7 @@ export default function Component41322Dsdl0101ManXemChiTitThongTinDiSoat() {
         <div aria-hidden="true" className="absolute border-[#e2e8f0] border-solid border-t-[0.909px] inset-0 pointer-events-none" />
         <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[11.989px] items-start justify-end pr-[23.991px] pt-[16.903px] relative size-full">
           <Wrapper1 additionalClassNames="bg-[#f1f5f9] w-[71.065px]">
-            <p className="-translate-x-1/2 absolute font-['Arimo:Regular',sans-serif] font-normal leading-[24px] left-[36.49px] text-[#314158] text-[16px] text-center top-[5.91px]">Đóng</p>
+            <p className="-translate-x-1/2 absolute font-normal leading-[24px] left-[36.49px] text-[#314158] text-[16px] text-center top-[5.91px]">Đóng</p>
           </Wrapper1>
           <Wrapper1 additionalClassNames="bg-[#155dfc] w-[148.636px]">
             <div className="absolute left-[15.99px] size-[15.994px] top-[11.99px]" data-name="Icon">
@@ -220,7 +220,7 @@ export default function Component41322Dsdl0101ManXemChiTitThongTinDiSoat() {
                 </g>
               </svg>
             </div>
-            <p className="-translate-x-1/2 absolute font-['Arimo:Regular',sans-serif] font-normal leading-[24px] left-[86.49px] text-[16px] text-center text-white top-[5.91px]">Xuất báo cáo</p>
+            <p className="-translate-x-1/2 absolute font-normal leading-[24px] left-[86.49px] text-[16px] text-center text-white top-[5.91px]">Xuất báo cáo</p>
           </Wrapper1>
         </div>
       </div>

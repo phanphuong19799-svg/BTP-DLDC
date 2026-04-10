@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, Building2, FileSignature, FileText, Home, GitBranch, User } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface CivilLegalInfoPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function CivilLegalInfoPage({ mode = 'thu thập' }: CivilLegalInfoPageProps) {
+export function CivilLegalInfoPage({ mode = 'thu thập', context = 'thu thập' }: CivilLegalInfoPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -69,6 +71,11 @@ export function CivilLegalInfoPage({ mode = 'thu thập' }: CivilLegalInfoPagePr
 
   const stats = generateData();
 
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="HTTT TTTG pháp lý dân sự" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
+
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Tổ chức thực hiện trợ giúp pháp lý', category: 'HT TTTG pháp lý dân sự', todayCount: 20000, errorCount: 30 },
     { name: 'Dữ liệu Tổ chức đăng ký tham gia trợ giúp pháp lý', category: 'HT TTTG pháp lý dân sự', todayCount: 20000, errorCount: 30 },
@@ -108,7 +115,7 @@ export function CivilLegalInfoPage({ mode = 'thu thập' }: CivilLegalInfoPagePr
             onChange={(e) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button title="Hành động" aria-label="Hành động" className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>

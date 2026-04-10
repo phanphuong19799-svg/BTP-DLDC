@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Search, Filter, Download, FileText } from 'lucide-react';
+import { useState, ChangeEvent } from 'react';
+import { Search, Filter, Download, FileText, SlidersHorizontal, X } from 'lucide-react';
 
 // Mock data for demonstration
 const mockDatasets = [
@@ -71,6 +71,7 @@ const mockDatasets = [
 
 export function CategoryReportPage() {
   // Search & Filter States
+  const [showAdvancedSearchModal, setShowAdvancedSearchModal] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [validityFilter, setValidityFilter] = useState('all');
@@ -100,101 +101,144 @@ export function CategoryReportPage() {
       <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <div className="p-6">
           <div className="space-y-6">
-            {/* Filter Panel */}
+            {/* Basic Search Panel */}
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
-              <h3 className="text-slate-900 mb-4 flex items-center gap-2">
-                <Filter className="w-5 h-5 text-emerald-600" />
-                Bộ lọc tìm kiếm
-              </h3>
-              
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm text-slate-700 mb-2">Từ khóa</label>
+              <div className="flex items-center gap-4">
+                <div className="flex-1 relative">
+                  <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="Nhập từ khóa..."
+                    title="Từ khóa"
+                    placeholder="Tìm kiếm toàn văn (Nhập từ khóa mã dataset, tên dataset...)"
                     value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm"
                   />
                 </div>
-                
-                <div>
-                  <label className="block text-sm text-slate-700 mb-2">Chủ đề</label>
-                  <select
-                    value={filterCategory}
-                    onChange={(e) => setFilterCategory(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  >
-                    <option value="all">Tất cả</option>
-                    <option value="Văn bản pháp luật">Văn bản pháp luật</option>
-                    <option value="Đăng ký kinh doanh">Đăng ký kinh doanh</option>
-                    <option value="Công chứng">Công chứng</option>
-                    <option value="Trợ giúp pháp lý">Trợ giúp pháp lý</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm text-slate-700 mb-2">Hiệu lực</label>
-                  <select
-                    value={validityFilter}
-                    onChange={(e) => setValidityFilter(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  >
-                    <option value="all">Tất cả</option>
-                    <option value="valid">Hiệu lực</option>
-                    <option value="expired">Hết hiệu lực</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm text-slate-700 mb-2">Trạng thái công bố</label>
-                  <select
-                    value={publicStatusFilter}
-                    onChange={(e) => setPublicStatusFilter(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  >
-                    <option value="all">Tất cả</option>
-                    <option value="published">Đã công bố</option>
-                    <option value="unpublished">Chưa công bố</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm text-slate-700 mb-2">Trạng thái phê duyệt</label>
-                  <select
-                    value={approvalFilter}
-                    onChange={(e) => setApprovalFilter(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  >
-                    <option value="all">Tất cả</option>
-                    <option value="approved">Đã phê duyệt</option>
-                    <option value="pending">Đang chờ</option>
-                  </select>
-                </div>
-
-                <div className="flex items-end gap-2">
-                  <button className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2">
-                    <Search className="w-4 h-4" />
-                    Tìm kiếm
-                  </button>
-                  <button 
-                    onClick={() => {
-                      setSearchKeyword('');
-                      setFilterCategory('all');
-                      setValidityFilter('all');
-                      setPublicStatusFilter('all');
-                      setApprovalFilter('all');
-                    }}
-                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200"
-                  >
-                    Đặt lại
-                  </button>
-                </div>
+                <button title="Đóng" aria-label="Đóng" className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-medium flex items-center gap-2 shadow-sm whitespace-nowrap">
+                  <Search className="w-4 h-4" />
+                  Tìm kiếm
+                </button>
+                <button 
+                  onClick={() => setShowAdvancedSearchModal(true)}
+                  className="px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 font-medium flex items-center gap-2 shadow-sm whitespace-nowrap relative"
+                >
+                  <SlidersHorizontal className="w-5 h-5 text-slate-500" />
+                  Tìm kiếm nâng cao
+                  {(filterCategory !== 'all' || validityFilter !== 'all' || publicStatusFilter !== 'all' || approvalFilter !== 'all') && (
+                      <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full border-2 border-white">
+                         !
+                      </span>
+                  )}
+                </button>
               </div>
             </div>
+
+            {/* Advanced Search Modal */}
+            {showAdvancedSearchModal && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[99999] p-4">
+                <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
+                  <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                        <SlidersHorizontal className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-800">Tìm kiếm nâng cao</h3>
+                    </div>
+                    <button
+                      title="Đóng" aria-label="Đóng"
+                      onClick={() => setShowAdvancedSearchModal(false)}
+                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Chủ đề</label>
+                        <select
+                          title="Chủ đề"
+                          value={filterCategory}
+                          onChange={(e: ChangeEvent<HTMLSelectElement>) => setFilterCategory(e.target.value)}
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                          <option value="all">Tất cả</option>
+                          <option value="Văn bản pháp luật">Văn bản pháp luật</option>
+                          <option value="Đăng ký kinh doanh">Đăng ký kinh doanh</option>
+                          <option value="Công chứng">Công chứng</option>
+                          <option value="Trợ giúp pháp lý">Trợ giúp pháp lý</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Hiệu lực</label>
+                        <select
+                          title="Hiệu lực"
+                          value={validityFilter}
+                          onChange={(e: ChangeEvent<HTMLSelectElement>) => setValidityFilter(e.target.value)}
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                          <option value="all">Tất cả</option>
+                          <option value="valid">Hiệu lực</option>
+                          <option value="expired">Hết hiệu lực</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Trạng thái công bố</label>
+                        <select
+                          title="Trạng thái công bố"
+                          value={publicStatusFilter}
+                          onChange={(e: ChangeEvent<HTMLSelectElement>) => setPublicStatusFilter(e.target.value)}
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                          <option value="all">Tất cả</option>
+                          <option value="published">Đã công bố</option>
+                          <option value="unpublished">Chưa công bố</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Trạng thái phê duyệt</label>
+                        <select
+                          title="Trạng thái phê duyệt"
+                          value={approvalFilter}
+                          onChange={(e: ChangeEvent<HTMLSelectElement>) => setApprovalFilter(e.target.value)}
+                          className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                          <option value="all">Tất cả</option>
+                          <option value="approved">Đã phê duyệt</option>
+                          <option value="pending">Đang chờ</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                    <button 
+                      onClick={() => {
+                        setFilterCategory('all');
+                        setValidityFilter('all');
+                        setPublicStatusFilter('all');
+                        setApprovalFilter('all');
+                      }}
+                      className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-medium transition-colors"
+                    >
+                      Đặt lại
+                    </button>
+                    <button 
+                      onClick={() => setShowAdvancedSearchModal(false)}
+                      className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-colors flex items-center gap-2"
+                    >
+                      <Filter className="w-5 h-5" />
+                      Áp dụng bộ lọc
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Results Summary */}
             <div className="bg-white border border-slate-200 rounded-lg p-4">

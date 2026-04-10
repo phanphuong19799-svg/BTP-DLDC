@@ -38,7 +38,7 @@ export function CreateLGSPReconciliationModal({ isOpen, onClose, onSave }: Creat
             <h3 className="text-lg text-slate-900">Tạo gói tin đối soát qua LGSP</h3>
             <p className="text-sm text-slate-500 mt-1">Cấu hình gửi gói tin đối soát qua Cổng LGSP</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white rounded-lg transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-white rounded-lg transition-colors" title="Đóng" aria-label="Đóng">
             <X className="w-5 h-5 text-slate-500" />
           </button>
         </div>

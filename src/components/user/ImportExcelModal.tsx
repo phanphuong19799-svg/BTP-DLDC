@@ -203,7 +203,7 @@ export function ImportExcelModal({ isOpen, onClose, onImport }: ImportExcelModal
               </div>
             )}
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
             <X className="w-5 h-5" />
           </button>
         </div>

@@ -37,7 +37,7 @@ export function AddConnectionForm({ onClose, onSave }: AddConnectionFormProps) {
           <h3 className="text-slate-900">Thêm kết nối mới</h3>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-slate-100 rounded transition-colors"
+            className="p-1 hover:bg-slate-100 rounded transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-500" />
           </button>

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Plus, Eye, Settings, Calendar, User, UserPlus, Play, Clock } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Eye, Settings, Calendar, User, SquarePen, Play, Clock } from 'lucide-react';
 import { RuleManagementModal } from './RuleManagementModal';
 import { DataClassificationModal } from './DataClassificationModal';
 import { AddConfigModal } from './AddConfigModal';
@@ -246,14 +246,14 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                       setSelectedConfig(config);
                       setShowDetailModal(true);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors whitespace-nowrap"
+                    className="flex items-center gap-2 px-4 py-2 text-xs text-blue-600 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 transition-colors whitespace-nowrap font-medium"
                   >
                     <Eye className="w-4 h-4" />
                     Xem chi tiết
                   </button>
                   <button
                     onClick={() => handleOpenRuleModal(config)}
-                    className="flex items-center gap-2 px-4 py-2 text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded hover:bg-purple-100 transition-colors whitespace-nowrap"
+                    className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded hover:bg-slate-100 transition-colors whitespace-nowrap font-medium"
                   >
                     <Settings className="w-4 h-4" />
                     Quản lý quy tắc
@@ -373,7 +373,7 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                           name="runMode"
                           value="range"
                           checked={runMode === 'range'}
-                          onChange={(e) => setRunMode('range')}
+                          onChange={() => setRunMode('range')}
                           className="mt-1 w-4 h-4 text-blue-600"
                         />
                         <div className="flex-1">
@@ -385,7 +385,7 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                                 <input
                                   type="number"
                                   value={startRecord}
-                                  onChange={(e) => setStartRecord(e.target.value)}
+                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartRecord(e.target.value)}
                                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                   placeholder="2000"
                                   min="1"
@@ -396,7 +396,7 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                                 <input
                                   type="number"
                                   value={endRecord}
-                                  onChange={(e) => setEndRecord(e.target.value)}
+                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEndRecord(e.target.value)}
                                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                   placeholder="60000"
                                   min="1"
@@ -414,7 +414,7 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                           name="runMode"
                           value="auto"
                           checked={runMode === 'auto'}
-                          onChange={(e) => setRunMode('auto')}
+                          onChange={() => setRunMode('auto')}
                           className="mt-1 w-4 h-4 text-blue-600"
                         />
                         <div className="flex-1">
@@ -432,7 +432,7 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                           name="runMode"
                           value="all"
                           checked={runMode === 'all'}
-                          onChange={(e) => setRunMode('all')}
+                          onChange={() => setRunMode('all')}
                           className="mt-1 w-4 h-4 text-blue-600"
                         />
                         <div className="flex-1">
@@ -452,7 +452,7 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                         type="checkbox"
                         id="enableSchedule"
                         checked={enableSchedule}
-                        onChange={(e) => setEnableSchedule(e.target.checked)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEnableSchedule(e.target.checked)}
                         className="w-4 h-4 text-blue-600 rounded"
                       />
                       <label htmlFor="enableSchedule" className="text-sm text-slate-900 cursor-pointer">
@@ -467,8 +467,8 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                             <label className="block text-xs text-slate-600 mb-1">Tần suất:</label>
                             <select
                               value={scheduleFrequency}
-                              onChange={(e) => setScheduleFrequency(e.target.value as 'daily' | 'hourly' | 'weekly')}
-                              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setScheduleFrequency(e.target.value as 'daily' | 'hourly' | 'weekly')}
+                              title="Tần suất chạy"
                             >
                               <option value="daily">Hàng ngày</option>
                               <option value="hourly">Mỗi giờ</option>
@@ -480,7 +480,8 @@ export function ProcessingConfigManager({ title, description, dataSourceKey }: P
                             <input
                               type="time"
                               value={scheduleTime}
-                              onChange={(e) => setScheduleTime(e.target.value)}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setScheduleTime(e.target.value)}
+                              title="Thời gian chạy"
                               className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                           </div>

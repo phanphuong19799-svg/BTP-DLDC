@@ -28,7 +28,7 @@ export function AddConfigModal({ onClose, onSave }: AddConfigModalProps) {
     { id: 8, name: 'Loại bỏ khoảng trắng thừa', type: 'cleaning', typeLabel: 'Làm sạch', category: 'internal', isApplied: false },
     { id: 9, name: 'Chuyển đổi định dạng', type: 'transformation', typeLabel: 'Biến đổi', category: 'internal', isApplied: false },
     { id: 10, name: 'Gộp cột thông tin', type: 'transformation', typeLabel: 'Biến đổi', category: 'internal', isApplied: false },
-    
+
     // Quy tắc ngoài ngành (3 quy tắc)
     { id: 11, name: 'Kiểm tra MST', type: 'normalization', typeLabel: 'Chuẩn hóa / Ngoài ngành', category: 'external', isApplied: false },
     { id: 12, name: 'Kiểm tra mã số thuế doanh nghiệp', type: 'normalization', typeLabel: 'Chuẩn hóa / Ngoài ngành', category: 'external', isApplied: false },
@@ -38,8 +38,8 @@ export function AddConfigModal({ onClose, onSave }: AddConfigModalProps) {
   const [selectedDataSource, setSelectedDataSource] = useState('Văn bản quy phạm pháp luật');
 
   const toggleRule = (ruleId: number) => {
-    setRules(rules.map(rule => 
-      rule.id === ruleId 
+    setRules(rules.map(rule =>
+      rule.id === ruleId
         ? { ...rule, isApplied: !rule.isApplied }
         : rule
     ));
@@ -64,12 +64,12 @@ export function AddConfigModal({ onClose, onSave }: AddConfigModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-slate-200">
           <div>
-            <h3 className="text-slate-900">Quản lý Quy tắc Xử lý</h3>
+            <h3 className="text-slate-500">Quản lý Quy tắc Xử lý</h3>
             <p className="text-xs text-slate-600 mt-1">Thông tư ngành Tư pháp</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-full transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-4 h-4 text-slate-400" />
           </button>
@@ -99,11 +99,10 @@ export function AddConfigModal({ onClose, onSave }: AddConfigModalProps) {
                     </div>
                     <button
                       onClick={() => toggleRule(rule.id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-colors flex-shrink-0 ${
-                        rule.isApplied
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-colors flex-shrink-0 ${rule.isApplied
                           ? 'bg-green-50 text-green-700 border border-green-200'
                           : 'bg-blue-600 text-white hover:bg-blue-700'
-                      }`}
+                        }`}
                     >
                       {rule.isApplied ? (
                         'Đang áp dụng'
@@ -137,11 +136,10 @@ export function AddConfigModal({ onClose, onSave }: AddConfigModalProps) {
                     </div>
                     <button
                       onClick={() => toggleRule(rule.id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-colors flex-shrink-0 ${
-                        rule.isApplied
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-colors flex-shrink-0 ${rule.isApplied
                           ? 'bg-green-50 text-green-700 border border-green-200'
                           : 'bg-blue-600 text-white hover:bg-blue-700'
-                      }`}
+                        }`}
                     >
                       {rule.isApplied ? (
                         'Đang áp dụng'

@@ -1,27 +1,55 @@
+import * as React from 'react';
 import { useState } from 'react';
 import { User, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import imgImageLogo from 'figma:asset/009541fc5d689d29107b655d2b8ecd57f6d4b3ff.png';
+import { auth, db } from '@/lib/firebase';
+import { signInAnonymously } from 'firebase/auth';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { toast } from 'sonner';
 
 interface LoginPageProps {
   onLogin: () => void;
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const isLocalhost = window.location.hostname === 'localhost';
+  const [username, setUsername] = useState(isLocalhost ? 'admin' : '');
+  const [password, setPassword] = useState(isLocalhost ? 'abcd' : '');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      onLogin();
-    }, 800);
+    // Kiểm tra thông tin đăng nhập theo Phương án B
+    if (username === 'admin' && password === 'abcd') {
+      setIsLoading(true);
+      
+      try {
+        // Sử dụng đăng nhập ẩn danh của Firebase để có session
+        await signInAnonymously(auth);
+        
+        // Ghi lại lịch sử truy cập vào Firestore để quản lý
+        await addDoc(collection(db, 'access_logs'), {
+          username: username,
+          timestamp: serverTimestamp(),
+          userAgent: navigator.userAgent,
+          action: 'login_success'
+        });
+        
+        toast.success('Đăng nhập thành công');
+        onLogin();
+      } catch (error) {
+        console.error('Logging error:', error);
+        // Vẫn cho vào nếu lỗi ghi log (để đảm bảo tính "tiện")
+        onLogin();
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      toast.error('Tên đăng nhập hoặc mật khẩu không chính xác');
+    }
   };
 
   return (
@@ -78,7 +106,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   <input
                     type="text"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                     placeholder="Nhập tên đăng nhập"
                     className="block w-full pl-11 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm bg-white hover:border-slate-400"
                   />
@@ -97,7 +125,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     placeholder="Nhập mật khẩu"
                     className="block w-full pl-11 pr-11 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm bg-white hover:border-slate-400"
                   />
@@ -121,7 +149,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   <input 
                     type="checkbox" 
                     checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRememberMe(e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-sm text-slate-600">Ghi nhớ đăng nhập</span>

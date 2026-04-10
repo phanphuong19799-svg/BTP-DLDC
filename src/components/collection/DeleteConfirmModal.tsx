@@ -20,7 +20,7 @@ export function DeleteConfirmModal({ method, onCancel, onConfirm }: DeleteConfir
           </div>
           <button
             onClick={onCancel}
-            className="p-1 hover:bg-slate-100 rounded transition-colors"
+            className="p-1 hover:bg-slate-100 rounded transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-500" />
           </button>

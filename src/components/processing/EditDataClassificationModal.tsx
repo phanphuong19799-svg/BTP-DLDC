@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { X, Shield, Eye, Lock, Globe, AlertTriangle, ChevronDown } from 'lucide-react';
+import React, { useState, ChangeEvent } from 'react';
+import { Shield, Eye, Lock, Globe, AlertTriangle } from 'lucide-react';
+import { BaseModal } from '../common/BaseModal';
 
 interface FieldClassification {
   name: string;
@@ -39,6 +40,10 @@ const initialFields: FieldClassification[] = [
   { name: 'Trạng thái', publicLevel: 'Công khai', sensitivityLevel: 'Thấp' },
 ];
 
+/**
+ * Standardized Data Classification Modal using BaseModal.
+ * Provides a high-quality interface for managing sensitivity and public levels of fields.
+ */
 export function EditDataClassificationModal({ dataName, onClose, onSave }: EditDataClassificationModalProps) {
   const [fields, setFields] = useState<FieldClassification[]>(initialFields);
 
@@ -54,11 +59,6 @@ export function EditDataClassificationModal({ dataName, onClose, onSave }: EditD
     setFields(newFields);
   };
 
-  const getPublicLevelStyle = (level: string) => {
-    const found = publicLevels.find(l => l.value === level);
-    return found || publicLevels[0];
-  };
-
   const getSensitivityLevelStyle = (level: string) => {
     const found = sensitivityLevels.find(l => l.value === level);
     return found || sensitivityLevels[0];
@@ -69,53 +69,62 @@ export function EditDataClassificationModal({ dataName, onClose, onSave }: EditD
     onClose();
   };
 
+  const footer = (
+    <>
+      <button 
+        type="button"
+        onClick={onClose}
+        className="px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50 transition-all active:scale-95 text-sm"
+      >
+        Hủy
+      </button>
+      <button 
+        type="button"
+        onClick={handleSave}
+        className="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 active:scale-95 text-sm"
+      >
+        Lưu thay đổi
+      </button>
+    </>
+  );
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-slate-900">Phân loại Dữ liệu</h3>
-              <p className="text-sm text-slate-500 mt-1">{dataName}</p>
-            </div>
-            <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-        </div>
+    <BaseModal
+      isOpen={true}
+      onClose={onClose}
+      title="Phân loại Dữ liệu"
+      subtitle={dataName}
+      footer={footer}
+      maxWidth="max-w-3xl"
+    >
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-3">
+          {fields.map((field, index) => {
+            const sensitivityStyle = getSensitivityLevelStyle(field.sensitivityLevel);
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="space-y-3">
-            {fields.map((field, index) => {
-              const publicStyle = getPublicLevelStyle(field.publicLevel);
-              const sensitivityStyle = getSensitivityLevelStyle(field.sensitivityLevel);
-              const PublicIcon = publicStyle.icon;
+            return (
+              <div 
+                key={index} 
+                className="bg-white border border-slate-100 rounded-xl p-4 hover:border-blue-200 hover:shadow-md hover:shadow-blue-900/5 transition-all group"
+              >
+                <div className="flex items-center gap-5">
+                  {/* Status Indicator */}
+                  <div className={`w-3 h-3 rounded-full ${sensitivityStyle.dotColor} shadow-inner animate-pulse duration-[2000ms] flex-shrink-0 group-hover:scale-125 transition-transform`} />
 
-              return (
-                <div key={index} className="bg-white border border-slate-200 rounded-lg p-4 hover:border-slate-300 transition-colors">
+                  {/* Field Main Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="text-slate-800 font-bold group-hover:text-blue-700 transition-colors">{field.name}</div>
+                  </div>
+
+                  {/* Configuration Controls */}
                   <div className="flex items-center gap-4">
-                    {/* Status Dot */}
-                    <div className={`w-2 h-2 rounded-full ${sensitivityStyle.dotColor} flex-shrink-0`}></div>
-
-                    {/* Field Name */}
-                    <div className="flex-1 min-w-0">
-                      <div className="text-slate-900">{field.name}</div>
-                    </div>
-
-                    {/* Public Level Dropdown */}
-                    <div className="flex-shrink-0">
+                    <div className="flex flex-col">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">Mức công khai</label>
                       <select
+                        title="Mức độ công khai"
                         value={field.publicLevel}
-                        onChange={(e) => handlePublicLevelChange(index, e.target.value)}
-                        className="px-3 py-1.5 pr-8 border border-slate-300 rounded-lg text-sm appearance-none bg-white cursor-pointer hover:border-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        style={{ 
-                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: 'right 0.5rem center',
-                          minWidth: '160px'
-                        }}
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => handlePublicLevelChange(index, e.target.value)}
+                        className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white cursor-pointer hover:border-blue-300 transition-all focus:outline-none focus:ring-4 focus:ring-blue-100/50 min-w-[150px] shadow-sm"
                       >
                         {publicLevels.map((level) => (
                           <option key={level.value} value={level.value}>
@@ -125,18 +134,13 @@ export function EditDataClassificationModal({ dataName, onClose, onSave }: EditD
                       </select>
                     </div>
 
-                    {/* Sensitivity Level Dropdown */}
-                    <div className="flex-shrink-0">
+                    <div className="flex flex-col">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 ml-1">Độ nhạy cảm</label>
                       <select
+                        title="Mức độ nhạy cảm"
                         value={field.sensitivityLevel}
-                        onChange={(e) => handleSensitivityLevelChange(index, e.target.value)}
-                        className="px-3 py-1.5 pr-8 border border-slate-300 rounded-lg text-sm appearance-none bg-white cursor-pointer hover:border-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        style={{ 
-                          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: 'right 0.5rem center',
-                          minWidth: '140px'
-                        }}
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => handleSensitivityLevelChange(index, e.target.value)}
+                        className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white cursor-pointer hover:border-blue-300 transition-all focus:outline-none focus:ring-4 focus:ring-blue-100/50 min-w-[130px] shadow-sm"
                       >
                         {sensitivityLevels.map((level) => (
                           <option key={level.value} value={level.value}>
@@ -147,43 +151,25 @@ export function EditDataClassificationModal({ dataName, onClose, onSave }: EditD
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Warning */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-700 flex-shrink-0 mt-0.5" />
-              <div>
-                <h5 className="text-yellow-900 mb-1">Lưu ý quan trọng</h5>
-                <p className="text-sm text-yellow-800">
-                  Phân loại dữ liệu phải tuân thủ Nghị định 13/2023/NĐ-CP về Bảo vệ dữ liệu cá nhân 
-                  và các quy định hiện hành về quản lý, khai thác dữ liệu.
-                </p>
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
 
-        {/* Footer */}
-        <div className="px-6 py-4 border-t border-slate-200 flex justify-end">
-          <div className="flex gap-3">
-            <button 
-              onClick={onClose}
-              className="px-4 py-2 border border-slate-300 rounded-lg text-sm hover:bg-slate-50 transition-colors"
-            >
-              Hủy
-            </button>
-            <button 
-              onClick={handleSave}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
-            >
-              Lưu thay đổi
-            </button>
+        {/* Regulatory Notice */}
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-2xl p-6 flex gap-5">
+          <div className="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+            <AlertTriangle className="w-8 h-8 text-amber-600" />
+          </div>
+          <div className="space-y-1">
+            <h5 className="text-amber-900 font-bold text-lg">Lưu ý tuân thủ</h5>
+            <p className="text-sm text-amber-800/80 leading-relaxed max-w-lg">
+              Việc phân loại dữ liệu phải tuân thủ nghiêm ngặt **Nghị định 13/2023/NĐ-CP** về Bảo vệ dữ liệu cá nhân 
+              và các quy định hiện hành của Chính phủ về quản lý, khai thác dữ liệu số.
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </BaseModal>
   );
 }

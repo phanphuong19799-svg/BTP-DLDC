@@ -19,7 +19,7 @@ const mockPublishedData: PublishedData[] = [
     id: '1',
     code: 'PUB001',
     name: 'Dữ liệu A',
-    category: 'Danh mục A',
+    category: 'Biên tập danh mục A',
     publishStatus: 'published',
     visibility: 'public',
     publishDate: '01/12/2024',

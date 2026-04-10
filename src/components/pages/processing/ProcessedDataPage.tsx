@@ -206,7 +206,7 @@ export function ProcessedDataPage({
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button className="text-blue-600 hover:text-blue-800">
+                    <button className="text-blue-600 hover:text-blue-800" title="Xem chi tiết" aria-label="Xem chi tiết">
                       <Eye className="w-4 h-4" />
                     </button>
                   </td>

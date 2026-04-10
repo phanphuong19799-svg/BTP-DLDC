@@ -8,6 +8,8 @@ import { DataCollectionConfigSection } from './DataCollectionConfigSection';
 import { ConnectionConfigSection } from './ConnectionConfigSection';
 import { ContactInfoSection } from './ContactInfoSection';
 import { DataDetailModal } from '../../DataDetailModal';
+import { ConfirmModal } from '../../common/ConfirmModal';
+import { BaseModal } from '../../common/BaseModal';
 
 interface ServiceModalProps {
   isOpen: boolean;
@@ -246,15 +248,157 @@ export function ViewServiceModal({ isOpen, onClose, service, onViewData }: Servi
 // Cấu phần khác được giữ nguyên cấu trúc
 export function EditServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
   if (!isOpen || !service) return null;
-  return null; // Giản lược cho mục tiêu demo PDF
+
+  const [activeTab, setActiveTab] = useState<TabType>('general');
+  const [dataClassification, setDataClassification] = useState('');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    alert('Cập nhật phương thức thu thập thành công!');
+    onClose();
+  };
+
+  const tabs = [
+    { id: 'general' as TabType, label: 'Thông tin chung', icon: <FileText className="w-4 h-4" /> },
+    { id: 'contact' as TabType, label: 'Thông tin đơn vị cung cấp', icon: <User className="w-4 h-4" /> },
+    { id: 'connection' as TabType, label: 'Cấu hình kết nối', icon: <Plug className="w-4 h-4" /> },
+    { id: 'collection' as TabType, label: 'Cấu hình thu thập', icon: <Settings className="w-4 h-4" /> },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+          <h2 className="text-lg text-slate-900 font-medium">Chỉnh sửa kết nối API - {service.name}</h2>
+          <button onClick={onClose} title="Đóng" className="p-1 hover:bg-slate-100 rounded transition-colors">
+            <X className="w-5 h-5 text-slate-500" />
+          </button>
+        </div>
+
+        <div className="border-b border-slate-200 bg-slate-50">
+          <div className="flex gap-1 px-6">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-3 text-sm transition-colors relative flex items-center gap-2 ${
+                  activeTab === tab.id ? 'text-blue-600 bg-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+                {activeTab === tab.id && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+          <div className="px-6 py-4">
+            {activeTab === 'general' && (
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="edit-name" className="block text-sm text-slate-600 mb-1">Tên service <span className="text-red-500">*</span></label>
+                  <input id="edit-name" title="Tên service" type="text" defaultValue={service.name} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="edit-unit" className="block text-sm text-slate-600 mb-1">Tên đơn vị <span className="text-red-500">*</span></label>
+                    <input id="edit-unit" title="Tên đơn vị" type="text" defaultValue={service.managingUnit} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div>
+                    <label htmlFor="edit-system" className="block text-sm text-slate-600 mb-1">Hệ thống <span className="text-red-500">*</span></label>
+                    <input id="edit-system" title="Hệ thống" type="text" defaultValue={service.system || 'Hệ thống DLDC'} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="edit-desc" className="block text-sm text-slate-600 mb-1">Mô tả</label>
+                  <textarea id="edit-desc" title="Mô tả" defaultValue={service.description} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" rows={3} />
+                </div>
+              </div>
+            )}
+            {activeTab === 'contact' && <ContactInfoSection />}
+            {activeTab === 'connection' && <ConnectionConfigSection dataClassification={dataClassification} />}
+            {activeTab === 'collection' && <DataCollectionConfigSection />}
+          </div>
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Hủy</button>
+            <button type="submit" className="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">Cập nhật nội dung</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export function DeleteServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
   if (!isOpen || !service) return null;
-  return null;
+  return (
+    <ConfirmModal 
+      isOpen={isOpen}
+      onClose={onClose}
+      onConfirm={() => {
+        alert('Đã xóa dịch vụ thành công!');
+      }}
+      title="Xác nhận xóa thiết lập"
+      subtitle="Hành động này không thể hoàn tác"
+      message={
+        <>Bạn có chắc chắn muốn xóa dịch vụ <strong>{service.name}</strong> không?</>
+      }
+      confirmText="Xóa dịch vụ"
+      type="delete"
+    />
+  );
 }
 
 export function SettingsServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
   if (!isOpen || !service) return null;
-  return null;
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Cài đặt hệ thống dịch vụ"
+      subtitle={`Cấu hình nâng cao cho: ${service.name}`}
+      maxWidth="max-w-md"
+      footer={
+        <div className="flex justify-end gap-3 w-full">
+           <button onClick={onClose} className="px-4 py-2 border border-slate-300 bg-white text-slate-700 rounded-lg text-sm">Đóng</button>
+           <button onClick={() => { alert('Lưu cài đặt thành công'); onClose(); }} className="px-4 py-2 bg-slate-900 text-white flex items-center gap-2 rounded-lg text-sm">
+             <CheckCircle className="w-4 h-4"/> 
+             Lưu cài đặt
+           </button>
+        </div>
+      }
+    >
+      <div className="space-y-4 pt-2">
+        <div>
+          <label className="flex items-start gap-3 cursor-pointer">
+            <div className="mt-0.5">
+              <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4" defaultChecked />
+            </div>
+            <div>
+              <span className="text-sm font-medium text-slate-900">Tự động khởi động lại</span>
+              <p className="text-xs text-slate-500 mt-0.5">Tự động thực hiện lại tiến trình thu thập nếu gặp lỗi Network</p>
+            </div>
+          </label>
+        </div>
+        <div>
+          <label className="flex items-start gap-3 cursor-pointer">
+            <div className="mt-0.5">
+              <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4" defaultChecked />
+            </div>
+            <div>
+              <span className="text-sm font-medium text-slate-900">Ghi Log chi tiết (Debug Mode)</span>
+              <p className="text-xs text-slate-500 mt-0.5">Lưu trữ toàn bộ payload request/response để phục vụ kiểm tra lỗi</p>
+            </div>
+          </label>
+        </div>
+        <div className="pt-3 border-t border-slate-100">
+          <label className="block text-sm font-medium text-slate-700 mb-1">Cảnh báo khi số bản ghi lỗi vượt quá (%)</label>
+          <input type="number" defaultValue="10" title="Tỉ lệ lỗi (%)" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50" />
+        </div>
+      </div>
+    </BaseModal>
+  );
 }

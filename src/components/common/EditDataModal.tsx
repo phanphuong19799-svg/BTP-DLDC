@@ -1,5 +1,6 @@
-import { X, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Database, Layers } from 'lucide-react';
+import { BaseModal } from './BaseModal';
 
 interface EditDataModalProps {
   isOpen: boolean;
@@ -11,6 +12,11 @@ interface EditDataModalProps {
   fieldStatus?: Record<string, 'valid' | 'warning'>;
 }
 
+/**
+ * Standardized Edit Modal for data records.
+ * Provides a modern, tabbed interface for editing merged data and viewing sources.
+ * Refactored to use BaseModal for consistency.
+ */
 export function EditDataModal({ 
   isOpen, 
   onClose, 
@@ -34,6 +40,7 @@ export function EditDataModal({
 
   const handleSave = () => {
     onSave(formData);
+    onClose();
   };
 
   const handleCancel = () => {
@@ -41,152 +48,116 @@ export function EditDataModal({
     onClose();
   };
 
+  const footer = (
+    <>
+      <button
+        type="button"
+        onClick={handleCancel}
+        className="px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50 transition-all active:scale-95 text-sm"
+      >
+        Hủy
+      </button>
+      <button
+        type="button"
+        onClick={handleSave}
+        className="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 active:scale-95 text-sm"
+      >
+        Lưu thay đổi
+      </button>
+    </>
+  );
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
-        {/* Header with back button */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-200">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleCancel}
-              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-            >
-              <ChevronRight className="w-5 h-5 text-slate-600 rotate-180" />
-            </button>
-            <h3 className="text-slate-900">{title}</h3>
-          </div>
+    <BaseModal
+      isOpen={isOpen}
+      onClose={handleCancel}
+      title={title}
+      subtitle="Chỉnh sửa thông tin chi tiết của bản ghi"
+      footer={footer}
+      maxWidth="max-w-4xl"
+    >
+      <div className="space-y-6">
+        {/* Modern Tabbed Navigation */}
+        <div className="flex p-1.5 bg-slate-100 rounded-2xl w-fit mb-8 border border-slate-200/50">
           <button
-            onClick={handleCancel}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            type="button"
+            onClick={() => setActiveTab('sources')}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
+              activeTab === 'sources'
+                ? 'bg-white text-blue-600 shadow-lg shadow-slate-200 scale-105'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
+            }`}
           >
-            <X className="w-5 h-5 text-slate-600" />
+            <Database className={`w-4 h-4 ${activeTab === 'sources' ? 'animate-pulse' : ''}`} />
+            Nguồn dữ liệu
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('merged')}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
+              activeTab === 'merged'
+                ? 'bg-white text-blue-600 shadow-lg shadow-slate-200 scale-105'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
+            }`}
+          >
+            <Layers className={`w-4 h-4 ${activeTab === 'merged' ? 'animate-pulse' : ''}`} />
+            Dữ liệu đã gộp
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="border-b border-slate-200">
-          <div className="flex gap-6 px-6">
-            <button
-              onClick={() => setActiveTab('sources')}
-              className={`pb-3 pt-4 px-2 border-b-2 transition-colors ${
-                activeTab === 'sources'
-                  ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Nguồn dữ liệu
-            </button>
-            <button
-              onClick={() => setActiveTab('merged')}
-              className={`pb-3 pt-4 px-2 border-b-2 transition-colors ${
-                activeTab === 'merged'
-                  ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Dữ liệu đã gộp
-            </button>
+        {/* Content Area */}
+        {activeTab === 'sources' ? (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+             <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/30 border border-blue-100 rounded-2xl p-6 flex gap-5">
+               <div className="w-14 h-14 bg-blue-100/80 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+                 <Database className="w-7 h-7 text-blue-600" />
+               </div>
+               <div>
+                  <h4 className="text-blue-900 font-bold text-lg mb-1">Thông tin đa nguồn</h4>
+                  <p className="text-sm text-blue-700/80 leading-relaxed max-w-lg">
+                    Hệ thống đã thu thập dữ liệu từ các nguồn khác nhau. Bạn đang xem dữ liệu thô từ các nguồn trước khi gộp.
+                  </p>
+               </div>
+             </div>
+             <div className="flex flex-col items-center justify-center py-24 text-slate-400 bg-slate-50/20 rounded-3xl border-2 border-dashed border-slate-100">
+               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                 <div className="w-8 h-8 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+               </div>
+               <p className="text-sm font-bold text-slate-500">Đang tải dữ liệu nguồn chi tiết...</p>
+             </div>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-7">
+              {fields.map((field) => {
+                const value = formData[field.key] || '';
+                const status = fieldStatus[field.key];
+                const borderColor = status === 'valid' ? 'border-green-200' : status === 'warning' ? 'border-amber-200' : 'border-slate-200';
+                const labelColor = status === 'valid' ? 'text-green-700' : status === 'warning' ? 'text-amber-700' : 'text-slate-600';
+                const iconColor = status === 'valid' ? 'bg-green-500' : status === 'warning' ? 'bg-amber-500' : 'bg-slate-300';
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-250px)]">
-          {activeTab === 'sources' ? (
-            <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm text-blue-900 mb-1">Thông tin nguồn dữ liệu</h4>
-                    <p className="text-sm text-blue-700">
-                      Xem dữ liệu từ các nguồn riêng biệt. Chuyển sang tab "Dữ liệu đã gộp" để chỉnh sửa.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="text-center text-slate-600 py-8">
-                Chức năng xem nguồn dữ liệu chi tiết sẽ được bổ sung sau.
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {/* Info notice */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm text-blue-900 mb-1">Dữ liệu sau khi gộp</h4>
-                    <p className="text-sm text-blue-700">
-                      Đây là kết quả sau khi gộp dữ liệu từ 3 nguồn
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Editable fields */}
-              <div className="space-y-3">
-                {fields.map((field) => {
-                  const value = formData[field.key] || '';
-                  const status = fieldStatus[field.key];
-                  const bgColor = status === 'valid' ? 'bg-green-50' : status === 'warning' ? 'bg-orange-50' : 'bg-white';
-                  const borderColor = status === 'valid' ? 'border-green-200' : status === 'warning' ? 'border-orange-200' : 'border-slate-200';
-
-                  return (
-                    <div key={field.key} className={`p-3 rounded-lg border ${bgColor} ${borderColor}`}>
-                      <label className="block text-sm text-slate-600 mb-2">
-                        {field.label}:
+                return (
+                  <div key={field.key} className="group space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-1.5 h-4 rounded-full ${iconColor} transition-all duration-300 group-focus-within:h-6`} />
+                      <label className={`block text-xs font-bold uppercase tracking-widest ${labelColor}`}>
+                        {field.label}
                       </label>
-                      <input
-                        type="text"
-                        value={value}
-                        onChange={(e) => handleInputChange(field.key, e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 ${bgColor} ${borderColor}`}
-                      />
                     </div>
-                  );
-                })}
-              </div>
-
-              {/* Legend */}
-              <div className="flex items-center gap-6 text-sm pt-3 border-t border-slate-200">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-green-50 border border-green-200 rounded"></div>
-                  <span className="text-slate-600">Dữ liệu hợp lệ</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-orange-50 border border-orange-200 rounded"></div>
-                  <span className="text-slate-600">Cần kiểm tra</span>
-                </div>
-              </div>
+                    <input
+                      type="text"
+                      value={value}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(field.key, e.target.value)}
+                      className={`w-full px-5 py-3.5 bg-white border ${borderColor} rounded-2xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-100/50 focus:border-blue-500 transition-all text-sm font-semibold text-slate-800 placeholder:text-slate-300`}
+                      placeholder={`Nhập ${field.label.toLowerCase()}...`}
+                    />
+                  </div>
+                );
+              })}
             </div>
-          )}
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 bg-slate-50">
-          <button
-            onClick={handleCancel}
-            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
-          >
-            Hủy
-          </button>
-          <button
-            onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Lưu thay đổi
-          </button>
-        </div>
+          </div>
+        )}
       </div>
-    </div>
+    </BaseModal>
   );
 }

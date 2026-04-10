@@ -1,0 +1,4405 @@
+{
+  "src\\components\\category\\SetupCategoryList.tsx": [
+    {
+      "line": 222,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 229,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 236,
+      "text": "title=\"Gửi phê duyệt\"",
+      "icons": [
+        "Trash2",
+        "Send"
+      ]
+    },
+    {
+      "line": 243,
+      "text": "<span className=\"text-xs text-slate-500\">Chờ phê duyệt...</span>",
+      "icons": [
+        "Send"
+      ]
+    }
+  ],
+  "src\\components\\category\\SetupCategoryStructure.tsx": [
+    {
+      "line": 182,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 231,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\AddAPIMethodForm.tsx": [
+    {
+      "line": 165,
+      "text": "Thêm header",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 205,
+      "text": "Thêm parameter",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\AddDataCollectionForm.tsx": [
+    {
+      "line": 50,
+      "text": "<h2 className=\"text-slate-900\">Thêm mới Dữ liệu Cần Thu thập</h2>",
+      "icons": [
+        "ArrowLeft"
+      ]
+    }
+  ],
+  "src\\components\\collection\\AddDataSourceForm.tsx": [
+    {
+      "line": 32,
+      "text": "alert('Đã thêm mới phương thức thu thập dữ liệu thành công!');",
+      "icons": [
+        "Array"
+      ]
+    },
+    {
+      "line": 79,
+      "text": "<h2 className=\"text-slate-900\">Thêm mới phương thức thu thập dữ liệu</h2>",
+      "icons": [
+        "ArrowLeft"
+      ]
+    },
+    {
+      "line": 80,
+      "text": "<p className=\"text-sm text-slate-500 mt-1\">Thêm phương thức để thu thập dữ liệu mới qua API</p>",
+      "icons": [
+        "ArrowLeft"
+      ]
+    },
+    {
+      "line": 228,
+      "text": "Thêm header",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 268,
+      "text": "Thêm parameter",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\APIMethodsList.tsx": [
+    {
+      "line": 292,
+      "text": "Thêm mới dữ liệu",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 441,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye",
+        "Edit2"
+      ]
+    },
+    {
+      "line": 448,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 525,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye",
+        "Edit2"
+      ]
+    },
+    {
+      "line": 532,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\collection\\CategoryManagementDetail.tsx": [
+    {
+      "line": 197,
+      "text": "Chỉnh sửa Metadata",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 273,
+      "text": "item.state === 'Đã duyệt'",
+      "icons": [
+        "CheckCircle",
+        "Clock"
+      ]
+    },
+    {
+      "line": 277,
+      "text": "{item.state === 'Đã duyệt' ? <CheckCircle className=\"w-3 h-3\" /> : <Clock className=\"w-3 h-3\" />}",
+      "icons": [
+        "CheckCircle",
+        "Clock"
+      ]
+    },
+    {
+      "line": 286,
+      "text": "<button className=\"p-1.5 text-slate-600 hover:bg-slate-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 289,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\collection\\CollectionActivityLog.tsx": [
+    {
+      "line": 112,
+      "text": "<option value=\"add\">Thêm mới</option>",
+      "icons": [
+        "Filter"
+      ]
+    },
+    {
+      "line": 113,
+      "text": "<option value=\"edit\">Chỉnh sửa</option>",
+      "icons": [
+        "Filter"
+      ]
+    },
+    {
+      "line": 114,
+      "text": "<option value=\"delete\">Xóa</option>",
+      "icons": [
+        "Filter"
+      ]
+    }
+  ],
+  "src\\components\\collection\\ConnectionConfig.tsx": [
+    {
+      "line": 53,
+      "text": "Thêm kết nối mới",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\DataCollectionList.tsx": [
+    {
+      "line": 358,
+      "text": "Thêm dữ liệu mới",
+      "icons": [
+        "Download",
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\DataManagementDetail.tsx": [
+    {
+      "line": 292,
+      "text": "item.state === 'Đã duyệt'",
+      "icons": [
+        "CheckCircle",
+        "Clock"
+      ]
+    },
+    {
+      "line": 296,
+      "text": "{item.state === 'Đã duyệt' ? <CheckCircle className=\"w-3 h-3\" /> : <Clock className=\"w-3 h-3\" />}",
+      "icons": [
+        "CheckCircle",
+        "Clock"
+      ]
+    },
+    {
+      "line": 356,
+      "text": "Thêm kết nối",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 380,
+      "text": "<button className=\"p-2 text-slate-600 hover:bg-slate-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "RefreshCw",
+        "Edit",
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 386,
+      "text": "<button className=\"p-2 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Edit",
+        "CheckCircle",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 428,
+      "text": "<button className=\"p-2 text-slate-600 hover:bg-slate-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "RefreshCw",
+        "Edit",
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 434,
+      "text": "<button className=\"p-2 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Edit",
+        "CheckCircle",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 477,
+      "text": "<button className=\"p-2 text-slate-600 hover:bg-slate-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "RefreshCw",
+        "Edit",
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 483,
+      "text": "<button className=\"p-2 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Edit",
+        "CheckCircle",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 907,
+      "text": "selectedRecord.state === 'Đã duyệt'",
+      "icons": [
+        "CheckCircle",
+        "Clock"
+      ]
+    },
+    {
+      "line": 911,
+      "text": "{selectedRecord.state === 'Đã duyệt' ? <CheckCircle className=\"w-3 h-3\" /> : <Clock className=\"w-3 h-3\" />}",
+      "icons": [
+        "CheckCircle",
+        "Clock"
+      ]
+    }
+  ],
+  "src\\components\\collection\\DeleteConfirmModal.tsx": [
+    {
+      "line": 19,
+      "text": "<h3 className=\"text-slate-900\">Xác nhận xóa</h3>",
+      "icons": [
+        "AlertTriangle"
+      ]
+    }
+  ],
+  "src\\components\\collection\\DeleteDataConfirmModal.tsx": [
+    {
+      "line": 25,
+      "text": "<h3 className=\"text-slate-900\">Xác nhận xóa</h3>",
+      "icons": [
+        "AlertTriangle"
+      ]
+    },
+    {
+      "line": 92,
+      "text": "Xác nhận xóa",
+      "icons": [
+        "AlertTriangle"
+      ]
+    }
+  ],
+  "src\\components\\collection\\EditAPIMethodForm.tsx": [
+    {
+      "line": 191,
+      "text": "Thêm header",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 235,
+      "text": "Thêm parameter",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\EditDataCollectionForm.tsx": [
+    {
+      "line": 52,
+      "text": "<h2 className=\"text-slate-900\">Chỉnh sửa Dữ liệu Cần Thu thập</h2>",
+      "icons": [
+        "ArrowLeft"
+      ]
+    }
+  ],
+  "src\\components\\collection\\OverviewCombined.tsx": [
+    {
+      "line": 182,
+      "text": "Thêm nguồn dữ liệu",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\collection\\ViewDataCollectionDetail.tsx": [
+    {
+      "line": 84,
+      "text": "Chỉnh sửa",
+      "icons": [
+        "Edit2"
+      ]
+    }
+  ],
+  "src\\components\\collection\\ViewDataRecordsList.tsx": [
+    {
+      "line": 264,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye",
+        "Edit2"
+      ]
+    },
+    {
+      "line": 270,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\common\\APIConnectionInfo.tsx": [
+    {
+      "line": 110,
+      "text": "Thêm kết nối",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 124,
+      "text": "Thêm kết nối đầu tiên",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 176,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Eye",
+        "Edit"
+      ]
+    },
+    {
+      "line": 183,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\common\\APIConnectionManager.tsx": [
+    {
+      "line": 179,
+      "text": "Thêm kết nối",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 193,
+      "text": "Thêm kết nối đầu tiên",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 248,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Eye",
+        "Edit"
+      ]
+    },
+    {
+      "line": 255,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\common\\ApprovalModal.tsx": [
+    {
+      "line": 218,
+      "text": "<h4 className=\"text-sm text-slate-900\">Chọn người phê duyệt</h4>",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 460,
+      "text": "<span className=\"text-sm text-yellow-700\">Đang chờ duyệt</span>",
+      "icons": [
+        "Clock"
+      ]
+    }
+  ],
+  "src\\components\\common\\GenericDataTable.tsx": [
+    {
+      "line": 260,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 269,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\MarriageDetailModal.tsx": [
+    {
+      "line": 341,
+      "text": "Đã phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 347,
+      "text": "Chờ duyệt",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\masterdata\\AttributeManagementModal.tsx": [
+    {
+      "line": 127,
+      "text": "Thêm thuộc tính mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 136,
+      "text": "{editingAttr ? 'Chỉnh sửa thuộc tính' : 'Thêm thuộc tính mới'}",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 235,
+      "text": "{editingAttr ? 'Cập nhật' : 'Thêm mới'}",
+      "icons": [
+        "Save"
+      ]
+    },
+    {
+      "line": 276,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 283,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\masterdata\\MergeRuleModal.tsx": [
+    {
+      "line": 118,
+      "text": "Thêm quy tắc hợp nhất mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 127,
+      "text": "Thêm quy tắc mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 226,
+      "text": "Thêm quy tắc",
+      "icons": [
+        "Save"
+      ]
+    },
+    {
+      "line": 263,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 270,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\masterdata\\PublishMasterDataModal.tsx": [
+    {
+      "line": 235,
+      "text": "Người duyệt công khai <span className=\"text-red-500\">*</span>",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 257,
+      "text": "Đơn vị duyệt công khai <span className=\"text-red-500\">*</span>",
+      "icons": [
+        "Building2"
+      ]
+    }
+  ],
+  "src\\components\\masterdata\\RelationshipModal.tsx": [
+    {
+      "line": 137,
+      "text": "Thêm quan hệ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 146,
+      "text": "Thêm quan hệ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 264,
+      "text": "Thêm quan hệ",
+      "icons": [
+        "Save"
+      ]
+    },
+    {
+      "line": 303,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\masterdata\\UpdateMasterDataModal.tsx": [
+    {
+      "line": 260,
+      "text": "Phê duyệt ({stats.updated})",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 359,
+      "text": "title=\"Phê duyệt\"",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 368,
+      "text": "title=\"Hủy phê duyệt\"",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 491,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 519,
+      "text": "Phê duyệt {selectedRecords.length} bản ghi",
+      "icons": [
+        "CheckCircle"
+      ]
+    }
+  ],
+  "src\\components\\modals\\DataRequestModal.tsx": [
+    {
+      "line": 426,
+      "text": "placeholder=\"Họ và tên người phê duyệt\"",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 441,
+      "text": "placeholder=\"Đơn vị phê duyệt\"",
+      "icons": [
+        "Building"
+      ]
+    },
+    {
+      "line": 487,
+      "text": "<li>Yêu cầu sẽ được xem xét và phê duyệt trước khi xử lý</li>",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\modals\\EditServiceModal.tsx": [
+    {
+      "line": 60,
+      "text": "<h2 className=\"text-slate-900\">Chỉnh sửa dịch vụ cung cấp dữ liệu</h2>",
+      "icons": [
+        "Server"
+      ]
+    }
+  ],
+  "src\\components\\modals\\RequestDetailModal.tsx": [
+    {
+      "line": 190,
+      "text": "Thông tin phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 194,
+      "text": "<label className=\"text-sm text-green-700\">Người cấp/Phê duyệt</label>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 424,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    }
+  ],
+  "src\\components\\modals\\ServiceDetailModal.tsx": [
+    {
+      "line": 57,
+      "text": "Chờ duyệt",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 63,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 182,
+      "text": "<div className=\"text-sm text-slate-600 mb-1\">Người phê duyệt</div>",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 189,
+      "text": "<div className=\"text-sm text-slate-600 mb-1\">Ngày phê duyệt</div>",
+      "icons": [
+        "User",
+        "Calendar"
+      ]
+    },
+    {
+      "line": 212,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 222,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\notifications\\NotificationApproval.tsx": [
+    {
+      "line": 146,
+      "text": "<div className=\"text-slate-600 text-sm\">Chờ duyệt</div>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 162,
+      "text": "<div className=\"text-slate-600 text-sm\">Đã duyệt</div>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 171,
+      "text": "<div className=\"text-slate-600 text-sm\">Từ chối</div>",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\notifications\\NotificationBrowser.tsx": [
+    {
+      "line": 301,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 309,
+      "text": "<button className=\"p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\admin\\BackupPage.tsx": [
+    {
+      "line": 407,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 450,
+      "text": "<h3 className=\"text-slate-900\">Xác nhận xóa bản sao lưu</h3>",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\admin\\FunctionManagementPage.tsx": [
+    {
+      "line": 261,
+      "text": "Thêm mới",
+      "icons": [
+        "Plus",
+        "Download"
+      ]
+    },
+    {
+      "line": 477,
+      "text": "Thêm quyền",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 516,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 523,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 565,
+      "text": "Xóa",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\admin\\GroupManagementPage.tsx": [
+    {
+      "line": 564,
+      "text": "Thêm nhóm mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 590,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 597,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 663,
+      "text": "{modalType === 'add' ? 'Thêm nhóm người dùng mới' : 'Chỉnh sửa nhóm người dùng'}",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 809,
+      "text": "Thêm thành viên",
+      "icons": [
+        "UserPlus"
+      ]
+    },
+    {
+      "line": 820,
+      "text": "<button className=\"text-red-600 hover:text-red-700 p-1\" title=\"Xóa khỏi nhóm\">",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 856,
+      "text": "<button className=\"text-red-600 hover:text-red-700 p-0.5\" title=\"Xóa quyền\">",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 897,
+      "text": "<h3 className=\"text-slate-900\">Thêm thành viên vào nhóm</h3>",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\admin\\LogRetentionConfigPage.tsx": [
+    {
+      "line": 292,
+      "text": "Thêm mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 361,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 368,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 557,
+      "text": "<h3 className=\"text-center text-slate-900 mb-2\">Xác nhận xóa</h3>",
+      "icons": [
+        "AlertTriangle"
+      ]
+    },
+    {
+      "line": 559,
+      "text": "Bạn có chắc chắn muốn xóa cấu hình \"{selectedConfig.logTypeName}\"?",
+      "icons": [
+        "AlertTriangle"
+      ]
+    },
+    {
+      "line": 577,
+      "text": "Xóa",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\CategoryApprovalPage.tsx": [
+    {
+      "line": 153,
+      "text": "Trình duyệt danh mục",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 175,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 186,
+      "text": "<div className=\"text-xs text-slate-600\">Đã duyệt</div>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 197,
+      "text": "<div className=\"text-xs text-slate-600\">Từ chối</div>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 220,
+      "text": "{tab === 'pending' ? `Chờ duyệt (${stats.pending})` :",
+      "icons": [
+        "Clock",
+        "CheckCircle",
+        "XCircle",
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 221,
+      "text": "tab === 'approved' ? `Đã duyệt (${stats.approved})` :",
+      "icons": [
+        "Clock",
+        "CheckCircle",
+        "XCircle",
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 222,
+      "text": "tab === 'rejected' ? `Từ chối (${stats.rejected})` :",
+      "icons": [
+        "CheckCircle",
+        "XCircle",
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 272,
+      "text": "<button className=\"p-1.5 text-green-600 hover:bg-green-50 rounded\" title=\"Duyệt\">",
+      "icons": [
+        "Send",
+        "CheckSquare",
+        "XSquare"
+      ]
+    },
+    {
+      "line": 275,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded\" title=\"Từ chối\">",
+      "icons": [
+        "Send",
+        "CheckSquare",
+        "XSquare"
+      ]
+    },
+    {
+      "line": 428,
+      "text": "Trình duyệt ({selectedCategories.length})",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 509,
+      "text": "Tạo và trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 607,
+      "text": "Gửi trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\categoryConstants.ts": [
+    {
+      "line": 154,
+      "text": "pending_approval: { label: 'Chờ phê duyệt', color: 'bg-orange-100 text-orange-700' }",
+      "icons": [
+        "LifecycleStatus",
+        "ApprovalType"
+      ]
+    },
+    {
+      "line": 158,
+      "text": "category: 'Phê duyệt danh mục',",
+      "icons": [
+        "ApprovalType",
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 159,
+      "text": "structure: 'Phê duyệt cấu trúc'",
+      "icons": [
+        "ApprovalType",
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 163,
+      "text": "pending: { label: 'Chờ phê duyệt', color: 'bg-orange-100 text-orange-700' },",
+      "icons": [
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 164,
+      "text": "approved: { label: 'Đã phê duyệt', color: 'bg-green-100 text-green-700' },",
+      "icons": [
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 165,
+      "text": "rejected: { label: 'Đã từ chối', color: 'bg-red-100 text-red-700' }",
+      "icons": [
+        "ApprovalStatus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\CategoryPage.tsx": [
+    {
+      "line": 546,
+      "text": "title=\"Phê duyệt danh mục\"",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 549,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 632,
+      "text": "title=\"Thêm danh mục mới\"",
+      "icons": [
+        "Upload",
+        "Plus"
+      ]
+    },
+    {
+      "line": 636,
+      "text": "Thêm danh mục mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 690,
+      "text": "title=\"Thêm cột mới\"",
+      "icons": [
+        "Columns"
+      ]
+    },
+    {
+      "line": 708,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 714,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 739,
+      "text": "<p className=\"text-sm text-orange-700\">Chờ phê duyệt</p>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 751,
+      "text": "<p className=\"text-sm text-green-700\">Đã phê duyệt</p>",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 763,
+      "text": "<p className=\"text-sm text-red-700\">Đã từ chối</p>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 798,
+      "text": "Phê duyệt hàng loạt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 805,
+      "text": "Từ chối hàng loạt",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 818,
+      "text": "title=\"Tìm kiếm bản ghi phê duyệt\"",
+      "icons": [
+        "Search",
+        "HTMLInputElement"
+      ]
+    },
+    {
+      "line": 828,
+      "text": "title=\"Lọc trạng thái phê duyệt\"",
+      "icons": [
+        "Filter",
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 834,
+      "text": "<option value=\"pending\">Chờ phê duyệt</option>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 835,
+      "text": "<option value=\"approved\">Đã phê duyệt</option>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 927,
+      "text": "title=\"Phê duyệt\"",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 934,
+      "text": "title=\"Từ chối\"",
+      "icons": [
+        "CheckCircle2",
+        "XCircle"
+      ]
+    },
+    {
+      "line": 1186,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1240,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 1249,
+      "text": "title=\"Xóa trường\"",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 1263,
+      "text": "<p>Chưa có trường nào. Nhấn \"Thêm trường\" để bắt đầu.</p>",
+      "icons": [
+        "Database"
+      ]
+    },
+    {
+      "line": 1616,
+      "text": "title=\"Người phê duyệt\"",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 1621,
+      "text": "<option value=\"\">Chọn người phê duyệt</option>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 1676,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1769,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 2024,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 2277,
+      "text": "Lý do từ chối",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 2301,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 2311,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 2330,
+      "text": "<h3 className=\"text-lg text-slate-900\">Xác nhận phê duyệt</h3>",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 2331,
+      "text": "<p className=\"text-sm text-slate-500\">Phê duyệt {pendingApprovalIds.length} yêu cầu thay đổi</p>",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 2342,
+      "text": "title=\"Ghi chú phê duyệt\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 2347,
+      "text": "placeholder=\"Nhập nội dung phê duyệt, ghi chú hoặc ý kiến (nếu có)...\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 2356,
+      "text": "<p className=\"mt-1\">Sau khi phê duyệt, các thay đổi sẽ được áp dụng vào hệ thống và không thể hoàn tác.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 2378,
+      "text": "Xác nhận phê duyệt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 2395,
+      "text": "<h3 className=\"text-lg text-slate-900\">Xác nhận từ chối</h3>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 2396,
+      "text": "<p className=\"text-sm text-slate-500\">Từ chối {pendingApprovalIds.length} yêu cầu thay đổi</p>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 2407,
+      "text": "title=\"Lý do từ chối\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 2412,
+      "text": "placeholder=\"Nhập lý do từ chối yêu cầu thay đổi...\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 2421,
+      "text": "<p className=\"mt-1\">Vui lòng nhập rõ lý do từ chối để người yêu cầu có thể hiểu và chỉnh sửa lại.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 2443,
+      "text": "Xác nhận từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 2460,
+      "text": "{successNotificationMessage || 'Yêu cầu chỉnh sửa danh mục đã được gửi đến bộ phận phê duyệt'}",
+      "icons": [
+        "Check"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\CategoryReportPage.tsx": [
+    {
+      "line": 170,
+      "text": "<label className=\"block text-sm text-slate-700 mb-2\">Trạng thái phê duyệt</label>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 172,
+      "text": "title=\"Trạng thái phê duyệt\"",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 178,
+      "text": "<option value=\"approved\">Đã phê duyệt</option>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\CategorySetupPage.tsx": [
+    {
+      "line": 85,
+      "text": "{ id: '1', type: 'category', entityId: '3', entityCode: 'MD-DOC-001', entityName: 'Bộ dữ liệu chủ Văn bản pháp luật', requestedBy: 'Lê Văn C', requestedDate: '01/04/2024', status: 'pending', comments: 'Đề nghị phê duyệt danh mục mới' },",
+      "icons": [
+        "ApprovalType",
+        "ApprovalRequest",
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 86,
+      "text": "{ id: '2', type: 'structure', entityId: '3', entityCode: 'MD-DOC-001', entityName: 'Bộ dữ liệu chủ Văn bản pháp luật', requestedBy: 'Lê Văn C', requestedDate: '02/04/2024', status: 'pending', comments: 'Phê duyệt cấu trúc dữ liệu bổ sung' }",
+      "icons": [
+        "ApprovalType",
+        "ApprovalRequest",
+        "ApprovalStatus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\CategorySetupPageNew.tsx": [
+    {
+      "line": 192,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 296,
+      "text": "Thêm danh mục mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 390,
+      "text": "title=\"Thêm cột mới\"",
+      "icons": [
+        "Columns"
+      ]
+    },
+    {
+      "line": 396,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Columns",
+        "Edit2"
+      ]
+    },
+    {
+      "line": 402,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 526,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 580,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 589,
+      "text": "title=\"Xóa trường\"",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 603,
+      "text": "<p>Chưa có trường nào. Nhấn \"Thêm trường\" để bắt đầu.</p>",
+      "icons": [
+        "Database"
+      ]
+    },
+    {
+      "line": 734,
+      "text": "Chỉnh sửa",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 825,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1077,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\ApprovalRequestModal.tsx": [
+    {
+      "line": 60,
+      "text": "<label className=\"block text-[14px] font-semibold text-slate-700\">Người phê duyệt <span className=\"text-red-500\">*</span></label>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 62,
+      "text": "title=\"Người phê duyệt\"",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 67,
+      "text": "<option value=\"\">-- Chọn người phê duyệt --</option>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 74,
+      "text": "<label className=\"block text-[14px] font-semibold text-slate-700\">Nội dung trình duyệt</label>",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 79,
+      "text": "placeholder=\"Nhập nội dung trình duyệt... Ví dụ: Đề nghị Lãnh đạo xem xét phê duyệt danh mục dữ liệu mở theo Nghị định 47/2020/NĐ-CP\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 99,
+      "text": "Gửi trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\AttributeFormModal.tsx": [
+    {
+      "line": 163,
+      "text": "Lưu và Trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\DeleteConfirmModal.tsx": [
+    {
+      "line": 27,
+      "text": "<h3 className=\"text-xl font-bold text-slate-800 mb-2\">Xác nhận xóa</h3>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 29,
+      "text": "Bạn có chắc chắn muốn xóa danh mục <span className=\"font-bold text-slate-800\">\"{entity.name}\"</span>?",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\RestoreVersionModal.tsx": [
+    {
+      "line": 50,
+      "text": "<label className=\"block text-sm font-semibold text-slate-700 mb-1.5\">Người phê duyệt phục hồi <span className=\"text-red-500\">*</span></label>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 52,
+      "text": "title=\"Người phê duyệt\"",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    },
+    {
+      "line": 57,
+      "text": "<option value=\"\">-- Chọn người phê duyệt --</option>",
+      "icons": [
+        "HTMLSelectElement"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\ReviewApprovalModal.tsx": [
+    {
+      "line": 33,
+      "text": "<h3 className=\"text-[20px] font-bold text-slate-800\">Xử lý yêu cầu phê duyệt</h3>",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 34,
+      "text": "<p className=\"text-[14px] text-slate-500\">Xem xét và phê duyệt nội dung thay đổi</p>",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 80,
+      "text": "<XCircle className=\"w-5 h-5\"/> Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 86,
+      "text": "<CheckCircle className=\"w-5 h-5\"/> Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 160,
+      "text": "<XCircle className=\"w-5 h-5\"/> Từ chối tất cả",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 166,
+      "text": "<CheckCircle className=\"w-5 h-5\"/> Phê duyệt tất cả",
+      "icons": [
+        "CheckCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\SimpleApproveModal.tsx": [
+    {
+      "line": 52,
+      "text": "<label className=\"block text-[14px] font-semibold text-slate-700\">Ý kiến phê duyệt</label>",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 57,
+      "text": "placeholder=\"Nhập ý kiến phê duyệt (nếu có)... Ví dụ: Đồng ý phê duyệt danh mục dữ liệu mở theo đề xuất của đơn vị.\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 95,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\modals\\SimpleRejectModal.tsx": [
+    {
+      "line": 61,
+      "text": "<label className=\"block text-[14px] font-semibold text-slate-700\">Lý do từ chối <span className=\"text-red-500\">*</span></label>",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 69,
+      "text": "placeholder=\"Nhập lý do từ chối phê duyệt... Ví dụ: Danh mục chưa đầy đủ thông tin về cấu trúc dữ liệu. Đề nghị bổ sung các trường dữ liệu bắt buộc theo quy định.\"",
+      "icons": [
+        "HTMLTextAreaElement"
+      ]
+    },
+    {
+      "line": 76,
+      "text": "<AlertCircle className=\"w-4 h-4\"/> Vui lòng nhập lý do từ chối",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 85,
+      "text": "Sau khi từ chối, danh mục sẽ được trả lại cho đơn vị để chỉnh sửa và trình lại.",
+      "icons": [
+        "Info"
+      ]
+    },
+    {
+      "line": 103,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\tabs\\AttributesTab.tsx": [
+    {
+      "line": 82,
+      "text": "Thêm thuộc tính",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 142,
+      "text": "<button onClick={() => onEditAttribute(attr)} className=\"p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors\" title=\"Sửa\"><Edit className=\"w-4 h-4\"/></button>",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 143,
+      "text": "<button onClick={() => onDeleteAttribute(attr.id)} className=\"p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors\" title=\"Xóa\"><Trash2 className=\"w-4 h-4\"/></button>",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\tabs\\RelationshipsTab.tsx": [
+    {
+      "line": 153,
+      "text": "Thêm quan hệ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 177,
+      "text": "Chưa có quan hệ nào được thiết lập. Vui lòng thêm mới để bắt đầu.",
+      "icons": [
+        "Network"
+      ]
+    },
+    {
+      "line": 238,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 245,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\category\\components\\tabs\\SetupTab.tsx": [
+    {
+      "line": 117,
+      "text": "title=\"Thêm mới danh mục qua Wizard\"",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 120,
+      "text": "Thêm mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 178,
+      "text": "title=\"Trình duyệt\"",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 185,
+      "text": "title=\"Phê duyệt\"",
+      "icons": [
+        "Send",
+        "Check"
+      ]
+    },
+    {
+      "line": 192,
+      "text": "title=\"Từ chối duyệt\"",
+      "icons": [
+        "Check",
+        "Ban"
+      ]
+    },
+    {
+      "line": 197,
+      "text": "<button onClick={() => onEdit(entity)} className=\"p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl\" title=\"Sửa\"><Edit className=\"w-4 h-4\"/></button>",
+      "icons": [
+        "Ban",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 198,
+      "text": "<button onClick={() => onDelete(entity.id)} className=\"p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl\" title=\"Xóa\"><Trash2 className=\"w-4 h-4\"/></button>",
+      "icons": [
+        "Ban",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\CategoryManagementPage.tsx": [
+    {
+      "line": 680,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 687,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 694,
+      "text": "title=\"Gửi phê duyệt\"",
+      "icons": [
+        "Trash2",
+        "Send"
+      ]
+    },
+    {
+      "line": 726,
+      "text": "placeholder=\"Tìm kiếm danh mục chờ phê duyệt...\"",
+      "icons": [
+        "Search"
+      ]
+    },
+    {
+      "line": 775,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 782,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 797,
+      "text": "<p className=\"text-slate-500\">Không có danh mục nào đang chờ phê duyệt</p>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 811,
+      "text": "<p className=\"mb-1\">Chức năng công bố danh mục cho phép chia sẻ danh mục đã phê duyệt ra bên ngoài.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 812,
+      "text": "<p>Vui lòng kiểm tra kỹ trạng thái phê duyệt, phiên bản hiệu lực và quyền chủ sở hữu trước khi công bố.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 821,
+      "text": "placeholder=\"Tìm kiếm danh mục đã phê duyệt...\"",
+      "icons": [
+        "Search"
+      ]
+    },
+    {
+      "line": 847,
+      "text": "Đã phê duyệt",
+      "icons": [
+        "Globe"
+      ]
+    },
+    {
+      "line": 955,
+      "text": "<p className=\"text-slate-400 text-sm mt-2\">Vui lòng đề xuất công bố danh mục đã phê duyệt từ tab Báo cáo & Tìm kiếm</p>",
+      "icons": [
+        "Globe"
+      ]
+    },
+    {
+      "line": 1102,
+      "text": "title=\"Gửi phê duyệt\"",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1111,
+      "text": "title=\"Phê duyệt\"",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 1617,
+      "text": "<li>Trạng thái phê duyệt: Đã được phê duyệt</li>",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\collection\\CollectionSetupPage.tsx": [
+    {
+      "line": 298,
+      "text": "Thêm dịch vụ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 401,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 421,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "SettingsIcon"
+      ]
+    }
+  ],
+  "src\\components\\pages\\collection\\ConnectionConfigSection.tsx": [
+    {
+      "line": 283,
+      "text": "title=\"Thêm trường\"",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 287,
+      "text": "Thêm trường",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\collection\\ExternalDataPage.tsx": [
+    {
+      "line": 155,
+      "text": "Thêm nguồn mới",
+      "icons": [
+        "Plus",
+        "Filter"
+      ]
+    }
+  ],
+  "src\\components\\pages\\collection\\InternalDataPage.tsx": [
+    {
+      "line": 199,
+      "text": "Thêm nguồn mới",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\collection\\ServiceModals.tsx": [
+    {
+      "line": 21,
+      "text": "// Modal Thêm mới phương thức",
+      "icons": [
+        "TabType"
+      ]
+    },
+    {
+      "line": 30,
+      "text": "alert('Thêm mới phương thức thu thập thành công!');",
+      "icons": [
+        "TabType"
+      ]
+    }
+  ],
+  "src\\components\\pages\\DataCoordinationPage.tsx": [
+    {
+      "line": 516,
+      "text": "<span className=\"text-sm text-slate-600\">Chờ phê duyệt</span>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 559,
+      "text": "Chờ duyệt",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 565,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 599,
+      "text": "Phê duyệt",
+      "icons": [
+        "Check"
+      ]
+    },
+    {
+      "line": 603,
+      "text": "Từ chối",
+      "icons": [
+        "Check"
+      ]
+    },
+    {
+      "line": 622,
+      "text": "Sửa",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 910,
+      "text": "Từ chối",
+      "icons": [
+        "PlayCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\ApprovalTab.tsx": [
+    {
+      "line": 161,
+      "text": "pending: { label: 'Chờ phê duyệt', color: 'bg-amber-100 text-amber-700 border-amber-200', icon: Clock },",
+      "icons": [
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 162,
+      "text": "approved: { label: 'Đã phê duyệt', color: 'bg-green-100 text-green-700 border-green-200', icon: CheckCircle },",
+      "icons": [
+        "ApprovalStatus"
+      ]
+    },
+    {
+      "line": 163,
+      "text": "rejected: { label: 'Từ chối', color: 'bg-red-100 text-red-700 border-red-200', icon: XCircle }",
+      "icons": [
+        "ApprovalStatus",
+        "ApprovalRecord"
+      ]
+    },
+    {
+      "line": 258,
+      "text": "<p className=\"text-sm text-amber-700\">Chờ phê duyệt</p>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 268,
+      "text": "<p className=\"text-sm text-green-700\">Đã phê duyệt</p>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 278,
+      "text": "<p className=\"text-sm text-red-700\">Từ chối</p>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 436,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 443,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 637,
+      "text": "{approvalAction === 'approve' ? 'Phê duyệt dữ liệu chủ' : 'Từ chối dữ liệu chủ'}",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 678,
+      "text": "Sau khi phê duyệt, dữ liệu chủ sẽ được kích hoạt và có thể sử dụng trong hệ thống.",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 692,
+      "text": "Sau khi từ chối, dữ liệu chủ sẽ được trả về cho người quản trị để chỉnh sửa.",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 721,
+      "text": "Xác nhận phê duyệt",
+      "icons": [
+        "CheckCircle",
+        "XCircle"
+      ]
+    },
+    {
+      "line": 726,
+      "text": "Xác nhận từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\AttributesManagementTab.tsx": [
+    {
+      "line": 415,
+      "text": "Thêm thuộc tính",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 484,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 491,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 664,
+      "text": "<p className=\"mb-1\">Khi chỉnh sửa thuộc tính, phiên bản sẽ tự động tăng từ <strong>v{editingAttribute.version}</strong> lên <strong>v{editingAttribute.version + 1}</strong>.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\EntityRelationshipsTab.tsx": [
+    {
+      "line": 207,
+      "text": "Thêm quan hệ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 295,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 302,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\HistoryTab.tsx": [
+    {
+      "line": 212,
+      "text": "case 'Chỉnh sửa':",
+      "icons": [
+        "FileText",
+        "Edit",
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 214,
+      "text": "case 'Phê duyệt':",
+      "icons": [
+        "FileText",
+        "Edit",
+        "CheckCircle",
+        "XCircle"
+      ]
+    },
+    {
+      "line": 216,
+      "text": "case 'Từ chối phê duyệt':",
+      "icons": [
+        "FileText",
+        "Edit",
+        "CheckCircle",
+        "XCircle"
+      ]
+    },
+    {
+      "line": 321,
+      "text": "<div className=\"text-xs text-orange-600 mb-1\">Chỉnh sửa</div>",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 331,
+      "text": "<div className=\"text-xs text-green-600 mb-1\">Phê duyệt</div>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 341,
+      "text": "<div className=\"text-xs text-red-600 mb-1\">Từ chối</div>",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataAPage.tsx": [
+    {
+      "line": 507,
+      "text": "Trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 663,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 751,
+      "text": "title=\"Lịch sử chỉnh sửa\"",
+      "icons": [
+        "Database",
+        "HistoryIcon"
+      ]
+    },
+    {
+      "line": 760,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle2"
+      ]
+    },
+    {
+      "line": 767,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 777,
+      "text": "<p>Không có bản ghi nào chờ phê duyệt</p>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 940,
+      "text": "<h3 className=\"text-lg text-white\">Gửi phê duyệt</h3>",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1070,
+      "text": "Gửi phê duyệt ngay",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1117,
+      "text": "Có <strong>{notApproved.length} bản ghi</strong> chưa được phê duyệt.",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 1118,
+      "text": "Vui lòng chỉ chọn các bản ghi đã được phê duyệt để công khai.",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 1134,
+      "text": "Tất cả {selectedRecords.size} bản ghi đã được phê duyệt và sẵn sàng để công khai.",
+      "icons": [
+        "CheckCircle2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataApprovalPage.tsx": [
+    {
+      "line": 144,
+      "text": "Trình duyệt mới",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 167,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 178,
+      "text": "<div className=\"text-xs text-slate-600\">Đã duyệt</div>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 189,
+      "text": "<div className=\"text-xs text-slate-600\">Từ chối</div>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 208,
+      "text": "Chờ duyệt ({stats.pending})",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 219,
+      "text": "Đã duyệt ({stats.approved})",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 230,
+      "text": "Từ chối ({stats.rejected})",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 308,
+      "text": "title=\"Phê duyệt\"",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 319,
+      "text": "title=\"Từ chối\"",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 407,
+      "text": "Trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 505,
+      "text": "Gửi trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 635,
+      "text": "{approvalType === 'approve' ? 'Phê duyệt' : 'Từ chối'}",
+      "icons": [
+        "CheckSquare",
+        "XSquare"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataManagementPage.tsx": [
+    {
+      "line": 150,
+      "text": "Thêm dữ liệu mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 220,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded\" title=\"Sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 223,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataScaleManagementPage.tsx": [
+    {
+      "line": 318,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 346,
+      "text": "Thêm mới nhanh",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataSetupPage.tsx": [
+    {
+      "line": 98,
+      "text": "Thêm cấu hình mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 205,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataUpdateReviewTab.tsx": [
+    {
+      "line": 330,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 454,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataUpdateTab.tsx": [
+    {
+      "line": 256,
+      "text": "approved: { label: 'Đã phê duyệt', color: 'bg-green-100 text-green-700', icon: CheckCircle },",
+      "icons": [
+        "ReviewStatus"
+      ]
+    },
+    {
+      "line": 257,
+      "text": "rejected: { label: 'Từ chối', color: 'bg-red-100 text-red-700', icon: XCircle }",
+      "icons": [
+        "ReviewStatus"
+      ]
+    },
+    {
+      "line": 395,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 439,
+      "text": "{/* Approval Tab (Phê duyệt - cho Lãnh đạo) */}",
+      "icons": [
+        "MasterDataUpdateReviewTab"
+      ]
+    },
+    {
+      "line": 707,
+      "text": "{reviewAction === 'approve' ? 'Phê duyệt thay đổi' : 'Từ chối thay đổi'}",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 748,
+      "text": "Sau khi phê duyệt, thay đổi sẽ được áp dụng vào dữ liệu chủ.",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 762,
+      "text": "Sau khi từ chối, thay đổi sẽ được trả về để chỉnh sửa.",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 791,
+      "text": "Xác nhận phê duyệt",
+      "icons": [
+        "CheckCircle",
+        "XCircle"
+      ]
+    },
+    {
+      "line": 796,
+      "text": "Xác nhận từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MasterDataWizard.tsx": [
+    {
+      "line": 445,
+      "text": "Thêm thuộc tính",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 628,
+      "text": "<p className=\"mb-1\">Sau khi gửi, dữ liệu chủ sẽ ở trạng thái <strong>\"Chờ phê duyệt\"</strong>.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 629,
+      "text": "<p>Người phê duyệt sẽ xem xét và quyết định phê duyệt hoặc từ chối.</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 666,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Check"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\MergeRulesManagementTab.tsx": [
+    {
+      "line": 345,
+      "text": "Thêm quy tắc mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 430,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Target",
+        "Edit"
+      ]
+    },
+    {
+      "line": 437,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 574,
+      "text": "Thêm nguồn",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 673,
+      "text": "Thêm quy tắc so khớp",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 757,
+      "text": "Thêm quy tắc trích rút",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data\\UniqueIdentifierRulesTab.tsx": [
+    {
+      "line": 284,
+      "text": "Thêm quy tắc mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 367,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 374,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data-list\\MasterDataListPage.tsx": [
+    {
+      "line": 304,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 354,
+      "text": "Thêm dữ liệu chủ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 525,
+      "text": "<button className=\"p-1.5 text-indigo-600 hover:bg-indigo-50 rounded transition-colors\" title=\"Gửi phê duyệt\">",
+      "icons": [
+        "Eye",
+        "Send",
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 528,
+      "text": "<button className=\"p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors\" title=\"Phê duyệt\">",
+      "icons": [
+        "Eye",
+        "Send",
+        "CheckCircle",
+        "Edit"
+      ]
+    },
+    {
+      "line": 531,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Send",
+        "CheckCircle",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 534,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "CheckCircle",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 576,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 592,
+      "text": "<div className=\"text-xs text-slate-600\">Đã duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 608,
+      "text": "<div className=\"text-xs text-slate-600\">Từ chối</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 708,
+      "text": "<button className=\"p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors\" title=\"Phê duyệt\">",
+      "icons": [
+        "Eye",
+        "CheckSquare",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 711,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Từ chối\">",
+      "icons": [
+        "CheckSquare",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 835,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit"
+      ]
+    }
+  ],
+  "src\\components\\pages\\master-data-list\\MasterDataPage.tsx": [
+    {
+      "line": 108,
+      "text": "Thêm mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 245,
+      "text": "<button className=\"p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 248,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\MasterDataPage.tsx": [
+    {
+      "line": 210,
+      "text": "review: 'Chờ phê duyệt',",
+      "icons": [
+        "MasterDataStatus"
+      ]
+    },
+    {
+      "line": 211,
+      "text": "approved: 'Đã phê duyệt',",
+      "icons": [
+        "MasterDataStatus"
+      ]
+    },
+    {
+      "line": 213,
+      "text": "rejected: 'Từ chối',",
+      "icons": [
+        "MasterDataStatus"
+      ]
+    },
+    {
+      "line": 646,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 847,
+      "text": "title={entity.isLocked ? 'Cần mở khóa trước khi xóa' : 'Xóa dữ liệu chủ'}",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 850,
+      "text": "Xóa",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 868,
+      "text": "placeholder=\"Tìm kiếm dữ liệu chủ chờ phê duyệt...\"",
+      "icons": [
+        "Search"
+      ]
+    },
+    {
+      "line": 928,
+      "text": "<p className=\"text-slate-600\">Không có dữ liệu chủ nào cần phê duyệt</p>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 948,
+      "text": "<span className=\"text-sm text-slate-600\">Đã phê duyệt</span>",
+      "icons": [
+        "CheckCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\new-category\\NewCategorySetupPage.tsx": [
+    {
+      "line": 304,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 354,
+      "text": "Thêm danh mục mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 525,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 528,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 570,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 586,
+      "text": "<div className=\"text-xs text-slate-600\">Đã duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 602,
+      "text": "<div className=\"text-xs text-slate-600\">Từ chối</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 695,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 698,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\NotificationPage.tsx": [
+    {
+      "line": 300,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\open-data\\OpenDataApprovalPage.tsx": [
+    {
+      "line": 149,
+      "text": "Trình duyệt mới",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 172,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 183,
+      "text": "<div className=\"text-xs text-slate-600\">Đã phê duyệt</div>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 194,
+      "text": "<div className=\"text-xs text-slate-600\">Từ chối</div>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 213,
+      "text": "Chờ duyệt ({stats.pending})",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 224,
+      "text": "Đã phê duyệt ({stats.approved})",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 235,
+      "text": "Từ chối ({stats.rejected})",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 313,
+      "text": "title=\"Phê duyệt\"",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 324,
+      "text": "title=\"Từ chối\"",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 411,
+      "text": "Trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 509,
+      "text": "Gửi trình duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 651,
+      "text": "{approvalType === 'approve' ? 'Phê duyệt' : 'Từ chối'}",
+      "icons": [
+        "CheckSquare",
+        "XSquare"
+      ]
+    }
+  ],
+  "src\\components\\pages\\open-data\\OpenDataSetupPage.tsx": [
+    {
+      "line": 884,
+      "text": "<div className=\"text-xs text-orange-700 mb-1\">Chờ phê duyệt</div>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 893,
+      "text": "<div className=\"text-xs text-green-700 mb-1\">Đã phê duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 902,
+      "text": "<div className=\"text-xs text-red-700 mb-1\">Từ chối</div>",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 1066,
+      "text": "Từ chối",
+      "icons": [
+        "Ban"
+      ]
+    },
+    {
+      "line": 1073,
+      "text": "Phê duyệt",
+      "icons": [
+        "Check"
+      ]
+    },
+    {
+      "line": 1160,
+      "text": "Thêm danh mục mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1321,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye",
+        "Edit"
+      ]
+    },
+    {
+      "line": 1328,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 1337,
+      "text": "title=\"Trình duyệt\"",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1344,
+      "text": "title=\"Duyệt\"",
+      "icons": [
+        "Send",
+        "Check"
+      ]
+    },
+    {
+      "line": 1351,
+      "text": "title=\"Từ chối duyệt\"",
+      "icons": [
+        "Check",
+        "Ban"
+      ]
+    },
+    {
+      "line": 1620,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1679,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1767,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    },
+    {
+      "line": 1869,
+      "text": "Phê duyệt",
+      "icons": [
+        "Check"
+      ]
+    },
+    {
+      "line": 1926,
+      "text": "Sau khi từ chối, danh mục sẽ được trả lại cho đơn vị để chỉnh sửa và trình lại.",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 1948,
+      "text": "Từ chối",
+      "icons": [
+        "Ban"
+      ]
+    },
+    {
+      "line": 2019,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "Send"
+      ]
+    }
+  ],
+  "src\\components\\pages\\open-data\\OpenDataUpdateRulesPage.tsx": [
+    {
+      "line": 275,
+      "text": "Thêm quy tắc mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 408,
+      "text": "<button className=\"p-1 text-blue-600 hover:bg-blue-50 rounded\" title=\"Sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 411,
+      "text": "<button className=\"p-1 text-red-600 hover:bg-red-50 rounded\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\open-data-category\\OpenDataCategoryPage.tsx": [
+    {
+      "line": 423,
+      "text": "Thêm mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 473,
+      "text": "Phê duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 588,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 594,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 722,
+      "text": "Chỉnh sửa Metadata",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 815,
+      "text": "Chỉnh sửa giấy phép",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 893,
+      "text": "Thêm lịch mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 965,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 1059,
+      "text": "Trình duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 1323,
+      "text": "Gửi phê duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 1337,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 1351,
+      "text": "Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    },
+    {
+      "line": 1480,
+      "text": "Trình duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 1498,
+      "text": "title={selectedItem.approvalStatus !== 'approved' ? 'Chỉ dữ liệu đã phê duyệt mới được công khai' : 'Công khai'}",
+      "icons": [
+        "CheckCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\open-data-category\\OpenDataCategorySetupPage.tsx": [
+    {
+      "line": 304,
+      "text": "Phê duyệt",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 354,
+      "text": "Thêm danh mục mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 525,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 528,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 570,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 586,
+      "text": "<div className=\"text-xs text-slate-600\">Đã duyệt</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 602,
+      "text": "<div className=\"text-xs text-slate-600\">Từ chối</div>",
+      "icons": [
+        "CheckSquare"
+      ]
+    },
+    {
+      "line": 695,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded transition-colors\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 698,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\OpenDataCategoryPage.tsx": [
+    {
+      "line": 601,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 608,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 615,
+      "text": "title=\"Gửi phê duyệt\"",
+      "icons": [
+        "Trash2",
+        "Send"
+      ]
+    },
+    {
+      "line": 646,
+      "text": "placeholder=\"Tìm kiếm danh mục chờ phê duyệt...\"",
+      "icons": [
+        "Search"
+      ]
+    },
+    {
+      "line": 714,
+      "text": "<p className=\"text-slate-600\">Không có danh mục nào cần phê duyệt</p>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 863,
+      "text": "<span className=\"text-sm text-slate-600\">Đã phê duyệt</span>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 876,
+      "text": "<span className=\"text-sm text-slate-600\">Chờ phê duyệt</span>",
+      "icons": [
+        "Clock"
+      ]
+    }
+  ],
+  "src\\components\\pages\\orchestration\\APIFormFields.tsx": [
+    {
+      "line": 296,
+      "text": "title=\"Xóa header\"",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 358,
+      "text": "title=\"Xóa query param\"",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\orchestration\\APIManagementPage.tsx": [
+    {
+      "line": 681,
+      "text": "Thêm API mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 758,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 855,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "CheckCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\orchestration\\APITestModal.tsx": [
+    {
+      "line": 169,
+      "text": "Thêm",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 212,
+      "text": "Thêm",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\pages\\orchestration\\DataReconciliationAPIPage.tsx": [
+    {
+      "line": 304,
+      "text": "Thêm API đối soát mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 385,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 402,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Activity"
+      ]
+    }
+  ],
+  "src\\components\\pages\\orchestration\\ServiceCategoryPage.tsx": [
+    {
+      "line": 98,
+      "text": "Thêm danh mục mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 245,
+      "text": "<button className=\"p-1.5 text-amber-600 hover:bg-amber-50 rounded\" title=\"Chỉnh sửa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 248,
+      "text": "<button className=\"p-1.5 text-red-600 hover:bg-red-50 rounded\" title=\"Xóa\">",
+      "icons": [
+        "Eye",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\orchestration\\ServiceSetupPageUpdated.tsx": [
+    {
+      "line": 487,
+      "text": "// Lịch sử phê duyệt (mock data)",
+      "icons": [
+        "Header",
+        "QueryParam",
+        "ApprovalHistory"
+      ]
+    },
+    {
+      "line": 530,
+      "text": "note: 'Đang chờ phê duyệt'",
+      "icons": [
+        "Partial",
+        "Service"
+      ]
+    },
+    {
+      "line": 1044,
+      "text": "Thêm dịch vụ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1112,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 1133,
+      "text": "title=\"Trình duyệt\"",
+      "icons": [
+        "SettingsIcon"
+      ]
+    },
+    {
+      "line": 1143,
+      "text": "title=\"Duyệt\"",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 1153,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 1384,
+      "text": "Thêm dịch vụ mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1452,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 1473,
+      "text": "title=\"Trình duyệt\"",
+      "icons": [
+        "SettingsIcon"
+      ]
+    },
+    {
+      "line": 1483,
+      "text": "title=\"Duyệt\"",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 1493,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 1649,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 1667,
+      "text": "Thêm đơn vị",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1680,
+      "text": "Thêm đơn vị",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1795,
+      "text": "<span className=\"text-sm\">Thêm phiên bản</span>",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 2058,
+      "text": "Lãnh đạo sẽ phê duyệt 2 cấp: Duyệt dịch vụ và Duyệt công khai",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 2276,
+      "text": "Trình duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 2284,
+      "text": "Thêm trực tiếp",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 2498,
+      "text": "<h3 className=\"text-xl text-white\">Thêm phiên bản API mới</h3>",
+      "icons": [
+        "GitBranch"
+      ]
+    },
+    {
+      "line": 2852,
+      "text": "<h3 className=\"text-xl text-white\">Chỉnh sửa Dịch vụ</h3>",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 2961,
+      "text": "Phân loại có thể thay đổi sau khi được phê duyệt",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3046,
+      "text": "Thay đổi có thể yêu cầu phê duyệt",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3289,
+      "text": "<h3 className=\"text-xl text-white\">Xác nhận Xóa</h3>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3324,
+      "text": "<li>Dữ liệu sẽ bị xóa vĩnh viễn</li>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3349,
+      "text": "Xóa dịch vụ",
+      "icons": [
+        "Trash2"
+      ]
+    },
+    {
+      "line": 3367,
+      "text": "<h3 className=\"text-xl text-white\">Trình duyệt Dịch vụ</h3>",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 3368,
+      "text": "<p className=\"text-sm text-purple-100 mt-0.5\">Gửi yêu cầu phê duyệt</p>",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 3386,
+      "text": "Thông tin dịch vụ cần duyệt",
+      "icons": [
+        "Server"
+      ]
+    },
+    {
+      "line": 3421,
+      "text": "{/* Người duyệt */}",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 3425,
+      "text": "Chọn người duyệt *",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 3428,
+      "text": "<option value=\"\">-- Chọn người duyệt --</option>",
+      "icons": [
+        "User"
+      ]
+    },
+    {
+      "line": 3502,
+      "text": "Lưu ý: Chỉ dịch vụ được phê duyệt mới có thể chuyển sang công khai",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3506,
+      "text": "{/* Lý do trình duyệt */}",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3537,
+      "text": "<li>Người duyệt sẽ nhận được email thông báo</li>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 3562,
+      "text": "Gửi yêu cầu duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 3580,
+      "text": "<h3 className=\"text-xl text-white\">Phê duyệt Yêu cầu</h3>",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 3603,
+      "text": "Chờ duyệt",
+      "icons": [
+        "FileCheck"
+      ]
+    },
+    {
+      "line": 3700,
+      "text": "{/* Phê duyệt 2 cấp */}",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 3704,
+      "text": "Phê duyệt 2 cấp *",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 3743,
+      "text": "Bạn có thể duyệt riêng từng cấp hoặc duyệt cả 2 cùng lúc",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\GenericProcessingPage.tsx": [
+    {
+      "line": 582,
+      "text": "Chỉnh sửa toàn bảng",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 636,
+      "text": "Chỉnh sửa các trường",
+      "icons": [
+        "Edit2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingAdminJusticePage.tsx": [
+    {
+      "line": 95,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingAuctionPage.tsx": [
+    {
+      "line": 94,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingBusinessHouseholdPage.tsx": [
+    {
+      "line": 49,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingCompensationPage.tsx": [
+    {
+      "line": 49,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingCooperationPage.tsx": [
+    {
+      "line": 95,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingEnforcementPage.tsx": [
+    {
+      "line": 95,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingEnterprisePage.tsx": [
+    {
+      "line": 49,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingJudicialAssistancePage.tsx": [
+    {
+      "line": 95,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingLegalEducationPage.tsx": [
+    {
+      "line": 95,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingNationalityPage.tsx": [
+    {
+      "line": 95,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingRuleSetupPage.tsx": [
+    {
+      "line": 604,
+      "text": "Thêm mới",
+      "icons": [
+        "Plus",
+        "Download"
+      ]
+    }
+  ],
+  "src\\components\\pages\\processing\\ProcessingSecurityDbPage.tsx": [
+    {
+      "line": 97,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\pages\\provision\\DataProvisionInternalPage.tsx": [
+    {
+      "line": 140,
+      "text": "Thêm gói tin mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 291,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 311,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Settings",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\provision\\DataProvisionSharedPage.tsx": [
+    {
+      "line": 229,
+      "text": "Thêm cấu hình quyền truy cập",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 263,
+      "text": "<div className=\"text-xs text-slate-600\">Chờ duyệt</div>",
+      "icons": [
+        "Clock"
+      ]
+    },
+    {
+      "line": 404,
+      "text": "title=\"Duyệt\"",
+      "icons": [
+        "Eye"
+      ]
+    },
+    {
+      "line": 424,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "XCircle",
+        "Edit"
+      ]
+    }
+  ],
+  "src\\components\\pages\\provision\\InternalCatalogProvisionPage.tsx": [
+    {
+      "line": 188,
+      "text": "Thêm gói tin mới",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 299,
+      "text": "<button className=\"p-1 text-amber-600 hover:bg-amber-50 rounded\" title=\"Sửa\">",
+      "icons": [
+        "Code",
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 302,
+      "text": "<button className=\"p-1 text-red-600 hover:bg-red-50 rounded\" title=\"Xóa\">",
+      "icons": [
+        "Code",
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\reconciliation\\DeleteConfirmModal.tsx": [
+    {
+      "line": 22,
+      "text": "<h2 className=\"text-lg text-slate-900\">Xác nhận xóa</h2>",
+      "icons": [
+        "AlertTriangle"
+      ]
+    },
+    {
+      "line": 23,
+      "text": "<p className=\"text-sm text-slate-500 mt-1\">Xóa cấu hình API</p>",
+      "icons": [
+        "AlertTriangle"
+      ]
+    }
+  ],
+  "src\\components\\pages\\reconciliation\\ReconciliationServiceSetupTab.tsx": [
+    {
+      "line": 139,
+      "text": "Thêm cấu hình API",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 207,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2"
+      ]
+    }
+  ],
+  "src\\components\\pages\\ReconciliationSetupPage.tsx": [
+    {
+      "line": 967,
+      "text": "Thêm cấu hình API",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 1041,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "RefreshCw",
+        "Edit"
+      ]
+    },
+    {
+      "line": 1047,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 1407,
+      "text": "<div className=\"px-6 py-4 border-b border-slate-200\"><h3 className=\"text-lg text-slate-900\">Xác nhận xóa gói tin</h3></div>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 1412,
+      "text": "<p className=\"text-sm text-slate-900 mb-2\">Bạn có chắc chắn muốn xóa gói tin này?</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    },
+    {
+      "line": 1420,
+      "text": "<button onClick={() => { setPackages(packages.filter(p => p.id !== packageToDelete.id)); setShowDeletePackageModal(false); alert('Đã xóa gói tin!'); }} className=\"px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2\" title=\"Xác nhận xóa gói tin\"><Trash2 className=\"w-4 h-4\" />Xóa</button>",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\ConfigureRuleModal.tsx": [
+    {
+      "line": 522,
+      "text": "Thêm cấu hình",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 530,
+      "text": "<p className=\"text-sm text-slate-500\">Nhấn &quot;Thêm cấu hình&quot; để tạo quy tắc mới</p>",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ],
+  "src\\components\\processing\\DataClassificationModal.tsx": [
+    {
+      "line": 200,
+      "text": "Chỉnh sửa",
+      "icons": [
+        "Edit2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\DataProcessingManager.tsx": [
+    {
+      "line": 502,
+      "text": "title=\"Sửa lỗi bản ghi\"",
+      "icons": [
+        "AlertTriangle"
+      ]
+    }
+  ],
+  "src\\components\\processing\\DataProcessingTemplate.tsx": [
+    {
+      "line": 118,
+      "text": "Theo dõi các lần xử lý dữ liệu với log đầy đủ và khả năng sửa lỗi từng bản ghi",
+      "icons": [
+        "Info"
+      ]
+    }
+  ],
+  "src\\components\\processing\\DataViewer.tsx": [
+    {
+      "line": 394,
+      "text": "title=\"Sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\ErrorRecordEditor.tsx": [
+    {
+      "line": 247,
+      "text": "<CheckCircle className=\"w-3 h-3\" /> Đã sửa",
+      "icons": [
+        "CheckCircle"
+      ]
+    },
+    {
+      "line": 403,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 579,
+      "text": "<p className=\"text-slate-600\">Chưa có lịch sử chỉnh sửa</p>",
+      "icons": [
+        "HistoryIcon"
+      ]
+    }
+  ],
+  "src\\components\\processing\\ExecutorManagementModal.tsx": [
+    {
+      "line": 96,
+      "text": "Thêm người thực hiện",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 168,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit"
+      ]
+    },
+    {
+      "line": 175,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\FeedbackManagement.tsx": [
+    {
+      "line": 134,
+      "text": "<XCircle className=\"w-3 h-3\" /> Từ chối",
+      "icons": [
+        "XCircle"
+      ]
+    }
+  ],
+  "src\\components\\processing\\LGSPConnectionList.tsx": [
+    {
+      "line": 102,
+      "text": "Thêm kết nối",
+      "icons": [
+        "Link"
+      ]
+    },
+    {
+      "line": 203,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 210,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\ProcessingConfigManager.tsx": [
+    {
+      "line": 155,
+      "text": "Thêm cấu hình",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 288,
+      "text": "<p className=\"text-sm text-slate-600 mb-4\">Bắt đ���u bằng cách thêm cấu hình xử lý dữ liệu mới</p>",
+      "icons": [
+        "Settings"
+      ]
+    },
+    {
+      "line": 294,
+      "text": "Thêm cấu hình",
+      "icons": [
+        "Plus"
+      ]
+    }
+  ],
+  "src\\components\\processing\\RuleTemplateManager.tsx": [
+    {
+      "line": 272,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Copy",
+        "Edit"
+      ]
+    },
+    {
+      "line": 278,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit",
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\VisualQueryBuilder.tsx": [
+    {
+      "line": 380,
+      "text": "Thêm điều kiện",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 410,
+      "text": "Thêm điều kiện",
+      "icons": [
+        "Plus"
+      ]
+    },
+    {
+      "line": 488,
+      "text": "Xóa",
+      "icons": [
+        "Trash2"
+      ]
+    }
+  ],
+  "src\\components\\processing\\WarningDataList.tsx": [
+    {
+      "line": 350,
+      "text": "Sửa tất cả ({pendingCount})",
+      "icons": [
+        "Check"
+      ]
+    },
+    {
+      "line": 455,
+      "text": "title=\"Sửa thủ công\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 591,
+      "text": "Xác nhận sửa tất cả",
+      "icons": [
+        "Check"
+      ]
+    }
+  ],
+  "src\\components\\user\\AccessHistoryModal.tsx": [
+    {
+      "line": 238,
+      "text": "<div className=\"text-slate-500 mb-1\">Trình duyệt</div>",
+      "icons": [
+        "Monitor"
+      ]
+    }
+  ],
+  "src\\components\\user\\ImportExcelModal.tsx": [
+    {
+      "line": 321,
+      "text": "title=\"Chỉnh sửa\"",
+      "icons": [
+        "Edit2"
+      ]
+    },
+    {
+      "line": 328,
+      "text": "title=\"Xóa\"",
+      "icons": [
+        "Edit2",
+        "Trash2"
+      ]
+    },
+    {
+      "line": 345,
+      "text": "Danh sách lỗi cần sửa",
+      "icons": [
+        "AlertCircle"
+      ]
+    }
+  ]
+}

@@ -84,7 +84,7 @@ export function ViewDataRecordsList({ dataItem, onBack }: ViewDataRecordsListPro
       {/* Header */}
       <div className="bg-white rounded-lg border border-slate-200 p-6">
         <div className="flex items-start justify-between mb-4">
-          <button
+          <button title="Hành động" aria-label="Hành động"
             onClick={onBack}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           >
@@ -288,11 +288,11 @@ export function ViewDataRecordsList({ dataItem, onBack }: ViewDataRecordsListPro
             <button className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">
               Trước
             </button>
-            <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm">1</button>
-            <button className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">2</button>
-            <button className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">3</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm">1</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">2</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">3</button>
             <span className="px-2 text-slate-500">...</span>
-            <button className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">10</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">10</button>
             <button className="px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 text-sm">
               Sau
             </button>

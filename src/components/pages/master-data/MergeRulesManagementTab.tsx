@@ -457,7 +457,7 @@ export function MergeRulesManagementTab() {
               <h3 className="text-lg text-slate-900">
                 {editingRule ? 'Chỉnh sửa quy tắc hợp nhất' : 'Thêm quy tắc hợp nhất mới'}
               </h3>
-              <button onClick={handleCloseForm} className="p-1 hover:bg-slate-100 rounded">
+              <button onClick={handleCloseForm} className="p-1 hover:bg-slate-100 rounded" title="Đóng" aria-label="Đóng">
                 <X className="w-5 h-5" />
               </button>
             </div>

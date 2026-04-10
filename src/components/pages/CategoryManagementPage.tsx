@@ -1341,7 +1341,7 @@ export function CategoryManagementPage() {
           <div className="bg-white rounded-lg max-w-md w-full shadow-xl">
             <div className="p-4 border-b border-slate-200 flex items-center justify-between">
               <h3 className="text-slate-700">Tìm kiếm nâng cao cao Biên báo</h3>
-              <button
+              <button title="Hành động" aria-label="Hành động"
                 onClick={resetAdvancedSearch}
                 className="text-slate-400 hover:text-slate-600 transition-colors"
               >

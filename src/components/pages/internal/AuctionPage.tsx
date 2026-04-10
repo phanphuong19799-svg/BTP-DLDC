@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, Gavel, Building, User, FileText, Package, UserCheck, ShieldAlert, Home, Briefcase, CheckSquare, Users, Landmark, Scale, Globe, UserSquare } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface AuctionPageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function AuctionPage({ mode = 'thu thập' }: AuctionPageProps) {
+export function AuctionPage({ mode = 'thu thập', context = 'thu thập' }: AuctionPageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -87,6 +89,11 @@ export function AuctionPage({ mode = 'thu thập' }: AuctionPageProps) {
 
   const stats = generateData();
 
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL quản lý đấu giá TS" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
+
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Đấu giá viên', category: 'CSDL quản lý đấu giá TS', todayCount: 20000, errorCount: 30 },
     { name: 'Dữ liệu Tổ chức hành nghề đấu giá', category: 'CSDL quản lý đấu giá TS', todayCount: 20000, errorCount: 30 },
@@ -144,7 +151,7 @@ export function AuctionPage({ mode = 'thu thập' }: AuctionPageProps) {
             onChange={(e) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button title="Hành động" aria-label="Hành động" className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>

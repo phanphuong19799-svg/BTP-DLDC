@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GenericProcessingPage } from '../processing/GenericProcessingPage';
 import { Calendar, Download, User, Users, FileText, Building2, FolderOpen, Video, MessageSquare, Handshake, UserCheck, Wallet, Target, CheckCircle, Megaphone, Trophy } from 'lucide-react';
 import { DataDetailModal } from '../../DataDetailModal';
 
@@ -25,9 +26,10 @@ interface DatabaseRecord {
 
 interface FamilyBasePageProps {
   mode?: 'thu thập' | 'xử lý';
+  context?: 'thu thập' | 'chia sẻ';
 }
 
-export function FamilyBasePage({ mode = 'thu thập' }: FamilyBasePageProps) {
+export function FamilyBasePage({ mode = 'thu thập', context = 'thu thập' }: FamilyBasePageProps) {
   const [dateRange, setDateRange] = useState('01/01/2024 - 30/04/2024');
   const [selectedStat, setSelectedStat] = useState<StatCard | null>(null);
 
@@ -79,6 +81,11 @@ export function FamilyBasePage({ mode = 'thu thập' }: FamilyBasePageProps) {
 
   const stats = generateData();
 
+  
+  if (mode === 'xử lý') {
+    return <GenericProcessingPage systemName="CSDL PB, GĐ và HG cơ sở" datasets={stats.map((s, idx) => ({ id: s.id || `item_${idx}`, name: s.title }))} />;
+  }
+
   const tableData: DatabaseRecord[] = [
     { name: 'Dữ liệu Báo cáo viên pháp luật', category: 'CSDL PB, GĐ và HG cơ sở', todayCount: 20000, errorCount: 30 },
     { name: 'Dữ liệu Tuyên truyền viên pháp luật', category: 'CSDL PB, GĐ và HG cơ sở', todayCount: 20000, errorCount: 30 },
@@ -128,7 +135,7 @@ export function FamilyBasePage({ mode = 'thu thập' }: FamilyBasePageProps) {
             onChange={(e) => setDateRange(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
+          <button title="Hành động" aria-label="Hành động" className="p-2 border border-slate-300 rounded-lg hover:bg-slate-50">
             <Calendar className="w-5 h-5 text-slate-600" />
           </button>
         </div>
