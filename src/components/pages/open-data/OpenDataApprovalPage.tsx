@@ -20,7 +20,7 @@ const mockRequests: ApprovalRequest[] = [
     id: '1',
     requestCode: 'REQ001',
     datasetName: 'Bộ dữ liệu A',
-    category: 'Danh mục A',
+    category: 'Biên tập danh mục A',
     requestType: 'submit',
     submittedBy: 'Nguyễn Văn A',
     submittedDate: '10/12/2024 09:30',
@@ -73,8 +73,8 @@ export function OpenDataApprovalPage() {
   const [selectedRecipient, setSelectedRecipient] = useState('');
   const [sendNote, setSendNote] = useState('');
 
-  const filteredRequests = selectedTab === 'all' 
-    ? mockRequests 
+  const filteredRequests = selectedTab === 'all'
+    ? mockRequests
     : mockRequests.filter(r => r.status === selectedTab);
 
   const getStatusBadge = (status: string) => {
@@ -141,7 +141,7 @@ export function OpenDataApprovalPage() {
           <h1 className="text-slate-900">Phê duyệt dữ liệu mở</h1>
           <p className="text-sm text-slate-600 mt-1">Trình và phê duyệt các bộ dữ liệu mở trước khi công bố</p>
         </div>
-        <button 
+        <button
           className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 flex items-center gap-2"
           onClick={() => setShowSubmitModal(true)}
         >
@@ -203,44 +203,40 @@ export function OpenDataApprovalPage() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setSelectedTab('pending')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'pending'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'pending'
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Clock className="w-4 h-4" />
             Chờ duyệt ({stats.pending})
           </button>
           <button
             onClick={() => setSelectedTab('approved')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'approved'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'approved'
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckCircle className="w-4 h-4" />
             Đã phê duyệt ({stats.approved})
           </button>
           <button
             onClick={() => setSelectedTab('rejected')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'rejected'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'rejected'
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <XCircle className="w-4 h-4" />
             Từ chối ({stats.rejected})
           </button>
           <button
             onClick={() => setSelectedTab('all')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'all'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'all'
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckSquare className="w-4 h-4" />
             Tất cả ({stats.total})
@@ -367,7 +363,7 @@ export function OpenDataApprovalPage() {
                   <label className="block text-sm text-slate-700 mb-2">Danh mục <span className="text-red-500">*</span></label>
                   <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <option>Chọn danh mục</option>
-                    <option>Danh mục A</option>
+                    <option>Biên tập danh mục A</option>
                     <option>Danh mục B</option>
                     <option>Danh mục C</option>
                   </select>
@@ -426,7 +422,7 @@ export function OpenDataApprovalPage() {
                   Yêu cầu: <span className="text-emerald-700">{selectedRequest.datasetName}</span>
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   setShowSendToReviewerModal(false);
                   setSelectedRecipient('');
@@ -499,11 +495,10 @@ export function OpenDataApprovalPage() {
               <button
                 onClick={handleSendToReviewer}
                 disabled={!selectedRecipient}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                  !selectedRecipient
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${!selectedRecipient
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     : 'bg-emerald-600 text-white hover:bg-emerald-700'
-                }`}
+                  }`}
               >
                 <Send className="w-4 h-4" />
                 Gửi trình duyệt
@@ -519,7 +514,7 @@ export function OpenDataApprovalPage() {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
               <h2 className="text-slate-900">Chi tiết yêu cầu</h2>
-              <button 
+              <button
                 onClick={() => setShowDetailModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -600,7 +595,7 @@ export function OpenDataApprovalPage() {
               <h2 className="text-slate-900">
                 {approvalType === 'approve' ? 'Phê duyệt yêu cầu' : 'Từ chối yêu cầu'}
               </h2>
-              <button 
+              <button
                 onClick={() => setShowApprovalModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -641,11 +636,10 @@ export function OpenDataApprovalPage() {
                   setShowApprovalModal(false);
                   setApprovalNote('');
                 }}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 text-white ${
-                  approvalType === 'approve' 
-                    ? 'bg-green-600 hover:bg-green-700' 
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 text-white ${approvalType === 'approve'
+                    ? 'bg-green-600 hover:bg-green-700'
                     : 'bg-red-600 hover:bg-red-700'
-                }`}
+                  }`}
               >
                 {approvalType === 'approve' ? <CheckSquare className="w-4 h-4" /> : <XSquare className="w-4 h-4" />}
                 {approvalType === 'approve' ? 'Phê duyệt' : 'Từ chối'}

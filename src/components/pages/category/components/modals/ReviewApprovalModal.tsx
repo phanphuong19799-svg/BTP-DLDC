@@ -1,18 +1,30 @@
 import React, { useState, ChangeEvent } from 'react';
 import { CheckCircle, XCircle, Send } from 'lucide-react';
 import { ApprovalRequest, MasterDataAttribute } from '../../categoryTypes';
+import { Portal } from '../../../../common/Portal';
 
 interface ReviewApprovalModalProps {
   isOpen: boolean;
   onClose: () => void;
   requests: ApprovalRequest[];
   attributes?: MasterDataAttribute[];
-  onApprove: (ids: string[], note: string) => void;
+  onApprove: (ids: string[], note: string, partialStatuses?: Record<string, Record<string, 'approved' | 'rejected'>>) => void;
   onReject: (ids: string[], note: string) => void;
 }
 
 export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onApprove, onReject }: ReviewApprovalModalProps) {
   const [note, setNote] = useState('');
+  const [lineStatuses, setLineStatuses] = useState<Record<string, Record<string, 'approved' | 'rejected'>>>({});
+
+  const handleLineAction = (reqId: string, attrId: string, status: 'approved' | 'rejected') => {
+    setLineStatuses(prev => ({
+      ...prev,
+      [reqId]: {
+        ...(prev[reqId] || {}),
+        [attrId]: status
+      }
+    }));
+  };
 
   if (!isOpen || !requests || requests.length === 0) return null;
 
@@ -20,7 +32,8 @@ export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onA
   const hasPending = pendingRequests.length > 0;
 
   return (
-    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[10000] p-4 text-slate-800">
+    <Portal>
+      <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-slate-800">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[95vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
         
         {/* Header */}
@@ -60,16 +73,21 @@ export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onA
                     <span className="font-bold text-slate-500">Mã yêu cầu: REQ-{request.id.padStart(3, '0')}</span>
                     <span>•</span>
                     <span className="font-medium text-slate-500">
-                      Loại: {request.type === 'category' ? 'Phê duyệt danh mục' : 'Phê duyệt cấu trúc'}
+                      Loại: {request.type === 'category' ? 'Phê duyệt danh mục' : 
+                             request.type === 'structure' ? 'Phê duyệt cấu trúc' : 
+                             'Phê duyệt phiên bản'}
                     </span>
                   </div>
                 </div>
 
                 {request.status !== 'pending' ? (
-                  <div className={`px-4 py-1.5 rounded-lg text-[12px] font-bold uppercase ${
-                    request.status === 'approved' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
+                  <div className={`shrink-0 ml-4 px-4 py-2 rounded-xl text-[13px] font-bold uppercase ${
+                    request.status === 'approved' ? 'bg-green-50 text-green-600 border border-green-200' : 
+                    request.status === 'partial' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                    'bg-red-50 text-red-600 border border-red-200'
                   }`}>
-                    {request.status === 'approved' ? 'Đã phê duyệt' : 'Đã từ chối'}
+                    {request.status === 'approved' ? 'Đã phê duyệt' : 
+                     request.status === 'partial' ? 'Duyệt một phần' : 'Đã từ chối'}
                   </div>
                 ) : (
                   <div className="flex gap-2.5 shrink-0 ml-4">
@@ -80,8 +98,8 @@ export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onA
                       <XCircle className="w-5 h-5"/> Từ chối
                     </button>
                     <button 
-                      onClick={() => onApprove([request.id], note)}
-                      className="px-5 py-2 bg-[#2563eb] text-white font-bold rounded-xl flex items-center justify-center gap-1.5 hover:bg-blue-700 transition-all text-[14px] shadow-lg shadow-blue-200"
+                      onClick={() => onApprove([request.id], note, lineStatuses)}
+                      className="px-5 py-2 bg-blue-600 text-white font-bold rounded-xl flex items-center justify-center gap-1.5 hover:bg-blue-700 transition-all text-[14px] shadow-lg shadow-blue-200"
                     >
                       <CheckCircle className="w-5 h-5"/> Phê duyệt
                     </button>
@@ -101,10 +119,13 @@ export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onA
                                 <th className="px-5 py-3.5 font-semibold">Tên hiển thị</th>
                                 <th className="px-5 py-3.5 font-semibold">Kiểu dữ liệu</th>
                                 <th className="px-5 py-3.5 text-center font-semibold w-24">Bắt buộc</th>
+                                <th className="px-5 py-3.5 text-center font-semibold w-32">Phê duyệt riêng</th>
                              </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100 text-slate-700 font-medium">
-                             {attributes.map(attr => (
+                             {attributes.map(attr => {
+                                const currentStatus = lineStatuses[request.id]?.[attr.id];
+                                return (
                                 <tr key={attr.id} className="hover:bg-slate-50/50 transition-colors">
                                    <td className="px-5 py-3.5 font-mono">{attr.fieldName}</td>
                                    <td className="px-5 py-3.5">{attr.displayName}</td>
@@ -118,10 +139,79 @@ export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onA
                                         </div>
                                       ) : <span className="text-slate-400 font-normal">—</span>}
                                    </td>
+                                   <td className="px-5 py-3.5 text-center">
+                                      {request.status === 'pending' ? (
+                                        <div className="flex items-center justify-center gap-1.5">
+                                          <button 
+                                            onClick={() => handleLineAction(request.id, attr.id, 'approved')}
+                                            className={`p-1.5 rounded disabled:opacity-50 transition-all ${currentStatus === 'approved' ? 'bg-green-100 text-green-700 ring-1 ring-green-400' : 'text-slate-400 hover:bg-green-50 hover:text-green-600'}`}
+                                            title="Đồng ý trường này"
+                                          >
+                                            <CheckCircle className="w-4 h-4" />
+                                          </button>
+                                          <button 
+                                            onClick={() => handleLineAction(request.id, attr.id, 'rejected')}
+                                            className={`p-1.5 rounded disabled:opacity-50 transition-all ${currentStatus === 'rejected' ? 'bg-red-100 text-red-700 ring-1 ring-red-400' : 'text-slate-400 hover:bg-red-50 hover:text-red-600'}`}
+                                            title="Từ chối trường này"
+                                          >
+                                            <XCircle className="w-4 h-4" />
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        <span className={`text-[12px] font-bold ${
+                                          request.lineStatuses?.[attr.id] === 'rejected' ? 'text-red-500' : 'text-green-600'
+                                        }`}>
+                                          {request.lineStatuses?.[attr.id] === 'rejected' ? 'Bị từ chối' : 'Đã duyệt'}
+                                        </span>
+                                      )}
+                                   </td>
                                 </tr>
-                             ))}
+                                )
+                             })}
                           </tbody>
                        </table>
+                    </div>
+                 </div>
+              )}
+              
+              {/* Version Detail Preview */}
+              {request.type === 'version' && (
+                 <div className="mt-6 pt-6 border-t border-slate-100">
+                    <p className="text-[14px] font-bold text-slate-800 mb-4">Thông tin thay đổi so với phiên bản trước:</p>
+                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-4">
+                       <div className="text-[13px] text-orange-800 leading-relaxed">
+                         <strong>Phiên bản hiện tại:</strong> v{request.changes?.prevVersion || 1} <br/>
+                         <strong>Phiên bản đề xuất:</strong> v{request.changes?.currentVersion || 2} <br/>
+                         - Thêm mới trường dữ liệu 'ngay_cap_cccd'.<br/>
+                         - Đổi kiểu dữ liệu trường 'trang_thai' từ boolean sang string.
+                       </div>
+                    </div>
+                    
+                    <p className="text-[14px] font-bold text-slate-800 mb-4 mt-6">Đánh giá tác động đến các bảng tham chiếu:</p>
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                       <div className="text-[13px] text-blue-800 leading-relaxed">
+                         <strong>Xác định ảnh hưởng trong hệ thống:</strong> Tác động tới {request.changes?.impactCount || 3} bảng dữ liệu liên kết.<br/>
+                         - Sẽ cần cập nhật đồng bộ các View và API tra cứu tương ứng.
+                       </div>
+                    </div>
+                 </div>
+              )}
+
+              {/* Relationship Detail Preview */}
+              {request.type === 'relationship' && (
+                 <div className="mt-6 pt-6 border-t border-slate-100">
+                    <p className="text-[14px] font-bold text-slate-800 mb-4">Chi tiết thiết lập mối quan hệ:</p>
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                       <ul className="text-[13px] text-emerald-800 space-y-2">
+                         <li><strong>Danh mục nguồn:</strong> {request.entityName}</li>
+                         <li><strong>Danh mục đích:</strong> {request.changes?.targetEntity || 'N/A'}</li>
+                         <li><strong>Loại quan hệ:</strong> {request.changes?.relationshipType || '1-n'}</li>
+                         <li>
+                           <strong>Cấu hình mapping:</strong> 
+                           <span className="font-mono bg-emerald-100 px-1 py-0.5 rounded ml-1">{request.changes?.sourceKey || 'id'}</span> = 
+                           <span className="font-mono bg-emerald-100 px-1 py-0.5 rounded ml-1">{request.changes?.targetKey || 'ref_id'}</span>
+                         </li>
+                       </ul>
                     </div>
                  </div>
               )}
@@ -160,15 +250,16 @@ export function ReviewApprovalModal({ isOpen, onClose, requests, attributes, onA
                 <XCircle className="w-5 h-5"/> Từ chối tất cả
               </button>
               <button 
-                 onClick={() => onApprove(pendingRequests.map(r => r.id), note)}
-                 className="px-8 py-3 bg-[#2563eb] text-white font-bold rounded-xl flex items-center justify-center gap-2.5 hover:bg-blue-700 transition-all text-[15px] shadow-xl shadow-blue-300"
+                 onClick={() => onApprove(pendingRequests.map(r => r.id), note, lineStatuses)}
+                 className="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl flex items-center justify-center gap-2.5 hover:bg-blue-700 transition-all text-[15px] shadow-xl shadow-blue-300"
               >
                 <CheckCircle className="w-5 h-5"/> Phê duyệt tất cả
               </button>
-            </>
+             </>
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </Portal>
   );
 }

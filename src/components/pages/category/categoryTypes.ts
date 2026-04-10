@@ -2,19 +2,20 @@ export type TabType = 'setup' | 'attributes' | 'relationships' | 'approval' | 'v
 export type RelationshipType = '1-1' | '1-n' | 'n-1' | 'n-n';
 export type RelationshipStatus = 'active' | 'inactive';
 
-export type LifecycleStatus = 'active' | 'draft' | 'inactive' | 'archived' | 'pending_approval';
+export type LifecycleStatus = 'active' | 'draft' | 'inactive' | 'archived' | 'pending_approval' | 'pending_expiration';
 export type DataType = 'standard' | 'reference' | 'transactional';
 export type ScopeType = 'national' | 'ministry' | 'provincial' | 'internal';
 export type DataSourceType = 'dldc' | 'lgsp' | 'ndxp' | 'manual';
 export type UpdateStrategyType = 'reference' | 'scheduled' | 'realtime';
 export type SyncFrequencyType = 'daily' | 'weekly' | 'monthly' | 'event';
 export type FieldDataType = 'string' | 'number' | 'date' | 'datetime' | 'boolean' | 'text' | 'email' | 'phone' | 'url';
-export type ApprovalType = 'category' | 'structure';
-export type ApprovalStatus = 'pending' | 'approved' | 'rejected';
+export type ApprovalType = 'category' | 'structure' | 'version' | 'relationship';
+export type ApprovalStatus = 'pending' | 'approved' | 'rejected' | 'partial';
 
 export interface ApprovalRequest {
   id: string;
   type: ApprovalType;
+  actionType?: 'create' | 'update' | 'expire';
   entityId: string;
   entityCode: string;
   entityName: string;
@@ -25,6 +26,7 @@ export interface ApprovalRequest {
   reviewedDate?: string;
   comments?: string;
   changes?: any;
+  lineStatuses?: Record<string, 'approved' | 'rejected'>;
 }
 
 export interface CustomField {
@@ -75,6 +77,8 @@ export interface EntityRelationship {
   status: RelationshipStatus;
   createdDate: string;
   createdBy: string;
+  updatedDate?: string;
+  updatedBy?: string;
 }
 
 export interface MasterDataEntity {

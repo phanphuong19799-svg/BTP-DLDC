@@ -17,8 +17,5 @@ export function Portal({ children }: PortalProps) {
 
   if (!mounted) return null;
 
-  const portalRoot = document.getElementById('portal-root');
-  if (!portalRoot) return null;
-
-  return createPortal(children, portalRoot);
+  return createPortal(children, document.body);
 }

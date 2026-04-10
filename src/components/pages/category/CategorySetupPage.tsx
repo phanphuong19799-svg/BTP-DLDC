@@ -1,15 +1,15 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
-import { 
-  Settings, Sliders, Link2, CheckSquare, Clock 
+import React, { useState, useEffect, ChangeEvent, ReactNode } from 'react';
+import {
+  Settings, Sliders, Link2, CheckSquare, Clock
 } from 'lucide-react';
 
 // Types & Constants
-import { 
+import {
   MasterDataEntity, MasterDataAttribute, EntityRelationship, ApprovalRequest,
-  TabType, LifecycleStatus, DataType, ScopeType, DataSourceType, FieldDataType, ApprovalType, ApprovalStatus 
+  TabType, LifecycleStatus, DataType, ScopeType, DataSourceType, FieldDataType, ApprovalType, ApprovalStatus
 } from './categoryTypes';
-import { 
-  defaultEntities, dataTypeLabels, lifecycleLabels, approvalTypeLabels, approvalStatusLabels, approvers 
+import {
+  defaultEntities, dataTypeLabels, lifecycleLabels, approvalTypeLabels, approvalStatusLabels, approvers
 } from './categoryConstants';
 
 // Components - Tabs
@@ -31,6 +31,8 @@ import { RestoreVersionModal } from './components/modals/RestoreVersionModal';
 import { ReviewApprovalModal } from './components/modals/ReviewApprovalModal';
 import { SimpleApproveModal } from './components/modals/SimpleApproveModal';
 import { SimpleRejectModal } from './components/modals/SimpleRejectModal';
+import { ExpireRequestModal } from './components/modals/ExpireRequestModal';
+import { ExpireApproveModal } from './components/modals/ExpireApproveModal';
 import { Portal } from '../../common/Portal';
 
 export const CategorySetupPage = () => {
@@ -128,6 +130,18 @@ export const CategorySetupPage = () => {
       requestedDate: '02/12/2024 09:45', status: 'pending'
     },
     {
+      id: '11', type: 'version', entityId: '1', entityCode: 'MD-CITIZEN-001',
+      entityName: 'Bộ dữ liệu chủ Công dân', requestedBy: 'Lý Quốc K',
+      requestedDate: '01/12/2024 10:10', status: 'pending',
+      changes: { prevVersion: 1, currentVersion: 2, impactCount: 3 }
+    },
+    {
+      id: '12', type: 'relationship', entityId: '3', entityCode: 'MD-SOCIAL-001',
+      entityName: 'Bộ dữ liệu chủ An sinh xã hội', requestedBy: 'Đỗ Văn P',
+      requestedDate: '30/11/2024 09:12', status: 'pending',
+      changes: { targetEntity: 'Bộ dữ liệu hộ nghèo', relationshipType: '1-1', sourceKey: 'id', targetKey: 'social_id' }
+    },
+    {
       id: '11', type: 'structure', entityId: '2', entityCode: 'MD-POLICE-001',
       entityName: 'Bộ dữ liệu chủ Công an', requestedBy: 'Cao Thị K',
       requestedDate: '01/12/2024 11:00', status: 'approved',
@@ -141,6 +155,7 @@ export const CategorySetupPage = () => {
   ]);
   const [statusFilter, setStatusFilter] = useState<ApprovalStatus | 'all'>('all');
   const [showApprovalModal, setShowApprovalModal] = useState(false);
+  const [approvalRequestData, setApprovalRequestData] = useState<{ id: string; code: string; name: string; type: 'category' | 'structure' | 'attribute' | 'relationship' } | null>(null);
   const [pendingApprovalData, setPendingApprovalData] = useState<any>(null);
   const [approvalRequestForm, setApprovalRequestForm] = useState({ reviewer: '', note: '' });
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -162,11 +177,27 @@ export const CategorySetupPage = () => {
   const [showSimpleApproveModal, setShowSimpleApproveModal] = useState(false);
   const [showSimpleRejectModal, setShowSimpleRejectModal] = useState(false);
   const [entityForAction, setEntityForAction] = useState<MasterDataEntity | null>(null);
+  
+  // States cho Hết hiệu lực
+  const [showExpireRequestModal, setShowExpireRequestModal] = useState(false);
+  const [expireEntity, setExpireEntity] = useState<MasterDataEntity | null>(null);
+  const [showExpireApproveModal, setShowExpireApproveModal] = useState(false);
+
+  // Generic Confirm Modal for Submits & Quick Actions
+  const [genericConfirm, setGenericConfirm] = useState<{
+    isOpen: boolean;
+    type: 'success' | 'info' | 'warning' | 'delete';
+    title: string;
+    subtitle: string;
+    message: ReactNode;
+    confirmText: string;
+    onConfirm: () => void;
+  } | null>(null);
 
   // --------------------------------------------------------------------------------
   // Hành động - Sửa và Thêm mới (Đã tách biệt)
   // --------------------------------------------------------------------------------
-  
+
   // Hành động Sửa: Sử dụng Popup đơn giản
   const handleEdit = (entity: MasterDataEntity) => {
     setEditingEntity(entity);
@@ -247,6 +278,74 @@ export const CategorySetupPage = () => {
     return map[type] || type;
   };
 
+  // --------------------------------------------------------------------------------
+  // Hành động - Trình duyệt & Phê duyệt nhanh (Workflow integration)
+  // --------------------------------------------------------------------------------
+  const confirmSubmitApproval = (entityId: string, type: 'category' | 'structure') => {
+    const entity = entities.find(e => e.id === entityId);
+    if (!entity) return;
+    setApprovalRequestData({ id: entity.id, code: entity.code, name: entity.name, type });
+    setApprovalRequestForm({ reviewer: '', note: '' });
+    setShowApprovalModal(true);
+  };
+
+  const handleShortcutApprove = (entity: MasterDataEntity) => {
+    const req = requests.find(r => r.entityId === entity.id && r.status === 'pending');
+    if (req) {
+      setPendingApprovalData(req);
+      setShowSimpleApproveModal(true);
+    } else {
+      setGenericConfirm({
+         isOpen: true, type: 'warning', title: 'Không thể phê duyệt', subtitle: 'Thông báo lỗi',
+         message: 'Danh mục này chưa được gửi phê duyệt (không có yêu cầu Pending)!', confirmText: 'Đóng', onConfirm: () => setGenericConfirm(null)
+      });
+    }
+  };
+
+  const handleShortcutReject = (entity: MasterDataEntity) => {
+    const req = requests.find(r => r.entityId === entity.id && r.status === 'pending');
+    if (req) {
+      setPendingApprovalData(req);
+      setShowSimpleRejectModal(true);
+    } else {
+      setGenericConfirm({
+         isOpen: true, type: 'warning', title: 'Không thể từ chối', subtitle: 'Thông báo lỗi',
+         message: 'Danh mục này chưa được gửi phê duyệt (không có yêu cầu Pending)!', confirmText: 'Đóng', onConfirm: () => setGenericConfirm(null)
+      });
+    }
+  };
+
+  const confirmSubmitAttribute = (attrId: string) => {
+    const attr = attributes.find(a => a.id === attrId);
+    setApprovalRequestData({ id: attrId, code: attr?.fieldName || '', name: attr?.displayName || '', type: 'attribute' });
+    setApprovalRequestForm({ reviewer: '', note: '' });
+    setShowApprovalModal(true);
+  };
+
+  const confirmApproveAttribute = (attrId: string) => {
+    const attr = attributes.find(a => a.id === attrId);
+    setGenericConfirm({
+      isOpen: true, type: 'success', title: 'Phê duyệt thuộc tính', subtitle: 'Hành động duyệt nhanh',
+      message: <p>Duyệt thuộc tính <strong>{attr?.fieldName}</strong>?</p>,
+      confirmText: 'Phê duyệt',
+      onConfirm: () => {
+        setAttributes(prev => prev.map(a => a.id === attrId ? { ...a, status: 'approved' } : a));
+      }
+    });
+  };
+
+  const confirmRejectAttribute = (attrId: string) => {
+    const attr = attributes.find(a => a.id === attrId);
+    setGenericConfirm({
+      isOpen: true, type: 'warning', title: 'Từ chối thuộc tính', subtitle: 'Đẩy về bản nháp',
+      message: <p>Từ chối thuộc tính <strong>{attr?.fieldName}</strong>?</p>,
+      confirmText: 'Từ chối',
+      onConfirm: () => {
+        setAttributes(prev => prev.map(a => a.id === attrId ? { ...a, status: 'draft' } : a));
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Tabs Navigation */}
@@ -254,7 +353,7 @@ export const CategorySetupPage = () => {
         <div className="flex border-b border-slate-200">
           {[
             { id: 'setup', label: 'Thiết lập danh sách', icon: Settings },
-            { id: 'attributes', label: 'Thiết lập quản lý thuộc tính', icon: Sliders },
+            { id: 'attributes', label: 'Thiết lập thuộc tính', icon: Sliders },
             { id: 'relationships', label: 'Thiết lập quan hệ', icon: Link2 },
             { id: 'approval', label: 'Phê duyệt', icon: CheckSquare },
             { id: 'version-history', label: 'Lịch sử phiên bản', icon: Clock }
@@ -262,9 +361,8 @@ export const CategorySetupPage = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as TabType)}
-              className={`flex items-center gap-2 px-6 py-4 text-[14px] font-bold transition-all border-b-2 ${
-                activeTab === tab.id ? 'bg-blue-50/50 text-blue-600 border-blue-600' : 'text-slate-500 border-transparent hover:bg-slate-50'
-              }`}
+              className={`flex items-center gap-2 px-6 py-4 text-[14px] font-bold transition-all border-b-2 ${activeTab === tab.id ? 'bg-blue-50/50 text-blue-600 border-blue-600' : 'text-slate-500 border-transparent hover:bg-slate-50'
+                }`}
             >
               <tab.icon className="w-4 h-4" />
               {tab.label}
@@ -275,21 +373,26 @@ export const CategorySetupPage = () => {
         {/* Tab Content */}
         <div className="p-6 bg-slate-50/20 min-h-[600px]">
           {activeTab === 'setup' && (
-            <SetupTab 
+            <SetupTab
               entities={entities} searchTerm={searchTerm} setSearchTerm={setSearchTerm}
               filterStatus={filterStatus} setFilterStatus={setFilterStatus}
               userRole={userRole} publishedEntities={publishedEntities}
               onAdd={handleAdd}
               onEdit={handleEdit} onDelete={handleDelete}
-              onSubmitApproval={() => {}}
-              onPublish={() => {}} onUnpublish={() => {}}
-              onApproveClick={() => {}}
-              onRejectClick={() => {}}
+              onSubmitApproval={confirmSubmitApproval}
+              onPublish={(e) => { setEntityToPublish(e); setShowPublishModal(true); }} 
+              onUnpublish={(e) => { /* Mock unpublish */ }}
+              onApproveClick={handleShortcutApprove}
+              onRejectClick={handleShortcutReject}
+              onExpireClick={(e) => {
+                setExpireEntity(e);
+                setShowExpireRequestModal(true);
+              }}
             />
           )}
 
           {activeTab === 'attributes' && (
-            <AttributesTab 
+            <AttributesTab
               entities={entities} attributes={attributes}
               selectedEntityId={selectedEntityId} setSelectedEntityId={setSelectedEntityId}
               selectedAttributes={selectedAttributes}
@@ -299,22 +402,55 @@ export const CategorySetupPage = () => {
               onEditAttribute={(attr) => { setEditingAttribute(attr); setAttributeFormData(attr); setShowAttributeModal(true); }}
               onDeleteAttribute={(id) => { setAttributeToDeleteId(id); setShowDeleteAttributeModal(true); }}
               getDataTypeLabel={getDataTypeLabel}
-              onSave={() => alert('Đã lưu!')}
+              onSave={() => {
+                setGenericConfirm({
+                   isOpen: true, type: 'success', title: 'Đã lưu', subtitle: '', message: 'Lưu cấu trúc nháp thành công!', confirmText: 'Đóng', onConfirm: () => setGenericConfirm(null)
+                });
+              }}
+              onSaveAndSubmit={() => {
+                if (selectedEntityId) confirmSubmitApproval(selectedEntityId, 'structure');
+              }}
+              onSubmitAttribute={confirmSubmitAttribute}
+              onApproveAttribute={confirmApproveAttribute}
+              onRejectAttribute={confirmRejectAttribute}
               onCancel={() => setActiveTab('setup')}
             />
           )}
-          
+
           {/* Các tab khác render đơn giản để tránh lỗi */}
           {activeTab === 'relationships' && <RelationshipsTab entities={entities} relationships={relationships} setRelationships={setRelationships} />}
-          {activeTab === 'approval' && <ApprovalTab entities={entities} approvalTab={approvalTab} setApprovalTab={setApprovalTab} requests={requests} statusFilter={statusFilter} setStatusFilter={setStatusFilter} onViewDetail={() => {}} onApproveAll={() => {}} approvalTypeLabels={approvalTypeLabels} approvalStatusLabels={approvalStatusLabels} />}
-          {activeTab === 'version-history' && <VersionHistoryTab searchTerm={searchTerm} setSearchTerm={setSearchTerm} onViewDetail={() => {}} />}
+          {activeTab === 'approval' && <ApprovalTab
+            entities={entities}
+            approvalTab={approvalTab}
+            setApprovalTab={setApprovalTab}
+            requests={requests}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            onViewDetail={(req) => {
+              if (req.actionType === 'expire') {
+                 setPendingApprovalData(req);
+                 const entity = entities.find(e => e.id === req.entityId) || null;
+                 setExpireEntity(entity);
+                 setShowExpireApproveModal(true);
+              } else {
+                 setPendingApprovalData([req]); 
+                 setShowReviewModal(true);
+              }
+            }}
+            onApproveClick={(req) => { setPendingApprovalData(req); setShowSimpleApproveModal(true); }}
+            onRejectClick={(req) => { setPendingApprovalData(req); setShowSimpleRejectModal(true); }}
+            onApproveAll={() => { }}
+            approvalTypeLabels={approvalTypeLabels}
+            approvalStatusLabels={approvalStatusLabels}
+          />}
+          {activeTab === 'version-history' && <VersionHistoryTab searchTerm={searchTerm} setSearchTerm={setSearchTerm} onViewDetail={() => { }} />}
         </div>
       </div>
 
       {/* Modals Container */}
       <Portal>
         {/* Wizard chỉ dành cho Thêm mới */}
-        <CategoryWizardModal 
+        <CategoryWizardModal
           isOpen={showWizard} onClose={() => setShowWizard(false)}
           step={wizardStep} setStep={setWizardStep}
           entityId={wizardEntityId} formData={formData} setFormData={setFormData}
@@ -323,9 +459,9 @@ export const CategorySetupPage = () => {
           selectedAttributes={selectedAttributes}
           onSelectAttribute={(id) => setSelectedAttributes(prev => prev.includes(id) ? prev.filter(sid => sid !== id) : [...prev, id])}
           onSelectAllAttributes={(checked) => setSelectedAttributes(checked ? attributes.map(a => a.id) : [])}
-          onAddAttribute={() => {}}
-          onEditAttribute={() => {}}
-          onDeleteAttribute={() => {}}
+          onAddAttribute={() => { }}
+          onEditAttribute={() => { }}
+          onDeleteAttribute={() => { }}
           getDataTypeLabel={getDataTypeLabel}
         />
 
@@ -337,7 +473,20 @@ export const CategorySetupPage = () => {
           onSave={confirmEdit}
         />
 
-        <ConfirmModal 
+        {genericConfirm && (
+          <ConfirmModal
+            isOpen={genericConfirm.isOpen}
+            onClose={() => setGenericConfirm(null)}
+            type={genericConfirm.type}
+            title={genericConfirm.title}
+            subtitle={genericConfirm.subtitle}
+            message={genericConfirm.message}
+            confirmText={genericConfirm.confirmText}
+            onConfirm={genericConfirm.onConfirm}
+          />
+        )}
+
+        <ConfirmModal
           isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}
           title="Xác nhận xóa danh mục"
           message={
@@ -350,7 +499,7 @@ export const CategorySetupPage = () => {
           type="delete"
         />
 
-        <ConfirmModal 
+        <ConfirmModal
           isOpen={showDeleteAttributeModal} onClose={() => setShowDeleteAttributeModal(false)}
           title="Xác nhận xóa thuộc tính"
           message={
@@ -361,9 +510,9 @@ export const CategorySetupPage = () => {
           }
           onConfirm={() => {
             if (attributeToDeleteId) {
-               setAttributes(attributes.filter(a => a.id !== attributeToDeleteId));
-               setSelectedAttributes(selectedAttributes.filter(sid => sid !== attributeToDeleteId));
-               setAttributeToDeleteId(null);
+              setAttributes(attributes.filter(a => a.id !== attributeToDeleteId));
+              setSelectedAttributes(selectedAttributes.filter(sid => sid !== attributeToDeleteId));
+              setAttributeToDeleteId(null);
             }
             setShowDeleteAttributeModal(false);
           }}
@@ -371,7 +520,123 @@ export const CategorySetupPage = () => {
         />
 
         {/* Các modal khác giữ nguyên ẩn khi không dùng */}
-        <AttributeFormModal isOpen={showAttributeModal} onClose={() => setShowAttributeModal(false)} editingAttribute={editingAttribute} formData={attributeFormData} setFormData={setAttributeFormData} onSave={() => setShowAttributeModal(false)} onSaveAndSubmit={() => {}} />
+        <AttributeFormModal isOpen={showAttributeModal} onClose={() => setShowAttributeModal(false)} editingAttribute={editingAttribute} formData={attributeFormData} setFormData={setAttributeFormData} onSave={() => setShowAttributeModal(false)} onSaveAndSubmit={() => { }} />
+
+        <SimpleApproveModal
+          isOpen={showSimpleApproveModal}
+          onClose={() => setShowSimpleApproveModal(false)}
+          entity={entities.find(e => e.id === pendingApprovalData?.entityId) || null}
+          onConfirm={(note) => {
+            setRequests(requests.map(r => r.id === pendingApprovalData?.id ? { ...r, status: 'approved', reviewedBy: 'Admin', reviewedDate: new Date().toLocaleDateString('vi-VN'), comments: note } : r));
+            // Cập nhật lifecycle status của entity nếu approved
+            if (pendingApprovalData?.type === 'category') {
+              setEntities(entities.map(e => e.id === pendingApprovalData.entityId ? { ...e, lifecycleStatus: 'active' } as MasterDataEntity : e));
+            }
+            setShowSimpleApproveModal(false);
+          }}
+        />
+
+        <SimpleRejectModal
+          isOpen={showSimpleRejectModal}
+          onClose={() => setShowSimpleRejectModal(false)}
+          entity={entities.find(e => e.id === pendingApprovalData?.entityId) || null}
+          onConfirm={(note) => {
+            setRequests(requests.map(r => r.id === pendingApprovalData?.id ? { ...r, status: 'rejected', reviewedBy: 'Admin', reviewedDate: new Date().toLocaleDateString('vi-VN'), comments: note } : r));
+            // Cập nhật lifecycle status của entity nếu rejected
+            if (pendingApprovalData?.type === 'category') {
+              setEntities(entities.map(e => e.id === pendingApprovalData.entityId ? { ...e, lifecycleStatus: 'draft' } as MasterDataEntity : e));
+            }
+            setShowSimpleRejectModal(false);
+          }}
+        />
+
+        <ReviewApprovalModal
+          isOpen={showReviewModal}
+          onClose={() => setShowReviewModal(false)}
+          requests={Array.isArray(pendingApprovalData) ? pendingApprovalData : []}
+          attributes={attributes}
+          onApprove={(ids, note, partialStatuses) => {
+            setRequests(requests.map(r => {
+              if (ids.includes(r.id)) {
+                const currentLineStatuses = partialStatuses?.[r.id] || {};
+                const hasRejected = Object.values(currentLineStatuses).includes('rejected');
+                const overallStatus = hasRejected ? 'partial' : 'approved';
+                return { ...r, status: overallStatus, reviewedBy: 'Admin', reviewedDate: new Date().toLocaleDateString('vi-VN'), comments: note, lineStatuses: currentLineStatuses };
+              }
+              return r;
+            }));
+            setShowReviewModal(false);
+          }}
+          onReject={(ids, note) => {
+            setRequests(requests.map(r => ids.includes(r.id) ? { ...r, status: 'rejected', reviewedBy: 'Admin', reviewedDate: new Date().toLocaleDateString('vi-VN'), comments: note } : r));
+            setShowReviewModal(false);
+          }}
+        />
+
+        <ExpireRequestModal
+           isOpen={showExpireRequestModal}
+           onClose={() => setShowExpireRequestModal(false)}
+           entity={expireEntity}
+           onSubmit={(data) => {
+              if (!expireEntity) return;
+              
+              setRequests([{
+                 id: `req-exp-${Date.now()}`,
+                 type: 'category',
+                 actionType: 'expire',
+                 entityId: expireEntity.id,
+                 entityCode: expireEntity.code,
+                 entityName: expireEntity.name,
+                 requestedBy: 'Nguyễn Văn A',
+                 requestedDate: new Date().toLocaleDateString('vi-VN'),
+                 status: 'pending',
+                 comments: `Ngừng sử dụng từ ${data.expireDate}. Lý do: ${data.reason}. ${data.note}`
+              }, ...requests]);
+              
+              setEntities(entities.map(e => e.id === expireEntity.id ? { ...e, lifecycleStatus: 'pending_expiration' } as MasterDataEntity : e));
+              
+              setShowExpireRequestModal(false);
+              setGenericConfirm({
+                 isOpen: true, type: 'success', title: 'Đã trình duyệt', subtitle: '', message: 'Yêu cầu ngừng hiệu lực danh mục đã được gửi để phê duyệt!', confirmText: 'Đóng', onConfirm: () => setGenericConfirm(null)
+              });
+           }}
+        />
+
+        <ExpireApproveModal
+           isOpen={showExpireApproveModal}
+           onClose={() => setShowExpireApproveModal(false)}
+           entity={expireEntity}
+           onApprove={(note) => {
+              setRequests(requests.map(r => r.id === pendingApprovalData?.id ? { ...r, status: 'approved', reviewedBy: 'Admin', reviewedDate: new Date().toLocaleDateString('vi-VN'), comments: note } : r));
+              if (expireEntity) {
+                 setEntities(entities.map(e => e.id === expireEntity.id ? { ...e, lifecycleStatus: 'inactive' } as MasterDataEntity : e));
+              }
+              setShowExpireApproveModal(false);
+           }}
+           onReject={(note) => {
+              setRequests(requests.map(r => r.id === pendingApprovalData?.id ? { ...r, status: 'rejected', reviewedBy: 'Admin', reviewedDate: new Date().toLocaleDateString('vi-VN'), comments: note } : r));
+              if (expireEntity) {
+                 setEntities(entities.map(e => e.id === expireEntity.id ? { ...e, lifecycleStatus: 'active' } as MasterDataEntity : e));
+              }
+              setShowExpireApproveModal(false);
+           }}
+        />
+
+        <ApprovalRequestModal
+          isOpen={showApprovalModal}
+          onClose={() => setShowApprovalModal(false)}
+          data={approvalRequestData as any}
+          approvers={approvers}
+          form={approvalRequestForm}
+          setForm={setApprovalRequestForm}
+          onSubmit={() => {
+            setGenericConfirm({
+               isOpen: true, type: 'success', title: 'Đã trình duyệt', subtitle: '', message: 'Gửi yêu cầu phê duyệt thành công!', confirmText: 'Đóng', onConfirm: () => setGenericConfirm(null)
+            });
+            setShowApprovalModal(false);
+          }}
+        />
+
       </Portal>
     </div>
   );

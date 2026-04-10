@@ -70,7 +70,7 @@ export function ConfirmModal({
       >
         <div 
           className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200"
-          style={{ maxWidth: '448px' }} // Fallback chắc chắn 100% không bị giãn
+           // Fallback chắc chắn 100% không bị giãn
           onClick={(e: any) => e.stopPropagation()}
         >
           <div className="p-6">

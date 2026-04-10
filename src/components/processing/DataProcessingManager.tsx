@@ -551,10 +551,10 @@ export function DataProcessingManager() {
             <button className="px-3 py-1 text-sm text-slate-600 hover:bg-slate-50 rounded transition-colors">
               Trước
             </button>
-            <button className="px-3 py-1 text-sm bg-blue-600 text-white rounded">
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1 text-sm bg-blue-600 text-white rounded">
               1
             </button>
-            <button className="px-3 py-1 text-sm text-slate-600 hover:bg-slate-50 rounded transition-colors">
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1 text-sm text-slate-600 hover:bg-slate-50 rounded transition-colors">
               2
             </button>
             <button className="px-3 py-1 text-sm text-slate-600 hover:bg-slate-50 rounded transition-colors">

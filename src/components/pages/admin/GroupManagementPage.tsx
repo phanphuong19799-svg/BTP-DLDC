@@ -662,7 +662,7 @@ export function GroupManagementPage() {
               <h3 className="text-slate-900">
                 {modalType === 'add' ? 'Thêm nhóm người dùng mới' : 'Chỉnh sửa nhóm người dùng'}
               </h3>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button title="Thêm mới" aria-label="Thêm mới" onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
                 <Plus className="w-5 h-5 rotate-45" />
               </button>
             </div>
@@ -756,7 +756,7 @@ export function GroupManagementPage() {
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white">
               <h3 className="text-slate-900">Chi tiết nhóm: {selectedGroup.name}</h3>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button title="Thêm mới" aria-label="Thêm mới" onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
                 <Plus className="w-5 h-5 rotate-45" />
               </button>
             </div>
@@ -897,7 +897,7 @@ export function GroupManagementPage() {
                 <h3 className="text-slate-900">Thêm thành viên vào nhóm</h3>
                 <p className="text-sm text-slate-600 mt-1">Nhóm: {selectedGroup.name}</p>
               </div>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button title="Thêm mới" aria-label="Thêm mới" onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
                 <Plus className="w-5 h-5 rotate-45" />
               </button>
             </div>
@@ -989,7 +989,7 @@ export function GroupManagementPage() {
                 <h3 className="text-slate-900">Gán quyền cho nhóm</h3>
                 <p className="text-sm text-slate-600 mt-1">Nhóm: {selectedGroup.name}</p>
               </div>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button title="Thêm mới" aria-label="Thêm mới" onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
                 <Plus className="w-5 h-5 rotate-45" />
               </button>
             </div>

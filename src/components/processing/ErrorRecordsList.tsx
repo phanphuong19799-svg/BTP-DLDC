@@ -233,7 +233,7 @@ export function ErrorRecordsList({ dataName, onClose }: ErrorRecordsListProps) {
               <h3 className="text-slate-900">Danh sách Bản ghi Lỗi</h3>
               <p className="text-sm text-slate-500 mt-1">{dataName}</p>
             </div>
-            <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+            <button onClick={onClose} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
               <X className="w-6 h-6" />
             </button>
           </div>

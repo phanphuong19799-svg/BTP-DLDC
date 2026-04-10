@@ -1,5 +1,5 @@
 import { Search, Filter, Download, Plus, Eye, Edit2, Trash2, FileText, Database } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ViewAPIMethodDetail } from './ViewAPIMethodDetail';
 import { EditAPIMethodForm } from './EditAPIMethodForm';
 import { DeleteConfirmModal } from './DeleteConfirmModal';
@@ -85,10 +85,10 @@ const dataCollectionList: DataItem[] = [
   { id: 18, stt: 18, category: 'external', department: 'Bộ Lao động - Thương binh và Xã hội', dataName: 'Người có công - Hồ sơ liệt sĩ', dataType: 'Người có công', description: 'Hồ sơ liệt sĩ và gia đình liệt sĩ', frequency: 'Hằng tháng', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '01/12/2025' },
   { id: 19, stt: 19, category: 'external', department: 'Bộ Lao động - Thương binh và Xã hội', dataName: 'Người có công - Hồ sơ công nhận thân nhân người có công', dataType: 'Người có công', description: 'Hồ sơ thân nhân người có công', frequency: 'Hằng tháng', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '01/12/2025' },
   { id: 20, stt: 20, category: 'external', department: 'Bộ Lao động - Thương binh và Xã hội', dataName: 'Trẻ em - Thông tin trẻ em', dataType: 'Trẻ em', description: 'Thông tin quản lý trẻ em toàn quốc', frequency: 'Hằng tháng', format: 'JSON', status: 'pending', priority: 'medium', lastUpdate: '01/12/2025' },
-  
+
   // Thu thập trong nội bộ
-  { id: 21, stt: 1, category: 'internal', department: 'Đơn vị A', dataName: 'CSDL A', dataType: 'Danh mục A', description: 'Mô tả dữ liệu A', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025' },
-  
+  { id: 21, stt: 1, category: 'internal', department: 'Đơn vị A', dataName: 'CSDL A', dataType: 'Biên tập danh mục A', description: 'Mô tả dữ liệu A', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025' },
+
   // Thu thập số liệu thống kê từ Phần mềm thống kê ngành Tư pháp (22 lĩnh vực)
   { id: 32, stt: 12, category: 'internal', department: 'Phần mềm thống kê ngành Tư pháp', dataName: 'Số liệu thống kê lĩnh vực Xây dựng văn bản quy phạm pháp luật', dataType: 'Thống kê', description: 'Thu thập số liệu thống kê trong lĩnh vực Xây dựng văn bản QPPL theo Thông tư của Bộ trưởng BTP quy định về hoạt động thống kê ngành Tư pháp', frequency: 'Hằng tháng', format: 'JSON', status: 'pending', priority: 'high', lastUpdate: '01/12/2025' },
   { id: 33, stt: 13, category: 'internal', department: 'Phần mềm thống kê ngành Tư pháp', dataName: 'Số liệu thống kê lĩnh vực Kiểm tra văn bản quy phạm pháp luật', dataType: 'Thống kê', description: 'Thu thập số liệu thống kê trong lĩnh vực Kiểm tra văn bản QPPL theo Thông tư của Bộ trưởng BTP quy định về hoạt động thống kê ngành Tư pháp', frequency: 'Hằng tháng', format: 'JSON', status: 'pending', priority: 'high', lastUpdate: '01/12/2025' },
@@ -126,6 +126,8 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
   const [viewDataRecords, setViewDataRecords] = useState<any>(null);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [departmentFilter, setDepartmentFilter] = useState('');
+  const [selectedStatFilter, setSelectedStatFilter] = useState('all');
+  const [selectedAgencyFilter, setSelectedAgencyFilter] = useState('all');
   const [advancedFilters, setAdvancedFilters] = useState({
     department: '',
     dataType: '',
@@ -142,13 +144,13 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
 
   const filteredData = dataCollectionList.filter(item => {
     // Basic search filter
-    const matchesSearch = searchData === '' || 
+    const matchesSearch = searchData === '' ||
       item.dataName.toLowerCase().includes(searchData.toLowerCase()) ||
       item.department.toLowerCase().includes(searchData.toLowerCase());
-    
+
     // Department filter
     const matchesDepartment = departmentFilter === '' || item.department === departmentFilter;
-    
+
     // Advanced filters
     const matchesAdvDepartment = advancedFilters.department === '' || item.department === advancedFilters.department;
     const matchesDataType = advancedFilters.dataType === '' || item.dataType === advancedFilters.dataType;
@@ -156,9 +158,9 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
     const matchesFormat = advancedFilters.format === '' || item.format === advancedFilters.format;
     const matchesStatus = advancedFilters.status === '' || item.status === advancedFilters.status;
     const matchesPriority = advancedFilters.priority === '' || item.priority === advancedFilters.priority;
-    
-    return matchesSearch && matchesDepartment && matchesAdvDepartment && matchesDataType && 
-           matchesFrequency && matchesFormat && matchesStatus && matchesPriority;
+
+    return matchesSearch && matchesDepartment && matchesAdvDepartment && matchesDataType &&
+      matchesFrequency && matchesFormat && matchesStatus && matchesPriority;
   });
 
   // Separate data by category
@@ -252,12 +254,12 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
 
   // If editing, show edit form
   if (editMethod) {
-    return <EditAPIMethodForm method={editMethod} onBack={() => setEditMethod(null)} onSave={() => {}} />;
+    return <EditAPIMethodForm method={editMethod} onBack={() => setEditMethod(null)} onSave={() => { }} />;
   }
 
   // Show Add Form
   if (showAddForm) {
-    return <AddDataCollectionForm onBack={() => setShowAddForm(false)} onSave={() => {}} />;
+    return <AddDataCollectionForm onBack={() => setShowAddForm(false)} onSave={() => { }} />;
   }
 
   // Show View Data Records List
@@ -272,7 +274,7 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
 
   // Show Edit Form
   if (editData) {
-    return <EditDataCollectionForm data={editData} onBack={() => setEditData(null)} onSave={() => {}} />;
+    return <EditDataCollectionForm data={editData} onBack={() => setEditData(null)} onSave={() => { }} />;
   }
 
   return (
@@ -300,7 +302,7 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
             type="text"
             placeholder="Tìm kiếm theo tên dữ liệu, cục..."
             value={searchData}
-            onChange={(e) => setSearchData(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchData(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -308,8 +310,9 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
         {/* Filters */}
         <div className="flex gap-3">
           <select
+            title="Bộ lọc cơ quan"
             value={departmentFilter}
-            onChange={(e) => setDepartmentFilter(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setDepartmentFilter(e.target.value)}
             className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Tất cả cơ quan</option>
@@ -421,28 +424,28 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
                         <td className="px-4 py-3 text-sm text-slate-700">{item.lastUpdate}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <button 
+                            <button
                               onClick={() => setViewDataRecords(item)}
                               className="p-1.5 text-purple-600 hover:bg-purple-50 rounded transition-colors"
                               title="Xem dữ liệu"
                             >
                               <Database className="w-4 h-4" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setViewData(item)}
                               className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                               title="Xem chi tiết"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setEditData(item)}
                               className="p-1.5 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                               title="Chỉnh sửa"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setDeleteData(item)}
                               className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
                               title="Xóa"
@@ -505,28 +508,28 @@ export function APIMethodsList({ onAddNew }: APIMethodsListProps) {
                         <td className="px-4 py-3 text-sm text-slate-700">{item.lastUpdate}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <button 
+                            <button
                               onClick={() => setViewDataRecords(item)}
                               className="p-1.5 text-purple-600 hover:bg-purple-50 rounded transition-colors"
                               title="Xem dữ liệu"
                             >
                               <Database className="w-4 h-4" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setViewData(item)}
                               className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                               title="Xem chi tiết"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setEditData(item)}
                               className="p-1.5 text-orange-600 hover:bg-orange-50 rounded transition-colors"
                               title="Chỉnh sửa"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setDeleteData(item)}
                               className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
                               title="Xóa"

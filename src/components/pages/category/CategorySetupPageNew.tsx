@@ -1,9 +1,9 @@
 import { useState, ChangeEvent } from 'react';
-import { 
-  Settings, 
-  CheckCircle2, 
-  Globe, 
-  FileText, 
+import {
+  Settings,
+  CheckCircle2,
+  Globe,
+  FileText,
   TrendingUp,
   Plus,
   Search,
@@ -68,16 +68,16 @@ export function CategorySetupPageNew() {
     referenceTable: '',
     referenceField: ''
   });
-  
+
   // Validation errors
-  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
-  
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+
   // Mock data
   const [categories, setCategories] = useState<Category[]>([
     {
       id: '1',
       code: 'CAT001',
-      name: 'Danh mục A',
+      name: 'Biên tập danh mục A',
       description: 'Danh mục quản lý thông tin A',
       type: 'standard',
       status: 'active',
@@ -125,8 +125,8 @@ export function CategorySetupPageNew() {
 
   const filteredCategories = categories.filter(cat => {
     const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.description.toLowerCase().includes(searchTerm.toLowerCase());
+      cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === 'all' || cat.type === filterType;
     const matchesStatus = filterStatus === 'all' || cat.status === filterStatus;
     return matchesSearch && matchesType && matchesStatus;
@@ -171,55 +171,50 @@ export function CategorySetupPageNew() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('setup')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'setup'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'setup'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Settings className="w-4 h-4" />
             Thiết lập
           </button>
           <button
             onClick={() => setActiveTab('approval')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'approval'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'approval'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckCircle2 className="w-4 h-4" />
             Phê duyệt
           </button>
           <button
             onClick={() => setActiveTab('publish')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'publish'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'publish'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Globe className="w-4 h-4" />
             Công khai
           </button>
           <button
             onClick={() => setActiveTab('report')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'report'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'report'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <FileText className="w-4 h-4" />
             Báo cáo và tìm kiếm
           </button>
           <button
             onClick={() => setActiveTab('stats')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'stats'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'stats'
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <TrendingUp className="w-4 h-4" />
             Thu thập số liệu thống kê
@@ -487,7 +482,7 @@ export function CategorySetupPageNew() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Loại danh mục *</label>
-                  <select 
+                  <select
                     title="Loại danh mục"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
@@ -499,7 +494,7 @@ export function CategorySetupPageNew() {
                 </div>
                 <div>
                   <label className="block text-sm text-slate-700 mb-1">Trạng thái *</label>
-                  <select 
+                  <select
                     title="Trạng thái"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
@@ -967,7 +962,7 @@ export function CategorySetupPageNew() {
                         className={`w-full px-3 py-2 border ${fieldErrors.referenceTable ? 'border-red-500' : 'border-slate-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       >
                         <option value="">Chọn bảng</option>
-                        <option value="danh_muc_a">Danh mục A</option>
+                        <option value="danh_muc_a">Biên tập danh mục A</option>
                         <option value="danh_muc_b">Danh mục B</option>
                         <option value="danh_muc_c">Danh mục C</option>
                       </select>
@@ -1023,22 +1018,22 @@ export function CategorySetupPageNew() {
               <button
                 onClick={() => {
                   // Validation
-                  const errors: {[key: string]: string} = {};
-                  
+                  const errors: { [key: string]: string } = {};
+
                   // Kiểm tra tên trường bắt buộc
                   if (!newFieldData.name.trim()) {
                     errors.name = 'Tên trường không được để trống';
                   }
-                  
+
                   // Kiểm tra trùng tên trường (ngoại trừ trường đang sửa)
-                  const isDuplicate = newCategoryFields.some((field, index) => 
-                    field.name.toLowerCase() === newFieldData.name.toLowerCase() && 
+                  const isDuplicate = newCategoryFields.some((field, index) =>
+                    field.name.toLowerCase() === newFieldData.name.toLowerCase() &&
                     index !== editingFieldIndex
                   );
                   if (isDuplicate) {
                     errors.name = 'Tên trường đã tồn tại';
                   }
-                  
+
                   // Kiểm tra khóa ngoại
                   if (newFieldData.isForeignKey) {
                     if (!newFieldData.referenceTable) {
@@ -1048,18 +1043,18 @@ export function CategorySetupPageNew() {
                       errors.referenceField = 'Vui lòng chọn trường tham chiếu';
                     }
                   }
-                  
+
                   if (Object.keys(errors).length > 0) {
                     setFieldErrors(errors);
                     return;
                   }
-                  
+
                   // Nếu đang đặt khóa chính, bỏ khóa chính của các trường khác
                   let fieldsToUpdate = [...newCategoryFields];
                   if (newFieldData.isPrimaryKey) {
                     fieldsToUpdate = fieldsToUpdate.map(f => ({ ...f, isPrimaryKey: false }));
                   }
-                  
+
                   if (editingFieldIndex !== null) {
                     fieldsToUpdate[editingFieldIndex] = { ...newFieldData, id: newCategoryFields[editingFieldIndex].id };
                     setNewCategoryFields(fieldsToUpdate);

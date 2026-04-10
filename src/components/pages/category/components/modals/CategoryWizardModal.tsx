@@ -1,6 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { X, FileText, Sliders, ChevronRight, ChevronLeft, Save, Send } from 'lucide-react';
+import { X, FileText, Sliders, ChevronRight, ChevronLeft, Save, Send, Link2, Clock } from 'lucide-react';
 import { AttributesTab } from '../tabs/AttributesTab';
+import { RelationshipsTab } from '../tabs/RelationshipsTab';
+import { VersionHistoryTab } from '../tabs/VersionHistoryTab';
 import { MasterDataEntity, MasterDataAttribute, DataType, ScopeType, FieldDataType } from '../../categoryTypes';
 import { Portal } from '../../../../common/Portal';
 
@@ -52,7 +54,7 @@ export function CategoryWizardModal({
 
   return (
     <Portal>
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[99999] p-4" style={{ zIndex: 99999 }}>
         <div className={`bg-white rounded-2xl shadow-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300 flex flex-col max-h-[90vh] ${step === 1 ? 'max-w-3xl' : 'max-w-5xl'}`}>
           {/* Wizard Header */}
           <div className="flex flex-col border-b border-slate-200 bg-white shrink-0">
@@ -67,7 +69,9 @@ export function CategoryWizardModal({
             <div className="flex px-6 bg-white overflow-x-auto border-b border-slate-100">
               {[
                 { s: 1, label: 'Thông tin chung', icon: FileText },
-                { s: 2, label: 'Thiết lập thuộc tính', icon: Sliders }
+                { s: 2, label: 'Thiết lập thuộc tính', icon: Sliders },
+                { s: 3, label: 'Thiết lập quan hệ', icon: Link2 },
+                { s: 4, label: 'Lịch sử phiên bản', icon: Clock }
               ].map((item) => {
                 const isActive = step === item.s;
                 const isLocked = !entityId && item.s > 1;
@@ -182,14 +186,36 @@ export function CategoryWizardModal({
                 </div>
               </div>
             )}
+            {step === 3 && (
+              <div className="h-full flex flex-col animate-in slide-in-from-right-2 duration-400">
+                <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col">
+                  <RelationshipsTab
+                     entities={entities}
+                     relationships={[]}
+                     setRelationships={() => {}}
+                  />
+                </div>
+              </div>
+            )}
+            {step === 4 && (
+              <div className="h-full flex flex-col animate-in slide-in-from-right-2 duration-400">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                  <VersionHistoryTab
+                     searchTerm=""
+                     setSearchTerm={() => {}}
+                     onViewDetail={() => {}}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Wizard Footer */}
           <div className="px-8 py-5 border-t border-slate-200 bg-white flex justify-between items-center shrink-0">
             <div className="flex gap-3">
               <button onClick={onClose} className="px-6 py-2.5 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 font-bold text-sm transition-colors">Hủy bỏ</button>
-              {step === 2 && (
-                <button onClick={() => setStep(1)} className="px-6 py-2.5 border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-sm flex items-center gap-2 transition-colors">
+              {step > 1 && (
+                <button onClick={() => setStep(step - 1)} className="px-6 py-2.5 border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-sm flex items-center gap-2 transition-colors">
                   <ChevronLeft className="w-4 h-4" /> Quay lại
                 </button>
               )}
@@ -199,8 +225,8 @@ export function CategoryWizardModal({
               <button onClick={() => onSaveStep1('draft')} className="px-6 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-sm flex items-center gap-2 transition-colors">
                 <Save className="w-4 h-4" /> Lưu tạm
               </button>
-              {step === 1 ? (
-                <button onClick={() => onSaveStep1('next')} className="px-8 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-blue-100 transition-colors">
+              {step < 4 ? (
+                <button onClick={() => step === 1 ? onSaveStep1('next') : setStep(step + 1)} className="px-8 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-blue-100 transition-colors">
                   Tiếp tục <ChevronRight className="w-4 h-4" />
                 </button>
               ) : (

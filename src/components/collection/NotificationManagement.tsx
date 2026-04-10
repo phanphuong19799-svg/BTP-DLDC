@@ -202,6 +202,8 @@ export function NotificationManagement() {
               <label className="block text-gray-700 mb-2">Email template thông báo thành công</label>
               <textarea
                 rows={4}
+                title="Email template thông báo thành công"
+                placeholder="Nhập nội dung email mẫu..."
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 defaultValue="Kính gửi [TÊN_ĐƠN_VỊ],&#10;&#10;Hệ thống Kho Dữ liệu Dùng Chung đã tiếp nhận thành công [SỐ_BẢN_GHI] bản ghi từ hệ thống của quý đơn vị.&#10;Mã giao dịch: [MÃ_GIAO_DỊCH]"
               ></textarea>
@@ -210,6 +212,8 @@ export function NotificationManagement() {
               <label className="block text-gray-700 mb-2">Email template thông báo lỗi</label>
               <textarea
                 rows={4}
+                title="Email template thông báo lỗi"
+                placeholder="Nhập nội dung email mẫu..."
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 defaultValue="Kính gửi [TÊN_ĐƠN_VỊ],&#10;&#10;Hệ thống phát hiện [SỐ_LỖI] lỗi trong dữ liệu gửi lên. Vui lòng kiểm tra chi tiết lỗi và gửi lại dữ liệu đã được điều chỉnh.&#10;Mã giao dịch: [MÃ_GIAO_DỊCH]"
               ></textarea>

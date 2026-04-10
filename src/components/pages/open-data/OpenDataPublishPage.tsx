@@ -20,7 +20,7 @@ const mockDatasets: PublishedDataset[] = [
     id: '1',
     code: 'OD001',
     name: 'Bộ dữ liệu A',
-    category: 'Danh mục A',
+    category: 'Biên tập danh mục A',
     publishDate: '01/11/2024',
     lastUpdate: '10/12/2024',
     format: ['JSON', 'CSV', 'XML'],
@@ -205,7 +205,7 @@ export function OpenDataPublishPage() {
                   <td className="px-4 py-3 text-sm">{getStatusBadge(dataset.status)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <button 
+                      <button
                         className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
                         title="Xem chi tiết"
                         onClick={() => {

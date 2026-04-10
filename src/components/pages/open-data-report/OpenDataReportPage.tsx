@@ -405,7 +405,7 @@ export function OpenDataReportPage({ onBack }: OpenDataReportPageProps) {
                     <BarChart3 className="w-4 h-4" />
                     Tạo báo cáo
                   </button>
-                  <button 
+                  <button title="Tải xuống" aria-label="Tải xuống" 
                     onClick={handleExportExcel}
                     className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                   >
@@ -692,7 +692,7 @@ export function OpenDataReportPage({ onBack }: OpenDataReportPageProps) {
                     <TrendingUp className="w-4 h-4" />
                     Tạo báo cáo
                   </button>
-                  <button 
+                  <button title="Hành động" aria-label="Hành động" 
                     onClick={handleExportPDF}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                   >

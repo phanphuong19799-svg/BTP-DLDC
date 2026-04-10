@@ -510,9 +510,9 @@ export function AccessLogPage() {
           </div>
           <div className="flex gap-2">
             <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">Trước</button>
-            <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
-            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">2</button>
-            <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">3</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">2</button>
+            <button title="Hành động" aria-label="Hành động" className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">3</button>
             <button className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-50">Sau</button>
           </div>
         </div>
@@ -537,7 +537,7 @@ export function AccessLogPage() {
               </div>
               <button
                 onClick={closeDetailModal}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>

@@ -18,7 +18,7 @@ const mockApprovals: ApprovalRecord[] = [
     id: '1',
     code: 'APR001',
     dataName: 'Dữ liệu A mới',
-    category: 'Danh mục A',
+    category: 'Biên tập danh mục A',
     requestType: 'create',
     requestBy: 'Nguyễn Văn A',
     requestDate: '10/12/2024 09:30',
@@ -68,8 +68,8 @@ export function MasterDataApprovalPage() {
   const [selectedRecipient, setSelectedRecipient] = useState('');
   const [sendNote, setSendNote] = useState('');
 
-  const filteredApprovals = selectedTab === 'all' 
-    ? mockApprovals 
+  const filteredApprovals = selectedTab === 'all'
+    ? mockApprovals
     : mockApprovals.filter(a => a.status === selectedTab);
 
   const getStatusBadge = (status: string) => {
@@ -136,7 +136,7 @@ export function MasterDataApprovalPage() {
           <h1 className="text-slate-900">Phê duyệt dữ liệu chủ</h1>
           <p className="text-sm text-slate-600 mt-1">Xét duyệt các yêu cầu thay đổi dữ liệu chủ</p>
         </div>
-        <button 
+        <button
           className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center gap-2"
           onClick={() => setShowSubmitModal(true)}
         >
@@ -198,44 +198,40 @@ export function MasterDataApprovalPage() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setSelectedTab('pending')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'pending'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'pending'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Clock className="w-4 h-4" />
             Chờ duyệt ({stats.pending})
           </button>
           <button
             onClick={() => setSelectedTab('approved')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'approved'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'approved'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckCircle className="w-4 h-4" />
             Đã duyệt ({stats.approved})
           </button>
           <button
             onClick={() => setSelectedTab('rejected')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'rejected'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'rejected'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <XCircle className="w-4 h-4" />
             Từ chối ({stats.rejected})
           </button>
           <button
             onClick={() => setSelectedTab('all')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              selectedTab === 'all'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${selectedTab === 'all'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <CheckSquare className="w-4 h-4" />
             Tất cả ({stats.total})
@@ -362,7 +358,7 @@ export function MasterDataApprovalPage() {
                   <label className="block text-sm text-slate-700 mb-2">Danh mục <span className="text-red-500">*</span></label>
                   <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
                     <option>Chọn danh mục</option>
-                    <option>Danh mục A</option>
+                    <option>Biên tập danh mục A</option>
                     <option>Danh mục B</option>
                     <option>Danh mục C</option>
                   </select>
@@ -422,7 +418,7 @@ export function MasterDataApprovalPage() {
                   Yêu cầu: <span className="text-teal-700">{selectedRecord.dataName}</span>
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   setShowSendToReviewerModal(false);
                   setSelectedRecipient('');
@@ -495,11 +491,10 @@ export function MasterDataApprovalPage() {
               <button
                 onClick={handleSendToReviewer}
                 disabled={!selectedRecipient}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
-                  !selectedRecipient
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 ${!selectedRecipient
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     : 'bg-teal-600 text-white hover:bg-teal-700'
-                }`}
+                  }`}
               >
                 <Send className="w-4 h-4" />
                 Gửi trình duyệt
@@ -515,7 +510,7 @@ export function MasterDataApprovalPage() {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl">
             <div className="flex items-center justify-between p-6 border-b border-slate-200">
               <h2 className="text-slate-900">Chi tiết yêu cầu</h2>
-              <button 
+              <button
                 onClick={() => setShowDetailModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -584,7 +579,7 @@ export function MasterDataApprovalPage() {
               <h2 className="text-slate-900">
                 {approvalType === 'approve' ? 'Phê duyệt yêu cầu' : 'Từ chối yêu cầu'}
               </h2>
-              <button 
+              <button
                 onClick={() => setShowApprovalModal(false)}
                 className="text-slate-400 hover:text-slate-600"
               >
@@ -625,11 +620,10 @@ export function MasterDataApprovalPage() {
                   setShowApprovalModal(false);
                   setApprovalNote('');
                 }}
-                className={`px-4 py-2 text-white rounded-lg flex items-center gap-2 ${
-                  approvalType === 'approve'
+                className={`px-4 py-2 text-white rounded-lg flex items-center gap-2 ${approvalType === 'approve'
                     ? 'bg-green-600 hover:bg-green-700'
                     : 'bg-red-600 hover:bg-red-700'
-                }`}
+                  }`}
               >
                 {approvalType === 'approve' ? <CheckSquare className="w-4 h-4" /> : <XSquare className="w-4 h-4" />}
                 {approvalType === 'approve' ? 'Phê duyệt' : 'Từ chối'}

@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Search, Download, Eye, Edit2, Trash2, Plus, CheckCircle, XCircle, Clock, FileText } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+import { AddDataCollectionModal } from './AddDataCollectionModal';
+import { EditDataCollectionModal } from './EditDataCollectionModal';
+import { ConfirmModal } from '../common/ConfirmModal';
+import { DataDetailModal } from '../common/DataDetailModal';
 interface DataItem {
   id: number;
   stt: number;
@@ -28,8 +32,8 @@ interface ActivityLog {
 
 const dataCollectionList: DataItem[] = [
   // Đơn vị A
-  { id: 1, stt: 1, department: 'Đơn vị A', dataName: 'CSDL A', dataType: 'Danh mục A', description: 'Mô tả dữ liệu A', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025', responsible: 'Người dùng A' },
-  
+  { id: 1, stt: 1, department: 'Đơn vị A', dataName: 'CSDL A', dataType: 'Biên tập danh mục A', description: 'Mô tả dữ liệu A', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025', responsible: 'Người dùng A' },
+
   // Đơn vị B
   { id: 2, stt: 2, department: 'Đơn vị B', dataName: 'Hệ thống B', dataType: 'Danh mục B', description: 'Mô tả dữ liệu B', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025', responsible: 'Người dùng B' },
 
@@ -88,15 +92,22 @@ export function DataCollectionList() {
   const [filterDepartment, setFilterDepartment] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterPriority, setFilterPriority] = useState('');
+  
+  // Modal states
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<DataItem | null>(null);
 
   const departments = Array.from(new Set(dataCollectionList.map(item => item.department)));
 
   const filteredData = dataCollectionList.filter(item => {
-    const matchSearch = searchTerm === '' || 
+    const matchSearch = searchTerm === '' ||
       item.dataName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchDepartment = filterDepartment === '' || item.department === filterDepartment;
     const matchStatus = filterStatus === '' || item.status === filterStatus;
     const matchPriority = filterPriority === '' || item.priority === filterPriority;
@@ -201,7 +212,7 @@ export function DataCollectionList() {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }: { name: string; percent: number }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
@@ -241,7 +252,7 @@ export function DataCollectionList() {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }: { name: string; percent: number }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
@@ -300,16 +311,17 @@ export function DataCollectionList() {
           type="text"
           placeholder="Tìm kiếm theo tên dữ liệu, cục, mô tả..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
           className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <select 
+        <select
+          title="Bộ lọc Cục"
           value={filterDepartment}
-          onChange={(e) => setFilterDepartment(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterDepartment(e.target.value)}
           className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Tất cả cục</option>
@@ -317,9 +329,10 @@ export function DataCollectionList() {
             <option key={dept} value={dept}>{dept}</option>
           ))}
         </select>
-        <select 
+        <select
+          title="Bộ lọc Trạng thái"
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
           className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Tất cả trạng thái</option>
@@ -327,9 +340,10 @@ export function DataCollectionList() {
           <option value="pending">Đang xử lý</option>
           <option value="not-started">Chưa bắt đầu</option>
         </select>
-        <select 
+        <select
+          title="Bộ lọc Mức độ"
           value={filterPriority}
-          onChange={(e) => setFilterPriority(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterPriority(e.target.value)}
           className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Tất cả mức độ</option>
@@ -353,7 +367,10 @@ export function DataCollectionList() {
             <Download className="w-4 h-4" />
             Kết xuất
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors">
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors"
+          >
             <Plus className="w-4 h-4" />
             Thêm dữ liệu mới
           </button>
@@ -397,13 +414,25 @@ export function DataCollectionList() {
                   <td className="px-4 py-3 text-sm text-slate-700">{item.lastUpdate}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <button className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors">
+                      <button 
+                        title="Xem chi tiết" 
+                        onClick={() => { setSelectedItem(item); setShowViewModal(true); }}
+                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                      >
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 text-orange-600 hover:bg-orange-50 rounded transition-colors">
+                      <button 
+                        title="Chỉnh sửa" 
+                        onClick={() => { setSelectedItem(item); setShowEditModal(true); }}
+                        className="p-1.5 text-orange-600 hover:bg-orange-50 rounded transition-colors"
+                      >
                         <Edit2 className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors">
+                      <button 
+                        title="Xóa" 
+                        onClick={() => { setSelectedItem(item); setShowDeleteModal(true); }}
+                        className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                      >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -455,6 +484,72 @@ export function DataCollectionList() {
           </table>
         </div>
       </div>
+
+      {/* Modals Popup - Chuẩn Mockup Form */}
+      <AddDataCollectionModal 
+        isOpen={showAddModal} 
+        onClose={() => setShowAddModal(false)}
+        onSave={(data) => {
+          console.log('Saved new DataCollection', data);
+          alert('Đã lưu dữ liệu thành công!');
+        }}
+      />
+
+      <EditDataCollectionModal 
+        isOpen={showEditModal} 
+        onClose={() => {
+          setShowEditModal(false);
+          setSelectedItem(null);
+        }}
+        initialData={selectedItem}
+        onSave={(data) => {
+          console.log('Updated DataCollection', data);
+          alert('Đã cập nhật dữ liệu thành công!');
+        }}
+      />
+
+      <ConfirmModal 
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setSelectedItem(null);
+        }}
+        onConfirm={() => {
+          console.log('Deleted DataCollection', selectedItem?.id);
+          alert('Đã xóa dữ liệu thành công!');
+        }}
+        title="Xác nhận xóa luồng thu thập"
+        subtitle="Hành động này không thể hoàn tác"
+        message={
+          <>
+            Bạn có chắc chắn muốn xóa cấu hình thu thập <strong>{selectedItem?.dataName}</strong> của <strong>{selectedItem?.department}</strong> không?
+          </>
+        }
+        confirmText="Xóa dữ liệu"
+        type="delete"
+      />
+
+      {showViewModal && selectedItem && (
+        <DataDetailModal 
+          isOpen={showViewModal}
+          onClose={() => {
+            setShowViewModal(false);
+            setSelectedItem(null);
+          }}
+          title="Chi tiết Dữ liệu Thu thập"
+          mode="simple"
+          data={selectedItem}
+          fields={[
+            { label: 'Cơ quan cung cấp', key: 'department' },
+            { label: 'Tên dữ liệu', key: 'dataName' },
+            { label: 'Mô tả', key: 'description' },
+            { label: 'Tần suất', key: 'frequency' },
+            { label: 'Định dạng trả về', key: 'format' },
+            { label: 'Cập nhật lần cuối', key: 'lastUpdate' },
+          ]}
+        />
+      )}
+
     </div>
   );
 }

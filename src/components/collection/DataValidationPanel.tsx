@@ -324,7 +324,7 @@ export function DataValidationPanel() {
                       </span>
                     </div>
                   </div>
-                  <button className="p-2 hover:bg-gray-100 rounded-lg">
+                  <button title="Hành động" aria-label="Hành động" className="p-2 hover:bg-gray-100 rounded-lg">
                     <SettingsIcon className="w-5 h-5 text-gray-600" />
                   </button>
                 </div>

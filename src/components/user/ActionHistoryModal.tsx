@@ -253,7 +253,7 @@ export function ActionHistoryModal({ isOpen, onClose }: ActionHistoryModalProps)
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>

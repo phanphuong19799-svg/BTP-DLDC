@@ -67,7 +67,7 @@ const sections: Section[] = [
       {
         id: 'external-collection',
         title: '2.2. Thu thập dữ liệu từ Bộ ngành ngoài',
-        content: 'Các bước thu thập dữ liệu từ Bộ ngành ngoài:\n\n1. Vào menu "Thu thập CSDL" → "Đối tịch tư Bộ ngành ngoài"\n2. Chọn danh mục cần thu thập (ví dụ: Danh mục A)\n3. Cấu hình kết nối: nhập URL API, Authentication key, tần suất đồng bộ\n4. Ánh xạ trường dữ liệu từ nguồn sang schema đích\n5. Thiết lập lịch thu thập tự động (theo giờ/ngày/tuần)\n6. Chạy thử nghiệm và kiểm tra kết quả\n7. Kích hoạt thu thập tự động\n\nHệ thống sẽ ghi log chi tiết mỗi lần thu thập và cảnh báo khi có lỗi.'
+        content: 'Các bước thu thập dữ liệu từ Bộ ngành ngoài:\n\n1. Vào menu "Thu thập CSDL" → "Đối tịch tư Bộ ngành ngoài"\n2. Chọn danh mục cần thu thập (ví dụ: Biên tập danh mục A)\n3. Cấu hình kết nối: nhập URL API, Authentication key, tần suất đồng bộ\n4. Ánh xạ trường dữ liệu từ nguồn sang schema đích\n5. Thiết lập lịch thu thập tự động (theo giờ/ngày/tuần)\n6. Chạy thử nghiệm và kiểm tra kết quả\n7. Kích hoạt thu thập tự động\n\nHệ thống sẽ ghi log chi tiết mỗi lần thu thập và cảnh báo khi có lỗi.'
       },
       {
         id: 'internal-collection',
@@ -337,8 +337,8 @@ export function UserGuidePage() {
                   key={section.id}
                   onClick={() => setSelectedSection(section.id)}
                   className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${isActive
-                      ? 'bg-violet-50 text-violet-700'
-                      : 'text-slate-600 hover:bg-slate-50'
+                    ? 'bg-violet-50 text-violet-700'
+                    : 'text-slate-600 hover:bg-slate-50'
                     }`}
                 >
                   <Icon className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isActive ? 'text-violet-600' : 'text-slate-400'}`} />

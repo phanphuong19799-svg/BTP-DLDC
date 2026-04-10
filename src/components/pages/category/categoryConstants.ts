@@ -151,18 +151,22 @@ export const lifecycleLabels: Record<LifecycleStatus, { label: string; color: st
   draft: { label: 'Đang soạn thảo', color: 'bg-yellow-100 text-yellow-700' },
   inactive: { label: 'Ngừng sử dụng', color: 'bg-red-100 text-red-700' },
   archived: { label: 'Đã lưu trữ', color: 'bg-slate-100 text-slate-700' },
-  pending_approval: { label: 'Chờ phê duyệt', color: 'bg-orange-100 text-orange-700' }
+  pending_approval: { label: 'Chờ phê duyệt', color: 'bg-orange-100 text-orange-700' },
+  pending_expiration: { label: 'Chờ hết hiệu lực', color: 'bg-purple-100 text-purple-700' }
 };
 
 export const approvalTypeLabels: Record<ApprovalType, string> = {
   category: 'Phê duyệt danh mục',
-  structure: 'Phê duyệt cấu trúc'
+  structure: 'Phê duyệt cấu trúc',
+  version: 'Phê duyệt phiên bản',
+  relationship: 'Phê duyệt quan hệ'
 };
 
 export const approvalStatusLabels: Record<ApprovalStatus, { label: string; color: string }> = {
   pending: { label: 'Chờ phê duyệt', color: 'bg-orange-100 text-orange-700' },
   approved: { label: 'Đã phê duyệt', color: 'bg-green-100 text-green-700' },
-  rejected: { label: 'Đã từ chối', color: 'bg-red-100 text-red-700' }
+  rejected: { label: 'Đã từ chối', color: 'bg-red-100 text-red-700' },
+  partial: { label: 'Duyệt một phần', color: 'bg-blue-100 text-blue-700' }
 };
 
 export const approvers = [

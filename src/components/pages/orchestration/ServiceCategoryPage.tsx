@@ -17,7 +17,7 @@ const mockCategories: ServiceCategory[] = [
   {
     id: '1',
     code: 'CAT001',
-    name: 'Danh mục A',
+    name: 'Biên tập danh mục A',
     description: 'Nhóm các dịch vụ thuộc danh mục A',
     serviceCount: 12,
     parentCategory: '-',
@@ -57,12 +57,12 @@ export function ServiceCategoryPage() {
 
   const filteredCategories = categories.filter(cat => {
     const matchesSearch = cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cat.description.toLowerCase().includes(searchTerm.toLowerCase());
+      cat.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cat.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || cat.status === filterStatus;
-    const matchesParent = filterParent === 'all' || 
-                         (filterParent === 'root' && cat.parentCategory === '-') ||
-                         (filterParent === 'child' && cat.parentCategory !== '-');
+    const matchesParent = filterParent === 'all' ||
+      (filterParent === 'root' && cat.parentCategory === '-') ||
+      (filterParent === 'child' && cat.parentCategory !== '-');
     return matchesSearch && matchesStatus && matchesParent;
   });
 

@@ -89,13 +89,13 @@ export function ConnectionConfig() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <button className="p-1 hover:bg-gray-100 rounded">
+                      <button title="Hành động" aria-label="Hành động" className="p-1 hover:bg-gray-100 rounded">
                         <TestTube className="w-4 h-4 text-blue-600" />
                       </button>
-                      <button className="p-1 hover:bg-gray-100 rounded">
+                      <button title="Hành động" aria-label="Hành động" className="p-1 hover:bg-gray-100 rounded">
                         <Edit2 className="w-4 h-4 text-gray-600" />
                       </button>
-                      <button className="p-1 hover:bg-gray-100 rounded">
+                      <button className="p-1 hover:bg-gray-100 rounded" title="Xóa" aria-label="Xóa">
                         <Trash2 className="w-4 h-4 text-red-600" />
                       </button>
                     </div>

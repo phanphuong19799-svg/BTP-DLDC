@@ -352,7 +352,7 @@ export function UserManagementPage() {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white">
               <h3 className="text-slate-900">{modalType === 'add' ? 'Thêm người dùng mới' : 'Chỉnh sửa người dùng'}</h3>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -461,7 +461,7 @@ export function UserManagementPage() {
           <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white">
               <h3 className="text-slate-900">Chi tiết người dùng</h3>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -560,7 +560,7 @@ export function UserManagementPage() {
                 <h3 className="text-slate-900">Gán nhóm người dùng</h3>
                 <p className="text-sm text-slate-600 mt-1">Người dùng: {selectedUser.name}</p>
               </div>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -691,7 +691,7 @@ export function UserManagementPage() {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white">
               <h3 className="text-slate-900">Xuất khẩu người dùng</h3>
-              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600">
+              <button onClick={handleCloseModal} className="text-slate-400 hover:text-slate-600" title="Đóng" aria-label="Đóng">
                 <X className="w-5 h-5" />
               </button>
             </div>

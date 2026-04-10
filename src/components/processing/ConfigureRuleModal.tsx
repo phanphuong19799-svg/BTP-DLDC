@@ -398,7 +398,7 @@ export function ConfigureRuleModal({ rule, onClose, onSave }: ConfigureRuleModal
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-600" />
           </button>

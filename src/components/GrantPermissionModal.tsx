@@ -185,7 +185,7 @@ export function GrantPermissionModal({
             </div>
             <button
               onClick={handleClose}
-              className="text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-colors"
+              className="text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
             >
               <X className="w-5 h-5" />
             </button>

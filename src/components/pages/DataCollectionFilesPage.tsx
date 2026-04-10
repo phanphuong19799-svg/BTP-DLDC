@@ -136,11 +136,11 @@ export function DataCollectionFilesPage() {
           <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
             Trang trước
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">1</button>
-          <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+          <button title="Hành động" aria-label="Hành động" className="px-4 py-2 bg-blue-600 text-white rounded-lg">1</button>
+          <button title="Hành động" aria-label="Hành động" className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
             2
           </button>
-          <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+          <button title="Hành động" aria-label="Hành động" className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
             3
           </button>
           <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">

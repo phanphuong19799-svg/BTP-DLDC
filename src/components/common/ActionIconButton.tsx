@@ -8,10 +8,11 @@ import {
   Ban, 
   Send,
   Plus,
-  LucideIcon 
+  LucideIcon,
+  PowerOff
 } from 'lucide-react';
 
-export type ActionType = 'view' | 'edit' | 'delete' | 'setup' | 'approve' | 'reject' | 'submit' | 'add';
+export type ActionType = 'view' | 'edit' | 'delete' | 'setup' | 'approve' | 'reject' | 'submit' | 'add' | 'expire';
 
 interface ActionIconButtonProps {
   action: ActionType;
@@ -31,6 +32,7 @@ const actionConfig: Record<ActionType, { icon: LucideIcon; colorClass: string; h
   approve: { icon: Check, colorClass: 'text-blue-500', hoverClass: 'hover:bg-blue-50', defaultTitle: 'Phê duyệt' },
   reject: { icon: Ban, colorClass: 'text-red-600', hoverClass: 'hover:bg-red-50', defaultTitle: 'Từ chối' },
   submit: { icon: Send, colorClass: 'text-blue-500', hoverClass: 'hover:bg-blue-50', defaultTitle: 'Trình duyệt', iconClass: 'rotate-[-20deg]' },
+  expire: { icon: PowerOff, colorClass: 'text-orange-600', hoverClass: 'hover:bg-orange-50', defaultTitle: 'Hết hiệu lực' },
 };
 
 export function ActionIconButton(props: ActionIconButtonProps) {

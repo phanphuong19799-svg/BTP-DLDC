@@ -295,13 +295,13 @@ export function CollectionLogs() {
               <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 Trước
               </button>
-              <button className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm">
+              <button title="Hành động" aria-label="Hành động" className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm">
                 1
               </button>
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button title="Hành động" aria-label="Hành động" className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 2
               </button>
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button title="Hành động" aria-label="Hành động" className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 3
               </button>
               <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">

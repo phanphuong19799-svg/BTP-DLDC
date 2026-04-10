@@ -1,5 +1,5 @@
 import { CategoryPage } from './CategoryPage';
 
 export function CategoryAPage() {
-  return <CategoryPage categoryName="Danh mục A" categoryId="category-a" />;
+  return <CategoryPage categoryName="Biên tập danh mục A" categoryId="category-a" />;
 }

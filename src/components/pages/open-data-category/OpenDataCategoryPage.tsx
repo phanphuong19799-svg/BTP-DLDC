@@ -126,7 +126,7 @@ const sampleVersionHistory: VersionHistoryItem[] = [
 
 // Danh sách các bảng danh mục có sẵn
 const availableCategories: CategoryOption[] = [
-  { id: 'cat_a', name: 'Danh mục A', description: 'Văn bản pháp luật' },
+  { id: 'cat_a', name: 'Biên tập danh mục A', description: 'Văn bản pháp luật' },
   { id: 'cat_b', name: 'Danh mục B', description: 'Đăng ký kinh doanh' },
   { id: 'cat_c', name: 'Danh mục C', description: 'Công chứng' },
   { id: 'cat_d', name: 'Danh mục D', description: 'TGPL' },
@@ -177,7 +177,7 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
       id: 1,
       datasetCode: 'ODCAT001',
       datasetName: 'Mục 1',
-      categoryName: 'Danh mục A',
+      categoryName: 'Biên tập danh mục A',
       frequency: 'daily',
       startTime: '08:00',
       dataSource: 'https://api.example.com/data/legal-docs',
@@ -322,8 +322,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <button
             onClick={() => setActiveTab('category')}
             className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'category'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
           >
             <FileText className="w-4 h-4" />
@@ -332,8 +332,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <button
             onClick={() => setActiveTab('metadata')}
             className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'metadata'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
           >
             <Info className="w-4 h-4" />
@@ -342,8 +342,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <button
             onClick={() => setActiveTab('license')}
             className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'license'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
           >
             <Shield className="w-4 h-4" />
@@ -352,8 +352,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <button
             onClick={() => setActiveTab('version')}
             className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'version'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
           >
             <HistoryIcon className="w-4 h-4" />
@@ -362,8 +362,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
           <button
             onClick={() => setActiveTab('schedule')}
             className={`pb-3 pt-4 text-sm transition-colors border-b-2 flex items-center gap-2 ${activeTab === 'schedule'
-                ? 'border-emerald-600 text-emerald-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
           >
             <Clock className="w-4 h-4" />
@@ -1050,8 +1050,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     setFormData({ code: '', name: '', description: '', status: 'active' });
                   }}
                   className={`px-4 py-2 rounded-lg flex items-center gap-2 ${!formData.code || !formData.name
-                      ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                     }`}
                   disabled={!formData.code || !formData.name}
                 >
@@ -1088,8 +1088,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     setFormData({ code: '', name: '', description: '', status: 'active' });
                   }}
                   className={`px-4 py-2 rounded-lg ${!formData.code || !formData.name
-                      ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
                     }`}
                   disabled={!formData.code || !formData.name}
                 >
@@ -1491,8 +1491,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     setShowPublishFromModalModal(true);
                   }}
                   className={`px-4 py-2 rounded-lg flex items-center gap-2 ${selectedItem.approvalStatus === 'approved'
-                      ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                      : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     }`}
                   disabled={selectedItem.approvalStatus !== 'approved'}
                   title={selectedItem.approvalStatus !== 'approved' ? 'Chỉ dữ liệu đã phê duyệt mới được công khai' : 'Công khai'}
@@ -1685,8 +1685,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   setSelectedItem(null);
                 }}
                 className={`px-4 py-2 rounded-lg ${!selectedApprover
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
                   }`}
                 disabled={!selectedApprover}
               >
@@ -1899,8 +1899,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                   alert(`Đã từ chối phê duyệt.\nLý do: ${rejectReason}`);
                 }}
                 className={`px-4 py-2 rounded-lg ${!rejectReason.trim()
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-red-600 text-white hover:bg-red-700'
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                  : 'bg-red-600 text-white hover:bg-red-700'
                   }`}
                 disabled={!rejectReason.trim()}
               >
@@ -2267,8 +2267,8 @@ export function OpenDataCategoryPage({ categoryName, categoryId }: OpenDataCateg
                     alert(`Đã thiết lập lịch công bố tự động cho ${newSchedules.length} dataset thành công!`);
                   }}
                   className={`px-4 py-2 rounded-lg ${selectedDatasetIds.size === 0 || !scheduleFormData.dataSource
-                      ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
                     }`}
                   disabled={selectedDatasetIds.size === 0 || !scheduleFormData.dataSource}
                 >

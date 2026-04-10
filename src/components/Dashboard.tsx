@@ -96,7 +96,7 @@ export function Dashboard() {
                   className="pl-10 pr-4 py-2 bg-red-800 bg-opacity-50 border border-red-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300 text-white placeholder-red-200 w-80"
                 />
               </div>
-              <button className="p-2 hover:bg-red-800 rounded-lg relative">
+              <button title="Hành động" aria-label="Hành động" className="p-2 hover:bg-red-800 rounded-lg relative">
                 <Bell className="w-6 h-6 text-white" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-yellow-300 rounded-full"></span>
               </button>

@@ -69,7 +69,7 @@ export function AddConfigModal({ onClose, onSave }: AddConfigModalProps) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-full transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-4 h-4 text-slate-400" />
           </button>

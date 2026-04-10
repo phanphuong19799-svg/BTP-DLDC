@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Database, CheckCircle, XCircle, Clock, FileCheck, TrendingUp, Activity, Server, Zap, Search, Download, Plus, Eye, Edit2, Trash2, Play, Pause, Settings, FileText } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { AddDataSourceForm } from './AddDataSourceForm';
@@ -87,7 +87,7 @@ interface DataItem {
 }
 
 const dataCollectionList: DataItem[] = [
-  { id: 1, stt: 1, department: 'Đơn vị A', dataName: 'CSDL A', dataType: 'Danh mục A', description: 'Mô tả dữ liệu A', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025' },
+  { id: 1, stt: 1, department: 'Đơn vị A', dataName: 'CSDL A', dataType: 'Biên tập danh mục A', description: 'Mô tả dữ liệu A', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025' },
   { id: 2, stt: 2, department: 'Đơn vị B', dataName: 'Hệ thống B', dataType: 'Danh mục B', description: 'Mô tả dữ liệu B', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025' },
   { id: 3, stt: 3, department: 'Đơn vị C', dataName: 'CSDL C', dataType: 'Danh mục C', description: 'Mô tả dữ liệu C', frequency: 'Hằng ngày', format: 'JSON', status: 'collected', priority: 'high', lastUpdate: '06/12/2025' },
 ];
@@ -104,7 +104,7 @@ export function OverviewCombined() {
   }
 
   const filteredAPIs = apiMethods.filter(api => {
-    const matchSearch = searchAPI === '' || 
+    const matchSearch = searchAPI === '' ||
       api.name.toLowerCase().includes(searchAPI.toLowerCase()) ||
       api.endpoint.toLowerCase().includes(searchAPI.toLowerCase());
     const matchStatus = filterStatus === '' || api.status === filterStatus;
@@ -112,7 +112,7 @@ export function OverviewCombined() {
   });
 
   const filteredData = dataCollectionList.filter(item => {
-    return searchData === '' || 
+    return searchData === '' ||
       item.dataName.toLowerCase().includes(searchData.toLowerCase()) ||
       item.department.toLowerCase().includes(searchData.toLowerCase());
   });
@@ -174,7 +174,7 @@ export function OverviewCombined() {
           <TrendingUp className="w-6 h-6 text-blue-600" />
           <h2 className="text-slate-900">Tổng quan Thu thập Dữ liệu</h2>
         </div>
-        <button 
+        <button
           onClick={() => setShowAddForm(true)}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
@@ -269,7 +269,7 @@ export function OverviewCombined() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }: { name: string; percent: number }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   outerRadius={90}
                   fill="#8884d8"
                   dataKey="value"
@@ -307,7 +307,7 @@ export function OverviewCombined() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, value }) => `${name}: ${value}`}
+                  label={({ name, value }: { name: string; value: number }) => `${name}: ${value}`}
                   outerRadius={90}
                   fill="#8884d8"
                   dataKey="value"
@@ -341,13 +341,14 @@ export function OverviewCombined() {
               type="text"
               placeholder="Tìm kiếm API theo tên hoặc endpoint..."
               value={searchAPI}
-              onChange={(e) => setSearchAPI(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchAPI(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <select 
+          <select
+            title="Bộ lọc trạng thái"
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterStatus(e.target.value)}
             className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Tất cả trạng thái</option>
@@ -388,7 +389,7 @@ export function OverviewCombined() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-slate-200 rounded-full h-2 w-16">
-                          <div 
+                          <div
                             className={`h-2 rounded-full ${api.successRate >= 95 ? 'bg-green-500' : api.successRate >= 90 ? 'bg-yellow-500' : 'bg-red-500'}`}
                             style={{ width: `${api.successRate}%` }}
                           ></div>
@@ -400,13 +401,13 @@ export function OverviewCombined() {
                     <td className="px-4 py-3 text-sm text-slate-700">{api.totalCalls.toLocaleString()}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <button className="p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors">
+                        <button title="Bắt đầu" className="p-1.5 text-green-600 hover:bg-green-50 rounded transition-colors">
                           <Play className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors">
+                        <button title="Xem" className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 text-orange-600 hover:bg-orange-50 rounded transition-colors">
+                        <button title="Cài đặt" className="p-1.5 text-orange-600 hover:bg-orange-50 rounded transition-colors">
                           <Settings className="w-4 h-4" />
                         </button>
                       </div>

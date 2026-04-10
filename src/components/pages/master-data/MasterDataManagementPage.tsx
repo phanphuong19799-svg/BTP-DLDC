@@ -18,7 +18,7 @@ const mockRecords: MasterDataRecord[] = [
     id: '1',
     code: 'MD001',
     name: 'Dữ liệu A',
-    category: 'Danh mục A',
+    category: 'Biên tập danh mục A',
     value: 'Giá trị A',
     status: 'active',
     createdBy: 'Nguyễn Văn A',
@@ -57,7 +57,7 @@ export function MasterDataManagementPage() {
 
   const filteredRecords = mockRecords.filter(record => {
     const matchesSearch = record.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         record.code.toLowerCase().includes(searchTerm.toLowerCase());
+      record.code.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'all' || record.category === filterCategory;
     const matchesStatus = filterStatus === 'all' || record.status === filterStatus;
     return matchesSearch && matchesCategory && matchesStatus;
@@ -94,44 +94,40 @@ export function MasterDataManagementPage() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('management')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'management'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'management'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Database className="w-4 h-4" />
             Quản lý dữ liệu
           </button>
           <button
             onClick={() => setActiveTab('search')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'search'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'search'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Search className="w-4 h-4" />
             Tra cứu
           </button>
           <button
             onClick={() => setActiveTab('report')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'report'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'report'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <BarChart3 className="w-4 h-4" />
             Báo cáo
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${
-              activeTab === 'history'
+            className={`flex items-center gap-2 px-6 py-3 text-sm transition-colors ${activeTab === 'history'
                 ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-600'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <HistoryIcon className="w-4 h-4" />
             Lịch sử
@@ -169,7 +165,7 @@ export function MasterDataManagementPage() {
                   className="px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                   <option value="all">Tất cả danh mục</option>
-                  <option value="Danh mục A">Danh mục A</option>
+                  <option value="Biên tập danh mục A">Biên tập danh mục A</option>
                   <option value="Danh mục B">Danh mục B</option>
                   <option value="Danh mục C">Danh mục C</option>
                 </select>
@@ -237,7 +233,7 @@ export function MasterDataManagementPage() {
           {activeTab === 'search' && (
             <div className="space-y-4">
               <h3 className="text-slate-900">Tra cứu dữ liệu chủ</h3>
-              
+
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -263,7 +259,7 @@ export function MasterDataManagementPage() {
                       <label className="block text-sm text-slate-700 mb-2">Danh mục</label>
                       <select className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
                         <option>Tất cả danh mục</option>
-                        <option>Danh mục A</option>
+                        <option>Biên tập danh mục A</option>
                         <option>Danh mục B</option>
                         <option>Danh mục C</option>
                       </select>
@@ -329,7 +325,7 @@ export function MasterDataManagementPage() {
               <div className="border border-slate-200 rounded-lg p-6">
                 <h4 className="text-sm text-slate-900 mb-4">Thống kê theo danh mục</h4>
                 <div className="space-y-3">
-                  {['Danh mục A', 'Danh mục B', 'Danh mục C'].map((category, index) => {
+                  {['Biên tập danh mục A', 'Danh mục B', 'Danh mục C'].map((category, index) => {
                     const count = mockRecords.filter(r => r.category === category).length;
                     const percentage = (count / mockRecords.length) * 100;
                     return (
@@ -339,8 +335,8 @@ export function MasterDataManagementPage() {
                           <span className="text-slate-900">{count} ({percentage.toFixed(0)}%)</span>
                         </div>
                         <div className="w-full bg-slate-200 rounded-full h-2">
-                          <div 
-                            className="bg-teal-600 h-2 rounded-full" 
+                          <div
+                            className="bg-teal-600 h-2 rounded-full"
                             style={{ width: `${percentage}%` }}
                           ></div>
                         </div>
@@ -356,7 +352,7 @@ export function MasterDataManagementPage() {
           {activeTab === 'history' && (
             <div className="space-y-4">
               <h3 className="text-slate-900">Lịch sử thao tác</h3>
-              
+
               <div className="border border-slate-200 rounded-lg overflow-hidden">
                 <table className="w-full">
                   <thead className="bg-slate-50 border-b border-slate-200">

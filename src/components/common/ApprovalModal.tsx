@@ -179,7 +179,7 @@ export function ApprovalModal({ isOpen, onClose, record, onApprove, onReject }: 
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white rounded-lg transition-colors"
+            className="p-2 hover:bg-white rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-600" />
           </button>

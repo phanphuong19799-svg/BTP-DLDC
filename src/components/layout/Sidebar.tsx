@@ -55,6 +55,7 @@ import {
   ClipboardList,
   GraduationCap,
   FileSearch,
+  Search,
   Handshake,
   Bell,
   MessageSquare,
@@ -454,7 +455,7 @@ const menuItems: MenuItem[] = [
         subItems: [
           {
             id: "category-a",
-            label: "Danh mục A",
+            label: "Biên tập danh mục A",
             icon: FolderOpen,
           },
         ],
@@ -465,9 +466,36 @@ const menuItems: MenuItem[] = [
         icon: FileText,
       },
       {
-        id: "category-report",
+        id: "category-report-group",
         label: "Thống kê danh mục",
         icon: BarChart3,
+        subItems: [
+          {
+            id: "category-report",
+            label: "Khai thác báo cáo",
+            icon: Search,
+          },
+          {
+            id: "category-report-list",
+            label: "Báo cáo thống kê danh sách danh mục",
+            icon: FileText,
+          },
+          {
+            id: "category-report-exploitation",
+            label: "Báo cáo tình trạng khai thác danh mục",
+            icon: Activity,
+          },
+          {
+            id: "category-report-status",
+            label: "Báo cáo trạng thái danh mục",
+            icon: CheckSquare,
+          },
+          {
+            id: "category-report-version",
+            label: "Báo cáo phiên bản danh mục",
+            icon: HistoryIcon,
+          },
+        ],
       },
     ],
   },
@@ -489,7 +517,7 @@ const menuItems: MenuItem[] = [
         subItems: [
           {
             id: "open-data-category-a",
-            label: "Danh mục A",
+            label: "Biên tập danh mục A",
             icon: FolderOpen,
           },
         ],
@@ -833,8 +861,8 @@ export function Sidebar({
                     }
                   }}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${isActive
-                      ? "bg-blue-50 text-blue-700 shadow-sm"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-blue-50 text-blue-700 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                 >
                   <Icon
@@ -880,10 +908,10 @@ export function Sidebar({
                               }
                             }}
                             className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm ${isGroupHeader
-                                ? "bg-slate-100 text-slate-700 font-medium hover:bg-slate-200"
-                                : isSubActive
-                                  ? "bg-blue-50 text-blue-700"
-                                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                              ? "bg-slate-100 text-slate-700 font-medium hover:bg-slate-200"
+                              : isSubActive
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                               }`}
                           >
                             {SubIcon && <SubIcon className="w-4 h-4 flex-shrink-0" />}
@@ -934,8 +962,8 @@ export function Sidebar({
                                           }
                                         }}
                                         className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all ${isNestedActive
-                                            ? "bg-blue-50 text-blue-700"
-                                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                          ? "bg-blue-50 text-blue-700"
+                                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                           }`}
                                       >
                                         {NestedIcon && (
@@ -975,8 +1003,8 @@ export function Sidebar({
                                                       )
                                                     }
                                                     className={`w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all ${isLevel4Active
-                                                        ? "bg-blue-50 text-blue-700"
-                                                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                                      ? "bg-blue-50 text-blue-700"
+                                                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                                                       }`}
                                                   >
                                                     {Level4Icon && <Level4Icon className="w-3 h-3 flex-shrink-0" />}

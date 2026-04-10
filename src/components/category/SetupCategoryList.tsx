@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Edit2, 
-  Trash2, 
-  Send, 
+import React, { useState } from 'react';
+import {
+  Plus,
+  Search,
+  Edit2,
+  Trash2,
+  Send,
   AlertCircle,
   CheckCircle,
   Clock,
@@ -31,7 +31,7 @@ export function SetupCategoryList() {
     {
       id: 'DM001',
       code: 'DM001',
-      name: 'Danh mục A',
+      name: 'Biên tập danh mục A',
       description: 'Danh mục các đơn vị hành chính theo cấp',
       dataType: 'Tham chiếu',
       managingUnit: 'Đơn vị A',
@@ -76,7 +76,7 @@ export function SetupCategoryList() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validation
     if (!formData.code || !formData.name || !formData.dataType || !formData.managingUnit) {
       alert('Vui lòng điền đầy đủ thông tin bắt buộc');
@@ -115,7 +115,7 @@ export function SetupCategoryList() {
 
   const handleSendApproval = (id: string) => {
     if (confirm('Gửi yêu cầu phê duyệt danh mục này?')) {
-      setCategories(categories.map(cat => 
+      setCategories(categories.map(cat =>
         cat.id === id ? { ...cat, status: 'pending' } : cat
       ));
       alert('Đã gửi yêu cầu phê duyệt đến lãnh đạo bộ phận');
@@ -155,7 +155,7 @@ export function SetupCategoryList() {
               type="text"
               placeholder="Tìm kiếm theo tên hoặc mã danh mục..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -263,7 +263,7 @@ export function SetupCategoryList() {
                 {selectedCategory ? 'Sửa danh mục' : 'Tạo danh mục mới'}
               </h3>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm text-slate-700 mb-1.5">
@@ -272,7 +272,7 @@ export function SetupCategoryList() {
                 <input
                   type="text"
                   value={formData.code}
-                  onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, code: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="VD: DM_DVHC"
                   disabled={!!selectedCategory}
@@ -288,7 +288,7 @@ export function SetupCategoryList() {
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="VD: Danh mục đơn vị hành chính"
                   required
@@ -301,7 +301,7 @@ export function SetupCategoryList() {
                 </label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows={3}
                   placeholder="Mô tả chi tiết về danh mục..."
@@ -313,8 +313,9 @@ export function SetupCategoryList() {
                   Loại dữ liệu <span className="text-red-500">*</span>
                 </label>
                 <select
+                  title="Loại dữ liệu"
                   value={formData.dataType}
-                  onChange={(e) => setFormData({ ...formData, dataType: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, dataType: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
@@ -331,8 +332,9 @@ export function SetupCategoryList() {
                   Đơn vị quản lý <span className="text-red-500">*</span>
                 </label>
                 <select
+                  title="Đơn vị quản lý"
                   value={formData.managingUnit}
-                  onChange={(e) => setFormData({ ...formData, managingUnit: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, managingUnit: e.target.value })}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >

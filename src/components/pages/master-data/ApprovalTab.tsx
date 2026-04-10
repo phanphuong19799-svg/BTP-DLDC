@@ -214,13 +214,13 @@ export function ApprovalTab() {
     const updatedRecords = records.map(r =>
       r.id === selectedRecord.id
         ? {
-            ...r,
-            status: approvalAction === 'approve' ? 'approved' : 'rejected',
-            reviewedBy: 'Phó Cục trưởng Nguyễn Xuân D',
-            reviewedDate: dateStr,
-            reviewComment: comment,
-            history: [...r.history, newHistory]
-          }
+          ...r,
+          status: approvalAction === 'approve' ? 'approved' : 'rejected',
+          reviewedBy: 'Phó Cục trưởng Nguyễn Xuân D',
+          reviewedDate: dateStr,
+          reviewComment: comment,
+          history: [...r.history, newHistory]
+        }
         : r
     );
 
@@ -244,7 +244,7 @@ export function ApprovalTab() {
     <div className="space-y-4">
       {/* Header */}
       <div>
-        <h2 className="text-slate-900">Phê duyệt danh sách dữ liệu chủ</h2>
+        <h2 className="text-slate-900">Phê duyệt danh mục</h2>
         <p className="text-sm text-slate-600 mt-1">
           Lãnh đạo nghiệp vụ xem xét và phê duyệt các bộ dữ liệu chủ chờ phê duyệt
         </p>
@@ -287,43 +287,39 @@ export function ApprovalTab() {
       <div className="flex items-center gap-2">
         <span className="text-sm text-slate-700">Trạng thái:</span>
         <div className="flex gap-2">
-          <button
+          <button title="Hành động"
             onClick={() => setFilterStatus('all')}
-            className={`px-3 py-1 text-sm rounded-lg transition-colors ${
-              filterStatus === 'all'
+            className={`px-3 py-1 text-sm rounded-lg transition-colors ${filterStatus === 'all'
                 ? 'bg-blue-600 text-white'
                 : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Tất cả ({records.length})
           </button>
-          <button
+          <button title="Hành động"
             onClick={() => setFilterStatus('pending')}
-            className={`px-3 py-1 text-sm rounded-lg transition-colors ${
-              filterStatus === 'pending'
+            className={`px-3 py-1 text-sm rounded-lg transition-colors ${filterStatus === 'pending'
                 ? 'bg-amber-600 text-white'
                 : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Chờ phê duyệt ({pendingCount})
           </button>
-          <button
+          <button title="Hành động"
             onClick={() => setFilterStatus('approved')}
-            className={`px-3 py-1 text-sm rounded-lg transition-colors ${
-              filterStatus === 'approved'
+            className={`px-3 py-1 text-sm rounded-lg transition-colors ${filterStatus === 'approved'
                 ? 'bg-green-600 text-white'
                 : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Đã phê duyệt ({approvedCount})
           </button>
-          <button
+          <button title="Hành động"
             onClick={() => setFilterStatus('rejected')}
-            className={`px-3 py-1 text-sm rounded-lg transition-colors ${
-              filterStatus === 'rejected'
+            className={`px-3 py-1 text-sm rounded-lg transition-colors ${filterStatus === 'rejected'
                 ? 'bg-red-600 text-white'
                 : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'
-            }`}
+              }`}
           >
             Từ chối ({rejectedCount})
           </button>
@@ -418,7 +414,7 @@ export function ApprovalTab() {
 
                   {/* Actions */}
                   <div className="flex flex-col gap-2">
-                    <button
+                    <button title="Hành động"
                       onClick={() => handleViewDetail(record)}
                       className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm"
                     >
@@ -428,14 +424,14 @@ export function ApprovalTab() {
 
                     {record.status === 'pending' && (
                       <>
-                        <button
+                        <button title="Hành động"
                           onClick={() => handleApprove(record)}
                           className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
                         >
                           <CheckCircle className="w-4 h-4" />
                           Phê duyệt
                         </button>
-                        <button
+                        <button title="Hành động"
                           onClick={() => handleReject(record)}
                           className="flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
                         >
@@ -449,7 +445,7 @@ export function ApprovalTab() {
               </div>
 
               {/* History Toggle */}
-              <button
+              <button title="Hành động"
                 onClick={() => setExpandedHistory(isExpanded ? null : record.id)}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 border-t border-slate-200 text-sm text-slate-700 transition-colors"
               >
@@ -465,14 +461,13 @@ export function ApprovalTab() {
                     {record.history.map((h, index) => (
                       <div key={h.id} className="flex gap-3">
                         <div className="flex flex-col items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                            h.action === 'approved' ? 'bg-green-100' :
-                            h.action === 'rejected' ? 'bg-red-100' :
-                            'bg-blue-100'
-                          }`}>
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${h.action === 'approved' ? 'bg-green-100' :
+                              h.action === 'rejected' ? 'bg-red-100' :
+                                'bg-blue-100'
+                            }`}>
                             {h.action === 'approved' ? <CheckCircle className="w-4 h-4 text-green-600" /> :
-                             h.action === 'rejected' ? <XCircle className="w-4 h-4 text-red-600" /> :
-                             <Clock className="w-4 h-4 text-blue-600" />}
+                              h.action === 'rejected' ? <XCircle className="w-4 h-4 text-red-600" /> :
+                                <Clock className="w-4 h-4 text-blue-600" />}
                           </div>
                           {index < record.history.length - 1 && (
                             <div className="w-0.5 h-8 bg-slate-300" />
@@ -482,8 +477,8 @@ export function ApprovalTab() {
                           <div className="flex items-baseline gap-2 mb-1">
                             <span className="text-sm text-slate-900">
                               {h.action === 'submitted' ? 'Gửi phê duyệt' :
-                               h.action === 'approved' ? 'Đã phê duyệt' :
-                               h.action === 'rejected' ? 'Từ chối' : 'Cập nhật'}
+                                h.action === 'approved' ? 'Đã phê duyệt' :
+                                  h.action === 'rejected' ? 'Từ chối' : 'Cập nhật'}
                             </span>
                             <span className="text-xs text-slate-500">• {h.performedDate}</span>
                           </div>
@@ -517,7 +512,7 @@ export function ApprovalTab() {
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-slate-200 sticky top-0 bg-white z-10">
               <h3 className="text-lg text-slate-900">Chi tiết dữ liệu chủ</h3>
-              <button onClick={() => setShowDetailModal(false)} className="p-1 hover:bg-slate-100 rounded">
+              <button title="Hành động" onClick={() => setShowDetailModal(false)} className="p-1 hover:bg-slate-100 rounded">
                 <XCircle className="w-5 h-5" />
               </button>
             </div>
@@ -617,7 +612,7 @@ export function ApprovalTab() {
             </div>
 
             <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-200 bg-slate-50 sticky bottom-0">
-              <button
+              <button title="Hành động"
                 onClick={() => setShowDetailModal(false)}
                 className="px-4 py-2 text-slate-700 hover:bg-slate-200 rounded-lg transition-colors"
               >
@@ -636,7 +631,7 @@ export function ApprovalTab() {
               <h3 className="text-lg text-slate-900">
                 {approvalAction === 'approve' ? 'Phê duyệt dữ liệu chủ' : 'Từ chối dữ liệu chủ'}
               </h3>
-              <button onClick={() => setShowApprovalForm(false)} className="p-1 hover:bg-slate-100 rounded">
+              <button title="Hành động" onClick={() => setShowApprovalForm(false)} className="p-1 hover:bg-slate-100 rounded">
                 <XCircle className="w-5 h-5" />
               </button>
             </div>
@@ -653,14 +648,14 @@ export function ApprovalTab() {
 
               <div>
                 <label className="block text-sm text-slate-700 mb-1">
-                  {approvalAction === 'approve' ? 'Nhận xét (tùy chọn)' : 'Lý do từ chối'} 
+                  {approvalAction === 'approve' ? 'Nhận xét (tùy chọn)' : 'Lý do từ chối'}
                   {approvalAction === 'reject' && <span className="text-red-600"> *</span>}
                 </label>
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder={
-                    approvalAction === 'approve' 
+                    approvalAction === 'approve'
                       ? 'Nhập nhận xét của bạn...'
                       : 'Vui lòng nhập lý do từ chối để người quản trị có thể chỉnh sửa...'
                   }
@@ -701,19 +696,18 @@ export function ApprovalTab() {
             </div>
 
             <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-200 bg-slate-50">
-              <button
+              <button title="Hành động"
                 onClick={() => setShowApprovalForm(false)}
                 className="px-4 py-2 text-slate-700 hover:bg-slate-200 rounded-lg transition-colors"
               >
                 Hủy
               </button>
-              <button
+              <button title="Hành động"
                 onClick={handleSubmitApproval}
-                className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${
-                  approvalAction === 'approve'
+                className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${approvalAction === 'approve'
                     ? 'bg-green-600 hover:bg-green-700'
                     : 'bg-red-600 hover:bg-red-700'
-                }`}
+                  }`}
               >
                 {approvalAction === 'approve' ? (
                   <>

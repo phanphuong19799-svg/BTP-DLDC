@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { Send, X } from 'lucide-react';
+import { Portal } from '../../../../common/Portal';
 
 
 interface ApprovalRequestModalProps {
@@ -29,7 +30,8 @@ export function ApprovalRequestModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[20000] p-4 text-slate-800">
+    <Portal>
+      <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-slate-800">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
@@ -100,7 +102,8 @@ export function ApprovalRequestModal({
            </button>
         </div>
       </div>
-    </div>
+      </div>
+    </Portal>
   );
 }
 

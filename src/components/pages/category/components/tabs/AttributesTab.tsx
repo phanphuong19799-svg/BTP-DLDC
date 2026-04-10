@@ -18,6 +18,7 @@ interface AttributesTabProps {
   onDeleteAttribute: (id: string) => void;
   getDataTypeLabel: (type: FieldDataType) => string;
   onSave?: () => void;
+  onSaveAndSubmit?: () => void;
   onCancel?: () => void;
   onSubmitAttribute?: (id: string) => void;
   onApproveAttribute?: (id: string) => void;
@@ -39,6 +40,7 @@ export function AttributesTab({
   onDeleteAttribute,
   getDataTypeLabel,
   onSave,
+  onSaveAndSubmit,
   onCancel,
   onSubmitAttribute = () => {},
   onApproveAttribute = () => {},
@@ -133,6 +135,14 @@ export function AttributesTab({
           </span>
         </div>
         <div className="flex items-center gap-3">
+          {!wizardMode && onSaveAndSubmit && (
+            <button 
+              onClick={onSaveAndSubmit} 
+              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors text-sm font-bold shadow-md shadow-emerald-100"
+            >
+              Lưu & trình duyệt
+            </button>
+          )}
           <button
             onClick={onAddAttribute}
             className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-bold shadow-md shadow-blue-100"
@@ -207,8 +217,6 @@ export function AttributesTab({
                         disabled={isLocked}
                         title={attr.status === 'approved' ? "Đã duyệt" : (attr.status === 'pending' ? "Đang chờ duyệt" : "Trình duyệt")} 
                       />
-                      <ActionIconButton action="approve" onClick={() => onApproveAttribute(attr.id)} title="Phê duyệt" />
-                      <ActionIconButton action="reject" onClick={() => onRejectAttribute(attr.id)} title="Từ chối duyệt" />
                       
                       <div className="w-px h-4 bg-slate-200 mx-1"></div>
                       
@@ -240,16 +248,6 @@ export function AttributesTab({
         </table>
       </div>
 
-      {!wizardMode && (
-        <div className="pt-6 border-t border-slate-200 flex justify-center gap-3 bg-white/50 backdrop-blur-sm sticky bottom-0 -mx-6 px-6 pb-2">
-          <button 
-            onClick={onSave} 
-            className="px-8 py-2.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium text-[14px]"
-          >
-            Lưu
-          </button>
-        </div>
-      )}
     </div>
   );
 }

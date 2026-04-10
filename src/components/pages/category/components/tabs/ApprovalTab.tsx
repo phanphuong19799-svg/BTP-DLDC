@@ -10,6 +10,8 @@ interface ApprovalTabProps {
   statusFilter: ApprovalStatus | 'all';
   setStatusFilter: (status: ApprovalStatus | 'all') => void;
   onViewDetail: (req: ApprovalRequest) => void;
+  onApproveClick: (req: ApprovalRequest) => void;
+  onRejectClick: (req: ApprovalRequest) => void;
   onApproveAll: (type: ApprovalType | 'all') => void;
   approvalTypeLabels: Record<ApprovalType, string>;
   approvalStatusLabels: Record<ApprovalStatus, { label: string; color: string }>;
@@ -23,20 +25,31 @@ export function ApprovalTab({
   statusFilter,
   setStatusFilter,
   onViewDetail,
+  onApproveClick,
+  onRejectClick,
   onApproveAll,
   approvalTypeLabels,
   approvalStatusLabels
 }: ApprovalTabProps) {
   const [expandedHistory, setExpandedHistory] = useState<string[]>([]);
 
-  const pendingCount = requests.filter(r => r.status === 'pending').length;
-  const approvedCount = requests.filter(r => r.status === 'approved').length;
-  const rejectedCount = requests.filter(r => r.status === 'rejected').length;
-  const totalCount = requests.length;
+  const typeFilteredRequests = requests.filter(r => r.type === approvalTab);
 
-  const filteredRequests = requests.filter(req =>
+  const pendingCount = typeFilteredRequests.filter(r => r.status === 'pending').length;
+  const approvedCount = typeFilteredRequests.filter(r => r.status === 'approved').length;
+  const rejectedCount = typeFilteredRequests.filter(r => r.status === 'rejected').length;
+  const partialCount = typeFilteredRequests.filter(r => r.status === 'partial').length;
+  const totalCount = typeFilteredRequests.length;
+
+  const filteredRequests = typeFilteredRequests.filter(req =>
     statusFilter === 'all' || req.status === statusFilter
   );
+
+  const approvalTabs = [
+    { key: 'category' as ApprovalType, label: 'Phê duyệt danh mục', icon: CheckSquare },
+    { key: 'structure' as ApprovalType, label: 'Phê duyệt cấu trúc', icon: CheckSquare },
+    { key: 'version' as ApprovalType, label: 'Phê duyệt phiên bản', icon: Clock }
+  ];
 
   const toggleHistory = (id: string) =>
     setExpandedHistory(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -45,6 +58,7 @@ export function ApprovalTab({
     { key: 'all' as const, label: 'Tất cả', count: totalCount },
     { key: 'pending' as const, label: 'Chờ phê duyệt', count: pendingCount },
     { key: 'approved' as const, label: 'Đã phê duyệt', count: approvedCount },
+    { key: 'partial' as const, label: 'Duyệt một phần', count: partialCount },
     { key: 'rejected' as const, label: 'Từ chối', count: rejectedCount },
   ];
 
@@ -52,8 +66,32 @@ export function ApprovalTab({
     <div className="space-y-5">
       {/* Page Header */}
       <div>
-        <h2 className="text-[17px] font-bold text-slate-800">Phê duyệt danh sách dữ liệu chủ</h2>
-        <p className="text-[13px] text-slate-500 mt-0.5">Lãnh đạo nghiệp vụ xem xét và phê duyệt các bộ dữ liệu chủ chờ phê duyệt</p>
+        <h2 className="text-[17px] font-bold text-slate-800">{approvalTypeLabels[approvalTab] || 'Phê duyệt danh mục'}</h2>
+        <p className="text-[13px] text-slate-500 mt-0.5">Lãnh đạo nghiệp vụ xem xét và phê duyệt các yêu cầu thay đổi dữ liệu chủ</p>
+      </div>
+
+      {/* Approval Types Sub-tabs */}
+      <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl w-fit">
+        {approvalTabs.map(tab => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.key}
+              onClick={() => {
+                setApprovalTab(tab.key);
+                setStatusFilter('all');
+              }}
+              className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all flex items-center gap-2 ${
+                approvalTab === tab.key
+                  ? 'bg-white text-blue-600 shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Stat Cards */}
@@ -88,11 +126,10 @@ export function ApprovalTab({
           <button
             key={tab.key}
             onClick={() => setStatusFilter(tab.key)}
-            className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all ${
-              statusFilter === tab.key
+            className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all ${statusFilter === tab.key
                 ? 'bg-blue-600 text-white shadow-sm'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
+              }`}
           >
             {tab.label} ({tab.count})
           </button>
@@ -125,11 +162,11 @@ export function ApprovalTab({
                     {/* Title + Status Badge */}
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="text-[15px] font-bold text-slate-800">{req.entityName}</h4>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                        req.status === 'pending' ? 'bg-orange-50 text-orange-600 border-orange-200' :
-                        req.status === 'approved' ? 'bg-green-50 text-green-700 border-green-200' :
-                        'bg-red-50 text-red-600 border-red-200'
-                      }`}>
+                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${req.status === 'pending' ? 'bg-orange-50 text-orange-600 border-orange-200' :
+                          req.status === 'approved' ? 'bg-green-50 text-green-700 border-green-200' :
+                          req.status === 'partial' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                            'bg-red-50 text-red-600 border-red-200'
+                        }`}>
                         {approvalStatusLabels[req.status].label}
                       </span>
                     </div>
@@ -194,13 +231,19 @@ export function ApprovalTab({
                       <Eye className="w-3.5 h-3.5" />
                       Xem chi tiết
                     </button>
-                    {isPending && (
+                    {req.status === 'pending' && (
                       <>
-                        <button className="flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 text-white rounded-lg text-[13px] font-bold hover:bg-green-700 transition-colors">
+                        <button
+                          onClick={() => onApproveClick(req)}
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 text-white rounded-lg text-[13px] font-bold hover:bg-green-700 transition-colors"
+                        >
                           <Check className="w-3.5 h-3.5" />
                           Phê duyệt
                         </button>
-                        <button className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-600 text-white rounded-lg text-[13px] font-bold hover:bg-red-700 transition-colors">
+                        <button
+                          onClick={() => onRejectClick(req)}
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-600 text-white rounded-lg text-[13px] font-bold hover:bg-red-700 transition-colors"
+                        >
                           <Ban className="w-3.5 h-3.5" />
                           Từ chối
                         </button>

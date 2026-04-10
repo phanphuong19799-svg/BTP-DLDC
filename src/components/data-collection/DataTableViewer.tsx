@@ -182,7 +182,7 @@ export function DataTableViewer({ isOpen, onClose, fileTitle, dataType }: DataTa
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
             >
               <X className="w-6 h-6 text-slate-600" />
             </button>

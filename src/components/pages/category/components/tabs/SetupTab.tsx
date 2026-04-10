@@ -20,6 +20,7 @@ interface SetupTabProps {
   onUnpublish: (entity: MasterDataEntity) => void;
   onApproveClick: (entity: MasterDataEntity) => void;
   onRejectClick: (entity: MasterDataEntity) => void;
+  onExpireClick: (entity: MasterDataEntity) => void;
 }
 
 export function SetupTab({
@@ -37,7 +38,8 @@ export function SetupTab({
   onPublish,
   onUnpublish,
   onApproveClick,
-  onRejectClick
+  onRejectClick,
+  onExpireClick
 }: SetupTabProps) {
   const filteredEntities = entities.filter(e => {
     const matchesSearch = e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -178,8 +180,6 @@ export function SetupTab({
                           disabled={entity.lifecycleStatus === 'active' || entity.lifecycleStatus === 'pending_approval'}
                           title={entity.lifecycleStatus === 'active' ? "Đã duyệt" : (entity.lifecycleStatus === 'pending_approval' ? "Đang chờ duyệt" : "Trình duyệt")} 
                         />
-                        <ActionIconButton action="approve" onClick={() => onApproveClick(entity)} title="Phê duyệt" />
-                        <ActionIconButton action="reject" onClick={() => onRejectClick(entity)} title="Từ chối duyệt" />
                         
                         <div className="w-px h-4 bg-slate-200 mx-1"></div>
                         
@@ -194,6 +194,14 @@ export function SetupTab({
                           onClick={() => onDelete(entity.id)} 
                           disabled={entity.lifecycleStatus === 'active' || entity.lifecycleStatus === 'pending_approval'}
                           title="Xóa" 
+                        />
+                        <div className="w-px h-4 bg-slate-200 mx-1"></div>
+                        
+                        <ActionIconButton 
+                          action="expire" 
+                          onClick={() => onExpireClick(entity)} 
+                          disabled={entity.lifecycleStatus !== 'active'}
+                          title="Hết hiệu lực" 
                         />
                       </div>
                   </td>

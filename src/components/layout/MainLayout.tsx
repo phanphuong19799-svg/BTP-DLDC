@@ -25,6 +25,10 @@ import { CategoryJPage } from '../pages/category/CategoryJPage';
 import { CategoryPublishedListPage } from '../pages/category/CategoryPublishedListPage';
 import { CategoryReportPage } from '../pages/category/CategoryReportPage';
 import { CategoryStatisticsReportPage } from '../pages/category/CategoryStatisticsReportPage';
+import { CategoryReportListPage } from '../pages/category/reports/CategoryReportListPage';
+import { CategoryReportExploitationPage } from '../pages/category/reports/CategoryReportExploitationPage';
+import { CategoryReportStatusPage } from '../pages/category/reports/CategoryReportStatusPage';
+import { CategoryReportVersionPage } from '../pages/category/reports/CategoryReportVersionPage';
 import { NewCategorySetupPage } from '../pages/new-category';
 import { CategorySetupPageNew } from '../pages/category/CategorySetupPageNew';
 import { OpenDataCategoryPage } from '../pages/OpenDataCategoryPage';
@@ -223,8 +227,8 @@ const pageConfig: Record<string, { title: string; description: string }> = {
     description: 'Quản lý chi tiết danh mục dữ liệu mở A'
   },
   'category-a': {
-    title: 'Danh mục A',
-    description: 'Quản lý chi tiết Danh mục A'
+    title: 'Biên tập danh mục A',
+    description: 'Quản lý chi tiết Biên tập danh mục A'
   },
   'category-report': {
     title: 'Khai thác tìm kiếm',
@@ -351,6 +355,10 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'category-j' && <CategoryJPage />}
             {currentPage === 'category-published-list' && <CategoryPublishedListPage />}
             {currentPage === 'category-report' && <CategoryReportPage />}
+            {currentPage === 'category-report-list' && <CategoryReportListPage />}
+            {currentPage === 'category-report-exploitation' && <CategoryReportExploitationPage />}
+            {currentPage === 'category-report-status' && <CategoryReportStatusPage />}
+            {currentPage === 'category-report-version' && <CategoryReportVersionPage />}
             {currentPage === 'category-statistics-report' && <CategoryStatisticsReportPage />}
             {currentPage === 'new-category-setup' && <NewCategorySetupPage />}
             {currentPage === 'open-data' && <OpenDataCategoryPage />}
@@ -517,7 +525,7 @@ export function MainLayout({ onLogout }: MainLayoutProps = {}) {
             {currentPage === 'data-info-j' && <DataManagementDetail dataName="Dữ liệu J" dataId="data-info-j" />}
 
             {/* Category Management A-J */}
-            {currentPage === 'category-management-a' && <DataManagementDetail dataName="Danh mục A" dataId="category-management-a" />}
+            {currentPage === 'category-management-a' && <DataManagementDetail dataName="Biên tập danh mục A" dataId="category-management-a" />}
             {currentPage === 'category-management-b' && <DataManagementDetail dataName="Danh mục B" dataId="category-management-b" />}
             {currentPage === 'category-management-c' && <DataManagementDetail dataName="Danh mục C" dataId="category-management-c" />}
             {currentPage === 'category-management-d' && <DataManagementDetail dataName="Danh mục D" dataId="category-management-d" />}
@@ -677,7 +685,7 @@ const getBreadcrumbPath = (pageId: string): string[] => {
     'data-info-international': ['Quản lý thu thập', 'CSDL Trong ngành', 'CSDL Hợp tác quốc tế'],
     'collection-statistics': ['Quản lý thu thập', 'CSDL Trong ngành', 'CSDL Thống kê thu thập'],
     'category-management': ['Quản lý thu thập', 'CSDL Trong ngành', 'Quản lý danh mục'],
-    'category-management-a': ['Quản lý thu thập', 'CSDL Trong ngành', 'Quản lý danh mục', 'Danh mục A'],
+    'category-management-a': ['Quản lý thu thập', 'CSDL Trong ngành', 'Quản lý danh mục', 'Biên tập danh mục A'],
     'collection-internal': ['Quản lý thu thập', 'CSDL Ngoài ngành'],
     'external-court-judgment': ['Quản lý thu thập', 'CSDL Ngoài ngành', 'CSDL Thông tin Bản án, quyết định từ TAND tối cah'],
     'external-category-group': ['Quản lý thu thập', 'CSDL Ngoài ngành', 'CSDL Nhóm danh mục'],
@@ -752,15 +760,20 @@ const getBreadcrumbPath = (pageId: string): string[] => {
 
     // Category
     'category-setup': ['Quản lý danh mục', 'Thiết lập danh mục'],
-    'category-list': ['Quản lý danh mục', 'Danh sách danh mục'],
-    'category-a': ['Quản lý danh mục', 'Danh sách danh mục', 'Danh mục A'],
+    'category-list': ['Quản lý danh mục', 'Biên tập danh mục'],
+    'category-a': ['Quản lý danh mục', 'Biên tập danh mục', 'Biên tập danh mục A'],
     'category-published-list': ['Quản lý danh mục', 'Công khai danh mục'],
-    'category-report': ['Quản lý danh mục', 'Thống kê danh mục'],
+    'category-report-group': ['Quản lý danh mục', 'Thống kê danh mục'],
+    'category-report': ['Quản lý danh mục', 'Thống kê danh mục', 'Khai thác báo cáo'],
+    'category-report-list': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo thống kê danh sách danh mục'],
+    'category-report-exploitation': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo tình trạng khai thác danh mục'],
+    'category-report-status': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo trạng thái danh mục'],
+    'category-report-version': ['Quản lý danh mục', 'Thống kê danh mục', 'Báo cáo phiên bản danh mục'],
 
     // Open Data
     'open-data-setup': ['Dữ liệu mở', 'Quản lý danh mục'],
-    'open-data-category-list': ['Dữ liệu mở', 'Danh sách danh mục'],
-    'open-data-category-a': ['Dữ liệu mở', 'Danh sách danh mục', 'Danh mục A'],
+    'open-data-category-list': ['Dữ liệu mở', 'Biên tập danh mục'],
+    'open-data-category-a': ['Dữ liệu mở', 'Biên tập danh mục', 'Biên tập danh mục A'],
     'open-data-published-list': ['Dữ liệu mở', 'Dữ liệu mở công bố'],
     'open-data-report': ['Dữ liệu mở', 'Thống kê dữ liệu mở'],
 

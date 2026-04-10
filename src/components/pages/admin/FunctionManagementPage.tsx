@@ -577,7 +577,7 @@ export function FunctionManagementPage() {
               </h3>
               <button 
                 onClick={handleClosePermissionModal} 
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                className="text-slate-400 hover:text-slate-600 transition-colors" title="Đóng" aria-label="Đóng"
               >
                 <X className="w-5 h-5" />
               </button>

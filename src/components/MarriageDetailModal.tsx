@@ -381,9 +381,9 @@ export function MarriageDetailModal({
                     >
                       Trước
                     </button>
-                    <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
-                    <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">2</button>
-                    <button className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">3</button>
+                    <button title="Hành động" aria-label="Hành động" className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button title="Hành động" aria-label="Hành động" className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">2</button>
+                    <button title="Hành động" aria-label="Hành động" className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm">3</button>
                     <button 
                       className="px-3 py-1 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 text-sm"
                       title="Trang sau"

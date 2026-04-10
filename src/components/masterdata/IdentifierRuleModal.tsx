@@ -84,7 +84,7 @@ export function IdentifierRuleModal({ onClose, entityName = 'Dữ liệu chủ' 
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
           >
             <X className="w-5 h-5 text-slate-500" />
           </button>

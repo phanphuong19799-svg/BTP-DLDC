@@ -145,7 +145,7 @@ export function DataQualityDetailModal({ onClose }: DataQualityDetailModalProps)
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
+              className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors" title="Đóng" aria-label="Đóng"
             >
               <X className="w-5 h-5" />
             </button>
