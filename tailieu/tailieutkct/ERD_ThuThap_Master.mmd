@@ -1,0 +1,97 @@
+erDiagram
+    DATA_PROVINCES ||--o{ DATA_PROVIDERS : "Phân vùng"
+    DATA_PROVIDERS ||--o{ SOURCE_SYSTEMS : "Quản lý"
+    SOURCE_SYSTEMS ||--o{ COLLECTION_SERVICES : "Cấp phép"
+    
+    COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "Giao thức"
+    COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "Định tuyến"
+    COLLECTION_SERVICES ||--o{ SERVICE_MAPPINGS : "Ánh xạ cột"
+    
+    COLLECTION_SERVICES ||--o| SERVICE_STATISTICS : "Thống kê"
+    COLLECTION_SERVICES ||--o{ SERVICE_SYNC_LOGS : "Ghi nhận Lô"
+
+    DATA_PROVINCES {
+        uuid id PK
+        varchar code "Mã Tỉnh/Bộ"
+        varchar name "Tên tỉnh thành hoặc Bộ Ngành"
+        varchar level "Cấp Trung ương / Địa phương"
+    }
+
+    DATA_PROVIDERS {
+        uuid id PK
+        uuid province_id FK "Thuộc tỉnh/bộ nào"
+        varchar code "Mã CQ/Đơn vị"
+        varchar name "Tên đơn vị báo cáo"
+        varchar contact_phone "Hotline"
+        varchar contact_email "Email nhận cảnh báo"
+    }
+
+    SOURCE_SYSTEMS {
+        uuid id PK
+        uuid provider_id FK
+        varchar code "Mã hệ thống DB"
+        varchar name "Tên hệ thống nguồn"
+        varchar classification "TRONG_NGANH | NGOAI_NGANH"
+        varchar network_zone "Vùng mạng (LAN/WAN/Internet)"
+    }
+
+    COLLECTION_SERVICES {
+        uuid id PK
+        uuid source_system_id FK "Lấy data từ hệ thống nào"
+        varchar code "Mã dịch vụ thu thập"
+        varchar name "Tên dịch vụ/luồng"
+        varchar version "Phiên bản thiết lập"
+        varchar security_level "Độ tuyệt mật"
+        varchar status "ACTIVE | INACTIVE"
+        varchar connection_status "Tình trạng mạng Ping"
+        varchar notification_status "Cờ SMS/Email"
+        text description "Ghi chú mục đích"
+        boolean is_deleted "Xóa mềm"
+    }
+
+    SERVICE_CONNECTIONS {
+        uuid id PK
+        uuid service_id FK
+        varchar connection_type "REST, SOAP, ORACLE, KAFKA"
+        jsonb config_data "JSON chứa BASE_URL, AUTH, TOKEN, IP"
+    }
+
+    SERVICE_SCHEDULES {
+        uuid id PK
+        uuid service_id FK
+        varchar sync_frequency "Chuỗi Cron Regex"
+        varchar sync_strategy "FULL | DELTA"
+        varchar primary_key_field "Cột check Hash/Mốc thời gian"
+        int batch_size "Chunk size"
+        int retry_limit "Số lần chạy lại khi rớt"
+    }
+
+    SERVICE_MAPPINGS {
+        uuid id PK
+        uuid service_id FK
+        varchar source_field "Cột ở CSDL Nguồn"
+        varchar target_field "Cột ở Kho CSDL Đích"
+        varchar data_type "NUMBER, VARCHAR, DATE"
+        varchar rule_script "Script biến đổi: UPPER(), TO_DATE()"
+    }
+
+    SERVICE_STATISTICS {
+        uuid id PK
+        uuid service_id FK
+        bigint total_success_records "Cộng dồn báo cáo Dashboard"
+        bigint total_error_records "Cộng dồn rác format"
+        timestamp last_sync_time "Thời điểm quét lô cuối"
+        varchar last_sync_status "Tình trạng lô quét cuối"
+        timestamp updated_at
+    }
+
+    SERVICE_SYNC_LOGS {
+        uuid id PK
+        uuid service_id FK
+        varchar status "SUCCESS | FAILED"
+        int total_records "Sản lượng 1 mẻ chạy"
+        int error_records "Lượng đứt gãy"
+        text error_message "Stack trace lỗi nếu có"
+        timestamp started_at
+        timestamp completed_at
+    }

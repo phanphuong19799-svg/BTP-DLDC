@@ -1,0 +1,99 @@
+erDiagram
+    COLLECTION_SERVICES ||--o| SERVICE_CONTACTS : "Sở hữu"
+    COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "Cấu hình"
+    COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "Định tuyến"
+    COLLECTION_SERVICES ||--o| SERVICE_STATISTICS : "Thống kê"
+    COLLECTION_SERVICES ||--o{ SERVICE_SYNC_LOGS : "Ghi nhận"
+    USERS ||--o{ SYSTEM_LOGS : "Tạo ra"
+
+    COLLECTION_SERVICES {
+        uuid id PK "Khóa chính"
+        varchar code "Mã định danh"
+        varchar name "Tên dịch vụ"
+        varchar system_name "Hệ thống chủ"
+        varchar source_type "Nguồn cung cấp"
+        varchar version "Version cấu hình"
+        varchar security_level "Độ bảo mật"
+        varchar status "Trạng thái vòng đời"
+        varchar connection_status "Tình trạng mạng"
+        varchar notification_status "Theo dõi Cảnh báo"
+        text description "Ghi chú mục đích"
+        varchar attachment_path "Đính kèm HDSD"
+        boolean is_deleted "Cờ xóa mềm"
+        timestamp created_at 
+        timestamp updated_at 
+    }
+
+    SERVICE_CONTACTS {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Link tới Collection"
+        varchar unit_name "Tên đơn vị quản lý"
+        varchar address "Địa chỉ Server/Tòa nhà"
+        varchar phone "Điện thoại hỗ trợ"
+        varchar email "Email bắn cảnh báo"
+        varchar technical_contact "Đầu mối kỹ thuật"
+        text note "Ghi chú tự do"
+    }
+
+    SERVICE_CONNECTIONS {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Link tới Collection"
+        varchar connection_type "Protocol REST/SOAP/DB"
+        jsonb config_data "JSON chứa Auth/URL/Map"
+        timestamp updated_at 
+    }
+
+    SERVICE_SCHEDULES {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Link tới Collection"
+        varchar sync_frequency "Biểu thức Cron"
+        varchar sync_strategy "Full Load / Delta Load"
+        varchar primary_key_field "Cột so sánh dữ liệu"
+        int batch_size "Kích cỡ lô kéo"
+        int retry_limit "Lần thử lại tối đa"
+        varchar fallback_action "Kịch bản dự phòng"
+    }
+
+    SERVICE_STATISTICS {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Link tới Collection"
+        bigint total_success_records "Tổng bản ghi thành công"
+        bigint total_error_records "Tổng lỗi định dạng"
+        timestamp last_sync_time "Lần quét gần nhất"
+        varchar last_sync_status "Kết quả lô quét"
+        timestamp updated_at "Cập nhật lúc"
+    }
+
+    SERVICE_SYNC_LOGS {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Tiến trình của Service nào"
+        varchar status "Kết quả (Success/Failed)"
+        int total_records "Tổng bản ghi kéo được"
+        int error_records "Lượng bản ghi bị Data Mismatch"
+        text error_message "Trace/Báo lỗi tóm tắt"
+        timestamp started_at "Bắt đầu chạy Cron"
+        timestamp completed_at "Kết thúc lô"
+    }
+
+    USERS {
+        uuid id PK "Khóa chính"
+        varchar username "Tên đăng nhập hệ thống"
+        varchar full_name "Họ và tên hiển thị"
+        varchar department "Thuộc phòng ban nào"
+        boolean is_active "Khóa hay mờ"
+    }
+
+    SYSTEM_LOGS {
+        uuid id PK "Khóa chính"
+        uuid user_id FK "User người thao tác"
+        varchar action_type "Login/Thêm/Sửa/Xóa"
+        varchar event_category "Tab Access hay Thiết bị"
+        varchar ip_address "IP Máy trạm (Gateway)"
+        varchar user_agent_full "Chuỗi Browser thuần"
+        varchar user_agent_parsed "Version Browser cắt gọt"
+        varchar os_parsed "HĐH (OS) phát hiện"
+        varchar session_status "Active/Expired (Vòng đời sessions)"
+        varchar status "Thành công hay Thất bại"
+        jsonb payload_data "JSON Before-After Audit"
+        timestamp created_at "Sinh ra dòng log lúc"
+    }

@@ -6,52 +6,103 @@
 
 ```mermaid
 erDiagram
-    COLLECTION_SERVICES ||--o| SERVICE_CONTACTS : "sở hữu 1"
-    COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "sở hữu 1"
-    COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "sở hữu 1"
+    COLLECTION_SERVICES ||--o| SERVICE_CONTACTS : "Sở hữu"
+    COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "Cấu hình"
+    COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "Định tuyến"     
+    COLLECTION_SERVICES ||--o| SERVICE_STATISTICS : "Thống kê"
+    COLLECTION_SERVICES ||--o{ SERVICE_SYNC_LOGS : "Ghi nhận"
+    USERS ||--o{ SYSTEM_LOGS : "Tạo ra"
 
     COLLECTION_SERVICES {
         uuid id PK "Khóa chính"
-        varchar code "Mã định danh (unique)"
-        varchar name "Tên service"
-        varchar system_name "Hệ thống"
-        varchar source_type "Nguồn thu thập"
+        varchar code "Mã định danh"
+        varchar name "Tên dịch vụ"
+        varchar system_name "Hệ thống chủ"
+        varchar source_type "Nguồn cung cấp"
+        varchar version "Version cấu hình"
         varchar security_level "Độ bảo mật"
-        varchar status "Trạng thái (active/inactive)"
-        text description "Mô tả"
-        varchar attachment_path "Đường dẫn file đính kèm"
+        varchar status "Trạng thái vòng đời"
+        varchar connection_status "Tình trạng mạng"
+        varchar notification_status "Theo dõi Cảnh báo"
+        text description "Ghi chú mục đích"
+        varchar attachment_path "Đính kèm HDSD"
+        boolean is_deleted "Cờ xóa mềm"
         timestamp created_at 
         timestamp updated_at 
     }
 
     SERVICE_CONTACTS {
         uuid id PK "Khóa chính"
-        uuid service_id FK "Liên kết Service"
-        varchar unit_name "Tên đơn vị báo cáo"
-        varchar address "Địa chỉ"
-        varchar phone "SĐT"
-        varchar email "Email liên hệ"
+        uuid service_id FK "Link tới Collection"
+        varchar unit_name "Tên đơn vị quản lý"
+        varchar address "Địa chỉ Server/Tòa nhà"
+        varchar phone "Điện thoại hỗ trợ"
+        varchar email "Email bắn cảnh báo"
         varchar technical_contact "Đầu mối kỹ thuật"
-        text note "Ghi chú"
+        text note "Ghi chú tự do"
     }
 
     SERVICE_CONNECTIONS {
         uuid id PK "Khóa chính"
-        uuid service_id FK "Liên kết Service"
-        varchar connection_type "Loại (REST, SOAP, ORACLE...)"
-        jsonb config_data "Cấu hình động (Lưu trữ Username, IP...)"
+        uuid service_id FK "Link tới Collection"
+        varchar connection_type "Protocol REST/SOAP/DB"
+        jsonb config_data "JSON chứa Auth/URL/Map"
         timestamp updated_at 
     }
 
     SERVICE_SCHEDULES {
         uuid id PK "Khóa chính"
-        uuid service_id FK "Liên kết Service"
-        varchar sync_frequency "Tần suất (cron)"
-        varchar sync_strategy "Chiến lược (Full/Delta)"
-        varchar primary_key_field "Khóa để Delta load"
-        int batch_size "Kích thước gói dữ liệu"
-        int retry_limit "Giới hạn thử lại"
-        varchar fallback_action "Hành động khi lỗi"
+        uuid service_id FK "Link tới Collection"
+        varchar sync_frequency "Biểu thức Cron"
+        varchar sync_strategy "Full Load / Delta Load"
+        varchar primary_key_field "Cột so sánh dữ liệu"
+        int batch_size "Kích cỡ lô kéo"
+        int retry_limit "Lần thử lại tối đa"
+        varchar fallback_action "Kịch bản dự phòng"
+    }
+
+    SERVICE_STATISTICS {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Link tới Collection"
+        bigint total_success_records "Tổng bản ghi thành công"
+        bigint total_error_records "Tổng lỗi định dạng"
+        timestamp last_sync_time "Lần quét gần nhất"
+        varchar last_sync_status "Kết quả lô quét"
+        timestamp updated_at "Cập nhật lúc"
+    }
+
+    SERVICE_SYNC_LOGS {
+        uuid id PK "Khóa chính"
+        uuid service_id FK "Tiến trình của Service nào"
+        varchar status "Kết quả (Success/Failed)"
+        int total_records "Tổng bản ghi kéo được"
+        int error_records "Lượng bản ghi bị Data Mismatch"
+        text error_message "Trace/Báo lỗi tóm tắt"
+        timestamp started_at "Bắt đầu chạy Cron"
+        timestamp completed_at "Kết thúc lô"
+    }
+
+    USERS {
+        uuid id PK "Khóa chính"
+        varchar username "Tên đăng nhập hệ thống"
+        varchar full_name "Họ và tên hiển thị"
+        varchar department "Thuộc phòng ban nào"
+        boolean is_active "Khóa hay mờ"
+    }
+
+    SYSTEM_LOGS {
+        uuid id PK "Khóa chính"
+        uuid user_id FK "User người thao tác"
+        varchar action_type "Login/Thêm/Sửa/Xóa"
+        varchar event_category "Tab Access hay Thiết bị"
+        varchar ip_address "IP Máy trạm (Gateway)"
+        varchar user_agent_full "Chuỗi Browser thuần"
+        varchar user_agent_parsed "Version Browser cắt gọt"
+        varchar os_parsed "HĐH (OS) phát hiện"
+        varchar session_status "Active/Expired (Vòng đời sessions)"
+        varchar status "Thành công hay Thất bại"
+        jsonb payload_data "JSON Before-After Audit"
+        timestamp created_at "Sinh ra dòng log lúc"
     }
 ```
 
@@ -66,10 +117,14 @@ Lưu trữ thông tin metadata gốc của một luồng thu thập dữ liệu.
 * **name** (VARCHAR 255): Tên dịch vụ (VD: "API dịch vụ dữ liệu quốc tịch").
 * **system_name** (VARCHAR 255): Tên hệ thống chứa dữ liệu.
 * **source_type** (VARCHAR 50): Nguồn thu thập (`Hệ thống trong ngành` / `Hệ thống ngoài ngành`).
-* **security_level** (VARCHAR 50): Mức độ bảo mật (`Dữ liệu nội bộ`, `Dữ liệu mở`...).
-* **status** (VARCHAR 20): Trạng thái (`active`, `format_error`, `maintenance`).
+* **version** (VARCHAR 20): Mã lưu phiên bản cấu hình API.
+* **security_level** (VARCHAR 50): Mức độ bảo mật (`mở`, `nội bộ`, `hạn chế`, `nhạy cảm`, `bảo mật`, `tuyệt mật`).
+* **status** (VARCHAR 20): Trạng thái thiết lập chung vòng đời dịch vụ (`ACTIVE`, `MAINTENANCE`, `INACTIVE`).
+* **connection_status** (VARCHAR 50): Trạng thái kết nối kỹ thuật thực thời (`SUCCESS`, `TIMED_OUT`, `AUTH_FAILED`...).
+* **notification_status** (VARCHAR 20): Cờ đánh dấu đã gửi cảnh báo lỗi qua SMS/Email hay chưa (`UNSENT`, `SENT`).
 * **description** (TEXT): Nội dung mô tả chi tiết.
 * **attachment_path** (VARCHAR 500): URL vật lý trên server storage lưu file quyết định/văn bản.
+* **is_deleted** (BOOLEAN): Cờ đánh dấu xóa mềm, hỗ trợ đếm dashboard, mặc định là `false`.
 
 ### Bảng `SERVICE_CONTACTS` (Thông tin đơn vị cung cấp - Tab 2)
 Tách riêng làm 1 bảng để quản lý thông tin liên lạc độc lập, không làm phình to bảng chính. Relational 1-to-1 với `COLLECTION_SERVICES`.
@@ -94,3 +149,11 @@ Cung cấp tham số đầu vào cho hệ thống Cronjob / Orchestration (ví d
 * **batch_size** (INT): Số dòng kéo về tối đa, ví dụ: `1000`.
 * **retry_limit** (INT): VD `3`.
 * **fallback_action** (VARCHAR 50): VD `SEND_EMAIL` hoặc `PAUSE_SYNC`.
+
+### Bảng `SERVICE_STATISTICS` (Thống kê Dịch vụ)
+Bảng độc lập (Quan hệ 1-1) chịu trách nhiệm Tổng hợp toàn bộ chỉ số lưu lượng theo từng dịch vụ. Tránh việc phải dùng vòng lặp SUM() từ bảng Log khổng lồ mỗi khi load Màn hình Danh sách/Dashboard, giúp giảm triệt để tình trạng chậm truy vấn (Table lock/Slow query).
+* **service_id** (UUID): Khóa ngoại chỉ định tới Collection Service.
+* **total_success_records** (BIGINT): Tổng số lượng record lũy kế của dịch vụ kéo về CSDL thành công. Bảng này sẽ được API Update Tăng/Cộng dồn (Count up) mỗi khi có 1 lô mới chạy thành công.
+* **total_error_records** (BIGINT): Tổng lượng record bị lỗi định dạng / schema mismatch.
+* **last_sync_time** (TIMESTAMP): Trường kiểm tra "Cập nhật thời gian đồng bộ gần nhất". Việc tách vào bảng phụ giúp Update liên tục thời gian Cronjob chạy mà không làm đổi thông tin Cấu hình bảng chính.
+* **last_sync_status** (VARCHAR): Ghi nhận tiến trình lô (batch) gần nhất là Thành công / Thất bại.
