@@ -6,6 +6,7 @@
 
 ```mermaid
 erDiagram
+    DON_VI ||--o{ COLLECTION_SERVICES : "Tạo kết nối"
     COLLECTION_SERVICES ||--o| SERVICE_CONTACTS : "Sở hữu"
     COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "Cấu hình"
     COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "Định tuyến"     
@@ -13,8 +14,15 @@ erDiagram
     COLLECTION_SERVICES ||--o{ SERVICE_SYNC_LOGS : "Ghi nhận"
     USERS ||--o{ SYSTEM_LOGS : "Tạo ra"
 
+    DON_VI {
+        uuid id PK "Khóa chính"
+        varchar name "Tên đơn vị"
+        varchar classification "TRONG_NGANH | NGOAI_NGANH"
+    }
+
     COLLECTION_SERVICES {
         uuid id PK "Khóa chính"
+        uuid don_vi_id FK "Link tới Đơn vị"
         varchar code "Mã định danh"
         varchar name "Tên dịch vụ"
         varchar system_name "Hệ thống chủ"
@@ -110,9 +118,16 @@ erDiagram
 
 ## 2. Chi tiết Cấu trúc các Bảng (Tables)
 
-### Bảng `COLLECTION_SERVICES` (Thông tin chung - Tab 1)
+### Bảng `DON_VI` (Đơn vị kết nối)
+Quản lý danh sách các đơn vị thực hiện kết nối.
+* **id** (UUID): Khóa chính.
+* **name** (VARCHAR 255): Tên đơn vị.
+* **classification** (VARCHAR 50): Phân loại nguồn thu thập (Trong ngành / Ngoài ngành).
+
+### Bảng `COLLECTION_SERVICES` (Thông vị chung - Tab 1)
 Lưu trữ thông tin metadata gốc của một luồng thu thập dữ liệu.
 * **id** (UUID/BIGINT): Khóa chính.
+* **don_vi_id** (UUID): Khóa ngoại liên kết tới bảng DON_VI.
 * **code** (VARCHAR): Mã hiển thị ngoài UI (VD: `DL_QT_001`). Unique.
 * **name** (VARCHAR 255): Tên dịch vụ (VD: "API dịch vụ dữ liệu quốc tịch").
 * **system_name** (VARCHAR 255): Tên hệ thống chứa dữ liệu.

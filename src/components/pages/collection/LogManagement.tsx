@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Eye, Download, User, Activity, Monitor } from 'lucide-react';
 
 interface LogEntry {
@@ -16,7 +16,7 @@ interface LogEntry {
   details: string;
 }
 
-export function LogManagement() {
+export function LogManagement({ initialOpenLogId }: { initialOpenLogId?: number | null }) {
   const [activeLogTab, setActiveLogTab] = useState<'access' | 'activity' | 'other'>('access');
   const [logSearchText, setLogSearchText] = useState('');
   const [logUserFilter, setLogUserFilter] = useState('all');
@@ -144,7 +144,49 @@ export function LogManagement() {
       statusColor: 'bg-green-100 text-green-700',
       details: 'Cấu hình thời gian thu thập cho dịch vụ CSDL A'
     },
+    {
+      id: 6,
+      user: 'admin',
+      userName: 'Nguyễn Văn A',
+      action: 'Kiểm tra kết nối dịch vụ',
+      module: 'Thiết lập dịch vụ',
+      timestamp: '2024-04-12 14:00:15',
+      ip: '192.168.1.100',
+      device: 'Windows 10',
+      browser: 'Chrome 120.0',
+      status: 'Thất bại',
+      statusColor: 'bg-red-100 text-red-700',
+      details: 'Lỗi kết nối dịch vụ - Quá thời gian quy định (Timeout) khi reach tới endpoint https://ndxp.gov.vn/api/v1/data (vượt 3000ms).'
+    },
+    {
+      id: 7,
+      user: 'admin',
+      userName: 'Nguyễn Văn A',
+      action: 'Kiểm tra kết nối dịch vụ',
+      module: 'Thiết lập dịch vụ',
+      timestamp: '2024-04-12 14:05:30',
+      ip: '192.168.1.100',
+      device: 'Windows 10',
+      browser: 'Chrome 120.0',
+      status: 'Thất bại',
+      statusColor: 'bg-red-100 text-red-700',
+      details: 'Lỗi dữ liệu/Cấu trúc gói tin - Phản hồi HTTP 200 nhưng payload rỗng hoặc sai cấu trúc cần thiết.'
+    },
   ];
+
+  /* 
+   * Move useEffect after activityLogs declaration
+   */
+  useEffect(() => {
+    if (initialOpenLogId) {
+      setActiveLogTab('activity');
+      const logToOpen = activityLogs.find(l => l.id === initialOpenLogId);
+      if (logToOpen) {
+        setSelectedLog(logToOpen);
+        setShowLogDetailModal(true);
+      }
+    }
+  }, [initialOpenLogId]);
 
   // Mock data cho thông tin khác
   const otherLogs: LogEntry[] = [
@@ -316,6 +358,7 @@ export function LogManagement() {
                   <option value="Xóa dịch vụ">Xóa dịch vụ</option>
                   <option value="Kết xuất báo cáo">Kết xuất báo cáo</option>
                   <option value="Cài đặt dịch vụ">Cài đặt dịch vụ</option>
+                  <option value="Kiểm tra kết nối dịch vụ">Kiểm tra kết nối dịch vụ</option>
                 </>
               )}
               {activeLogTab === 'other' && (

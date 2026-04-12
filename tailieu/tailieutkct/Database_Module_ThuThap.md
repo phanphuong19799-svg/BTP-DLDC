@@ -11,8 +11,7 @@ Thiết kế này đảm bảo Dev có thể dựng Table, tạo Relation Key tr
 ```mermaid
 erDiagram
     DATA_PROVINCES ||--o{ DATA_PROVIDERS : "Phân vùng"
-    DATA_PROVIDERS ||--o{ SOURCE_SYSTEMS : "Quản lý"
-    SOURCE_SYSTEMS ||--o{ COLLECTION_SERVICES : "Cấp phép"
+    DON_VI ||--o{ COLLECTION_SERVICES : "Tạo kết nối"
     
     COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "Giao thức"
     COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "Định tuyến"
@@ -37,18 +36,15 @@ erDiagram
         varchar contact_email "Email nhận cảnh báo"
     }
 
-    SOURCE_SYSTEMS {
+    DON_VI {
         uuid id PK
-        uuid provider_id FK
-        varchar code "Mã hệ thống DB"
-        varchar name "Tên hệ thống nguồn"
+        varchar name "Tên đơn vị"
         varchar classification "TRONG_NGANH | NGOAI_NGANH"
-        varchar network_zone "Vùng mạng (LAN/WAN/Internet)"
     }
 
     COLLECTION_SERVICES {
         uuid id PK
-        uuid source_system_id FK "Lấy data từ hệ thống nào"
+        uuid don_vi_id FK "Đơn vị liên kết"
         varchar code "Mã dịch vụ thu thập"
         varchar name "Tên dịch vụ/luồng"
         varchar version "Phiên bản thiết lập"
@@ -115,11 +111,10 @@ erDiagram
 ### Nhóm 1: Quản lý Danh mục & Môi trường Nguồn
 Thay vì để User gõ tay tên Hệ Thống hay "Trong/Ngoài ngành" mỗi lần thêm mới Thiết lập (dễ sinh lỗi Typo rác CSDL), ta tách ra mảng **Danh mục (Master Data)** phân tầng:
 1. **`DATA_PROVINCES` (Danh mục Vùng/Tỉnh/Bộ):** Quản lý Master địa giới hành chính hoặc Cấp Trung ương. VD: `Hà Nội`, `Bộ Công an`. Phục vụ tính năng thống kê xem Tỉnh/Bộ nào đang đóng góp nhiều Data nhất.
-2. **`DATA_PROVIDERS` (Đơn vị cung cấp trực tiếp):** Lưu các Sở, Ban, Ngành (Ví dụ: `Sở Thông tin TT Hà Nội` thuộc `Hà Nội`). Đồng thời chứa thông tin SĐT/Email để tự động chạy BOT Cảnh báo đứt mạng tới đầu mối liên hệ.
-3. **`SOURCE_SYSTEMS` (Danh mục Hệ thống):** Một cơ quan cấp Đơn vị có thể quản lý nhiều Hệ thống (Ví dụ: Bộ GD có `Hệ thống Thi Đại học`, `Hệ thống Văn Bằng`). Bảng này có cột Enum `classification` giúp phân loại báo cáo `Trong ngành` / `Ngoài ngành`.
+2. **`DON_VI` (Đơn vị cung cấp trực tiếp):** Lưu các Cơ quan, Sở, Ban, Ngành (Ví dụ: `Sở Thông tin TT Hà Nội`, `Cục Thống kê`). Bảng này có cột Enum `classification` giúp phân loại "Trong ngành" (Nội bộ BTP) hay "Ngoài ngành".
 
 ### Nhóm 2: Lõi Thiết lập Thu thập (Core ETL Setup)
-1. **`COLLECTION_SERVICES`**: Đóng vai trò là TRỤC XOAY (Bảng cha). Quản lý thông tin định danh bề mặt của 1 luồng thu thập. Khóa ngoại `source_system_id` trả lời cho câu hỏi: Dịch vụ này đang chọc vào Hệ thống nào để hút Data?
+1. **`COLLECTION_SERVICES`**: Đóng vai trò là TRỤC XOAY (Bảng cha). Quản lý thông tin định danh bề mặt của 1 luồng thu thập. Khóa ngoại `don_vi_id` xác định Dịch vụ/Kết nối này thuộc Đơn vị nào quản lý.
 2. **`SERVICE_CONNECTIONS`**: Toàn bộ cấu hình phức tạp (User/Pass DB, Key OAUTH2, Base URL, IP/Port) được gói hết vào cột **JSONB `config_data`**. Dev BE không cần tạo thừa thãi 1 đống cột cứng, Database tự do linh hoạt scale khi xuất hiện chuẩn kết nối mới (KAFKA, MQTT).
 3. **`SERVICE_SCHEDULES`**: Bảng giữ toàn bộ lệnh định tuyến lập lịch quét: Quét toàn thời gian (Full Sync) hoặc Quét cập nhật gia tăng (Delta Sync).
 

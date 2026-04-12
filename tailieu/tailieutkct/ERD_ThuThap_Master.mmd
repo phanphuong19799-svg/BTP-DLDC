@@ -4,6 +4,7 @@ erDiagram
     SOURCE_SYSTEMS ||--o{ COLLECTION_SERVICES : "Cấp phép"
     
     COLLECTION_SERVICES ||--o| SERVICE_CONNECTIONS : "Giao thức"
+    DON_VI ||--o{ COLLECTION_SERVICES : "Tạo kết nối"
     COLLECTION_SERVICES ||--o| SERVICE_SCHEDULES : "Định tuyến"
     COLLECTION_SERVICES ||--o{ SERVICE_MAPPINGS : "Ánh xạ cột"
     
@@ -26,6 +27,12 @@ erDiagram
         varchar contact_email "Email nhận cảnh báo"
     }
 
+    DON_VI {
+        uuid id PK
+        varchar name "Tên đơn vị"
+        varchar classification "TRONG_NGANH | NGOAI_NGANH"
+    }
+
     SOURCE_SYSTEMS {
         uuid id PK
         uuid provider_id FK
@@ -37,7 +44,8 @@ erDiagram
 
     COLLECTION_SERVICES {
         uuid id PK
-        uuid source_system_id FK "Lấy data từ hệ thống nào"
+        uuid source_system_id FK "Lấy data từ hệ thống nào (có thể null nếu dùng DON_VI trực tiếp)"
+        uuid don_vi_id FK "Đơn vị thực hiện kết nối"
         varchar code "Mã dịch vụ thu thập"
         varchar name "Tên dịch vụ/luồng"
         varchar version "Phiên bản thiết lập"

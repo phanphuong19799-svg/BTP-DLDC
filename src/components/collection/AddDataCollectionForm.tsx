@@ -1,4 +1,4 @@
-import { ArrowLeft, Save, X, Eye, EyeOff, Server, Globe2, FileDown, Database } from 'lucide-react';
+import { ArrowLeft, Save, X, Eye, EyeOff, Server, Globe2, FileDown, Database, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 interface AddDataCollectionFormProps {
@@ -9,6 +9,19 @@ interface AddDataCollectionFormProps {
 export function AddDataCollectionForm({ onBack, onSave }: AddDataCollectionFormProps) {
   const [activeTab, setActiveTab] = useState<'general' | 'provider' | 'connection' | 'collection'>('general');
   const [showPassword, setShowPassword] = useState(false);
+
+  // Combobox State
+  const [showDonViDropdown, setShowDonViDropdown] = useState(false);
+  const [donViSearch, setDonViSearch] = useState('');
+  const [donViList, setDonViList] = useState([
+    { id: '1', name: 'Tòa án nhân dân tối cao', classification: 'Ngoài ngành' },
+    { id: '2', name: 'Cục Thống kê Trung ương', classification: 'Ngoài ngành' },
+    { id: '3', name: 'Cục Hành chính tư pháp', classification: 'Trong ngành' },
+  ]);
+  const [showCreateDonViModal, setShowCreateDonViModal] = useState(false);
+  const [newDonViClassification, setNewDonViClassification] = useState('Trong ngành');
+
+  const filteredDonVi = donViList.filter(dv => dv.name.toLowerCase().includes(donViSearch.toLowerCase()));
 
   const [formData, setFormData] = useState({
     // Tab 1: Thông tin chung
@@ -64,20 +77,7 @@ export function AddDataCollectionForm({ onBack, onSave }: AddDataCollectionFormP
     alert('Đang kiểm tra kết nối tới Endpoint/Server...\n\n(Mockup: Kết nối thành công 200 OK)');
   };
 
-  // Helper cho danh sách đơn vị cung cấp theo phân loại
-  const getProviderOptions = () => {
-    if (formData.providerType === 'external') {
-      return [
-        'Tòa án nhân dân tối cao', 'Cục Thống kê Trung ương', 'Ủy ban Dân tộc', 
-        'Bộ Ngoại giao', 'Ban Tôn giáo Chính phủ', 'Bộ Công an', 'Bộ Y tế'
-      ];
-    }
-    return [
-      'Cục Hành chính tư pháp', 'Cục Quản lý thi hành án dân sự', 
-      'Cục Đăng ký giao dịch bảo đảm và tài sản', 'Cục Bổ trợ tư pháp', 'Vụ Hợp tác quốc tế'
-    ];
-  };
-
+  // Removed getProviderOptions as we use dynamic list
   const tabs = [
     { id: 'general', label: 'Thông tin chung', step: 1 },
     { id: 'provider', label: 'Đơn vị cung cấp', step: 2 },
@@ -135,6 +135,55 @@ export function AddDataCollectionForm({ onBack, onSave }: AddDataCollectionFormP
           {activeTab === 'general' && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="grid grid-cols-2 gap-6">
+                <div className="col-span-2 relative">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Tên đơn vị (Nguồn thu thập) <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    value={donViSearch}
+                    onChange={(e) => {
+                      setDonViSearch(e.target.value);
+                      setShowDonViDropdown(true);
+                      setFormData({ ...formData, providerName: e.target.value });
+                    }}
+                    onFocus={() => setShowDonViDropdown(true)}
+                    onBlur={() => setTimeout(() => setShowDonViDropdown(false), 200)}
+                    placeholder="Tìm kiếm hoặc nhập Tên đơn vị mới..."
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                  {showDonViDropdown && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {filteredDonVi.map(dv => (
+                        <div
+                          key={dv.id}
+                          className="px-4 py-2 hover:bg-slate-50 cursor-pointer text-sm flex items-center justify-between"
+                          onMouseDown={(e) => {
+                            e.preventDefault(); 
+                            setDonViSearch(dv.name);
+                            setFormData({ ...formData, providerName: dv.name, providerType: dv.classification === 'Trong ngành' ? 'internal' : 'external' });
+                            setShowDonViDropdown(false);
+                          }}
+                        >
+                          <span className="font-medium text-slate-700">{dv.name}</span>
+                          <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">{dv.classification}</span>
+                        </div>
+                      ))}
+                      {donViSearch && filteredDonVi.length === 0 && (
+                        <div 
+                          className="px-4 py-3 hover:bg-blue-50 cursor-pointer text-sm text-blue-600 font-medium flex items-center gap-2 border-t border-slate-100"
+                          onMouseDown={(e) => {
+                            e.preventDefault(); 
+                            setShowDonViDropdown(false);
+                            setShowCreateDonViModal(true);
+                          }}
+                        >
+                          <Plus className="w-4 h-4" />
+                          Thêm mới đơn vị "{donViSearch}"
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Tên kết nối <span className="text-red-500">*</span></label>
                   <input
@@ -203,49 +252,24 @@ export function AddDataCollectionForm({ onBack, onSave }: AddDataCollectionFormP
           {/* Tab 2: Thông tin đơn vị cung cấp */}
           {activeTab === 'provider' && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-3">Phân loại nguồn dữ liệu <span className="text-red-500">*</span></label>
-                <div className="flex gap-6">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="providerType"
-                      value="external"
-                      checked={formData.providerType === 'external'}
-                      onChange={(e) => setFormData({ ...formData, providerType: e.target.value, providerName: '' })}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
-                    />
-                    <span className="text-slate-700 text-sm">Bộ ngoài (External)</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="providerType"
-                      value="internal"
-                      checked={formData.providerType === 'internal'}
-                      onChange={(e) => setFormData({ ...formData, providerType: e.target.value, providerName: '' })}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
-                    />
-                    <span className="text-slate-700 text-sm">Nội bộ (Internal - Bộ Tư pháp)</span>
-                  </label>
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Tên đơn vị (Đã chọn từ Tab Thông tin chung)</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={formData.providerName || 'Chưa chọn đơn vị'}
+                    readOnly
+                    className="flex-1 px-4 py-2 border border-slate-200 rounded-lg bg-white text-slate-700 font-medium focus:outline-none"
+                  />
+                  {formData.providerName && (
+                    <span className={`px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap border ${formData.providerType === 'internal' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
+                      {formData.providerType === 'internal' ? 'Trong ngành' : 'Ngoài ngành'}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-6">
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Tên đơn vị cung cấp <span className="text-red-500">*</span></label>
-                  <select
-                    required
-                    value={formData.providerName}
-                    onChange={(e) => setFormData({ ...formData, providerName: e.target.value })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  >
-                    <option value="">Chọn đơn vị cung cấp...</option>
-                    {getProviderOptions().map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Người đầu mối (Contact Person)</label>
@@ -600,6 +624,81 @@ export function AddDataCollectionForm({ onBack, onSave }: AddDataCollectionFormP
           </button>
         </div>
       </form>
+
+      {/* Modal Thêm mới đơn vị */}
+      {showCreateDonViModal && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 border border-slate-200">
+            <div className="flex items-center justify-between mb-5 pb-4 border-b border-slate-100">
+              <h3 className="text-lg font-bold text-slate-900">Thêm mới Đơn vị</h3>
+              <button onClick={() => setShowCreateDonViModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Tên đơn vị</label>
+                <input
+                  type="text"
+                  value={donViSearch}
+                  readOnly
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg bg-slate-50 text-slate-900 font-medium focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Nguồn thu thập <span className="text-red-500">*</span></label>
+                <div className="flex gap-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
+                  <label className="flex items-center gap-2 cursor-pointer relative">
+                    <input
+                      type="radio"
+                      name="newClassification"
+                      value="Trong ngành"
+                      checked={newDonViClassification === 'Trong ngành'}
+                      onChange={() => setNewDonViClassification('Trong ngành')}
+                      className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
+                    />
+                    <span className="text-sm font-medium text-slate-700">Trong ngành</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer relative">
+                    <input
+                      type="radio"
+                      name="newClassification"
+                      value="Ngoài ngành"
+                      checked={newDonViClassification === 'Ngoài ngành'}
+                      onChange={() => setNewDonViClassification('Ngoài ngành')}
+                      className="w-4 h-4 text-orange-600 focus:ring-orange-500 border-slate-300"
+                    />
+                    <span className="text-sm font-medium text-slate-700">Ngoài ngành</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setShowCreateDonViModal(false)}
+                className="px-4 py-2 text-slate-700 hover:bg-slate-100 border border-slate-300 rounded-lg text-sm font-medium transition-colors"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const newDv = { id: Date.now().toString(), name: donViSearch, classification: newDonViClassification };
+                  setDonViList([...donViList, newDv]);
+                  setFormData({ ...formData, providerName: newDv.name, providerType: newDv.classification === 'Trong ngành' ? 'internal' : 'external' });
+                  setShowCreateDonViModal(false);
+                }}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Xác nhận lưu
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,6 +7,13 @@ interface VersionHistoryModalProps {
 
 const mockVersions = [
   {
+    id: 5,
+    version: 'v2.2.0',
+    date: '12/04/2026',
+    time: '23:15',
+    content: 'Tái cấu trúc luồng Thiết lập Thu thập dữ liệu: Nâng cấp màn hình Chi tiết thành cấu trúc Đa Tab với KPI động, cải tiến Dashboard phân dải chính xác phương thức kết nối và nguồn cung cấp. Cải thiện UX và đồng bộ dự án lên Git.'
+  },
+  {
     id: 1,
     version: 'v2.1.0',
     date: '10/04/2026',
@@ -40,8 +47,8 @@ export function VersionHistoryModal({ isOpen, onClose }: VersionHistoryModalProp
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[999] p-4 font-sans">
-      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col">
+    <div className="fixed inset-0 bg-black/50 flex origin-top items-start justify-center overflow-y-auto z-[999] p-4 sm:p-6 font-sans">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full flex flex-col mb-auto mt-8 sm:mt-12 shrink-0">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-200">
           <div className="flex items-center gap-3">
@@ -53,7 +60,7 @@ export function VersionHistoryModal({ isOpen, onClose }: VersionHistoryModalProp
               <p className="text-sm text-slate-500">Chi tiết các phiên bản hệ thống đã phát hành</p>
             </div>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 hover:text-slate-600"
             title="Đóng"
@@ -64,11 +71,11 @@ export function VersionHistoryModal({ isOpen, onClose }: VersionHistoryModalProp
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto flex-1">
+        <div className="p-6 overflow-y-auto flex-1 min-h-0">
           <div className="space-y-4">
             {mockVersions.map((item, index) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className={`p-4 rounded-xl border ${index === 0 ? 'border-teal-200 bg-teal-50/50' : 'border-slate-200 bg-white'}`}
               >
                 <div className="flex items-start justify-between mb-3">
@@ -81,13 +88,13 @@ export function VersionHistoryModal({ isOpen, onClose }: VersionHistoryModalProp
                     )}
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <div className="flex items-start gap-2">
                     <FileText className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
                     <p className="text-sm text-slate-700 leading-relaxed">{item.content}</p>
                   </div>
-                  
+
                   <div className="flex items-center gap-6 mt-3 pt-3 border-t border-slate-100/50">
                     <div className="flex items-center gap-2 text-sm text-slate-500">
                       <Calendar className="w-4 h-4" />

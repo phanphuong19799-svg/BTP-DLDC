@@ -3,18 +3,18 @@ import { Download, Database, Building2, Building } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const methodData = [
-  { name: 'REST API', value: 45 },
-  { name: 'SOAP API', value: 28 },
-  { name: 'File Upload', value: 20 },
-  { name: 'FTP', value: 7 },
+  { name: 'API RESTful', value: 45 },
+  { name: 'API SOAP', value: 28 },
+  { name: 'Database', value: 15 },
+  { name: 'FTP/SFTP', value: 7 },
+  { name: 'File Upload', value: 5 },
 ];
 
 const sourceData = [
-  { name: 'CSDL A', value: 345 },
-  { name: 'CSDL B', value: 287 },
-  { name: 'CSDL C', value: 256 },
-  { name: 'CSDL D', value: 178 },
-  { name: 'CSDL E', value: 414 },
+  { name: 'Cục hành chính tư pháp', value: 345 },
+  { name: 'Cục thi hành án', value: 287 },
+  { name: 'Cục bổ trợ tư pháp', value: 256 },
+  { name: 'Vụ Hợp tác quốc tế', value: 178 },
 ];
 
 const resultData = [

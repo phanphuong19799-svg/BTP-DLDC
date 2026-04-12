@@ -1051,7 +1051,7 @@ export function Sidebar({
               Phiên bản
             </span>
           </div>
-          <div className="text-sm font-semibold text-slate-900">v2.1.0</div>
+          <div className="text-sm font-semibold text-slate-900">v2.2.0</div>
         </button>
       </div>
 

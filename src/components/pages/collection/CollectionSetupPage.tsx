@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Plus, Eye, Edit, Settings as SettingsIcon, Trash2, FileText, Activity, Settings, AlertCircle, X, Download, Send, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
-import { AddServiceModal, EditServiceModal, ViewServiceModal, DeleteServiceModal, SettingsServiceModal } from './ServiceModals';
+import { AddServiceModal, EditServiceModal, DeleteServiceModal, SettingsServiceModal } from './ServiceModals';
+import { ViewServiceModal } from './ViewServiceModal';
 import { LogManagement } from './LogManagement';
 import { mockCollectionServices } from './mockCollectionServices';
 import { ServiceDataDetailPage } from './ServiceDataDetailPage';
@@ -21,6 +22,18 @@ export function CollectionSetupPage({ onNavigate }: { onNavigate?: (pageId: stri
   const [sourceFilter, setSourceFilter] = useState('all'); // New: nguồn dữ liệu filter
   const [departmentFilter, setDepartmentFilter] = useState('all'); // New: cục/vụ filter
   const [navigateToPage, setNavigateToPage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleNavLog = (e: any) => {
+      setShowAddServiceModal(false);
+      setActiveTab('version');
+      if (e.detail?.logId) {
+        setNavigateToPage(e.detail.logId.toString());
+      }
+    };
+    window.addEventListener('NAVIGATE_TO_LOG', handleNavLog);
+    return () => window.removeEventListener('NAVIGATE_TO_LOG', handleNavLog);
+  }, []);
   
   // Get current month's first and last day
   const getCurrentMonthRange = () => {
@@ -370,7 +383,7 @@ export function CollectionSetupPage({ onNavigate }: { onNavigate?: (pageId: stri
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          {(service.status === 'format_error' || service.status === 'structure_error') ? (
+                          {(service.status === 'err_conn' || service.status === 'err_data') ? (
                             service.notificationSentForError ? (
                               <span className="inline-flex px-2 py-1 rounded text-xs bg-green-100 text-green-700">
                                 Đã gửi
@@ -501,7 +514,7 @@ export function CollectionSetupPage({ onNavigate }: { onNavigate?: (pageId: stri
 
         {/* Tab: Quản lý nhật ký */}
         {activeTab === 'version' && (
-          <LogManagement />
+          <LogManagement initialOpenLogId={navigateToPage ? parseInt(navigateToPage) : null} />
         )}
       </div>
 
