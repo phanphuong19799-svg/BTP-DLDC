@@ -133,7 +133,7 @@ export function AddServiceModal({ isOpen, onClose }: ServiceModalProps) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto" onChange={resetTestState}>
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
           <div className="px-6 py-4">
             {activeTab === 'general' && (
               <div className="space-y-4">
@@ -422,7 +422,7 @@ export function EditServiceModal({ isOpen, onClose, service }: ServiceModalProps
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto" onChange={resetTestState}>
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
           <div className="px-6 py-4">
             {activeTab === 'general' && (
               <div className="space-y-4">
